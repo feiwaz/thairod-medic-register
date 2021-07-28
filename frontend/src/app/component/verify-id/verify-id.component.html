@@ -19,8 +19,14 @@
     </div>
     <button mat-flat-button type="submit" color="primary"
       [disabled]="!verifyForm.dirty || !verifyForm.valid || isLoading">ตรวจสอบ</button>
+    <br>Register
     <ul>
       <li>ID: [1111122222333] for success scenario, error otherwise</li>
+    </ul>
+    Check Status
+    <ul>
+      <li>ID: [1111122222444] for approved scenario, error otherwise</li>
+      <li>ID: [1111122222555] for pending scenario, error otherwise</li>
     </ul>
     <ng-container *ngIf="errorResponse">
       <p>ไม่พบผู้ใช้นี้ในระบบ</p>

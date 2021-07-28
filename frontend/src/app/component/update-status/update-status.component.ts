@@ -8,7 +8,16 @@ import { Router } from '@angular/router';
 })
 export class UpdateStatusComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  id = '';
+  status = 'pending';
+
+  constructor(private router: Router) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation) {
+      this.id = currentNavigation.extras.state?.id || this.id;
+      this.status = currentNavigation.extras.state?.status || this.status;
+    }
+  }
 
   ngOnInit(): void {
   }

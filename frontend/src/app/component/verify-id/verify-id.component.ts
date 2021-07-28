@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
+import { maskId } from 'src/app/util/util-functions';
 
 @Component({
   selector: 'app-verify-id',
@@ -38,13 +39,21 @@ export class VerifyIdComponent implements OnInit {
     this.verifyForm.disable();
     this.isLoading = true;
     this.errorResponse = false;
+    if (this.role) {
+      this.verifyUserId();
+    } else {
+      this.checkUserStatus();
+    }
+  }
+
+  verifyUserId(): void {
     this.userService.verifyUserId(this.verifyForm.controls.userId.value + '').subscribe(
-      response => this.handleSuccessfulResponse(),
+      response => this.handleSuccessfulVerifyUserId(),
       errorResponse => this.handleErrorResponse()
     );
   }
 
-  handleSuccessfulResponse(): void {
+  handleSuccessfulVerifyUserId(): void {
     this.verifyForm.enable();
     this.isLoading = false;
     this.router.navigate([`/${this.role}/review-tc`]);
@@ -54,6 +63,25 @@ export class VerifyIdComponent implements OnInit {
     this.verifyForm.enable();
     this.isLoading = false;
     this.errorResponse = true;
+  }
+
+  checkUserStatus(): void {
+    this.userService.checkUserStatus(this.verifyForm.controls.userId.value + '').subscribe(
+      response => this.handleSuccessfulCheckUserStatus(response),
+      errorResponse => this.handleErrorResponse()
+    );
+  }
+
+  handleSuccessfulCheckUserStatus(response: any): void {
+    this.verifyForm.enable();
+    this.isLoading = false;
+    const maskedId = maskId(this.verifyForm.controls.userId.value);
+    this.router.navigate([`/update-status`], {
+      state: {
+        id: maskedId,
+        status: response.body.status
+      }
+    });
   }
 
 }
