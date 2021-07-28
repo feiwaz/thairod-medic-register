@@ -10,59 +10,45 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       -
         name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
-          driver-opts: network=host
-      -
-        name: Build and push to local registry
-        uses: docker/build-push-action@v2
+          registry: ${{ env.REGISTRY }}
+          username: feiwaz
+          password: ${{ secrets.GH_TOKEN }}
+        
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: localhost:5000/name/thairod:latest
-      -
-        name: Inspect
-        run: |
-          docker buildx imagetools inspect localhost:5000/name/thairod:latest
-        
-        
-      # -
-      #   name: Login to GitLab
-      #   uses: docker/login-action@v1
-      #   with:
-      #     registry: registry.gitlab.com
-      #     username: ${{ secrets.GITLAB_USERNAME }}
-      #     password: ${{ secrets.GITLAB_TOKEN }}
-      # -
-      #   name: Build
-      #   id: docker_build
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     tags: 
-      # -
-      #   name: Image digest
-      #   run: echo ${{ steps.docker_build.outputs.digest }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
     
     
   deploy:
