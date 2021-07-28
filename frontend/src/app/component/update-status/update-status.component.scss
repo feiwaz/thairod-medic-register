@@ -1,0 +1,14 @@
+.flex-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: flex-start;
+  margin: 70px 25px 0 25px;
+}
+
+.main-logo,
+.status {
+  margin-bottom: 30px;
+  text-align: center;
+}

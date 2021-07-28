@@ -17,6 +17,7 @@ import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { DoctorComponent } from './component/doctor/doctor.component';
+import { UpdateStatusComponent } from './component/update-status/update-status.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { DoctorComponent } from './component/doctor/doctor.component';
     VerifyIdComponent,
     ReviewTcComponent,
     ToolbarComponent,
-    DoctorComponent
+    DoctorComponent,
+    UpdateStatusComponent
   ],
   imports: [
     BrowserModule,

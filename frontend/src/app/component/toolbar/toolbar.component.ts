@@ -19,7 +19,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   onNavigateBack(): void {
-    // this.router.navigate([this.previousPath], { skipLocationChange: false });
+    // this.router.navigate([this.previousPath]);
     this.location.back();
   }
 

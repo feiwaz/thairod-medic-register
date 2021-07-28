@@ -47,9 +47,7 @@ export class VerifyIdComponent implements OnInit {
   handleSuccessfulResponse(): void {
     this.verifyForm.enable();
     this.isLoading = false;
-    this.router.navigate([`/${this.role}/review-tc`], {
-      skipLocationChange: false
-    });
+    this.router.navigate([`/${this.role}/review-tc`]);
   }
 
   handleErrorResponse(): void {

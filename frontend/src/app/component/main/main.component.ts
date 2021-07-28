@@ -14,11 +14,11 @@ export class MainComponent implements OnInit {
   }
 
   onRegister(role = 'volunteer'): void {
-    this.router.navigate([`/${role}/verify-id`], { skipLocationChange: false });
+    this.router.navigate([`/${role}/verify-id`]);
   }
 
   onCheckStatus(): void {
-    this.router.navigate(['verify-id'], { skipLocationChange: false });
+    this.router.navigate(['verify-id']);
   }
 
 }

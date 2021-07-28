@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './component/main/main.component';
 import { ReviewTcComponent } from './component/review-tc/review-tc.component';
+import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 
 const routes: Routes = [
@@ -25,6 +26,7 @@ const routes: Routes = [
     }]
   },
   { path: 'verify-id', component: VerifyIdComponent },
+  { path: 'update-status', component: UpdateStatusComponent },
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: '**', redirectTo: 'main' }
 ];
