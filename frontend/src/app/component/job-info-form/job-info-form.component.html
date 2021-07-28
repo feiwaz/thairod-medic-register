@@ -1,1 +1,32 @@
-<p>job-info-form works!</p>
+<app-toolbar [toolbarTitle]="'ระบุข้อมูลวิชาชีพทางเวชกรรม'"></app-toolbar>
+<div class="form-container">
+  <form [formGroup]="jobInfoForm" (ngSubmit)="onSubmit()">
+    <div class="form-field-container">
+      <p><b>สาขาที่ถนัด</b></p>
+      <section class="checkbox-flex-container">
+        <p *ngFor="let field of medFields">
+          <mat-checkbox [formControlName]="field.formControlName">
+            {{field.viewValue}}
+          </mat-checkbox>
+        </p>
+      </section>
+      <p><b>เลขที่ใบประกอบวิชาชีพเวชกรรม</b></p>
+      <mat-form-field>
+        <input matInput type="number" formControlName="medLicenseId" placeholder="x-xxxx-xxxxx-xx-x" #medLicenseId
+          class="user-id-input">
+        <mat-hint align="end">{{medLicenseId.value.length}} / 13</mat-hint>
+        <mat-error
+          *ngIf="jobInfoForm.get('medLicenseId')?.hasError('min') || jobInfoForm.get('medLicenseId')?.hasError('max')">
+          กรุณาใส่เลขให้ครบ 13 หลัก
+          <mat-hint class="mat-hint-error">{{medLicenseId.value.length}} / 13</mat-hint>
+        </mat-error>
+        <mat-error *ngIf="jobInfoForm.get('medLicenseId')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid">
+      ถัดไป <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </form>
+</div>

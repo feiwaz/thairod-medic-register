@@ -13,7 +13,6 @@ export class VerifyIdComponent implements OnInit {
 
   role = '';
   isLoading = false;
-  action = 'ลงทะเบียน'
   errorResponse = false;
 
   verifyForm = new FormGroup({
@@ -30,8 +29,7 @@ export class VerifyIdComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      if (!data.role) this.action = 'ตรวจสอบ'
-      else this.role = data.role;
+      this.role = data.role || this.role;
     });
   }
 

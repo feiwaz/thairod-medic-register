@@ -1,1 +1,46 @@
-<p>review-info works!</p>
+<app-toolbar [toolbarTitle]="'ตรวจสอบข้อมูล'" [isLoading]="isLoading">
+</app-toolbar>
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()">
+    <div class="editable-info">
+      <div class="info-header">
+        <span class="info-field">ข้อมูลส่วนบุคคล</span>
+        <span>
+          <button type="button" mat-button (click)="onEditInfo('basic-info')">
+            <mat-icon>edit</mat-icon> แก้ไขข้อมูล
+          </button>
+        </span>
+      </div>
+      <div class="info-body">
+        <div><span class="info-field">เลขประจำตัวประชาชน:</span><span class="info-value">{{basicInfo.userId}}</span>
+        </div>
+        <div><span class="info-field">ชื่อ-นามสกุล:</span><span class="info-value">{{basicInfo.initial}}
+            {{basicInfo.firstName}} {{basicInfo.lastName}}</span></div>
+        <div><span class="info-field">วัน/เดือน/ปี เกิด:</span><span class="info-value">{{basicInfo.dateOfBirth}}</span>
+        </div>
+        <div><span class="info-field">ที่อยู่:</span><span class="info-value">{{basicInfo.address}}</span></div>
+        <div><span class="info-field">เบอร์โทรศัพท์:</span><span class="info-value">{{basicInfo.contactNumber}}</span>
+        </div>
+        <div><span class="info-field">LINE ID:</span><span class="info-value">{{basicInfo.lineId}}</span></div>
+      </div>
+    </div>
+    <div class="editable-info last-item">
+      <div class="info-header">
+        <span class="info-field">ข้อมูลประกอบวีชาชีพทางเวชกรรม</span>
+        <span>
+          <button type="button" mat-button (click)="onEditInfo('job-info')">
+            <mat-icon>edit</mat-icon> แก้ไขข้อมูล
+          </button>
+        </span>
+      </div>
+      <div class="info-body">
+        <div><span class="info-field">สาขาที่ถนัด:</span><span class="info-value">{{jobInfo.specializedFields.join(",
+            ")}}</span>
+        </div>
+        <div><span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
+            class="info-value">{{jobInfo.medLicenseId}}</span></div>
+      </div>
+    </div>
+    <button mat-flat-button type="submit" color="primary" [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
+  </form>
+</div>

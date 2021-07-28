@@ -1,8 +1,9 @@
-<app-toolbar [toolbarTitle]="'ตรวจสอบเลขประจำตัวประชาชน'" [isLoading]="isLoading"></app-toolbar>
+<app-toolbar [toolbarTitle]="role ? 'ตรวจสอบเลขประจำตัวประชาชน' : 'ตรวจสอบสถานะการลงทะเบียน'" [isLoading]="isLoading">
+</app-toolbar>
 <div class="form-container">
   <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
     <div class="form-field-container">
-      <h3><b>เลขประจำตัวประชาชนที่ต้องการ{{action}}</b></h3>
+      <h3><b>เลขประจำตัวประชาชนที่ต้องการ{{ role ? 'ลงทะเบียน' : 'ตรวจสอบ'}}</b></h3>
       <mat-form-field floatLabel="always">
         <mat-label>เลขประจำตัวประชาชน</mat-label>
         <input matInput type="number" formControlName="userId" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #userId

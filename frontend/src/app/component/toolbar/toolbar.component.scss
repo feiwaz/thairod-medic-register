@@ -7,7 +7,12 @@ mat-toolbar {
 }
 
 .toolbar-title {
-  margin-left: 8px;
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }
 
 .progress-bar-container {
@@ -25,5 +30,9 @@ mat-progress-bar {
 @media only screen and (min-width: 600px) {
   mat-progress-bar {
     top: 64px;
+  }
+
+  .spacer {
+    display: none;
   }
 }
