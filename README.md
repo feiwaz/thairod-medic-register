@@ -8,6 +8,8 @@ medical personnel registration for Thairod project
 
 Tool: VSCode
 
+NodeJS: Version 14 LTS
+
 Working Directory: root folder
 
 ### A. Start Backend
