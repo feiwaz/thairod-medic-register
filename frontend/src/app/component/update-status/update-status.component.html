@@ -2,7 +2,7 @@
   <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
   <div class="status">
     <p>Status of {{id}}: {{status}}</p>
-    <img [src]="" width="120" height="120" alt="">
+    <div [innerHTML]="verifyStatusLogo | safeHtml"> </div>
   </div>
   <button mat-flat-button type="submit" color="primary" (click)="onBackToMain()">กลับสู่หน้าหลัก</button>
 </div>

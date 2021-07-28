@@ -10,6 +10,7 @@ import { ImageCachingService } from 'src/app/service/image-caching.service';
 export class UpdateStatusComponent implements OnInit {
 
   mainLogo = '';
+  verifyStatusLogo = '';
   id = '';
   status = 'pending';
 
@@ -25,7 +26,8 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mainLogo = this.imgCachingService.getLogoImgElement();
+    this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
+    this.verifyStatusLogo = this.imgCachingService.getImgElement('verify-status', { width: '320px', height: '320px' });
   }
 
   onBackToMain(): void {

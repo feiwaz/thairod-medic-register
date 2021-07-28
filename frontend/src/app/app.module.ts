@@ -23,6 +23,8 @@ import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { SafeHtmlPipe } from './pipe/safe-html.pipe';
+import { JobInfoFormComponent } from './component/job-info-form/job-info-form.component';
+import { ReviewInfoComponent } from './component/review-info/review-info.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { SafeHtmlPipe } from './pipe/safe-html.pipe';
     DoctorComponent,
     UpdateStatusComponent,
     BasicInfoFormComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    JobInfoFormComponent,
+    ReviewInfoComponent
   ],
   imports: [
     BrowserModule,

@@ -46,7 +46,7 @@
       </mat-form-field>
       <p><b>ที่อยู่</b></p>
       <mat-form-field>
-        <input matInput type="textarea" formControlName="address" placeholder="ที่อยู่" #address>
+        <textarea matInput formControlName="address" placeholder="ที่อยู่" #address rows="4"></textarea>
         <mat-error *ngIf="basicInfoForm.get('address')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>

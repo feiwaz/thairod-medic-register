@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 
 export const DATE_FORMAT = {
@@ -30,6 +31,7 @@ export const DATE_FORMAT = {
 })
 export class BasicInfoFormComponent implements OnInit {
 
+  role = '';
   initials: any[] = [
     { value: '1', viewValue: 'นาย' },
     { value: '2', viewValue: 'นางสาว' },
@@ -51,12 +53,19 @@ export class BasicInfoFormComponent implements OnInit {
     lineId: new FormControl({ value: '', disabled: false }, Validators.required)
   });
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      if (data.role) this.role = data.role;
+    });
   }
 
   onSubmit(): void {
+    this.router.navigate([`/${this.role}/job-info`]);
   }
 
 }

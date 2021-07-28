@@ -7,14 +7,19 @@ export class ImageCachingService {
 
   constructor() { }
 
-  getLogoImgElement(): string {
+  getImgElement(fileName: string, size = { width: '120px', height: '120px' }): string {
     const imgElement = document.createElement('img');
-    imgElement.id = 'thairod-logo';
-    imgElement.style.width = '143px';
-    imgElement.style.height = '123px';
+    imgElement.id = fileName;
+    if (fileName === 'thairod-logo') {
+      imgElement.style.width = '143px';
+      imgElement.style.height = '123px';
+    } else {
+      imgElement.style.width = size.width;
+      imgElement.style.height = size.height;
+    }
 
     const cachedSource = localStorage.getItem(imgElement.id);
-    imgElement.src = cachedSource || 'assets/img/Logo_ThaiRod_v1_Tran.png';
+    imgElement.src = cachedSource || `assets/img/${fileName}.png`;
     if (cachedSource == null) {
       imgElement.onload = () => this.cacheImgElement(imgElement);
     }

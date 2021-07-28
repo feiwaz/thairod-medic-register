@@ -2,19 +2,19 @@
   <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
   <div class="doctor-button-flex-item">
     <button mat-button color="primary" (click)="onRegister('doctor')">
-      <img class="" [src]="" width="120" height="120" alt="">
+      <div [innerHTML]="doctorImg | safeHtml"> </div>
       <div><b>ลงทะเบียนแพทย์</b><br>ผู้ที่มีใบประกอบวิชาชีพเวชกรรม</div>
     </button>
   </div>
   <div class="volunteer-button-flex-item">
     <button mat-button color="primary" (click)="onRegister('volunteer')">
-      <img class="" [src]="" width="120" height="120" alt="">
+      <div [innerHTML]="volImg | safeHtml"> </div>
       <div><b>ลงทะเบียนอาสาสมัคร</b><br>อาสาสมัครทางการแพทย์</div>
     </button>
   </div>
   <div class="last-button-flex-item">
     <button mat-button color="primary" (click)="onCheckStatus()">
-      <img class="" [src]="" width="120" height="120" alt="">
+      <span [innerHTML]="checkStatusLogo | safeHtml"> </span>
       <span class="inline-text"><b>ตรวจสอบสถานะการลงทะเบียน</b></span>
     </button>
   </div>

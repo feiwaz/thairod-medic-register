@@ -10,6 +10,9 @@ import { ImageCachingService } from 'src/app/service/image-caching.service';
 export class MainComponent implements OnInit {
 
   mainLogo = ''
+  doctorImg = ''
+  volImg = ''
+  checkStatusLogo = ''
 
   constructor(
     private imgCachingService: ImageCachingService,
@@ -17,7 +20,10 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.mainLogo = this.imgCachingService.getLogoImgElement();
+    this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
+    this.doctorImg = this.imgCachingService.getImgElement('register-doctor');
+    this.volImg = this.imgCachingService.getImgElement('register-volunteer');
+    this.checkStatusLogo = this.imgCachingService.getImgElement('check-status');
   }
 
   onRegister(role = 'volunteer'): void {
