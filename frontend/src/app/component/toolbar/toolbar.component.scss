@@ -1,0 +1,29 @@
+mat-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.toolbar-title {
+  margin-left: 8px;
+}
+
+.progress-bar-container {
+  height: 4px;
+}
+
+mat-progress-bar {
+  position: fixed;
+  z-index: 2;
+  top: 55px;
+  left: -24px;
+  width: calc(100% + 48px);
+}
+
+@media only screen and (min-width: 600px) {
+  mat-progress-bar {
+    top: 64px;
+  }
+}
