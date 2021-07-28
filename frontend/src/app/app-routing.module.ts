@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BasicInfoFormComponent } from './component/basic-info-form/basic-info-form.component';
 import { MainComponent } from './component/main/main.component';
 import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
@@ -14,6 +15,8 @@ const routes: Routes = [
       path: 'verify-id', component: VerifyIdComponent,
     }, {
       path: 'review-tc', component: ReviewTcComponent
+    }, {
+      path: 'basic-info', component: BasicInfoFormComponent
     }]
   },
   {

@@ -1,0 +1,73 @@
+<app-toolbar [toolbarTitle]="'ระบุข้อมูลส่วนบุคคล'"></app-toolbar>
+<div class="form-container">
+  <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
+    <div class="form-field-container">
+      <p><b>เลขประจำตัวประชาชน</b></p>
+      <mat-form-field>
+        <input matInput type="number" formControlName="userId" placeholder="x-xxxx-xxxxx-xx-x" #userId
+          class="user-id-input">
+        <mat-hint align="end">{{userId.value.length}} / 13</mat-hint>
+        <mat-error *ngIf="basicInfoForm.get('userId')?.hasError('min') || basicInfoForm.get('userId')?.hasError('max')">
+          กรุณาใส่เลขให้ครบ 13 หลัก
+          <mat-hint class="mat-hint-error">{{userId.value.length}} / 13</mat-hint>
+        </mat-error>
+        <mat-error *ngIf="basicInfoForm.get('userId')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+      <p><b>คำนำหน้า</b></p>
+      <mat-form-field>
+        <mat-label>-- คำนำหน้า --</mat-label>
+        <mat-select formControlName="initial">
+          <mat-option *ngFor="let initial of initials" [value]="initial.value">
+            {{initial.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p><b>ชื่อ</b></p>
+      <mat-form-field>
+        <input matInput type="text" formControlName="firstName" placeholder="ชื่อ" #firstName>
+        <mat-error *ngIf="basicInfoForm.get('firstName')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+      <p><b>นามสกุล</b></p>
+      <mat-form-field>
+        <input matInput type="text" formControlName="lastName" placeholder="นามสกุล" #lastName>
+        <mat-error *ngIf="basicInfoForm.get('lastName')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+      <p><b>วัน/เดือน/ปี เกิด</b></p>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+      </mat-form-field>
+      <p><b>ที่อยู่</b></p>
+      <mat-form-field>
+        <input matInput type="textarea" formControlName="address" placeholder="ที่อยู่" #address>
+        <mat-error *ngIf="basicInfoForm.get('address')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+      <p><b>เบอร์โทรศัพท์</b></p>
+      <mat-form-field>
+        <input matInput type="tel" formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
+        <mat-error *ngIf="basicInfoForm.get('contactNumber')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+      <p><b>LINE ID</b></p>
+      <mat-form-field>
+        <input matInput type="text" formControlName="lineId" placeholder="LINE ID" #lineId>
+        <mat-error *ngIf="basicInfoForm.get('lineId')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!basicInfoForm.dirty || !basicInfoForm.valid ">
+      ต่อไป <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </form>
+</div>
