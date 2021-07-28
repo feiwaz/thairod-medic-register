@@ -1,0 +1,39 @@
+.main-logo {
+  flex-basis: 100%;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.button-flex-container {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+button {
+  padding: 10px;
+  background-color: rgb(235, 235, 235);
+  border-radius: 10px;
+}
+
+.doctor-button-flex-item {
+  margin-right: 5px;
+}
+
+.volunteer-button-flex-item {
+  margin-left: 5px;
+}
+
+.last-button-flex-item {
+  flex-basis: 100%;
+  margin: 10px 10px 140px 10px;
+  text-align: center;
+}
+
+.inline-text {
+  margin-left: 10px;
+}

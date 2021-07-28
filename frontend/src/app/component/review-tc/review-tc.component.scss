@@ -1,0 +1,36 @@
+.form-container {
+  position: fixed;
+  top: 56px;
+  height: 100%;
+  width: 100%;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  margin: 25px 25px 0 25px;
+}
+
+mat-checkbox {
+  margin-left: 1em;
+}
+
+.scrollable {
+  overflow: auto;
+  margin-bottom: 10px;
+  height: 450px;
+}
+
+@media only screen and (min-width: 600px) {
+  .form-container {
+    top: 64px;
+  }
+
+  form {
+    width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
