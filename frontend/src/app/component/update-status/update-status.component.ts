@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 @Component({
   selector: 'app-update-status',
@@ -8,10 +9,14 @@ import { Router } from '@angular/router';
 })
 export class UpdateStatusComponent implements OnInit {
 
+  mainLogo = '';
   id = '';
   status = 'pending';
 
-  constructor(private router: Router) {
+  constructor(
+    private imgCachingService: ImageCachingService,
+    private router: Router
+  ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
       this.id = currentNavigation.extras.state?.id || this.id;
@@ -20,6 +25,7 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mainLogo = this.imgCachingService.getLogoImgElement();
   }
 
   onBackToMain(): void {

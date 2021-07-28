@@ -22,6 +22,7 @@ import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
+import { SafeHtmlPipe } from './pipe/safe-html.pipe';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { VerifyIdComponent } from './component/verify-id/verify-id.component';
     ToolbarComponent,
     DoctorComponent,
     UpdateStatusComponent,
-    BasicInfoFormComponent
+    BasicInfoFormComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,

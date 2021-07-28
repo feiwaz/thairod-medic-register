@@ -1,7 +1,5 @@
 <div class="button-flex-container">
-  <div class="main-logo">
-    <img src="assets/img/Logo_ThaiRod_v1_Tran.png" width="143" height="123" alt="">
-  </div>
+  <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
   <div class="doctor-button-flex-item">
     <button mat-button color="primary" (click)="onRegister('doctor')">
       <img class="" [src]="" width="120" height="120" alt="">

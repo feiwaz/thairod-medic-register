@@ -1,7 +1,5 @@
 <div class="flex-container">
-  <div class="main-logo">
-    <img src="assets/img/Logo_ThaiRod_v1_Tran.png" width="143" height="123" alt="">
-  </div>
+  <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
   <div class="status">
     <p>Status of {{id}}: {{status}}</p>
     <img [src]="" width="120" height="120" alt="">
