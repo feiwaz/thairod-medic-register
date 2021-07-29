@@ -22,9 +22,7 @@ export class ReviewTcComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      if (data.role) this.role = data.role;
-    });
+    this.route.data.subscribe(data => this.role = data.role || this.role);
   }
 
   onSubmit(): void {

@@ -1,4 +1,4 @@
-<app-toolbar [toolbarTitle]="role ? 'ตรวจสอบเลขประจำตัวประชาชน' : 'ตรวจสอบสถานะการลงทะเบียน'" [isLoading]="isLoading">
+<app-toolbar [toolbarTitle]="role ? 'ตรวจสอบเลขประจำตัว' : 'ตรวจสอบสถานะการลงทะเบียน'" [isLoading]="isLoading">
 </app-toolbar>
 <div class="form-container">
   <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
@@ -22,13 +22,22 @@
       [disabled]="!verifyForm.dirty || !verifyForm.valid || isLoading">ตรวจสอบ</button>
     <br>Register
     <ul>
-      <li>ID: [1111122222333] for success scenario, error otherwise</li>
+      <li>[1111122222333] for new users scenario</li>
+      <li>[2222211111555] for existing users scenario</li>
+      <li>[0000099999888] for error, or any number</li>
     </ul>
     Check Status
     <ul>
-      <li>ID: [1111122222444] for approved scenario, error otherwise</li>
-      <li>ID: [1111122222555] for pending scenario, error otherwise</li>
+      <li>[2222211111444] for approved scenario</li>
+      <li>[2222211111555] for pending scenario</li>
+      <li>[0000099999888] for error, or any number</li>
     </ul>
+    <ng-container *ngIf="isExistingUser">
+      <p>ผู้ใช้นี้ได้ลงทะเบียนแล้ว<span class="anchor-container">
+          <a [routerLink]="" (click)="onExistingUserCheckStatus()"
+            [ngClass]="isLoading ? 'disabled' : 'enabled'">คลิกเพื่อตรวจสอบสถานะ
+          </a></span></p>
+    </ng-container>
     <ng-container *ngIf="errorResponse">
       <p>ไม่พบผู้ใช้นี้ในระบบ</p>
     </ng-container>

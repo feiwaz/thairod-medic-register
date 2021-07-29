@@ -10,7 +10,7 @@ form {
   display: flex;
   justify-content: flex-start;
   height: 100%;
-  margin: 70px 25px 0 25px;
+  margin: 60px 25px 0 25px;
 }
 
 .form-field-container {
@@ -39,6 +39,24 @@ input.user-id-input {
 
 .mat-hint-error {
   float: right;
+}
+
+.anchor-container {
+  margin-left: 10px;
+}
+
+.anchor-container > a {
+  text-decoration: none;
+}
+
+.enabled {
+  color: #1877f2;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: grey;
 }
 
 @media only screen and (min-width: 600px) {

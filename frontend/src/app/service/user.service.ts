@@ -17,7 +17,9 @@ export class UserService {
 
   verifyUserId(userId: string): Observable<any> {
     if (userId === '1111122222333') {
-      return of(new HttpResponse({ status: 200, body: {} })).pipe(delay(1500));
+      return of(new HttpResponse({ status: 200, body: { registerStatus: 'new user' } })).pipe(delay(1500));
+    } else if (userId === '2222211111444' || userId === '2222211111555') {
+      return of(new HttpResponse({ status: 200, body: { registerStatus: 'existing user' } })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));
     }
@@ -29,9 +31,9 @@ export class UserService {
   // }
 
   checkUserStatus(userId: string): Observable<any> {
-    if (userId === '1111122222444') {
+    if (userId === '2222211111444') {
       return of(new HttpResponse({ status: 200, body: { status: 'approved' } })).pipe(delay(1500));
-    } else if (userId === '1111122222555') {
+    } else if (userId === '2222211111555') {
       return of(new HttpResponse({ status: 200, body: { status: 'pending' } })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));
@@ -45,7 +47,7 @@ export class UserService {
 
   createUser(userId: string, user: any): Observable<any> {
     if (userId === '1111122222333') {
-      return of(new HttpResponse({ status: 200, body: {} })).pipe(delay(1500));
+      return of(new HttpResponse({ status: 201, body: {} })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));
     }

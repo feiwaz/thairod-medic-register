@@ -14,6 +14,7 @@ export class VerifyIdComponent implements OnInit {
   role = '';
   isLoading = false;
   errorResponse = false;
+  isExistingUser = false;
 
   verifyForm = this.fb.group({
     userId: ['', [
@@ -31,15 +32,14 @@ export class VerifyIdComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.role = data.role || this.role;
-    });
+    this.route.data.subscribe(data => this.role = data.role || this.role);
   }
 
   onSubmit(): void {
     this.verifyForm.disable();
     this.isLoading = true;
     this.errorResponse = false;
+    this.isExistingUser = false;
     if (this.role) {
       this.verifyUserId();
     } else {
@@ -49,15 +49,25 @@ export class VerifyIdComponent implements OnInit {
 
   verifyUserId(): void {
     this.userService.verifyUserId(this.verifyForm.controls.userId.value + '').subscribe(
-      response => this.handleSuccessfulVerifyUserId(),
+      response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
   }
 
-  handleSuccessfulVerifyUserId(): void {
+  handleSuccessfulVerifyUserId(response: any): void {
     this.verifyForm.enable();
     this.isLoading = false;
-    this.router.navigate([`/${this.role}/review-tc`]);
+    if (response.body.registerStatus === 'existing user') {
+      this.isExistingUser = true;
+    } else {
+      this.router.navigate([`/${this.role}/review-tc`]);
+    }
+  }
+
+  onExistingUserCheckStatus(): void {
+    this.verifyForm.disable();
+    this.isLoading = true;
+    this.checkUserStatus();
   }
 
   handleErrorResponse(): void {
