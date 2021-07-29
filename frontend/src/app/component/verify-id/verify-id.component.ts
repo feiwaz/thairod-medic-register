@@ -48,16 +48,16 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.userService.verifyUserId(this.verifyForm.controls.id.value + '').subscribe(
-      response => this.handleSuccessfulVerifyUserId(response),
+    this.userService.findOne(this.verifyForm.controls.id.value).subscribe(
+      response => this.handleSuccessfulFindOne(response),
       errorResponse => this.handleErrorResponse()
     );
   }
 
-  handleSuccessfulVerifyUserId(response: any): void {
+  handleSuccessfulFindOne(response: any): void {
     this.verifyForm.enable();
     this.isLoading = false;
-    if (response.body.registerStatus === 'existing user') {
+    if (Object.keys(response).length) {
       this.isExistingUser = true;
     } else {
       this.router.navigate([`/${this.role}/review-tc`]);
@@ -77,22 +77,26 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    this.userService.checkUserStatus(this.verifyForm.controls.id.value + '').subscribe(
+    this.userService.findOne(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
   }
 
   handleSuccessfulCheckUserStatus(response: any): void {
-    this.verifyForm.enable();
-    this.isLoading = false;
-    const maskedId = maskId(this.verifyForm.controls.id.value);
-    this.router.navigate([`/update-status`], {
-      state: {
-        id: maskedId,
-        status: response.body.status
-      }
-    });
+    if (Object.keys(response).length) {
+      this.verifyForm.enable();
+      this.isLoading = false;
+      const maskedId = maskId(this.verifyForm.controls.id.value);
+      this.router.navigate([`/update-status`], {
+        state: {
+          id: maskedId,
+          status: response.status
+        }
+      });
+    } else {
+      this.handleErrorResponse();
+    }
   }
 
 }

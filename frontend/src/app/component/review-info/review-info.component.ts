@@ -61,7 +61,7 @@ export class ReviewInfoComponent implements OnInit {
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
-    this.userService.createUser(this.basicInfo.id + '', { ...this.basicInfo, ...this.jobInfo }).subscribe(
+    this.userService.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()
     );
