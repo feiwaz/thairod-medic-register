@@ -20,18 +20,6 @@
     </div>
     <button mat-flat-button type="submit" color="primary"
       [disabled]="!verifyForm.dirty || !verifyForm.valid || isLoading">ตรวจสอบ</button>
-    <br>Register
-    <ul>
-      <li>[1111122222333] for new users scenario</li>
-      <li>[2222211111555] for existing users scenario</li>
-      <li>[7777799999888] for error, or any number</li>
-    </ul>
-    Check Status
-    <ul>
-      <li>[2222211111444] for approved scenario</li>
-      <li>[2222211111555] for pending scenario</li>
-      <li>[7777799999888] for error, or any number</li>
-    </ul>
     <ng-container *ngIf="isExistingUser">
       <p>ผู้ใช้นี้ได้ลงทะเบียนแล้ว<span class="anchor-container">
           <a [routerLink]="" (click)="onExistingUserCheckStatus()"
