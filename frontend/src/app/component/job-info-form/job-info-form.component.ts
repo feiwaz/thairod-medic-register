@@ -40,7 +40,8 @@ export class JobInfoFormComponent implements OnInit {
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)
-    ]]
+    ]],
+    idCard: ['']
   });
 
   constructor(

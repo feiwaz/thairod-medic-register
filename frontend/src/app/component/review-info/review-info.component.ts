@@ -14,6 +14,7 @@ export class ReviewInfoComponent implements OnInit {
 
   role = '';
   isLoading = false;
+  errorResponse = false;
 
   basicInfo: BasicInfo = {
     userId: 0,
@@ -59,7 +60,8 @@ export class ReviewInfoComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoading = true;
-    this.userService.createUser('1111122222333', '').subscribe(
+    this.errorResponse = false;
+    this.userService.createUser(this.basicInfo.userId + '', { ...this.basicInfo, ...this.jobInfo }).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()
     );
@@ -67,17 +69,18 @@ export class ReviewInfoComponent implements OnInit {
 
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
+    sessionStorage.clear();
     const maskedId = maskId(this.basicInfo.userId);
     this.router.navigate([`/update-status`], {
       state: {
         id: maskedId,
-        status: 'successfully submitted'
+        status: 'submitted'
       }
     });
   }
   handleErrorResponse(): void {
     this.isLoading = false;
-    throw new Error('handleErrorResponse method not implemented.');
+    this.errorResponse = true;
   }
 
   onEditInfo(path = 'basic-info'): void {

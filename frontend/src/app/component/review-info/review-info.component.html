@@ -42,5 +42,8 @@
       </div>
     </div>
     <button mat-flat-button type="submit" color="primary" [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
+    <ng-container *ngIf="errorResponse">
+      <p>ไม่พบผู้ใช้นี้ในระบบ กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
+    </ng-container>
   </form>
 </div>

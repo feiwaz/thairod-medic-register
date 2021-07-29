@@ -1,9 +1,14 @@
 <div class="flex-container">
   <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
-  <div class="status">
-    <p>สถานะของผู้ใช้หมายเลขประจำตัวประชาชน</p>
+  <div class="center-align" *ngIf="id else noInfo">
+    <p>สถานะของผู้ใช้ที่มีเลขประจำตัวประชาชน</p>
     <p>{{id}}:<span class="status-text">{{status}}</span></p>
-    <div [innerHTML]="verifyStatusLogo | safeHtml"> </div>
   </div>
+  <ng-template #noInfo>
+    <div class="center-align">
+      <p><b>ไม่พบข้อมูลที่ท่านต้องการ</b></p>
+    </div>
+  </ng-template>
+  <div class="center-align" [innerHTML]="verifyStatusLogo | safeHtml"> </div>
   <button mat-flat-button type="submit" color="primary" (click)="onBackToMain()">กลับสู่หน้าหลัก</button>
 </div>

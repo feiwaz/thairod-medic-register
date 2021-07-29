@@ -24,6 +24,11 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
+      <p><b>อัพโหลดภาพบัตรประจำตัวประชาชน</b></p>
+      <input type="file" accept="image/*" capture="environment" formControlName="idCard" #idCard>
+      <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
+        จำเป็นต้องใส่*
+      </mat-error>
     </div>
     <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid">
       ถัดไป <mat-icon>arrow_forward</mat-icon>

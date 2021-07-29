@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,11 @@ import { delay } from "rxjs/operators";
 export class UserService {
 
   constructor(private http: HttpClient) { }
+
+  getUser(userId: string): Observable<any> {
+    const url = `${environment.apiPrefix}/users/${userId}`;
+    return this.http.get<any>(url);
+  }
 
   // verifyUserId(userId: string): Observable<any> {
   //   const url = `${environment.apiUrl}/users/${userId}/verify-id`;

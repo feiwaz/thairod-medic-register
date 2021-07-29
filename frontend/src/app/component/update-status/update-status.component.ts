@@ -22,7 +22,7 @@ export class UpdateStatusComponent implements OnInit {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
       this.id = currentNavigation.extras.state?.id || this.id;
-      const stateStatus: 'pending' | 'approved' = currentNavigation.extras.state?.status || 'pending';
+      const stateStatus: 'pending' = currentNavigation.extras.state?.status || 'pending';
       this.status = StatusDictionary[stateStatus];
     }
   }
