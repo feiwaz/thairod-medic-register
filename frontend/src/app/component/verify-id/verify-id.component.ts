@@ -17,7 +17,7 @@ export class VerifyIdComponent implements OnInit {
   isExistingUser = false;
 
   verifyForm = this.fb.group({
-    userId: ['', [
+    id: ['', [
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)
@@ -48,7 +48,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.userService.verifyUserId(this.verifyForm.controls.userId.value + '').subscribe(
+    this.userService.verifyUserId(this.verifyForm.controls.id.value + '').subscribe(
       response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -77,7 +77,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    this.userService.checkUserStatus(this.verifyForm.controls.userId.value + '').subscribe(
+    this.userService.checkUserStatus(this.verifyForm.controls.id.value + '').subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -86,7 +86,7 @@ export class VerifyIdComponent implements OnInit {
   handleSuccessfulCheckUserStatus(response: any): void {
     this.verifyForm.enable();
     this.isLoading = false;
-    const maskedId = maskId(this.verifyForm.controls.userId.value);
+    const maskedId = maskId(this.verifyForm.controls.id.value);
     this.router.navigate([`/update-status`], {
       state: {
         id: maskedId,

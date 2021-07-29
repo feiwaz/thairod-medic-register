@@ -17,7 +17,7 @@ export class ReviewInfoComponent implements OnInit {
   errorResponse = false;
 
   basicInfo: BasicInfo = {
-    userId: 0,
+    id: 0,
     initial: '',
     firstName: '',
     lastName: '',
@@ -43,10 +43,10 @@ export class ReviewInfoComponent implements OnInit {
 
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
-      const { userId, initial, firstName, lastName, dateOfBirth,
+      const { id, initial, firstName, lastName, dateOfBirth,
         address, contactNumber, lineId } = JSON.parse(basicInfoString);
       this.basicInfo = {
-        userId, initial, firstName, lastName, dateOfBirth,
+        id, initial, firstName, lastName, dateOfBirth,
         address, contactNumber, lineId
       };
     }
@@ -61,7 +61,7 @@ export class ReviewInfoComponent implements OnInit {
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
-    this.userService.createUser(this.basicInfo.userId + '', { ...this.basicInfo, ...this.jobInfo }).subscribe(
+    this.userService.createUser(this.basicInfo.id + '', { ...this.basicInfo, ...this.jobInfo }).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()
     );
@@ -70,7 +70,7 @@ export class ReviewInfoComponent implements OnInit {
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
     sessionStorage.clear();
-    const maskedId = maskId(this.basicInfo.userId);
+    const maskedId = maskId(this.basicInfo.id);
     this.router.navigate([`/update-status`], {
       state: {
         id: maskedId,

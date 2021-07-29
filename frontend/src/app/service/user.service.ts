@@ -11,48 +11,48 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(userId: string): Observable<any> {
-    const url = `${environment.apiPrefix}/users/${userId}`;
+  getUser(id: string): Observable<any> {
+    const url = `${environment.apiPrefix}/users/${id}`;
     return this.http.get<any>(url);
   }
 
-  // verifyUserId(userId: string): Observable<any> {
-  //   const url = `${environment.apiUrl}/users/${userId}/verify-id`;
+  // verifyUserId(id: string): Observable<any> {
+  //   const url = `${environment.apiUrl}/users/${id}/verify-id`;
   //   return this.http.post<any>(url, null);
   // }
 
-  verifyUserId(userId: string): Observable<any> {
-    if (userId === '1111122222333') {
+  verifyUserId(id: string): Observable<any> {
+    if (id === '1111122222333') {
       return of(new HttpResponse({ status: 200, body: { registerStatus: 'new user' } })).pipe(delay(1500));
-    } else if (userId === '2222211111444' || userId === '2222211111555') {
+    } else if (id === '2222211111444' || id === '2222211111555') {
       return of(new HttpResponse({ status: 200, body: { registerStatus: 'existing user' } })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));
     }
   }
 
-  // checkUserStatus(userId: string): Observable<any> {
-  //   const url = `${environment.apiUrl}/users/${userId}/check-status`;
+  // checkUserStatus(id: string): Observable<any> {
+  //   const url = `${environment.apiUrl}/users/${id}/check-status`;
   //   return this.http.post<any>(url, null);
   // }
 
-  checkUserStatus(userId: string): Observable<any> {
-    if (userId === '2222211111444') {
+  checkUserStatus(id: string): Observable<any> {
+    if (id === '2222211111444') {
       return of(new HttpResponse({ status: 200, body: { status: 'approved' } })).pipe(delay(1500));
-    } else if (userId === '2222211111555') {
+    } else if (id === '2222211111555') {
       return of(new HttpResponse({ status: 200, body: { status: 'pending' } })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));
     }
   }
 
-  // createUser(userId: string, user: any): Observable<any> {
-  //   const url = `${environment.apiUrl}/users/${userId}`;
+  // createUser(id: string, user: any): Observable<any> {
+  //   const url = `${environment.apiUrl}/users/${id}`;
   //   return this.http.post<any>(url, user);
   // }
 
-  createUser(userId: string, user: any): Observable<any> {
-    if (userId === '1111122222333') {
+  createUser(id: string, user: any): Observable<any> {
+    if (id === '1111122222333') {
       return of(new HttpResponse({ status: 201, body: {} })).pipe(delay(1500));
     } else {
       return throwError(new HttpErrorResponse({ status: 404 }));

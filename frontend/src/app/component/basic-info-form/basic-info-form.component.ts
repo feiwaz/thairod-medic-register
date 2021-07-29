@@ -48,7 +48,7 @@ export class BasicInfoFormComponent implements OnInit {
   ];
 
   basicInfoForm = this.fb.group({
-    userId: ['', [
+    id: ['', [
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)]
@@ -73,10 +73,10 @@ export class BasicInfoFormComponent implements OnInit {
 
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
-      const { userId, initial, firstName, lastName, dateOfBirth,
+      const { id, initial, firstName, lastName, dateOfBirth,
         address, contactNumber, lineId } = JSON.parse(basicInfoString);
       this.basicInfoForm.patchValue({
-        userId, initial: this.initials.find(option => option.viewValue === initial)?.value,
+        id, initial: this.initials.find(option => option.viewValue === initial)?.value,
         firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY'),
         address, contactNumber, lineId
       });
@@ -91,7 +91,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   buildBasicInfo(): BasicInfo {
     return {
-      userId: this.basicInfoForm.controls.userId.value,
+      id: this.basicInfoForm.controls.id.value,
       initial: this.initials.find(option => option.value === this.basicInfoForm.controls.initial.value)?.viewValue || '',
       firstName: this.basicInfoForm.controls.firstName.value,
       lastName: this.basicInfoForm.controls.lastName.value,

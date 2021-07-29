@@ -1,5 +1,5 @@
 export interface BasicInfo {
-  userId: number;
+  id: number;
   initial: string;
   firstName: string;
   lastName: string;
