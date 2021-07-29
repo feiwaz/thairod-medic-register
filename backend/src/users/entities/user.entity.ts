@@ -3,8 +3,8 @@ import { Column, Entity, PrimaryColumn } from "typeorm";
 @Entity()
 export class User {
 
-  @PrimaryColumn()
-  id: number;
+  @PrimaryColumn({ type: 'bigint' })
+  id: string;
 
   @Column()
   initial: string;
@@ -26,5 +26,8 @@ export class User {
 
   @Column()
   lineId: string;
+
+  @Column({ default: 'pending' })
+  status: string;
 
 }
