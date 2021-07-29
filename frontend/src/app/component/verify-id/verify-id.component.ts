@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
 import { maskId } from 'src/app/util/util-functions';
@@ -15,13 +15,16 @@ export class VerifyIdComponent implements OnInit {
   isLoading = false;
   errorResponse = false;
 
-  verifyForm = new FormGroup({
-    userId: new FormControl({ value: '', disabled: false },
-      [Validators.required, Validators.min(1000000000000), Validators.max(9999999999999)]
-    )
+  verifyForm = this.fb.group({
+    userId: ['', [
+      Validators.required,
+      Validators.min(1000000000000),
+      Validators.max(9999999999999)
+    ]]
   });
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService

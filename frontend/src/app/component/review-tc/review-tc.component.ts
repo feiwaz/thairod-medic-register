@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -11,11 +11,12 @@ export class ReviewTcComponent implements OnInit {
 
   role = '';
 
-  tcForm = new FormGroup({
-    consentCheckbox: new FormControl({ value: false, disabled: false }, Validators.required)
+  tcForm = this.fb.group({
+    consentCheckbox: [false, Validators.required]
   });
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
   ) { }

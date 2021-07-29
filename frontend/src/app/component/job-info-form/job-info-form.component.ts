@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BasicInfo } from 'src/app/model/basic-info';
 import { JobInfo } from 'src/app/model/job-info';
+
+interface medFieldCheckbox {
+  formControlName: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-job-info-form',
@@ -12,23 +16,13 @@ import { JobInfo } from 'src/app/model/job-info';
 export class JobInfoFormComponent implements OnInit {
 
   role = '';
-  basicInfo: BasicInfo = {
-    userId: 0,
-    initial: '',
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    address: '',
-    contactNumber: '',
-    lineId: ''
-  };
 
   jobInfo: JobInfo = {
     specializedFields: [],
     medLicenseId: 0
   };
 
-  medFields = [
+  medFields: medFieldCheckbox[] = [
     { formControlName: 'field1', viewValue: 'สาขาหนึ่ง' },
     { formControlName: 'field2', viewValue: 'สาขาสอง' },
     { formControlName: 'field3', viewValue: 'สาขาสาม' },
@@ -37,25 +31,20 @@ export class JobInfoFormComponent implements OnInit {
     { formControlName: 'field6', viewValue: 'สาขาหก' },
     { formControlName: 'field7', viewValue: 'สาขาเจ็ด' },
     { formControlName: 'field8', viewValue: 'สาขาแปด' }
-  ]
+  ];
 
-  jobInfoForm = new FormGroup({
-    field1: new FormControl(false),
-    field2: new FormControl(false),
-    field3: new FormControl(false),
-    field4: new FormControl(false),
-    field5: new FormControl(false),
-    field6: new FormControl(false),
-    field7: new FormControl(false),
-    field8: new FormControl(false),
-    medLicenseId: new FormControl('', [
+  jobInfoForm = this.fb.group({
+    field1: false, field2: false, field3: false, field4: false,
+    field5: false, field6: false, field7: false, field8: false,
+    medLicenseId: ['', [
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)
-    ])
+    ]]
   });
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
   ) { }
@@ -93,9 +82,12 @@ export class JobInfoFormComponent implements OnInit {
   }
 
   buildSpecializedFields() {
-    return this.medFields
-      .filter(field => this.jobInfoForm.controls[field.formControlName].value === true)
-      .map(item => item.viewValue);
+    return this.medFields.reduce((result, medField) => {
+      if (this.jobInfoForm.controls[medField.formControlName].value === true) {
+        result.push(medField.viewValue);
+      }
+      return result;
+    }, [] as any);
   }
 
 }
