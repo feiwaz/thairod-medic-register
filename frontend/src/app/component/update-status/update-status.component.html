@@ -1,7 +1,8 @@
 <div class="flex-container">
   <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
   <div class="status">
-    <p>Status of {{id}}: {{status}}</p>
+    <p>สถานะของผู้ใช้หมายเลขประจำตัวประชาชน</p>
+    <p>{{id}}:<span class="status-text">{{status}}</span></p>
     <div [innerHTML]="verifyStatusLogo | safeHtml"> </div>
   </div>
   <button mat-flat-button type="submit" color="primary" (click)="onBackToMain()">กลับสู่หน้าหลัก</button>
