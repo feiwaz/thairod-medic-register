@@ -48,13 +48,13 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.userService.findOne(this.verifyForm.controls.id.value).subscribe(
-      response => this.handleSuccessfulFindOne(response),
+    this.userService.findUser(this.verifyForm.controls.id.value).subscribe(
+      response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
   }
 
-  handleSuccessfulFindOne(response: any): void {
+  handleSuccessfulVerifyUserId(response: any): void {
     this.verifyForm.enable();
     this.isLoading = false;
     if (Object.keys(response).length) {
@@ -77,7 +77,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    this.userService.findOne(this.verifyForm.controls.id.value).subscribe(
+    this.userService.findUser(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -97,6 +97,11 @@ export class VerifyIdComponent implements OnInit {
     } else {
       this.handleErrorResponse();
     }
+  }
+
+  onClearInput() {
+    this.verifyForm.controls.id.setValue('');
+    this.isExistingUser = false;
   }
 
 }

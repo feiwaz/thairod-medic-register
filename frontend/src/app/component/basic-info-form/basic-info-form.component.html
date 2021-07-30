@@ -3,8 +3,13 @@
   <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
     <div class="form-field-container">
       <p><b>เลขประจำตัวประชาชน</b></p>
-      <mat-form-field>
-        <input matInput type="number" formControlName="id" placeholder="x-xxxx-xxxxx-xx-x" #id class="user-id-input">
+      <mat-form-field floatLabel="always">
+        <mat-label>เลขประจำตัวประชาชน</mat-label>
+        <input matInput type="number" formControlName="id" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #id
+          class="user-id-input">
+        <button *ngIf="id" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="id.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-hint align="end">{{id.value.length}} / 13</mat-hint>
         <mat-error *ngIf="basicInfoForm.get('id')?.hasError('min') || basicInfoForm.get('id')?.hasError('max')">
           กรุณาใส่เลขให้ครบ 13 หลัก
@@ -26,6 +31,10 @@
       <p><b>ชื่อ</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="firstName" placeholder="ชื่อ" #firstName>
+        <button *ngIf="firstName" type="button" matSuffix mat-icon-button aria-label="Clear"
+          (click)="firstName.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="basicInfoForm.get('firstName')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
@@ -33,6 +42,9 @@
       <p><b>นามสกุล</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lastName" placeholder="นามสกุล" #lastName>
+        <button *ngIf="lastName" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="lastName.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="basicInfoForm.get('lastName')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
@@ -46,6 +58,9 @@
       <p><b>ที่อยู่</b></p>
       <mat-form-field>
         <textarea matInput formControlName="address" placeholder="ที่อยู่" #address rows="4"></textarea>
+        <button *ngIf="address" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="address.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="basicInfoForm.get('address')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
@@ -53,6 +68,10 @@
       <p><b>เบอร์โทรศัพท์</b></p>
       <mat-form-field>
         <input matInput type="tel" formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
+        <button *ngIf="contactNumber" type="button" matSuffix mat-icon-button aria-label="Clear"
+          (click)="contactNumber.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="basicInfoForm.get('contactNumber')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
@@ -60,6 +79,9 @@
       <p><b>LINE ID</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lineId" placeholder="LINE ID" #lineId>
+        <button *ngIf="lineId" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="lineId.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
         <mat-error *ngIf="basicInfoForm.get('lineId')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>

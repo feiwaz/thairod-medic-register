@@ -74,7 +74,7 @@ export class ReviewInfoComponent implements OnInit {
     this.router.navigate([`/update-status`], {
       state: {
         id: maskedId,
-        status: 'submitted'
+        status: 'ส่งข้อมูลสำเร็จ'
       }
     });
   }
