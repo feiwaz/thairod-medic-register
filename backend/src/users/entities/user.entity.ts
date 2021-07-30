@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserInitial {
   INIT1 = 'นาย',
@@ -49,5 +49,11 @@ export class User {
     default: UserStatus.PENDING
   })
   status: UserStatus;
+
+  @CreateDateColumn()
+  createdTime: Date;
+
+  @UpdateDateColumn()
+  updatedTime: Date;
 
 }
