@@ -23,7 +23,7 @@ import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { SafeHtmlPipe } from './pipe/safe-html.pipe';
-import { JobInfoFormComponent } from './component/job-info-form/job-info-form.component';
+import { DoctorJobInfoFormComponent } from './component/doctor-job-info-form/doctor-job-info-form.component';
 import { ReviewInfoComponent } from './component/review-info/review-info.component';
 
 @NgModule({
@@ -37,7 +37,7 @@ import { ReviewInfoComponent } from './component/review-info/review-info.compone
     UpdateStatusComponent,
     BasicInfoFormComponent,
     SafeHtmlPipe,
-    JobInfoFormComponent,
+    DoctorJobInfoFormComponent,
     ReviewInfoComponent
   ],
   imports: [

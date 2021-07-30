@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
-import { JobInfo } from 'src/app/model/job-info';
+import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { UserService } from 'src/app/service/user.service';
 import { maskId } from 'src/app/util/util-functions';
 
@@ -27,7 +27,7 @@ export class ReviewInfoComponent implements OnInit {
     lineId: ''
   };
 
-  jobInfo: JobInfo = {
+  jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medLicenseId: 0
   };

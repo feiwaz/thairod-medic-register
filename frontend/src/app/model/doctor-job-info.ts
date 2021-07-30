@@ -1,4 +1,4 @@
-export interface JobInfo {
+export interface DoctorJobInfo {
   specializedFields: string[];
   medLicenseId: number;
 }

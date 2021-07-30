@@ -12,17 +12,17 @@
       </section>
       <p><b>เลขที่ใบประกอบวิชาชีพเวชกรรม</b></p>
       <mat-form-field>
-        <input matInput type="number" formControlName="medLicenseId" placeholder="x-xxxx-xxxxx-xx-x" #medLicenseId
+        <input matInput type="number" formControlName="medLicenseId" placeholder="กรอกเฉพาะตัวเลข 5 หลัก" #medLicenseId
           class="user-id-input">
         <button *ngIf="medLicenseId" type="button" matSuffix mat-icon-button aria-label="Clear"
           (click)="medLicenseId.value=''">
           <mat-icon>close</mat-icon>
         </button>
-        <mat-hint align="end">{{medLicenseId.value.length}} / 13</mat-hint>
+        <mat-hint align="end">{{medLicenseId.value.length}} / 5</mat-hint>
         <mat-error
           *ngIf="jobInfoForm.get('medLicenseId')?.hasError('min') || jobInfoForm.get('medLicenseId')?.hasError('max')">
-          กรุณาใส่เลขให้ครบ 13 หลัก
-          <mat-hint class="mat-hint-error">{{medLicenseId.value.length}} / 13</mat-hint>
+          กรุณาใส่เลขให้ครบ 5 หลัก
+          <mat-hint class="mat-hint-error">{{medLicenseId.value.length}} / 5</mat-hint>
         </mat-error>
         <mat-error *ngIf="jobInfoForm.get('medLicenseId')?.hasError('required')">
           จำเป็นต้องใส่*

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JobInfo } from 'src/app/model/job-info';
+import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 
 interface medFieldCheckbox {
   formControlName: string;
@@ -9,15 +9,15 @@ interface medFieldCheckbox {
 }
 
 @Component({
-  selector: 'app-job-info-form',
-  templateUrl: './job-info-form.component.html',
-  styleUrls: ['./job-info-form.component.scss']
+  selector: 'app-doctor-job-info-form',
+  templateUrl: './doctor-job-info-form.component.html',
+  styleUrls: ['./doctor-job-info-form.component.scss']
 })
-export class JobInfoFormComponent implements OnInit {
+export class DoctorJobInfoFormComponent implements OnInit {
 
   role = '';
 
-  jobInfo: JobInfo = {
+  jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medLicenseId: 0
   };
@@ -38,8 +38,8 @@ export class JobInfoFormComponent implements OnInit {
     field5: false, field6: false, field7: false, field8: false,
     medLicenseId: ['', [
       Validators.required,
-      Validators.min(1000000000000),
-      Validators.max(9999999999999)
+      Validators.min(10000),
+      Validators.max(99999)
     ]],
     idCard: ['']
   });
@@ -74,7 +74,7 @@ export class JobInfoFormComponent implements OnInit {
     this.router.navigate([`/${this.role}/review-info`]);
   }
 
-  buildJobInfo(): JobInfo {
+  buildJobInfo(): DoctorJobInfo {
     const specializedFields = this.buildSpecializedFields();
     return {
       specializedFields,
