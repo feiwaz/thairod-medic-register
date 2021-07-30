@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,11 +14,14 @@ export class UsersService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const doesExist = await this.usersRepository.findOne(createUserDto.id);
-    if (doesExist) {
-      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+    try {
+      await this.usersRepository.insert(createUserDto);
+    } catch (error) {
+      if (error.code === 'ER_DUP_ENTRY') {
+        throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+      }
+      throw new InternalServerErrorException();
     }
-    return this.usersRepository.save(createUserDto);
   }
 
   findAll(): Promise<User[]> {
@@ -34,7 +37,7 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return `This action updates a #${id} user with body ${updateUserDto}`;
   }
 
   async remove(id: number): Promise<void> {
