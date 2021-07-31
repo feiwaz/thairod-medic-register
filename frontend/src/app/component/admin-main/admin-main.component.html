@@ -4,7 +4,7 @@
             <button mat-icon-button (click)="snav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <h1 class="app-name">ระบบการจัดการผู้ใช้และผู้ลงทะเบียน</h1>
+            <h1 class="app-name">ระบบจัดการผู้ใช้และผู้ลงทะเบียน</h1>
             <span class="mat-toolbar-spacer"></span>
             <app-account-menu></app-account-menu>
         </mat-toolbar-row>
@@ -14,8 +14,9 @@
         <mat-sidenav #snav opened [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
             fixedTopGap="56">
             <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
-            <mat-nav-list>
-                <a mat-list-item routerLink="nav.relativePath" *ngFor="let nav of fillerNav">{{nav.label}}</a>
+            <mat-nav-list class="side-nav-list">
+                <a mat-list-item [routerLink]="nav.relativePath" [routerLinkActive]="['active']"
+                    *ngFor="let nav of fillerNav">{{nav.label}}</a>
             </mat-nav-list>
         </mat-sidenav>
 
@@ -24,5 +25,3 @@
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
-
-<!-- [routerLinkActive]="['active']" -->

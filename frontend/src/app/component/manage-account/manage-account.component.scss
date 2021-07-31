@@ -1,0 +1,70 @@
+.manage-account-container {
+    margin: 20px;
+}
+
+.manage-account-top-action {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+app-column-filter {
+    flex: 1 1 auto;
+}
+
+.manage-account-top-action > span {
+    width: 1em;
+}
+
+.manage-account-top-action > button {
+    margin-bottom: 20px;
+}
+
+.manage-account-table-container {
+    overflow: auto;
+}
+
+mat-progress-bar {
+    position: absolute;
+    left: 20px;
+    z-index: 102;
+    width: calc(100% - 40px);
+}
+
+table {
+    width: 100%;
+}
+
+th.mat-header-cell,
+td.mat-cell {
+    padding-left: 10px;
+}
+
+td.mat-column-action {
+    width: 41px;
+}
+
+.mat-table-sticky:last-child {
+    border-left: 1px solid #e0e0e0;
+}
+
+button {
+    font-size: 16px;
+}
+
+@media only screen and (min-width: 600px) {
+    .manage-account-top-action {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+    }
+
+    app-column-filter {
+        margin-right: 20px;
+    }
+
+    .manage-account-top-action > button {
+        align-self: flex-end;
+    }
+}

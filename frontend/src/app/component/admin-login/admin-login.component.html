@@ -7,7 +7,14 @@
     <div class="form-field-container">
       <h3><b>เข้าใช้งานระบบ</b></h3>
       <mat-form-field>
-        <input matInput formControlName="email" placeholder="อีเมล" #email>
+        <input matInput #email maxlength="32" placeholder="อีเมล" formControlName="email">
+        <mat-hint align="end">{{email.value.length}} / 32</mat-hint>
+        <mat-error *ngIf="loginForm.controls.email.hasError('email') && !loginForm.controls.email.hasError('required')">
+          กรูณาใส่รูปแบบอีเมลให้ถูกต้อง
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls.email.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
         <button *ngIf="email" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()">
           <mat-icon>close</mat-icon>
         </button>

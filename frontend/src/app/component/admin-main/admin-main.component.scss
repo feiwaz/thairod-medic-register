@@ -33,10 +33,23 @@ h1.app-name {
   text-align: center;
 }
 
+.side-nav-list > .mat-list-item {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.side-nav-list > .mat-list-item.active {
+  color: rgb(0, 23, 64);
+  background-color: lighten(rgb(249, 183, 183), 10);
+}
+
 .admin-sidenav-container {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
      causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+}
+
+.admin-sidenav-container > mat-sidenav {
+  width: 260px;
 }
 
 .admin-is-mobile .admin-sidenav-container {
