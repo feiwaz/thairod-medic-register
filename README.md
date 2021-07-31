@@ -35,6 +35,8 @@ Working Directory: root folder
 3. `npm run start:debug` to start backend (API) at port 3000
 4. press `F5` or run debug name `Debug Backend` to attach debugging process for breakpoint debugging
 
+> Note: Backend configuration loadded via .env file located in `backend/.env`
+
 ### 3. Start Frontend
 
 1. `cd frontend`
