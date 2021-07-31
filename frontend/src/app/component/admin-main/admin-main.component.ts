@@ -20,7 +20,7 @@ export class AdminMainComponent implements OnInit, OnDestroy {
     label: 'รายชื่อผู้ลงทะเบียน'
   }, {
     relativePath: './manage-user-training-status',
-    label: 'สถานะการอบรวม'
+    label: 'สถานะการอบรม'
   }];
 
   private mobileQueryListener: () => void;
