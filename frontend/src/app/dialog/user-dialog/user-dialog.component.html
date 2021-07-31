@@ -1,0 +1,43 @@
+<div class="progress-bar-container">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+</div>
+<div class="form-container">
+    <div class="user-container">
+        <h2 mat-dialog-title id="user-dialog-title"> {{isCreatingNew ? 'เพิ่ม':'แก้ไข'}}ผู้ใช้</h2>
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <input matInput #email maxlength="32" placeholder="อีเมล" formControlName="email">
+                <mat-hint align="end">{{email.value.length}} / 32</mat-hint>
+                <mat-error
+                    *ngIf="userForm.controls.email.hasError('email') && !userForm.controls.email.hasError('required')">
+                    กรูณาใส่รูปแบบอีเมลให้ถูกต้อง
+                </mat-error>
+                <mat-error *ngIf="userForm.controls.email.hasError('required')">
+                    จำเป็นต้องใส่*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput #name maxlength="32" placeholder="ชื่อ-นามสกุล" formControlName="name">
+                <mat-hint align="end">{{name.value.length}} / 32</mat-hint>
+                <mat-error *ngIf="userForm.controls.name.hasError('required')">
+                    จำเป็นต้องใส่*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>บทบาทในเว็ป</mat-label>
+                <mat-select formControlName="role">
+                    <mat-option *ngFor="let roleOption of roleOptions" [value]="roleOption.value">
+                        {{roleOption.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
+                type="submit">{{isCreatingNew ? 'สร้าง' : 'บันทึก'}}</button>
+        </form>
+    </div>
+</div>
+<mat-dialog-actions align="end">
+    <div class="cancel-button">
+        <button mat-button color="primary" type="button" mat-dialog-close>ยกเลิก</button>
+    </div>
+</mat-dialog-actions>

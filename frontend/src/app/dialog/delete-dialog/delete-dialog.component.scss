@@ -1,0 +1,30 @@
+.progress-bar-container {
+    height: 4px;
+}
+
+mat-progress-bar {
+    position: relative;
+    z-index: 2;
+    top: -24px;
+    left: -24px;
+    width: calc(100% + 48px);
+}
+
+.content-container {
+    flex-direction: column;
+    display: flex;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    height: calc(100% - 80px);
+    justify-content: center;
+}
+
+mat-form-field,
+button[type="submit"] {
+    margin: 10px 0;
+}
+
+.cancel-button {
+    flex: 1;
+    text-align: right;
+}
