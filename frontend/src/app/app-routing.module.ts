@@ -38,6 +38,12 @@ const routes: Routes = [
   { path: 'verify-id', component: VerifyIdComponent },
   { path: 'update-status', component: UpdateStatusComponent },
   {
+    path: 'admin/main', loadChildren: () =>
+      import('./module/admin/admin.module').then(mod => mod.AdminModule),
+    // canLoad: [AuthGuard],
+    // canActivate: [AuthGuard]
+  },
+  {
     path: 'admin', component: AdminLoginComponent
   },
   { path: '', redirectTo: 'main', pathMatch: 'full' },

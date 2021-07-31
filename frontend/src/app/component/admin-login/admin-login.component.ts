@@ -58,6 +58,7 @@ export class AdminLoginComponent implements OnInit {
   handleSuccessfulLogIn(isAdmin = true): void {
     this.isLoading = false;
     this.toastrService.success('Logged in successfully');
+    // this.router.navigate(['/admin/main/manage-account']);
   }
 
   handleErrorLogIn(): void {
