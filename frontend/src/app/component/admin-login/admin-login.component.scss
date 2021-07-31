@@ -1,0 +1,57 @@
+.flex-container {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+}
+
+.main-logo {
+  flex-basis: 100%;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-container {
+  position: fixed;
+  top: 56px;
+  height: 100%;
+  width: 100%;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+  margin: 0 25px 0 25px;
+}
+
+.form-field-container {
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 10px;
+}
+
+mat-form-field.mat-form-field {
+  margin-bottom: 10px;
+}
+
+mat-form-field.mat-form-field,
+button {
+  font-size: 16px;
+}
+
+@media only screen and (min-width: 600px) {
+  .form-container {
+    top: 64px;
+  }
+
+  form {
+    width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

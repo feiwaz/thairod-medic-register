@@ -9,15 +9,15 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
-import { JobInfoFormComponent } from './job-info-form.component';
+import { DoctorJobInfoFormComponent } from './doctor-job-info-form.component';
 
-describe('JobInfoFormComponent', () => {
-  let component: JobInfoFormComponent;
-  let fixture: ComponentFixture<JobInfoFormComponent>;
+describe('DoctorJobInfoFormComponent', () => {
+  let component: DoctorJobInfoFormComponent;
+  let fixture: ComponentFixture<DoctorJobInfoFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [JobInfoFormComponent, ToolbarComponent],
+      declarations: [DoctorJobInfoFormComponent, ToolbarComponent],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
@@ -35,7 +35,7 @@ describe('JobInfoFormComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(JobInfoFormComponent);
+    fixture = TestBed.createComponent(DoctorJobInfoFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
