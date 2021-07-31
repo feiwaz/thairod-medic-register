@@ -1,0 +1,65 @@
+version: '3.9'
+
+x-env-files: &env-files
+  env_file:
+    - ./docker/.env
+
+services:
+  mysql-management:
+    image: 'mysql/mysql-cluster:8.0'
+    <<: *env-files
+    restart: always
+    networks:
+      - db-network
+    command: ndb_mgmd
+    volumes:
+      - ./docker/my.cnf:/etc/my.cnf
+      - ./docker/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+
+  mysql-data-node-1:
+    image: 'mysql/mysql-cluster:8.0'
+    <<: *env-files
+    restart: always
+    networks:
+      - db-network
+    command: ndbd
+    volumes:
+      - ./docker/my.cnf:/etc/my.cnf
+      - ./docker/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+      - ./tmp/mysql/datanode-1:/var/lib/mysql
+
+  mysql-data-node-2:
+    image: 'mysql/mysql-cluster:8.0'
+    <<: *env-files
+    restart: always
+    networks:
+      - db-network
+    command: ndbd
+    volumes:
+      - ./docker/my.cnf:/etc/my.cnf
+      - ./docker/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+      - ./tmp/mysql/datanode-2:/var/lib/mysql
+
+  db:
+    image: 'mysql/mysql-cluster:8.0'
+    <<: *env-files
+    restart: always
+    networks:
+      - db-network
+    command: mysqld
+    volumes:
+      - ./docker/my.cnf:/etc/my.cnf
+      - ./docker/mysql-cluster.cnf:/etc/mysql-cluster.cnf
+      - ./docker/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3307:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8081:8080'
+    networks:
+      - db-network
+networks:
+  db-network:

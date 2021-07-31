@@ -6,20 +6,36 @@ medical personnel registration for Thairod project
 
 ## Local Development Steps
 
-Tool: VSCode
+### Prerequisites
 
-NodeJS: Version 14 LTS
+1. Docker + Docker Compose
+2. VSCode
+3. NodeJS 14 LTS
 
 Working Directory: root folder
 
-### A. Start Backend
+### Step
+
+### 1. Start Local development environment by docker-compose
+
+1. run `docker-compose up` in root folder to start mysql cluster and other development environment
+2. mysql cluster able to access with the informatioon below
+
+- HOST: `localhost`
+- PORT: `3307`
+- USER: `root`
+- password: `password`
+
+> Tip: Troublshooting in any case of issue please delete `tmp` folder and retry from step 1)
+
+### 2. Start Backend
 
 1. `cd backend`
 2. `npm install` to restore node packages
 3. `npm run start:debug` to start backend (API) at port 3000
 4. press `F5` or run debug name `Debug Backend` to attach debugging process for breakpoint debugging
 
-### B. Start Frontend
+### 3. Start Frontend
 
 1. `cd frontend`
 2. `npm install` to restore node packages
