@@ -5,7 +5,7 @@
             (filterTextChanged)="onFilterTextChanged($event)" (filterTextCleared)="onFilterTextCleared($event)">
         </app-column-filter>
         <button mat-flat-button color="primary" (click)="onCreateOrEditClicked()" [disabled]="isLoading"
-            title="Create New User">
+            title="เพิ่มผู้ใช้ใหม่">
             เพิ่มผู้ใช้ใหม่
         </button>
     </div>
@@ -33,15 +33,15 @@
                 <ng-container matColumnDef="action" stickyEnd>
                     <th mat-header-cell *matHeaderCellDef> อื่นๆ </th>
                     <td mat-cell *matCellDef="let row">
-                        <button mat-icon-button [matMenuTriggerFor]="menu" title="More actions">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" title="คำสั่งอื่นๆ">
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu" id="matMenu">
-                            <button mat-menu-item (click)="onCreateOrEditClicked(row)" title="Edit User">
+                            <button mat-menu-item (click)="onCreateOrEditClicked(row)" title="แก้ไข">
                                 <mat-icon>edit</mat-icon>
                                 <span>แก้ไข</span>
                             </button>
-                            <button mat-menu-item (click)="onDeleteClientClicked(row)" title="Delete User">
+                            <button mat-menu-item (click)="onDeleteClientClicked(row)" title="ลบ">
                                 <mat-icon>delete</mat-icon>
                                 <span>ลบ</span>
                             </button>
