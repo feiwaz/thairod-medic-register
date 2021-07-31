@@ -26,7 +26,7 @@ Working Directory: root folder
 - USER: `root`
 - password: `password`
 
-> Tip: Troublshooting in any case of issue please delete `tmp` folder and retry from step 1)
+> Tip: Troublshooting in any case of issue please delete `tmp` folder, try to run `docker-compose down` and `docker-compose up` again and retry from step 1)
 
 ### 2. Start Backend
 
