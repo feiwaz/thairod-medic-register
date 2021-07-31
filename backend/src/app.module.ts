@@ -5,6 +5,8 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
+import { VolunteersModule } from './volunteers/volunteers.module';
+import { DoctorsModule } from './doctors/doctors.module';
 
 require('dotenv').config();
 
@@ -28,6 +30,8 @@ console.log(process.env);
       synchronize: true,
     }),
     UsersModule,
+    VolunteersModule,
+    DoctorsModule
   ],
   controllers: [AppController],
   providers: [AppService],
