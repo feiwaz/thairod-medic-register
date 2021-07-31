@@ -7,15 +7,15 @@ export class ImageCachingService {
 
   constructor() { }
 
-  getImgElement(fileName: string, size = { width: '120px', height: '120px' }): string {
+  getImgElement(fileName: string, size?: { width: string, height: string }): string {
     const imgElement = document.createElement('img');
     imgElement.id = fileName;
     if (fileName === 'thairod-logo') {
-      imgElement.style.width = '143px';
-      imgElement.style.height = '123px';
+      imgElement.style.width = size?.width || '143px';
+      imgElement.style.height = size?.height || '123px';
     } else {
-      imgElement.style.width = size.width;
-      imgElement.style.height = size.height;
+      imgElement.style.width = size?.width || '120px';
+      imgElement.style.height = size?.height || '120px';
     }
 
     const cachedSource = localStorage.getItem(imgElement.id);
