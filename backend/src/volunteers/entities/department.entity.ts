@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
-import { Volunteer } from './volunteer.entity';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { VolunteerDepartment } from './volunteerDepartment.entity';
 
 export enum DepartmentName {
   INIT1 = 'สาขาหนึ่ง',
@@ -21,6 +21,20 @@ export class Department {
   })
   name: string;
 
-  @ManyToMany(() => Volunteer, (volunteer) => volunteer.department)
-  volunteers: Volunteer[];
+  @OneToMany(
+    () => VolunteerDepartment,
+    (volunteerDepartment) => volunteerDepartment.department,
+    {
+      cascade: true,
+    },
+  )
+  volunteerDepartment: VolunteerDepartment[];
+
+  @Column({
+    default: false,
+  })
+  isRequireTraining: boolean;
+
+  // @ManyToMany(() => Volunteer, (volunteer) => volunteer.department)
+  // volunteers: Volunteer[];
 }

@@ -4,10 +4,9 @@ import {
   Entity,
   PrimaryColumn,
   UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
+  OneToMany,
 } from 'typeorm';
-import { Department } from './department.entity';
+import { VolunteerDepartment } from './volunteerDepartment.entity';
 
 export enum VolunteerPrename {
   INIT1 = 'นาย',
@@ -75,11 +74,20 @@ export class Volunteer {
   })
   status: VolunteerStatus;
 
-  @ManyToMany(() => Department, (department) => department.volunteers, {
-    cascade: true,
-  })
-  @JoinTable({ name: 'volunteer_department' })
-  department: Department[];
+  // @ManyToMany(() => Department, (department) => department.volunteers, {
+  //   cascade: true,
+  // })
+  // @JoinTable({ name: 'volunteer_department' })
+  // department: Department[];
+
+  @OneToMany(
+    () => VolunteerDepartment,
+    (volunteerDepartment) => volunteerDepartment.volunteer,
+    {
+      cascade: true,
+    },
+  )
+  volunteerDepartment: VolunteerDepartment[];
 
   @CreateDateColumn()
   createdTime: Date;

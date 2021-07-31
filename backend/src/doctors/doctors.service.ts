@@ -33,12 +33,17 @@ export class DoctorsService {
   }
 
   findAll(): Promise<Doctor[]> {
-    return this.doctorsRepository.find({ relations: ['expertise'] });
+    return this.doctorsRepository.find({
+      relations: ['expertise'],
+      order: {
+        updatedTime: 'DESC',
+      },
+    });
   }
 
   async findOne(id: number): Promise<Doctor> {
     const doctors = await this.doctorsRepository.findOne(id, {
-      relations: ['expertise'],
+      relations: ['expertise']
     });
     if (!doctors) {
       return {} as Doctor;
