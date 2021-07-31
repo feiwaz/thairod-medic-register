@@ -57,7 +57,7 @@ export class AdminLoginComponent implements OnInit {
 
   handleSuccessfulLogIn(isAdmin = true): void {
     this.isLoading = false;
-    this.toastrService.success('Logged in successfully');
+    this.toastrService.success('เข้าสู่ระบบสำเร็จ');
     // this.router.navigate(['/admin/main/manage-account']);
   }
 
@@ -66,7 +66,7 @@ export class AdminLoginComponent implements OnInit {
     this.isLoading = false;
     this.isCredentialsValid = false;
     this.errorResponse = true;
-    this.toastrService.warning('Logged in failed');
+    this.toastrService.warning('เข้าสู่ระบบไม่สำเร็จ');
   }
 
   onClearInput() {

@@ -22,7 +22,7 @@ export class AccountMenuComponent {
   openAccountCard(): void { }
 
   onLogOutClick(): void {
-    this.toastrService.success('Logged out successfully');
+    this.toastrService.success('ออกจากระบบสำเร็จ');
     this.authService.logout();
   }
 
