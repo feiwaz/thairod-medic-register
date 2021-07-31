@@ -1,0 +1,30 @@
+<div class="progress-bar-container">
+  <mat-progress-bar *ngIf="isLoading" color="primary" mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="form-container">
+  <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onLogIn()">
+    <div class="form-field-container">
+      <h3><b>เข้าใช้งานระบบ</b></h3>
+      <mat-form-field>
+        <input matInput formControlName="email" placeholder="อีเมล" #email>
+        <button *ngIf="email" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field formGroupName="credential">
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="รหัสผ่าน"
+          (keydown.space)="$event.preventDefault();" (paste)="$event.preventDefault();">
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword" type="button">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button type="submit" color="primary"
+      [disabled]="!loginForm.dirty || !loginForm.valid || isLoading">เข้าสู่ระบบ</button>
+    <ng-container *ngIf="errorResponse">
+      <p>ไม่พบผู้ใช้นี้ในระบบ</p>
+    </ng-container>
+  </form>
+</div>

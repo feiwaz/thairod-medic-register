@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminLoginComponent } from './component/admin-login/admin-login.component';
 import { BasicInfoFormComponent } from './component/basic-info-form/basic-info-form.component';
 import { DoctorJobInfoFormComponent } from './component/doctor-job-info-form/doctor-job-info-form.component';
 import { MainComponent } from './component/main/main.component';
@@ -36,6 +37,9 @@ const routes: Routes = [
   },
   { path: 'verify-id', component: VerifyIdComponent },
   { path: 'update-status', component: UpdateStatusComponent },
+  {
+    path: 'admin', component: AdminLoginComponent
+  },
   { path: '', redirectTo: 'main', pathMatch: 'full' },
   { path: '**', redirectTo: 'main' }
 ];
