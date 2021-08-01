@@ -13,7 +13,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  findUser(id: number): Observable<any> {
+  findOne(id: number): Observable<any> {
     const url = `${environment.apiPrefix}/users/${id}`;
     return this.http.get<any>(url);
   }
