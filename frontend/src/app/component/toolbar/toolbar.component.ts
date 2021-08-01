@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,20 +7,24 @@ import { Router } from '@angular/router';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
   @Input() previousPath = '.';
   @Input() toolbarTitle = 'ไทยรอด';
   @Input() isLoading = false;
+  @Input() navigateBackPath = '';
 
-  constructor(private router: Router, private location: Location) { }
-
-  ngOnInit(): void {
-  }
+  constructor(
+    private router: Router,
+    private location: Location
+  ) { }
 
   onNavigateBack(): void {
-    // this.router.navigate([this.previousPath]);
-    this.location.back();
+    if (this.navigateBackPath) {
+      this.router.navigate([this.navigateBackPath]);
+    } else {
+      this.location.back();
+    }
   }
 
 }

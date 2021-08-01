@@ -1,4 +1,5 @@
-<app-toolbar [toolbarTitle]="role ? 'ตรวจสอบเลขประจำตัว' : 'ตรวจสอบสถานะการลงทะเบียน'" [isLoading]="isLoading">
+<app-toolbar [toolbarTitle]="role ? 'ตรวจสอบเลขประจำตัว' : 'ตรวจสอบสถานะการลงทะเบียน'" [isLoading]="isLoading"
+  [navigateBackPath]="'main'">
 </app-toolbar>
 <div class="form-container">
   <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">
