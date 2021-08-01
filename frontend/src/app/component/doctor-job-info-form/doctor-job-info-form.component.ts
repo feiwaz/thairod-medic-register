@@ -32,8 +32,8 @@ export class DoctorJobInfoFormComponent implements OnInit {
   ];
 
   jobInfoForm = this.fb.group({
-    field1: false, field2: false, field3: false,
-    field4: false, field5: false, field6: false,
+    field1: [{ value: true, disabled: true }], field2: false,
+    field3: false, field4: false, field5: false, field6: false,
     medCertificateId: ['', [
       Validators.required,
       Validators.min(10000),
@@ -50,7 +50,10 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.patchValue();
+  }
 
+  private patchValue() {
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
       const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
@@ -60,7 +63,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
         specializedFields.forEach((viewValue: string) => {
           this.medFields
             .filter(medField => medField.viewValue === viewValue)
-            .map(medField => this.jobInfoForm.controls[medField.formControlName].setValue(true))
+            .map(medField => this.jobInfoForm.controls[medField.formControlName].setValue(true));
         });
       }
     }
