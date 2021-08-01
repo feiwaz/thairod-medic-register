@@ -50,7 +50,7 @@ export class BasicInfoFormComponent implements OnInit {
   ];
 
   basicInfoForm = this.fb.group({
-    id: [''],
+    id: ['', Validators.required],
     initial: ['', Validators.required],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
