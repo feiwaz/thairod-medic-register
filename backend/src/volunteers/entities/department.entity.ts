@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
-export enum DepartmentName {
+export enum DepartmentLabel {
   INIT1 = 'สาขาหนึ่ง',
   INIT2 = 'สาขาสอง',
   INIT3 = 'สาขาสาม',
@@ -17,16 +17,14 @@ export class Department {
 
   @Column({
     type: 'enum',
-    enum: DepartmentName,
+    enum: DepartmentLabel,
   })
-  name: string;
+  label: DepartmentLabel;
 
   @OneToMany(
     () => VolunteerDepartment,
     (volunteerDepartment) => volunteerDepartment.department,
-    {
-      cascade: true,
-    },
+    { cascade: true },
   )
   volunteerDepartment: VolunteerDepartment[];
 

@@ -62,4 +62,5 @@ export class CreateDoctorDto {
   //can insert with only id field
   @IsOptional()
   specializedField: SpecializedField[];
+
 }
