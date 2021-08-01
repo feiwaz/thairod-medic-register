@@ -71,7 +71,7 @@ export class Doctor {
     cascade: true,
   })
   @JoinTable({ name: 'doctor_expertise' })
-  specializedField: SpecializedField[];
+  specializedFields: SpecializedField[];
 
   @CreateDateColumn()
   createdTime: Date;

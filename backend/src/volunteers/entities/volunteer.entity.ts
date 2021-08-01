@@ -72,7 +72,7 @@ export class Volunteer {
   //   cascade: true,
   // })
   // @JoinTable({ name: 'volunteer_department' })
-  // department: Department[];
+  // departments: Department[];
 
   @OneToMany(
     () => VolunteerDepartment,
