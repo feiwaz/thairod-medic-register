@@ -1,11 +1,11 @@
 <span *ngIf="authService.isLoggedIn" class="app-toolbar-user">
-  <button mat-icon-button [matMenuTriggerFor]="menu" [title]="authService.currentUser.name">
+  <button mat-icon-button [matMenuTriggerFor]="menu" [title]="authService.currentUser?.name">
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" id="matMenu">
     <button mat-menu-item (click)="openAccountCard()">
       <mat-icon>person</mat-icon>
-      <span>{{authService.currentUser.name}}</span>
+      <span>{{authService.currentUser?.name}}</span>
     </button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="onLogOutClick()">
