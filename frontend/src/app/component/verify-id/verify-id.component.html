@@ -20,6 +20,9 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
+      <ng-container *ngIf="maskedId">
+        <p>ผลลัพธ์:<span class="status-text">{{maskedId}}</span></p>
+      </ng-container>
     </div>
     <button mat-flat-button type="submit" color="primary"
       [disabled]="!verifyForm.dirty || !verifyForm.valid || isLoading">ตรวจสอบ</button>

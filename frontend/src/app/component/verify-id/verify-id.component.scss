@@ -20,7 +20,7 @@ form {
 }
 
 mat-form-field.mat-form-field {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 mat-form-field.mat-form-field,
@@ -39,6 +39,11 @@ input.user-id-input {
 
 .mat-hint-error {
   float: right;
+}
+
+.status-text {
+  margin-left: 10px;
+  font-weight: bold;
 }
 
 .anchor-container {

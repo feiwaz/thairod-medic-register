@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/service/user.service';
-import { maskId } from 'src/app/util/util-functions';
+import { maskId, partialMaskId } from 'src/app/util/util-functions';
 
 @Component({
   selector: 'app-verify-id',
@@ -12,6 +12,7 @@ import { maskId } from 'src/app/util/util-functions';
 export class VerifyIdComponent implements OnInit {
 
   role = '';
+  maskedId = '';
   isLoading = false;
   errorResponse = false;
   isExistingUser = false;
@@ -33,6 +34,13 @@ export class VerifyIdComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.subscribeIdInputValueChanges();
+  }
+
+  subscribeIdInputValueChanges() {
+    this.verifyForm.controls.id.valueChanges.subscribe(
+      value => this.maskedId = partialMaskId(value)
+    );
   }
 
   onSubmit(): void {
@@ -60,7 +68,9 @@ export class VerifyIdComponent implements OnInit {
     if (Object.keys(response).length) {
       this.isExistingUser = true;
     } else {
-      this.router.navigate([`/${this.role}/review-tc`]);
+      this.router.navigate([`/${this.role}/review-tc`], {
+        state: { id: this.verifyForm.controls.id.value }
+      });
     }
   }
 
@@ -89,10 +99,7 @@ export class VerifyIdComponent implements OnInit {
       this.isLoading = false;
       const maskedId = maskId(this.verifyForm.controls.id.value);
       this.router.navigate([`/update-status`], {
-        state: {
-          id: maskedId,
-          status: response.status
-        }
+        state: { id: maskedId, status: response.status }
       });
     } else {
       this.handleErrorResponse();

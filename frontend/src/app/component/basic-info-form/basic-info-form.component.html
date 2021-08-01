@@ -3,22 +3,15 @@
   <form [formGroup]="basicInfoForm" (ngSubmit)="onSubmit()">
     <div class="form-field-container">
       <p><b>เลขประจำตัวประชาชน</b></p>
-      <mat-form-field floatLabel="always">
+      <mat-form-field class="id-mat-form-field" floatLabel="always">
         <mat-label>เลขประจำตัวประชาชน</mat-label>
-        <input matInput type="number" formControlName="id" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #id
-          class="user-id-input">
-        <button *ngIf="id" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="id.value=''">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-hint align="end">{{id.value.length}} / 13</mat-hint>
-        <mat-error *ngIf="basicInfoForm.get('id')?.hasError('min') || basicInfoForm.get('id')?.hasError('max')">
-          กรุณาใส่เลขให้ครบ 13 หลัก
-          <mat-hint class="mat-hint-error">{{id.value.length}} / 13</mat-hint>
-        </mat-error>
-        <mat-error *ngIf="basicInfoForm.get('id')?.hasError('required')">
-          จำเป็นต้องใส่*
-        </mat-error>
+        <input matInput readonly="true" formControlName="id" #id class="user-id-input">
       </mat-form-field>
+      <p class="id-remark">หากท่านต้องการ แก้ไขเลขประจำตัวประชาชน<br>กรุณา
+        <span class="anchor-container">
+          <a [routerLink]="" (click)="onBackToVerifyId()" class="enabled"> คลิกเพื่อตรวจสอบ </a>
+        </span>อีกครั้ง
+      </p>
       <p><b>คำนำหน้า</b></p>
       <mat-form-field>
         <mat-label>-- คำนำหน้า --</mat-label>
@@ -52,6 +45,9 @@
       <p><b>วัน/เดือน/ปี เกิด</b></p>
       <mat-form-field>
         <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+        <mat-error *ngIf="basicInfoForm.get('dateOfBirth')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #picker></mat-datepicker>
       </mat-form-field>
