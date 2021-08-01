@@ -52,9 +52,7 @@ export class VolunteersService {
   }
 
   async findOne(id: number): Promise<Volunteer> {
-    const doctors = await this.volunteersRepository.findOne(id, {
-      relations: ['volunteerDepartment']
-    });
+    const doctors = await this.volunteersRepository.findOne(id);
     if (!doctors) {
       return {} as Volunteer;
     }
