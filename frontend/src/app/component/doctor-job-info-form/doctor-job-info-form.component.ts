@@ -19,7 +19,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
-    medLicenseId: 0
+    medCertificateId: 0
   };
 
   medFields: medFieldCheckbox[] = [
@@ -36,7 +36,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
   jobInfoForm = this.fb.group({
     field1: false, field2: false, field3: false, field4: false,
     field5: false, field6: false, field7: false, field8: false,
-    medLicenseId: ['', [
+    medCertificateId: ['', [
       Validators.required,
       Validators.min(10000),
       Validators.max(99999)
@@ -55,8 +55,8 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medLicenseId } = JSON.parse(jobInfoString);
-      this.jobInfoForm.patchValue({ medLicenseId });
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      this.jobInfoForm.patchValue({ medCertificateId });
 
       if (specializedFields.length !== 0) {
         specializedFields.forEach((viewValue: string) => {
@@ -78,7 +78,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
     const specializedFields = this.buildSpecializedFields();
     return {
       specializedFields,
-      medLicenseId: this.jobInfoForm.controls.medLicenseId.value
+      medCertificateId: this.jobInfoForm.controls.medCertificateId.value
     }
   }
 

@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Doctor } from './doctor.entity';
 
-export enum ExpertiseName {
+export enum SpecializedLabel {
   INIT1 = 'สาขาหนึ่ง',
   INIT2 = 'สาขาสอง',
   INIT3 = 'สาขาสาม',
@@ -11,16 +11,18 @@ export enum ExpertiseName {
 }
 
 @Entity()
-export class Expertise {
+export class SpecializedField {
+
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({
     type: 'enum',
-    enum: ExpertiseName,
+    enum: SpecializedLabel,
   })
-  name: string;
+  label: SpecializedLabel;
 
-  @ManyToMany(() => Doctor, (doctor) => doctor.expertise)
+  @ManyToMany(() => Doctor, (doctor) => doctor.specializedField)
   doctors: Doctor[];
+
 }

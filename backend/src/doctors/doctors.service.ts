@@ -7,16 +7,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, getConnection } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { Doctor } from './entities/doctor.entity';
-import { Expertise } from './entities/expertise.entity';
+import { SpecializedField } from './entities/specializedField.entity';
 
 @Injectable()
 export class DoctorsService {
   constructor(
     @InjectRepository(Doctor)
     private doctorsRepository: Repository<Doctor>,
-    @InjectRepository(Expertise)
-    private expertiseRepository: Repository<Expertise>,
-  ) {}
+    @InjectRepository(SpecializedField)
+    private expertiseRepository: Repository<SpecializedField>,
+  ) { }
 
   async create(createDoctorDto: CreateDoctorDto) {
     try {
@@ -34,7 +34,7 @@ export class DoctorsService {
 
   findAll(): Promise<Doctor[]> {
     return this.doctorsRepository.find({
-      relations: ['expertise'],
+      relations: ['specializedField'],
       order: {
         updatedTime: 'DESC',
       },
@@ -43,7 +43,7 @@ export class DoctorsService {
 
   async findOne(id: number): Promise<Doctor> {
     const doctors = await this.doctorsRepository.findOne(id, {
-      relations: ['expertise']
+      relations: ['specializedField']
     });
     if (!doctors) {
       return {} as Doctor;

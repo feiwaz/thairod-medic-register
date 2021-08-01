@@ -29,7 +29,7 @@ export class ReviewInfoComponent implements OnInit {
 
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
-    medLicenseId: 0
+    medCertificateId: 0
   };
 
   constructor(
@@ -53,8 +53,8 @@ export class ReviewInfoComponent implements OnInit {
 
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medLicenseId } = JSON.parse(jobInfoString);
-      this.jobInfo = { specializedFields, medLicenseId };
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      this.jobInfo = { specializedFields, medCertificateId };
     }
   }
 

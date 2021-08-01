@@ -1,15 +1,7 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
-} from 'typeorm';
-import { Expertise } from './expertise.entity';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { SpecializedField } from './specializedField.entity';
 
-export enum DoctorPrename {
+export enum DoctorInitial {
   INIT1 = 'นายแพทย์',
   INIT2 = 'แพทย์หญิง',
   INIT3 = 'เภสัชกรชาย',
@@ -23,20 +15,21 @@ export enum DoctorStatus {
 
 @Entity()
 export class Doctor {
+
   @PrimaryColumn({ type: 'bigint' })
   id: string;
 
   @Column({
     type: 'enum',
-    enum: DoctorPrename,
+    enum: DoctorInitial,
   })
-  preName: string;
+  initial: DoctorInitial;
 
   @Column()
-  name: string;
+  firstName: string;
 
   @Column()
-  surName: string;
+  lastName: string;
 
   @Column()
   dateOfBirth: Date;
@@ -47,13 +40,13 @@ export class Doctor {
   address: string;
 
   @Column()
-  tel: string;
+  contactNumber: string;
 
   @Column()
   lineId: string;
 
   @Column()
-  medicalId: string;
+  medCertificateId: number;
 
   @Column()
   jobCertificateImg: string;
@@ -74,15 +67,16 @@ export class Doctor {
   })
   status: DoctorStatus;
 
-  @ManyToMany(() => Expertise, (expertise) => expertise.doctors, {
+  @ManyToMany(() => SpecializedField, (specializedField) => specializedField.doctors, {
     cascade: true,
   })
   @JoinTable({ name: 'doctor_expertise' })
-  expertise: Expertise[];
+  specializedField: SpecializedField[];
 
   @CreateDateColumn()
   createdTime: Date;
 
   @UpdateDateColumn()
   updatedTime: Date;
+
 }

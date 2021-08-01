@@ -8,7 +8,7 @@ import {
   Min,
 } from 'class-validator';
 import {
-  VolunteerPrename,
+  VolunteerInitial,
   VolunteerStatus,
 } from '../entities/volunteer.entity';
 import { Department } from '../entities/department.entity';
@@ -21,16 +21,16 @@ export class CreateVolunteerDto {
   id: string;
 
   @IsNotEmpty()
-  @IsEnum(VolunteerPrename, {
+  @IsEnum(VolunteerInitial, {
     message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง',
   })
-  preName: VolunteerPrename;
+  initial: VolunteerInitial;
 
   @IsNotEmpty()
   name: string;
 
   @IsNotEmpty()
-  surName: string;
+  lastName: string;
 
   @IsNotEmpty()
   @IsDateString()
@@ -40,13 +40,13 @@ export class CreateVolunteerDto {
   address: string;
 
   @IsNotEmpty()
-  tel: string;
+  contactNumber: string;
 
   @IsNotEmpty()
   lineId: string;
 
   @IsNotEmpty()
-  medicalId: string;
+  medCertificateId: string;
 
   @IsNotEmpty()
   jobCertificateImg: string;

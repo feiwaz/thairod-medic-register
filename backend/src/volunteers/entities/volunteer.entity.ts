@@ -1,14 +1,7 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
-export enum VolunteerPrename {
+export enum VolunteerInitial {
   INIT1 = 'นาย',
   INIT2 = 'นางสาว',
   INIT3 = 'นาง',
@@ -23,20 +16,21 @@ export enum VolunteerStatus {
 
 @Entity()
 export class Volunteer {
+
   @PrimaryColumn({ type: 'bigint' })
   id: string;
 
   @Column({
     type: 'enum',
-    enum: VolunteerPrename,
+    enum: VolunteerInitial,
   })
-  preName: string;
+  initial: string;
 
   @Column()
-  name: string;
+  firstName: string;
 
   @Column()
-  surName: string;
+  lastName: string;
 
   @Column()
   dateOfBirth: Date;
@@ -47,13 +41,13 @@ export class Volunteer {
   address: string;
 
   @Column()
-  tel: string;
+  contactNumber: string;
 
   @Column()
   lineId: string;
 
   @Column()
-  medicalId: string;
+  medCertificateId: string;
 
   @Column()
   jobCertificateImg: string;
@@ -94,4 +88,5 @@ export class Volunteer {
 
   @UpdateDateColumn()
   updatedTime: Date;
+
 }
