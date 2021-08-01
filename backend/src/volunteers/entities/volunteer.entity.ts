@@ -47,18 +47,18 @@ export class Volunteer {
   lineId: string;
 
   @Column()
-  medCertificateId: string;
+  medCertificateId: number;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateSelfieImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   idCardImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   idCardSelfieImg: string;
 
   @Column({

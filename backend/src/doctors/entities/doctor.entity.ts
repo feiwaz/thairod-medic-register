@@ -48,16 +48,16 @@ export class Doctor {
   @Column()
   medCertificateId: number;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateSelfieImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   idCardImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   idCardSelfieImg: string;
 
   @Column({

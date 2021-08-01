@@ -5,13 +5,13 @@ import {
   IsNumber,
   IsOptional,
   Max,
-  Min,
+  Min
 } from 'class-validator';
+import { Department } from '../entities/department.entity';
 import {
   VolunteerInitial,
-  VolunteerStatus,
+  VolunteerStatus
 } from '../entities/volunteer.entity';
-import { Department } from '../entities/department.entity';
 
 export class CreateVolunteerDto {
   @IsNotEmpty()
@@ -46,7 +46,10 @@ export class CreateVolunteerDto {
   lineId: string;
 
   @IsNotEmpty()
-  medCertificateId: string;
+  @IsNumber()
+  @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
+  @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
+  medCertificateId: number;
 
   // @IsNotEmpty() TODO: Will bring back later
   jobCertificateImg: string;
