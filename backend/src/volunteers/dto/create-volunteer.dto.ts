@@ -55,10 +55,10 @@ export class CreateVolunteerDto {
   jobCertificateSelfieImg: string;
 
   @IsNotEmpty()
-  nationalCardImg: string;
+  idCardImg: string;
 
   @IsNotEmpty()
-  nationalCardSelfieImg: string;
+  idCardSelfieImg: string;
 
   @IsOptional()
   @IsEnum(VolunteerStatus, {

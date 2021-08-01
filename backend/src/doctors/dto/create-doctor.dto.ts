@@ -48,10 +48,10 @@ export class CreateDoctorDto {
   jobCertificateSelfieImg: string;
 
   @IsNotEmpty()
-  nationalCardImg: string;
+  idCardImg: string;
 
   @IsNotEmpty()
-  nationalCardSelfieImg: string;
+  idCardSelfieImg: string;
 
   @IsOptional()
   @IsEnum(DoctorStatus, {

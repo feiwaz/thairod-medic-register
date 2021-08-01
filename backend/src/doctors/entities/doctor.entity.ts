@@ -55,10 +55,10 @@ export class Doctor {
   jobCertificateSelfieImg: string;
 
   @Column()
-  nationalCardImg: string;
+  idCardImg: string;
 
   @Column()
-  nationalCardSelfieImg: string;
+  idCardSelfieImg: string;
 
   @Column({
     type: 'enum',
