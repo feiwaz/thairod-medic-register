@@ -60,7 +60,7 @@ export class CreateDoctorDto {
   status: DoctorStatus;
 
   //can insert with only id field
-  @IsOptional()
-  specializedField: SpecializedField[];
+  @IsNotEmpty()
+  specializedFields: SpecializedField[];
 
 }
