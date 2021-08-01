@@ -71,15 +71,13 @@ export class Volunteer {
   // @ManyToMany(() => Department, (department) => department.volunteers, {
   //   cascade: true,
   // })
-  // @JoinTable({ name: 'volunteer_department' })
+  // @JoinTable()
   // departments: Department[];
 
   @OneToMany(
     () => VolunteerDepartment,
-    (volunteerDepartment) => volunteerDepartment.volunteer,
-    {
-      cascade: true,
-    },
+    volunteerDepartment => volunteerDepartment.volunteer,
+    { cascade: true }
   )
   volunteerDepartment: VolunteerDepartment[];
 

@@ -24,7 +24,7 @@ export class Department {
 
   @OneToMany(
     () => VolunteerDepartment,
-    (volunteerDepartment) => volunteerDepartment.department,
+    volunteerDepartment => volunteerDepartment.department,
     { cascade: true }
   )
   volunteerDepartment: VolunteerDepartment[];

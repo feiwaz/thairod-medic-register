@@ -67,10 +67,12 @@ export class Doctor {
   })
   status: DoctorStatus;
 
-  @ManyToMany(() => SpecializedField, (specializedField) => specializedField.doctors, {
-    cascade: true,
-  })
-  @JoinTable({ name: 'doctor_expertise' })
+  @ManyToMany(
+    () => SpecializedField,
+    specializedField => specializedField.doctors,
+    { cascade: true }
+  )
+  @JoinTable()
   specializedFields: SpecializedField[];
 
   @CreateDateColumn()

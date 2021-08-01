@@ -22,7 +22,10 @@ export class SpecializedField {
   })
   label: SpecializedFieldLabel;
 
-  @ManyToMany(() => Doctor, (doctor) => doctor.specializedFields)
+  @ManyToMany(
+    () => Doctor,
+    doctor => doctor.specializedFields
+  )
   doctors: Doctor[];
 
 }
