@@ -49,6 +49,7 @@ const routes: Routes = [
   {
     path: 'admin/main', loadChildren: () =>
       import('./module/admin/admin.module').then(mod => mod.AdminModule),
+    // TODO: add guard when auth service completed
     // canLoad: [AuthGuard],
     // canActivate: [AuthGuard]
   },
