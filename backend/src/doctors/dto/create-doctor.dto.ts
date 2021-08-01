@@ -41,16 +41,16 @@ export class CreateDoctorDto {
   @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
   medCertificateId: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateSelfieImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   idCardImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   idCardSelfieImg: string;
 
   @IsOptional()

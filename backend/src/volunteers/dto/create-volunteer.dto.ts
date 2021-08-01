@@ -48,16 +48,16 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   medCertificateId: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateSelfieImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   idCardImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   idCardSelfieImg: string;
 
   @IsOptional()

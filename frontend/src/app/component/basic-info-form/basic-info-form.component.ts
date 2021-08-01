@@ -24,6 +24,21 @@ interface InitialOption {
   viewValue: string;
 }
 
+const doctorInitials: InitialOption[] = [
+  { value: 1, viewValue: 'นายแพทย์' },
+  { value: 2, viewValue: 'แพทย์หญิง' },
+  { value: 3, viewValue: 'เภสัชกรชาย' },
+  { value: 4, viewValue: 'เภสัชกรหญิง' }
+];
+
+const volunteerInitials: InitialOption[] = [
+  { value: 1, viewValue: 'นาย' },
+  { value: 2, viewValue: 'นางสาว' },
+  { value: 3, viewValue: 'นาง' },
+  { value: 4, viewValue: 'เด็กชาย' },
+  { value: 5, viewValue: 'เด็กหญิง' }
+];
+
 @Component({
   selector: 'app-basic-info-form',
   templateUrl: './basic-info-form.component.html',
@@ -40,14 +55,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   role = '';
   id = '';
-
-  initials: InitialOption[] = [
-    { value: 1, viewValue: 'นาย' },
-    { value: 2, viewValue: 'นางสาว' },
-    { value: 3, viewValue: 'นาง' },
-    { value: 4, viewValue: 'เด็กชาย' },
-    { value: 5, viewValue: 'เด็กหญิง' }
-  ];
+  initials: InitialOption[] = [];
 
   basicInfoForm = this.fb.group({
     id: ['', Validators.required],
@@ -74,6 +82,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.initials = this.role === 'doctor' ? doctorInitials : volunteerInitials;
     this.patchValue();
   }
 
