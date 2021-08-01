@@ -1,13 +1,13 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Doctor } from './doctor.entity';
 
-export enum SpecializedLabel {
-  INIT1 = 'สาขาหนึ่ง',
-  INIT2 = 'สาขาสอง',
-  INIT3 = 'สาขาสาม',
-  INIT4 = 'สาขาสี่',
-  INIT5 = 'สาขาห้า',
-  INIT6 = 'สาขาหก',
+export enum SpecializedFieldLabel {
+  FIELD1 = 'เวชปฏิบัติทั่วไป',
+  FIELD2 = 'สูตินรีเวช',
+  FIELD3 = 'อายุรกรรม',
+  FIELD4 = 'ศัลยกรรม',
+  FIELD5 = 'กุมารเวช',
+  FIELD6 = 'อื่นๆ'
 }
 
 @Entity()
@@ -18,9 +18,9 @@ export class SpecializedField {
 
   @Column({
     type: 'enum',
-    enum: SpecializedLabel,
+    enum: SpecializedFieldLabel,
   })
-  label: SpecializedLabel;
+  label: SpecializedFieldLabel;
 
   @ManyToMany(() => Doctor, (doctor) => doctor.specializedField)
   doctors: Doctor[];

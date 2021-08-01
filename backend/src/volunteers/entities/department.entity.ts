@@ -12,6 +12,7 @@ export enum DepartmentLabel {
 
 @Entity()
 export class Department {
+
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -24,14 +25,12 @@ export class Department {
   @OneToMany(
     () => VolunteerDepartment,
     (volunteerDepartment) => volunteerDepartment.department,
-    { cascade: true },
+    { cascade: true }
   )
   volunteerDepartment: VolunteerDepartment[];
 
-  @Column({
-    default: false,
-  })
-  isRequireTraining: boolean;
+  @Column({ default: false })
+  isTrainingRequired: boolean;
 
   // @ManyToMany(() => Volunteer, (volunteer) => volunteer.department)
   // volunteers: Volunteer[];

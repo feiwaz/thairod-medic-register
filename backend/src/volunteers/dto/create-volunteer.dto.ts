@@ -68,5 +68,6 @@ export class CreateVolunteerDto {
 
   //can insert with only id field
   @IsOptional()
-  departments: Department[];
+  department: Department[];
+
 }

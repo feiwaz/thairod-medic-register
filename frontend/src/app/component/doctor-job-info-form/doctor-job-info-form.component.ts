@@ -23,19 +23,17 @@ export class DoctorJobInfoFormComponent implements OnInit {
   };
 
   medFields: medFieldCheckbox[] = [
-    { formControlName: 'field1', viewValue: 'สาขาหนึ่ง' },
-    { formControlName: 'field2', viewValue: 'สาขาสอง' },
-    { formControlName: 'field3', viewValue: 'สาขาสาม' },
-    { formControlName: 'field4', viewValue: 'สาขาสี่' },
-    { formControlName: 'field5', viewValue: 'สาขาห้า' },
-    { formControlName: 'field6', viewValue: 'สาขาหก' },
-    { formControlName: 'field7', viewValue: 'สาขาเจ็ด' },
-    { formControlName: 'field8', viewValue: 'สาขาแปด' }
+    { formControlName: 'field1', viewValue: 'เวชปฏิบัติทั่วไป' },
+    { formControlName: 'field2', viewValue: 'สูตินรีเวช' },
+    { formControlName: 'field3', viewValue: 'อายุรกรรม' },
+    { formControlName: 'field4', viewValue: 'ศัลยกรรม' },
+    { formControlName: 'field5', viewValue: 'กุมารเวช' },
+    { formControlName: 'field6', viewValue: 'อื่นๆ' }
   ];
 
   jobInfoForm = this.fb.group({
-    field1: false, field2: false, field3: false, field4: false,
-    field5: false, field6: false, field7: false, field8: false,
+    field1: false, field2: false, field3: false,
+    field4: false, field5: false, field6: false,
     medCertificateId: ['', [
       Validators.required,
       Validators.min(10000),
