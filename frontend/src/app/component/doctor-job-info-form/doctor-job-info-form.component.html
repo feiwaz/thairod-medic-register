@@ -4,7 +4,7 @@
     <div class="form-field-container">
       <p><b>สาขาที่ถนัด</b></p>
       <section class="checkbox-flex-container">
-        <p *ngFor="let field of medFields">
+        <p *ngFor="let field of specializedFields">
           <mat-checkbox [formControlName]="field.formControlName">
             {{field.viewValue}}
           </mat-checkbox>
