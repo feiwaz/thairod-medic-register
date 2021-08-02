@@ -52,12 +52,23 @@ export class VerifyIdComponent implements OnInit {
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();
+    this.controlValidator();
   }
 
   subscribeIdInputValueChanges() {
     this.verifyForm.controls.id.valueChanges.subscribe(
       value => this.maskedId = partialMaskId(value)
     );
+  }
+
+  controlValidator() {
+    const roleControl = this.verifyForm.controls.role;
+    if (this.role) {
+      roleControl.clearValidators();
+    } else {
+      roleControl.setValidators(Validators.required);
+    }
+    roleControl.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -111,8 +122,11 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    const servie = this.verifyForm.controls.role.value === 0 ? this.doctorService : this.volunteerService;
-    servie.findOne(this.verifyForm.controls.id.value).subscribe(
+    let service = this.service;
+    if (!this.role) {
+      service = this.verifyForm.controls.role.value === 0 ? this.doctorService : this.volunteerService;
+    }
+    service.findOne(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
