@@ -11,8 +11,8 @@
     </mat-toolbar>
 
     <mat-sidenav-container class="admin-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
-        <mat-sidenav #snav opened [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
-            fixedTopGap="56">
+        <mat-sidenav #snav [opened]="mobileQuery.matches ? false : true" [mode]="mobileQuery.matches ? 'over' : 'side'"
+            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
             <mat-nav-list class="side-nav-list">
                 <a mat-list-item [routerLink]="nav.relativePath" [routerLinkActive]="['active']"
