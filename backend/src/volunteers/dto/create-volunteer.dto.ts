@@ -5,12 +5,12 @@ import {
   IsNumber,
   IsOptional,
   Max,
-  Min
+  Min,
 } from 'class-validator';
-import { Department } from '../entities/department.entity';
+import { Department, DepartmentLabel } from '../entities/department.entity';
 import {
   VolunteerInitial,
-  VolunteerStatus
+  VolunteerStatus,
 } from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
@@ -70,7 +70,11 @@ export class CreateVolunteerDto {
   status: VolunteerStatus;
 
   //can insert with only id field
-  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(DepartmentLabel, {
+    message:
+      'specializedFields must be like สาขาหนึ่ง, สาขาสอง, สาขาสาม, สาขาสี่, สาขาห้า, อื่นๆ',
+    each: true,
+  })
   department: Department[];
-
 }
