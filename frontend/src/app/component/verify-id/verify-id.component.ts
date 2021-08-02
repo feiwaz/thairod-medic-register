@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId, partialMaskId } from 'src/app/util/util-functions';
@@ -72,9 +73,16 @@ export class VerifyIdComponent implements OnInit {
     if (Object.keys(response).length) {
       this.isExistingUser = true;
     } else {
-      this.router.navigate([`/${this.role}/review-tc`], {
-        state: { id: this.verifyForm.controls.id.value }
-      });
+      const basicInfo = this.buildBasicInfo();
+      sessionStorage.setItem('basicInfo', JSON.stringify(basicInfo));
+      this.router.navigate([`/${this.role}/review-tc`]);
+    }
+  }
+
+  buildBasicInfo(): BasicInfo {
+    return {
+      id: this.verifyForm.controls.id.value, initial: '', firstName: '', lastName: '',
+      dateOfBirth: '', address: '', contactNumber: '', lineId: ''
     }
   }
 

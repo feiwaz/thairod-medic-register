@@ -72,13 +72,7 @@ export class BasicInfoFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) {
-    const currentNavigation = this.router.getCurrentNavigation();
-    if (currentNavigation) {
-      this.id = currentNavigation.extras.state?.id || this.id;
-      this.basicInfoForm.patchValue({ id: partialMaskId(this.id) });
-    }
-  }
+  ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
@@ -90,6 +84,7 @@ export class BasicInfoFormComponent implements OnInit {
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
       const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber, lineId } = JSON.parse(basicInfoString);
+      this.id = id || this.id;
       this.basicInfoForm.patchValue({
         id: partialMaskId(id),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
