@@ -20,8 +20,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
 
 @NgModule({
+    declarations: [
+        SafeHtmlPipe
+    ],
     imports: [
         CommonModule,
         FormsModule,
@@ -47,6 +51,7 @@ import { RouterModule } from '@angular/router';
         RouterModule
     ],
     exports: [
+        SafeHtmlPipe,
         CommonModule,
         FormsModule,
         HttpClientModule,

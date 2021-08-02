@@ -23,7 +23,7 @@ Working Directory: root folder
 
 - HOST: `localhost`
 - PORT: `3307`
-- USER: `root`
+- USER: `mysql`
 - password: `password`
 
 > Tip: Troublshooting in any case of issue please delete `tmp` folder, try to run `docker-compose down` and `docker-compose up` again and retry from step 1)
@@ -41,5 +41,5 @@ Working Directory: root folder
 
 1. `cd frontend`
 2. `npm install` to restore node packages
-3. `npm run start:debug` to start frontend at port 4200
+3. `npm run start` to start frontend at port 4200
 4. all of http request with prefix `api/*` will be proxy to port 3000

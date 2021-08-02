@@ -1,0 +1,41 @@
+.progress-bar-container {
+  height: 4px;
+}
+
+mat-progress-bar {
+  position: relative;
+  z-index: 2;
+  top: -24px;
+  left: -24px;
+  width: calc(100% + 48px);
+}
+
+.user-container {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  overflow: auto;
+}
+
+mat-form-field,
+button[type="submit"] {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.form-container {
+  padding-top: 5px;
+  padding-bottom: 20px;
+  height: calc(100% - 80px);
+}
+
+.cancel-button {
+  flex: 1;
+  text-align: right;
+}

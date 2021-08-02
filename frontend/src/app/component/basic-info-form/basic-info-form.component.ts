@@ -5,6 +5,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BasicInfo } from 'src/app/model/basic-info';
+import { partialMaskId } from 'src/app/util/util-functions';
 
 export const DATE_FORMAT = {
   parse: {
@@ -23,6 +24,21 @@ interface InitialOption {
   viewValue: string;
 }
 
+const doctorInitials: InitialOption[] = [
+  { value: 1, viewValue: 'นายแพทย์' },
+  { value: 2, viewValue: 'แพทย์หญิง' },
+  { value: 3, viewValue: 'เภสัชกรชาย' },
+  { value: 4, viewValue: 'เภสัชกรหญิง' }
+];
+
+const volunteerInitials: InitialOption[] = [
+  { value: 1, viewValue: 'นาย' },
+  { value: 2, viewValue: 'นางสาว' },
+  { value: 3, viewValue: 'นาง' },
+  { value: 4, viewValue: 'เด็กชาย' },
+  { value: 5, viewValue: 'เด็กหญิง' }
+];
+
 @Component({
   selector: 'app-basic-info-form',
   templateUrl: './basic-info-form.component.html',
@@ -38,21 +54,11 @@ interface InitialOption {
 export class BasicInfoFormComponent implements OnInit {
 
   role = '';
-
-  initials: InitialOption[] = [
-    { value: 1, viewValue: 'นาย' },
-    { value: 2, viewValue: 'นางสาว' },
-    { value: 3, viewValue: 'นาง' },
-    { value: 4, viewValue: 'เด็กชาย' },
-    { value: 5, viewValue: 'เด็กหญิง' }
-  ];
+  id = '';
+  initials: InitialOption[] = [];
 
   basicInfoForm = this.fb.group({
-    id: ['', [
-      Validators.required,
-      Validators.min(1000000000000),
-      Validators.max(9999999999999)]
-    ],
+    id: ['', Validators.required],
     initial: ['', Validators.required],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -66,21 +72,36 @@ export class BasicInfoFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation) {
+      this.id = currentNavigation.extras.state?.id || this.id;
+      this.basicInfoForm.patchValue({ id: partialMaskId(this.id) });
+    }
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.initials = this.role === 'doctor' ? doctorInitials : volunteerInitials;
+    this.patchValue();
+  }
 
+  private patchValue() {
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
-      const { id, initial, firstName, lastName, dateOfBirth,
-        address, contactNumber, lineId } = JSON.parse(basicInfoString);
+      const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber, lineId } = JSON.parse(basicInfoString);
       this.basicInfoForm.patchValue({
-        id, initial: this.initials.find(option => option.viewValue === initial)?.value,
+        id: partialMaskId(id),
+        initial: this.initials.find(option => option.viewValue === initial)?.value,
         firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY'),
         address, contactNumber, lineId
       });
     }
+  }
+
+  onBackToVerifyId(): void {
+    sessionStorage.clear();
+    this.router.navigate([`/${this.role}/verify-id`]);
   }
 
   onSubmit(): void {
@@ -91,7 +112,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   buildBasicInfo(): BasicInfo {
     return {
-      id: this.basicInfoForm.controls.id.value,
+      id: +this.id,
       initial: this.initials.find(option => option.value === this.basicInfoForm.controls.initial.value)?.viewValue || '',
       firstName: this.basicInfoForm.controls.firstName.value,
       lastName: this.basicInfoForm.controls.lastName.value,

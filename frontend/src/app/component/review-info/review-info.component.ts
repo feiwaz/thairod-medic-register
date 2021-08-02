@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
-import { UserService } from 'src/app/service/user.service';
+import { DoctorService } from 'src/app/service/doctor.service';
+import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId } from 'src/app/util/util-functions';
 
 @Component({
@@ -15,6 +17,8 @@ export class ReviewInfoComponent implements OnInit {
   role = '';
   isLoading = false;
   errorResponse = false;
+  service: DoctorService | VolunteerService = this.volunteerService;
+  displaySpecializedFields: string[] = [];
 
   basicInfo: BasicInfo = {
     id: 0,
@@ -29,18 +33,23 @@ export class ReviewInfoComponent implements OnInit {
 
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
-    medLicenseId: 0
+    medCertificateId: 0
   };
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private doctorService: DoctorService,
+    private volunteerService: VolunteerService,
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
+    this.initiateFields();
+  }
 
+  private initiateFields() {
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
       const { id, initial, firstName, lastName, dateOfBirth,
@@ -50,18 +59,23 @@ export class ReviewInfoComponent implements OnInit {
         address, contactNumber, lineId
       };
     }
-
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medLicenseId } = JSON.parse(jobInfoString);
-      this.jobInfo = { specializedFields, medLicenseId };
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      this.jobInfo = { specializedFields, medCertificateId };
+      this.jobInfo.specializedFields.forEach(specializedFieldValue => {
+        const specializedField = SPECIALIZED_FIELDS.find(specializedField => specializedField.value === +specializedFieldValue)
+        if (specializedField) {
+          this.displaySpecializedFields.push(specializedField.viewValue);
+        }
+      });
     }
   }
 
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
-    this.userService.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
+    this.service.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()
     );

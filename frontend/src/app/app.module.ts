@@ -30,7 +30,6 @@ import { SafeHtmlPipe } from './pipe/safe-html.pipe';
     DoctorComponent,
     UpdateStatusComponent,
     BasicInfoFormComponent,
-    SafeHtmlPipe,
     DoctorJobInfoFormComponent,
     ReviewInfoComponent,
     AdminLoginComponent

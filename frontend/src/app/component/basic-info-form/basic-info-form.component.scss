@@ -33,17 +33,20 @@ button {
   font-size: 16px;
 }
 
-input.user-id-input::-webkit-outer-spin-button,
-input.user-id-input::-webkit-inner-spin-button {
-  display: none;
+mat-form-field.mat-form-field.id-mat-form-field {
+  margin-bottom: 0;
 }
 
-input.user-id-input {
-  -moz-appearance: textfield;
+.id-remark {
+  margin-bottom: 19px;
 }
 
-.mat-hint-error {
-  float: right;
+.anchor-container > a {
+  text-decoration: none;
+}
+
+.enabled {
+  color: #1877f2;
 }
 
 @media only screen and (min-width: 600px) {

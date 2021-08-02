@@ -22,7 +22,9 @@ const routes: Routes = [
       path: 'basic-info', component: BasicInfoFormComponent
     }, {
       path: 'job-info', component: DoctorJobInfoFormComponent
-    }, {
+    },
+    // TODO: add doctor specific available time component here
+    {
       path: 'review-info', component: ReviewInfoComponent
     }]
   },
@@ -33,10 +35,24 @@ const routes: Routes = [
       path: 'verify-id', component: VerifyIdComponent,
     }, {
       path: 'review-tc', component: ReviewTcComponent
+    }, {
+      path: 'basic-info', component: BasicInfoFormComponent
+    },
+    // TODO: add volunteer specific job info component here
+    // TODO: add volunteer specific available time component here
+    {
+      path: 'review-info', component: ReviewInfoComponent
     }]
   },
   { path: 'verify-id', component: VerifyIdComponent },
   { path: 'update-status', component: UpdateStatusComponent },
+  {
+    path: 'admin/main', loadChildren: () =>
+      import('./module/admin/admin.module').then(mod => mod.AdminModule),
+    // TODO: add guard when auth service completed
+    // canLoad: [AuthGuard],
+    // canActivate: [AuthGuard]
+  },
   {
     path: 'admin', component: AdminLoginComponent
   },

@@ -1,0 +1,27 @@
+<div class="admin-container" [class.admin-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="primary" class="admin-toolbar">
+        <mat-toolbar-row>
+            <button mat-icon-button (click)="snav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <h1 class="app-name">ระบบจัดการบัญชีผู้ใช้และผู้ลงทะเบียน</h1>
+            <span class="mat-toolbar-spacer"></span>
+            <app-account-menu></app-account-menu>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="admin-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav opened [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches"
+            fixedTopGap="56">
+            <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
+            <mat-nav-list class="side-nav-list">
+                <a mat-list-item [routerLink]="nav.relativePath" [routerLinkActive]="['active']"
+                    *ngFor="let nav of fillerNav">{{nav.label}}</a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
