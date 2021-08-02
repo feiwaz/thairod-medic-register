@@ -1,6 +1,6 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
 import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
-import { SpecializedField } from '../entities/specializedField.entity';
+import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
   @IsNotEmpty()
@@ -37,8 +37,12 @@ export class CreateDoctorDto {
 
   @IsNotEmpty()
   @IsNumber()
-  @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
-  @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
+  @Min(10000, {
+    message: 'medCertificateId must be equal to 13 characters'
+  })
+  @Max(99999, {
+    message: 'medCertificateId must be equal to 13 characters'
+  })
   medCertificateId: number;
 
   // @IsNotEmpty() TODO: Will bring back later
@@ -59,8 +63,11 @@ export class CreateDoctorDto {
   })
   status: DoctorStatus;
 
-  //can insert with only id field
   @IsNotEmpty()
-  specializedFields: SpecializedField[];
+  @IsEnum(SpecializedFieldLabel, {
+    message: 'specializedFields must be like เวชปฏิบัติทั่วไป, สูตินรีเวช, อายุรกรรม, ศัลยกรรม, กุมารเวช, อื่นๆ',
+    each: true
+  })
+  specializedFields: SpecializedFieldLabel[];
 
 }

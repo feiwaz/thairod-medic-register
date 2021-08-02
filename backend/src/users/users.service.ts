@@ -10,12 +10,12 @@ export class UsersService {
 
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private userRepository: Repository<User>
   ) { }
 
   async create(createUserDto: CreateUserDto) {
     try {
-      await this.usersRepository.insert(createUserDto);
+      await this.userRepository.insert(createUserDto);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
@@ -25,11 +25,11 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return this.usersRepository.find();
+    return this.userRepository.find();
   }
 
   async findOne(id: number): Promise<User> {
-    const user = await this.usersRepository.findOne(id);
+    const user = await this.userRepository.findOne(id);
     if (!user) {
       return {} as User;
     }
@@ -41,7 +41,7 @@ export class UsersService {
   }
 
   async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
+    await this.userRepository.delete(id);
   }
 
 }

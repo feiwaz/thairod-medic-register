@@ -27,7 +27,7 @@ export class CreateVolunteerDto {
   initial: VolunteerInitial;
 
   @IsNotEmpty()
-  name: string;
+  firstName: string;
 
   @IsNotEmpty()
   lastName: string;

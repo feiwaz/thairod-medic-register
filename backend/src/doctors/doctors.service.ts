@@ -1,23 +1,27 @@
 import {
-  ConflictException,
-  Injectable,
+  ConflictException, Injectable,
   InternalServerErrorException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
+import { FindOneDoctorDto } from './dto/find-one-doctor.dto';
 import { Doctor } from './entities/doctor.entity';
+import { SpecializedField } from './entities/specializedField.entity';
 
 @Injectable()
 export class DoctorsService {
   constructor(
     @InjectRepository(Doctor)
-    private doctorsRepository: Repository<Doctor>
+    private doctorRepository: Repository<Doctor>,
+    @InjectRepository(SpecializedField)
+    private specializedFieldRepository: Repository<SpecializedField>
   ) { }
 
   async create(createDoctorDto: CreateDoctorDto) {
     try {
-      await this.doctorsRepository.insert(createDoctorDto);
+      const doctor = await this.mapDtoToEntity(createDoctorDto);
+      await this.doctorRepository.save(doctor);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
@@ -26,24 +30,43 @@ export class DoctorsService {
     }
   }
 
+  private async mapDtoToEntity(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
+    const { specializedFields, ...doctorEntities } = createDoctorDto;
+    const savedSpecializedFields = await this.specializedFieldRepository.find({
+      where: { label: In(specializedFields) }
+    });
+    const doctor = Object.assign(new Doctor(), doctorEntities);
+    doctor.specializedFields = savedSpecializedFields || [];
+    return doctor;
+  }
+
   findAll(): Promise<Doctor[]> {
-    return this.doctorsRepository.find({
-      relations: ['specializedField'],
+    return this.doctorRepository.find({
+      relations: ['specializedFields'],
       order: {
         updatedTime: 'DESC',
       },
     });
   }
 
-  async findOne(id: number): Promise<Doctor> {
-    const doctors = await this.doctorsRepository.findOne(id);
-    if (!doctors) {
-      return {} as Doctor;
+  async findOne(id: number): Promise<FindOneDoctorDto> {
+    const doctor = await this.doctorRepository.findOne(id, {
+      relations: ['specializedFields'],
+    });
+    if (!doctor) {
+      return {} as FindOneDoctorDto;
     }
-    return doctors;
+    return this.mapEntityToDto(doctor);
+  }
+
+  private mapEntityToDto(doctor: Doctor) {
+    const { specializedFields, ...doctorEntities } = doctor;
+    const responseDto = Object.assign(new FindOneDoctorDto(), doctorEntities);
+    responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
+    return responseDto;
   }
 
   async remove(id: number): Promise<void> {
-    await this.doctorsRepository.delete(id);
+    await this.doctorRepository.delete(id);
   }
 }

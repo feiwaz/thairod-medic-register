@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Doctor } from './doctor.entity';
 
 export enum SpecializedFieldLabel {
@@ -19,6 +19,7 @@ export class SpecializedField {
   @Column({
     type: 'enum',
     enum: SpecializedFieldLabel,
+    unique: true
   })
   label: SpecializedFieldLabel;
 

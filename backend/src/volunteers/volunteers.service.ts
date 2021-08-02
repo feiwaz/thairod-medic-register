@@ -1,20 +1,20 @@
 import {
   ConflictException,
   Injectable,
-  InternalServerErrorException,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, getConnection } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
-import { Volunteer } from './entities/volunteer.entity';
 import { Department } from './entities/department.entity';
+import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
 
 @Injectable()
 export class VolunteersService {
   constructor(
     @InjectRepository(Volunteer)
-    private volunteersRepository: Repository<Volunteer>,
+    private volunteerRepository: Repository<Volunteer>,
     @InjectRepository(Department)
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
@@ -43,7 +43,7 @@ export class VolunteersService {
   }
 
   findAll(): Promise<Volunteer[]> {
-    return this.volunteersRepository.find({
+    return this.volunteerRepository.find({
       relations: ['volunteerDepartment'],
       order: {
         updatedTime: 'DESC',
@@ -52,14 +52,14 @@ export class VolunteersService {
   }
 
   async findOne(id: number): Promise<Volunteer> {
-    const doctors = await this.volunteersRepository.findOne(id);
-    if (!doctors) {
+    const volunteer = await this.volunteerRepository.findOne(id);
+    if (!volunteer) {
       return {} as Volunteer;
     }
-    return doctors;
+    return volunteer;
   }
 
   async remove(id: number): Promise<void> {
-    await this.volunteersRepository.delete(id);
+    await this.volunteerRepository.delete(id);
   }
 }
