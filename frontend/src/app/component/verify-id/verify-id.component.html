@@ -21,6 +21,9 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
+      <ng-container *ngIf="maskedId">
+        <p>ผลลัพธ์:<span class="status-text">{{maskedId}}</span></p>
+      </ng-container>
       <ng-container *ngIf="!role">
         <div class="role-container">
           <p><b>ท่านได้สมัครเข้ามาในฐานะ</b></p>
@@ -33,9 +36,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </ng-container>
-      <ng-container *ngIf="maskedId">
-        <p>ผลลัพธ์:<span class="status-text">{{maskedId}}</span></p>
       </ng-container>
     </div>
     <button mat-flat-button type="submit" color="primary"
