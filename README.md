@@ -23,7 +23,7 @@ Working Directory: root folder
 
 - HOST: `localhost`
 - PORT: `3307`
-- USER: `root`
+- USER: `mysql`
 - password: `password`
 
 > Tip: Troublshooting in any case of issue please delete `tmp` folder and retry from step 1)
