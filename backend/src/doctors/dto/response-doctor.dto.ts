@@ -1,7 +1,7 @@
 import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
-export class FindOneDoctorDto {
+export class responseDoctorDto {
   id: string;
   initial: DoctorInitial;
   firstName: string;

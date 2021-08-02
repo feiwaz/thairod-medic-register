@@ -5,7 +5,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
-import { FindOneDoctorDto } from './dto/find-one-doctor.dto';
+import { responseDoctorDto } from './dto/response-doctor.dto';
 import { Doctor } from './entities/doctor.entity';
 import { SpecializedField } from './entities/specializedField.entity';
 
@@ -49,19 +49,19 @@ export class DoctorsService {
     });
   }
 
-  async findOne(id: number): Promise<FindOneDoctorDto> {
+  async findOne(id: number): Promise<responseDoctorDto> {
     const doctor = await this.doctorRepository.findOne(id, {
       relations: ['specializedFields'],
     });
     if (!doctor) {
-      return {} as FindOneDoctorDto;
+      return {} as responseDoctorDto;
     }
     return this.mapEntityToDto(doctor);
   }
 
   private mapEntityToDto(doctor: Doctor) {
     const { specializedFields, ...doctorEntities } = doctor;
-    const responseDto = Object.assign(new FindOneDoctorDto(), doctorEntities);
+    const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);
     responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
     return responseDto;
   }
