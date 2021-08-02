@@ -44,3 +44,12 @@ Working Directory: root folder
 2. `npm install` to restore node packages
 3. `npm run start` to start frontend at port 4200
 4. all of http request with prefix `api/*` will be proxy to port 3000
+
+### Local Environment
+
+- Storage Server Web Console (MINIO) : http://localhost:9001 (user: `root`, password: `password`)
+- My SQL Cluster
+  - HOST: `localhost`
+  - PORT: `3307`
+  - USER: `mysql`
+  - password: `password`
