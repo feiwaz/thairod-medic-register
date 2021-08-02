@@ -18,6 +18,7 @@ Working Directory: root folder
 
 ### 1. Start Local development environment by docker-compose
 
+0. (Only first time for git clone) run `docker-compose build` or `docker-compose build --no-cache`
 1. run `docker-compose up` in root folder to start mysql cluster and other development environment
 2. mysql cluster able to access with the informatioon below
 
