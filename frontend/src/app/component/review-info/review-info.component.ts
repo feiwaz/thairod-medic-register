@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
@@ -63,12 +62,6 @@ export class ReviewInfoComponent implements OnInit {
     if (jobInfoString) {
       const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
       this.jobInfo = { specializedFields, medCertificateId };
-      this.jobInfo.specializedFields.forEach(specializedFieldValue => {
-        const specializedField = SPECIALIZED_FIELDS.find(specializedField => specializedField.value === +specializedFieldValue)
-        if (specializedField) {
-          this.displaySpecializedFields.push(specializedField.viewValue);
-        }
-      });
     }
   }
 

@@ -6,7 +6,6 @@ import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 
 interface specializedFieldCheckbox {
   formControlName: string;
-  value: number;
   viewValue: string;
 }
 
@@ -52,12 +51,12 @@ export class DoctorJobInfoFormComponent implements OnInit {
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
       const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
-      this.jobInfoForm.patchValue({ medCertificateId });
+      this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
 
       if (specializedFields.length !== 0) {
-        specializedFields.forEach((savedValue: number) => {
+        specializedFields.forEach((viewValue: string) => {
           this.specializedFields
-            .filter(specializedField => specializedField.value === savedValue)
+            .filter(specializedField => specializedField.viewValue === viewValue)
             .map(specializedField => this.jobInfoForm.controls[specializedField.formControlName].setValue(true));
         });
       }
@@ -81,7 +80,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
   buildSpecializedFields() {
     return this.specializedFields.reduce((result, specializedField) => {
       if (this.jobInfoForm.controls[specializedField.formControlName].value === true) {
-        result.push(specializedField.value);
+        result.push(specializedField.viewValue);
       }
       return result;
     }, [] as any);
