@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Volunteer } from './volunteer.entity';
 import { Department } from './department.entity';
+import { Volunteer } from './volunteer.entity';
 
 @Entity()
 export class VolunteerDepartment {
@@ -10,12 +10,17 @@ export class VolunteerDepartment {
   @PrimaryColumn()
   departmentId: number;
 
-  @ManyToOne(() => Volunteer, (volunteer) => volunteer.volunteerDepartment, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(
+    () => Volunteer,
+    volunteer => volunteer.volunteerDepartment,
+    { onDelete: 'CASCADE' }
+  )
   volunteer: Volunteer;
 
-  @ManyToOne(() => Department, (department) => department.volunteerDepartment)
+  @ManyToOne(
+    () => Department,
+    department => department.volunteerDepartment
+  )
   department: Department;
 
   @Column({

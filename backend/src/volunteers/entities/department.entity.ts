@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
-export enum DepartmentName {
+export enum DepartmentLabel {
   INIT1 = 'สาขาหนึ่ง',
   INIT2 = 'สาขาสอง',
   INIT3 = 'สาขาสาม',
@@ -12,28 +12,25 @@ export enum DepartmentName {
 
 @Entity()
 export class Department {
+
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({
     type: 'enum',
-    enum: DepartmentName,
+    enum: DepartmentLabel,
   })
-  name: string;
+  label: DepartmentLabel;
 
   @OneToMany(
     () => VolunteerDepartment,
-    (volunteerDepartment) => volunteerDepartment.department,
-    {
-      cascade: true,
-    },
+    volunteerDepartment => volunteerDepartment.department,
+    { cascade: true }
   )
   volunteerDepartment: VolunteerDepartment[];
 
-  @Column({
-    default: false,
-  })
-  isRequireTraining: boolean;
+  @Column({ default: false })
+  isTrainingRequired: boolean;
 
   // @ManyToMany(() => Volunteer, (volunteer) => volunteer.department)
   // volunteers: Volunteer[];

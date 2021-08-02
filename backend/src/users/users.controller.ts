@@ -6,31 +6,31 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
 
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly service: UsersService) { }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    return this.service.create(createUserDto);
   }
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.usersService.findOne(id);
+    return this.service.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    return this.service.update(id, updateUserDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.usersService.remove(id);
+    return this.service.remove(id);
   }
 
 }

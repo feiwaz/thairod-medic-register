@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from 'src/app/service/user.service';
+import { DoctorService } from 'src/app/service/doctor.service';
+import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId, partialMaskId } from 'src/app/util/util-functions';
 
 @Component({
@@ -16,6 +17,7 @@ export class VerifyIdComponent implements OnInit {
   isLoading = false;
   errorResponse = false;
   isExistingUser = false;
+  service: DoctorService | VolunteerService = this.volunteerService;
 
   verifyForm = this.fb.group({
     id: ['', [
@@ -29,11 +31,13 @@ export class VerifyIdComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService
+    private doctorService: DoctorService,
+    private volunteerService: VolunteerService,
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();
   }
 
@@ -56,7 +60,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.userService.findUser(this.verifyForm.controls.id.value).subscribe(
+    this.service.findOne(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -87,7 +91,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    this.userService.findUser(this.verifyForm.controls.id.value).subscribe(
+    this.service.findOne(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );

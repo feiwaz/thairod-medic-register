@@ -19,7 +19,7 @@ export class VolunteersService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
-  ) {}
+  ) { }
 
   async create(createVolunteerDto: CreateVolunteerDto) {
     try {
@@ -27,7 +27,7 @@ export class VolunteersService {
       const saveVolunteer = new Volunteer();
       const saveObject = Object.assign(saveVolunteer, createVolunteerDto);
       saveObject.volunteerDepartment = [];
-      createVolunteerDto.departments.map((value): any => {
+      createVolunteerDto.department.map((value): any => {
         const tempDepartment = new VolunteerDepartment();
         tempDepartment.departmentId = value.id;
         tempDepartment.volunteerId = createVolunteerDto.id + '';
@@ -52,9 +52,7 @@ export class VolunteersService {
   }
 
   async findOne(id: number): Promise<Volunteer> {
-    const doctors = await this.volunteersRepository.findOne(id, {
-      relations: ['volunteerDepartment']
-    });
+    const doctors = await this.volunteersRepository.findOne(id);
     if (!doctors) {
       return {} as Volunteer;
     }

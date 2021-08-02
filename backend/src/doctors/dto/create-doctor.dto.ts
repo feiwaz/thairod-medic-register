@@ -1,14 +1,6 @@
-import {
-  IsDateString,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  Max,
-  Min,
-} from 'class-validator';
-import { DoctorPrename, DoctorStatus } from '../entities/doctor.entity';
-import { Expertise } from '../entities/expertise.entity';
+import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
+import { SpecializedField } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
   @IsNotEmpty()
@@ -18,17 +10,17 @@ export class CreateDoctorDto {
   id: string;
 
   @IsNotEmpty()
-  @IsEnum(DoctorPrename, {
+  @IsEnum(DoctorInitial, {
     message:
-      'prename must be like แพทย์หญิง, นายแพทย์, เภสัชกรชาย, เภสัชกรหญิง',
+      'initial must be like แพทย์หญิง, นายแพทย์, เภสัชกรชาย, เภสัชกรหญิง',
   })
-  preName: DoctorPrename;
+  initial: DoctorInitial;
 
   @IsNotEmpty()
-  name: string;
+  firstName: string;
 
   @IsNotEmpty()
-  surName: string;
+  lastName: string;
 
   @IsNotEmpty()
   @IsDateString()
@@ -38,25 +30,28 @@ export class CreateDoctorDto {
   address: string;
 
   @IsNotEmpty()
-  tel: string;
+  contactNumber: string;
 
   @IsNotEmpty()
   lineId: string;
 
   @IsNotEmpty()
-  medicalId: string;
+  @IsNumber()
+  @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
+  @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
+  medCertificateId: number;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateSelfieImg: string;
 
-  @IsNotEmpty()
-  nationalCardImg: string;
+  // @IsNotEmpty() TODO: Will bring back later
+  idCardImg: string;
 
-  @IsNotEmpty()
-  nationalCardSelfieImg: string;
+  // @IsNotEmpty() TODO: Will bring back later
+  idCardSelfieImg: string;
 
   @IsOptional()
   @IsEnum(DoctorStatus, {
@@ -65,6 +60,7 @@ export class CreateDoctorDto {
   status: DoctorStatus;
 
   //can insert with only id field
-  @IsOptional()
-  expertise: Expertise[];
+  @IsNotEmpty()
+  specializedFields: SpecializedField[];
+
 }

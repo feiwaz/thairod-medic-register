@@ -5,13 +5,13 @@ import {
   IsNumber,
   IsOptional,
   Max,
-  Min,
+  Min
 } from 'class-validator';
-import {
-  VolunteerPrename,
-  VolunteerStatus,
-} from '../entities/volunteer.entity';
 import { Department } from '../entities/department.entity';
+import {
+  VolunteerInitial,
+  VolunteerStatus
+} from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
   @IsNotEmpty()
@@ -21,16 +21,16 @@ export class CreateVolunteerDto {
   id: string;
 
   @IsNotEmpty()
-  @IsEnum(VolunteerPrename, {
+  @IsEnum(VolunteerInitial, {
     message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง',
   })
-  preName: VolunteerPrename;
+  initial: VolunteerInitial;
 
   @IsNotEmpty()
   name: string;
 
   @IsNotEmpty()
-  surName: string;
+  lastName: string;
 
   @IsNotEmpty()
   @IsDateString()
@@ -40,25 +40,28 @@ export class CreateVolunteerDto {
   address: string;
 
   @IsNotEmpty()
-  tel: string;
+  contactNumber: string;
 
   @IsNotEmpty()
   lineId: string;
 
   @IsNotEmpty()
-  medicalId: string;
+  @IsNumber()
+  @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
+  @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
+  medCertificateId: number;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateImg: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty() TODO: Will bring back later
   jobCertificateSelfieImg: string;
 
-  @IsNotEmpty()
-  nationalCardImg: string;
+  // @IsNotEmpty() TODO: Will bring back later
+  idCardImg: string;
 
-  @IsNotEmpty()
-  nationalCardSelfieImg: string;
+  // @IsNotEmpty() TODO: Will bring back later
+  idCardSelfieImg: string;
 
   @IsOptional()
   @IsEnum(VolunteerStatus, {
@@ -68,5 +71,6 @@ export class CreateVolunteerDto {
 
   //can insert with only id field
   @IsOptional()
-  departments: Department[];
+  department: Department[];
+
 }

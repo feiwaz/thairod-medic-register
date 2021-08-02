@@ -4,25 +4,25 @@ import { VolunteersService } from './volunteers.service';
 
 @Controller('volunteers')
 export class VolunteersController {
-  constructor(private readonly volunteersService: VolunteersService) {}
+  constructor(private readonly service: VolunteersService) { }
 
   @Post()
   async create(@Body() createVolunteerDto: CreateVolunteerDto) {
-    return this.volunteersService.create(createVolunteerDto);
+    return this.service.create(createVolunteerDto);
   }
 
   @Get()
   findAll() {
-    return this.volunteersService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    return this.volunteersService.findOne(id);
+    return this.service.findOne(id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.volunteersService.remove(id);
+    return this.service.remove(id);
   }
 }

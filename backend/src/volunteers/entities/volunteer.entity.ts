@@ -1,14 +1,7 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
-export enum VolunteerPrename {
+export enum VolunteerInitial {
   INIT1 = 'นาย',
   INIT2 = 'นางสาว',
   INIT3 = 'นาง',
@@ -23,20 +16,21 @@ export enum VolunteerStatus {
 
 @Entity()
 export class Volunteer {
+
   @PrimaryColumn({ type: 'bigint' })
   id: string;
 
   @Column({
     type: 'enum',
-    enum: VolunteerPrename,
+    enum: VolunteerInitial,
   })
-  preName: string;
+  initial: string;
 
   @Column()
-  name: string;
+  firstName: string;
 
   @Column()
-  surName: string;
+  lastName: string;
 
   @Column()
   dateOfBirth: Date;
@@ -47,25 +41,25 @@ export class Volunteer {
   address: string;
 
   @Column()
-  tel: string;
+  contactNumber: string;
 
   @Column()
   lineId: string;
 
   @Column()
-  medicalId: string;
+  medCertificateId: number;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateImg: string;
 
-  @Column()
+  @Column({ nullable: true })
   jobCertificateSelfieImg: string;
 
-  @Column()
-  nationalCardImg: string;
+  @Column({ nullable: true })
+  idCardImg: string;
 
-  @Column()
-  nationalCardSelfieImg: string;
+  @Column({ nullable: true })
+  idCardSelfieImg: string;
 
   @Column({
     type: 'enum',
@@ -77,15 +71,13 @@ export class Volunteer {
   // @ManyToMany(() => Department, (department) => department.volunteers, {
   //   cascade: true,
   // })
-  // @JoinTable({ name: 'volunteer_department' })
-  // department: Department[];
+  // @JoinTable()
+  // departments: Department[];
 
   @OneToMany(
     () => VolunteerDepartment,
-    (volunteerDepartment) => volunteerDepartment.volunteer,
-    {
-      cascade: true,
-    },
+    volunteerDepartment => volunteerDepartment.volunteer,
+    { cascade: true }
   )
   volunteerDepartment: VolunteerDepartment[];
 
@@ -94,4 +86,5 @@ export class Volunteer {
 
   @UpdateDateColumn()
   updatedTime: Date;
+
 }

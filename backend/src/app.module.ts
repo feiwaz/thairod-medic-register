@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { DoctorsModule } from './doctors/doctors.module';
 import { UsersModule } from './users/users.module';
 import { VolunteersModule } from './volunteers/volunteers.module';
-import { DoctorsModule } from './doctors/doctors.module';
 
-require('dotenv').config();
-
+dotenv.config();
 console.log(process.env);
 
 @Module({
@@ -36,4 +36,4 @@ console.log(process.env);
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
