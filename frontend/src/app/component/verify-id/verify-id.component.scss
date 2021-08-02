@@ -41,6 +41,24 @@ input.user-id-input {
   float: right;
 }
 
+.role-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.role-container > p {
+  margin-right: 5px;
+  margin-top: 3px;
+}
+
+.role-container > mat-form-field {
+  width: 35%;
+  margin-left: 10px;
+}
+
 .status-text {
   margin-left: 10px;
   font-weight: bold;

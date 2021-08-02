@@ -21,6 +21,17 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
+      <div class="role-container">
+        <p><b>ท่านได้สมัครเข้ามาในฐานะ</b></p>
+        <mat-form-field>
+          <mat-label>-- บทบาท --</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{role.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <ng-container *ngIf="maskedId">
         <p>ผลลัพธ์:<span class="status-text">{{maskedId}}</span></p>
       </ng-container>

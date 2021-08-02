@@ -6,6 +6,16 @@ import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId, partialMaskId } from 'src/app/util/util-functions';
 
+interface roleOption {
+  value: number;
+  viewValue: string;
+}
+
+const roleOptions: roleOption[] = [
+  { value: 0, viewValue: 'แพทย์' },
+  { value: 1, viewValue: 'อาสาสมัคร' }
+];
+
 @Component({
   selector: 'app-verify-id',
   templateUrl: './verify-id.component.html',
@@ -18,6 +28,7 @@ export class VerifyIdComponent implements OnInit {
   isLoading = false;
   errorResponse = false;
   isExistingUser = false;
+  roles: roleOption[] = roleOptions;
   service: DoctorService | VolunteerService = this.volunteerService;
 
   verifyForm = this.fb.group({
@@ -25,7 +36,8 @@ export class VerifyIdComponent implements OnInit {
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)
-    ]]
+    ]],
+    role: ['', Validators.required]
   });
 
   constructor(
@@ -99,7 +111,8 @@ export class VerifyIdComponent implements OnInit {
   }
 
   checkUserStatus(): void {
-    this.service.findOne(this.verifyForm.controls.id.value).subscribe(
+    const servie = this.verifyForm.controls.role.value === 0 ? this.doctorService : this.volunteerService;
+    servie.findOne(this.verifyForm.controls.id.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
