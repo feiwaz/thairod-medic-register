@@ -18,6 +18,7 @@ Working Directory: root folder
 
 ### 1. Start Local development environment by docker-compose
 
+0. (Only first time for git clone) run `docker-compose build` or `docker-compose build --no-cache`
 1. run `docker-compose up` in root folder to start mysql cluster and other development environment
 2. mysql cluster able to access with the informatioon below
 
@@ -26,7 +27,7 @@ Working Directory: root folder
 - USER: `mysql`
 - password: `password`
 
-> Tip: Troublshooting in any case of issue please delete `tmp` folder and retry from step 1)
+> Tip: Troublshooting in any case of issue please delete `tmp` folder, try to run `docker-compose down` and `docker-compose up` again and retry from step 1)
 
 ### 2. Start Backend
 
@@ -43,3 +44,12 @@ Working Directory: root folder
 2. `npm install` to restore node packages
 3. `npm run start` to start frontend at port 4200
 4. all of http request with prefix `api/*` will be proxy to port 3000
+
+### Local Environment
+
+- Storage Server Web Console (MINIO) : http://localhost:9001 (user: `root`, password: `password`)
+- My SQL Cluster
+  - HOST: `localhost`
+  - PORT: `3307`
+  - USER: `mysql`
+  - password: `password`

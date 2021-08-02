@@ -21,13 +21,13 @@ ARG MYSQL_SHELL_PACKAGE=mysql-shell-8.0.23
 # Install server
 RUN yum install -y dos2unix
 RUN yum install -y \
-    https://repo.mysql.com/mysql-cluster-community-minimal-release-el7.rpm \
-    https://repo.mysql.com/mysql-community-release-el7.rpm \
+  https://repo.mysql.com/mysql-cluster-community-minimal-release-el7.rpm \
+  https://repo.mysql.com/mysql-community-release-el7.rpm \
   && yum-config-manager --enable mysql-cluster80-minimal \
   && yum install -y \
-    $MYSQL_CLUSTER_PACKAGE \
-    $MYSQL_SHELL_PACKAGE \
-    libpwquality \
+  $MYSQL_CLUSTER_PACKAGE \
+  $MYSQL_SHELL_PACKAGE \
+  libpwquality \
   && yum clean all \
   && mkdir /docker-entrypoint-initdb.d
 
@@ -35,6 +35,10 @@ VOLUME /var/lib/mysql
 
 COPY docker-entrypoint.sh /entrypoint.sh
 COPY healthcheck.sh /healthcheck.sh
+
+RUN chmod 777 /entrypoint.sh
+RUN chmod 777 /healthcheck.sh
+
 COPY cnf/my.cnf /etc/
 COPY cnf/mysql-cluster.cnf /etc/
 

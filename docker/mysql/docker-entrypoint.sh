@@ -140,9 +140,6 @@ EOF
 		fi
 		echo
 		for f in /docker-entrypoint-initdb.d/*; do
-			dos2unix $f
-		end
-		for f in /docker-entrypoint-initdb.d/*; do
 			case "$f" in
 				*.sh)  echo "[Entrypoint] running $f"; . "$f" ;;
 				*.sql) echo "[Entrypoint] running $f"; "${mysql[@]}" < "$f" && echo ;;
@@ -221,3 +218,4 @@ elif [ "$1" == "ndb_waiter" ]; then
 fi
 
 exec "$@"
+
