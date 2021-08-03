@@ -43,9 +43,7 @@ export class DoctorsService {
   findAll(): Promise<Doctor[]> {
     return this.doctorRepository.find({
       relations: ['specializedFields'],
-      order: {
-        updatedTime: 'DESC',
-      },
+      order: { updatedTime: 'DESC' }
     });
   }
 
