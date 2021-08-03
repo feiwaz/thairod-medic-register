@@ -1,14 +1,14 @@
 import {
   ConflictException,
   Injectable,
-  InternalServerErrorException,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
   FindOneVolunteerDto,
-  VolunteerToDepartment,
+  VolunteerToDepartment
 } from './dto/find-one-volunteer.dto';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
@@ -23,7 +23,7 @@ export class VolunteersService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
-  ) {}
+  ) { }
 
   async create(createVolunteerDto: CreateVolunteerDto) {
     try {
@@ -40,9 +40,9 @@ export class VolunteersService {
   private async mapDtoToEntity(
     createVolunteerDto: CreateVolunteerDto,
   ): Promise<Volunteer> {
-    const { department, ...volunteerEntities } = createVolunteerDto;
+    const { departments, ...volunteerEntities } = createVolunteerDto;
     const savedDepartment = await this.departmentRepository.find({
-      where: { label: In(department) },
+      where: { label: In(departments) },
     });
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartment = [];

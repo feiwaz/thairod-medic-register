@@ -5,15 +5,16 @@ import {
   IsNumber,
   IsOptional,
   Max,
-  Min,
+  Min
 } from 'class-validator';
 import { Department, DepartmentLabel } from '../entities/department.entity';
 import {
   VolunteerInitial,
-  VolunteerStatus,
+  VolunteerStatus
 } from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
+
   @IsNotEmpty()
   @IsNumber()
   @Min(1000000000000, { message: 'id must be equal to 13 characters' })
@@ -22,7 +23,7 @@ export class CreateVolunteerDto {
 
   @IsNotEmpty()
   @IsEnum(VolunteerInitial, {
-    message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง',
+    message: `initial must be like ${Object.values(VolunteerInitial).join(', ')}`
   })
   initial: VolunteerInitial;
 
@@ -64,16 +65,16 @@ export class CreateVolunteerDto {
 
   @IsOptional()
   @IsEnum(VolunteerStatus, {
-    message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว',
+    message: `status must be like ${Object.values(VolunteerStatus).join(', ')}`
   })
   status: VolunteerStatus;
 
   //can insert with only id field
   @IsNotEmpty()
   @IsEnum(DepartmentLabel, {
-    message:
-      'department must be like เเอดมินตอบ LINE,คัดกรอง,ส่งต่อประสานงาน,เฝ้าระวัง,พูดคุยกับผู้ป่วย,IT Support,อบรวมอาสาสมัคร,จัดซื้อ/หาของ,ประสานงานเเละเอกสาร,เเพทย์อาสา,เเพคเเละคลัง',
+    message: `department must be like ${Object.values(DepartmentLabel).join(', ')}`,
     each: true,
   })
-  department: Department[];
+  departments: Department[];
+
 }
