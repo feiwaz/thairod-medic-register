@@ -1,0 +1,16 @@
+.verify-list-container {
+  &.mat-elevation-z5 {
+    margin: 20px;
+  }
+
+  mat-tab-group {
+    margin: 10px;
+
+    mat-tab {
+      .verify-list-table-container {
+        // width: 100%;
+      }
+
+    }
+  }
+}
