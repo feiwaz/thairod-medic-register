@@ -53,7 +53,7 @@ export class AvailableTimeFormComponent implements OnInit {
   }
 
   private patchValue() {
-    let basicInfoString = sessionStorage.getItem('basicInfo');
+    let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       if (availableTimes) {
@@ -76,11 +76,11 @@ export class AvailableTimeFormComponent implements OnInit {
   }
 
   private saveToSessionStorage(availableTimes: string[]) {
-    let basicInfoString = sessionStorage.getItem('basicInfo');
+    let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       let basicInfo = JSON.parse(basicInfoString) as BasicInfo;
       basicInfo = Object.assign(basicInfo, { availableTimes });
-      sessionStorage.setItem('basicInfo', JSON.stringify(basicInfo));
+      sessionStorage.setItem(`${this.role}BasicInfo`, JSON.stringify(basicInfo));
     }
   }
 

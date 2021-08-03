@@ -50,7 +50,7 @@ export class ReviewInfoComponent implements OnInit {
   }
 
   private initiateFields() {
-    let basicInfoString = sessionStorage.getItem('basicInfo');
+    let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber,
         lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
@@ -59,7 +59,7 @@ export class ReviewInfoComponent implements OnInit {
         address, contactNumber, lineId, availableTimes
       };
     }
-    let jobInfoString = sessionStorage.getItem('jobInfo');
+    let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
       const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
       this.jobInfo = { specializedFields, medCertificateId };
@@ -86,6 +86,7 @@ export class ReviewInfoComponent implements OnInit {
       }
     });
   }
+
   handleErrorResponse(): void {
     this.isLoading = false;
     this.errorResponse = true;

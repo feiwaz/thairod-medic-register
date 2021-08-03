@@ -16,7 +16,7 @@ interface specializedFieldCheckbox {
 })
 export class DoctorJobInfoFormComponent implements OnInit {
 
-  role = '';
+  role = 'doctor';
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medCertificateId: 0
@@ -42,12 +42,11 @@ export class DoctorJobInfoFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.patchValue();
   }
 
   private patchValue() {
-    let jobInfoString = sessionStorage.getItem('jobInfo');
+    let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
       const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
       this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
@@ -64,7 +63,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   onSubmit(): void {
     const jobInfo = this.buildJobInfo();
-    sessionStorage.setItem('jobInfo', JSON.stringify(jobInfo));
+    sessionStorage.setItem(`${this.role}JobInfo`, JSON.stringify(jobInfo));
     this.router.navigate([`/${this.role}/available-time`]);
   }
 

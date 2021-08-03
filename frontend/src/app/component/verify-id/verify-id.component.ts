@@ -97,7 +97,7 @@ export class VerifyIdComponent implements OnInit {
       this.isExistingUser = true;
     } else {
       const basicInfo = this.buildBasicInfo();
-      sessionStorage.setItem('basicInfo', JSON.stringify(basicInfo));
+      sessionStorage.setItem(`${this.role}BasicInfo`, JSON.stringify(basicInfo));
       this.router.navigate([`/${this.role}/review-tc`]);
     }
   }

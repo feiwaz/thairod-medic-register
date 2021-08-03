@@ -66,7 +66,7 @@ export class BasicInfoFormComponent implements OnInit {
   }
 
   private patchValue() {
-    let basicInfoString = sessionStorage.getItem('basicInfo');
+    let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { id, initial, firstName, lastName, dateOfBirth, address,
         contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
@@ -88,7 +88,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   onSubmit(): void {
     const basicInfo = this.buildBasicInfo();
-    sessionStorage.setItem('basicInfo', JSON.stringify(basicInfo));
+    sessionStorage.setItem(`${this.role}BasicInfo`, JSON.stringify(basicInfo));
     this.router.navigate([`/${this.role}/job-info`]);
   }
 

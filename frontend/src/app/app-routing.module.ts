@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'doctor',
     data: { role: 'doctor' },
     children: [{
-      path: 'verify-id', component: VerifyIdComponent,
+      path: 'verify-id', component: VerifyIdComponent
     }, {
       path: 'review-tc', component: ReviewTcComponent
     }, {
@@ -30,10 +30,10 @@ const routes: Routes = [
     }]
   },
   {
-    path: 'volunteer', component: VerifyIdComponent,
+    path: 'volunteer',
     data: { role: 'volunteer' },
     children: [{
-      path: 'verify-id', component: VerifyIdComponent,
+      path: 'verify-id', component: VerifyIdComponent
     }, {
       path: 'review-tc', component: ReviewTcComponent
     }, {
