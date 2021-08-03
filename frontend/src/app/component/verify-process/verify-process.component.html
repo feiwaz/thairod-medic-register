@@ -1,0 +1,66 @@
+<div class="verify-process-container">
+    <div class="verify-process-top">
+        <div class="title">
+            <div class="label">
+                ตรวจสอบข้อมูลลงทะเบียน
+            </div>
+
+            <div class="sub-label">
+                รายชื่อผู้ลงทะเบียน
+            </div>
+            <span class="dot"></span>
+            <div class="sub-label">
+                ตรวจสอบข้อมูลผู้สมัคร
+            </div>
+        </div>
+        <button mat-flat-button color="primary">
+            <mat-icon>
+                arrow_back
+            </mat-icon>
+            ย้อนกลับ
+        </button>
+        <button mat-flat-button color="primary">
+            <mat-icon>
+                block
+            </mat-icon>
+            ไม่ผ่าน
+        </button>
+        <button mat-flat-button color="primary">
+            <mat-icon>
+                check_circle_outline
+            </mat-icon>
+            ผ่าน
+        </button>
+    </div>
+    <div class="mat-elevation-z5">
+        <mat-card>
+            <div class="personal-information">
+                <mat-card-title>ข้อมูลส่วนบุคคล</mat-card-title>
+                <mat-card-content>
+                    <div></div>
+                </mat-card-content>
+            </div>
+            <div class="medical-practice-information">
+                <mat-card-title>ข้อมูลการประกอบวิชาชีพทางเวชกรรม</mat-card-title>
+                <mat-card-content>
+                    <div></div>
+                </mat-card-content>
+            </div>
+            <div class="attachment">
+                <mat-card-title>ไฟล์แนบ</mat-card-title>
+                <img mat-card-image>
+                <img mat-card-image>
+                <img mat-card-image>
+                <img mat-card-image>
+            </div>
+            <div class="note">
+                <mat-card-title>หมายเหตุ</mat-card-title>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <input matInput placeholder="หมายเหตุ">
+                    </mat-form-field>
+                </mat-card-content>
+            </div>
+        </mat-card>
+    </div>
+</div>
