@@ -15,7 +15,10 @@ export class UserDialogComponent implements OnInit {
   isLoading = false;
   isCreatingNew = false;
   errorMessage = 'Please try again later';
-  roleOptions: { value: number, viewValue: string }[] = [];
+  roleOptions: { value: number, viewValue: string }[] = [
+    { value: 0, viewValue: 'ผู้ตรวจสอบ' },
+    { value: 1, viewValue: 'แอดมิน' }
+  ];
 
   userForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
