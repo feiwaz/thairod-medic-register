@@ -15,13 +15,20 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      await this.userRepository.insert(createUserDto);
+      const user = await this.mapDtoToEntity(createUserDto);
+      await this.userRepository.save(user);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error.code);
     }
+  }
+
+  private async mapDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
+    const { ...userEntities } = createUserDto;
+    const user = Object.assign(new User(), userEntities);
+    return user;
   }
 
   findAll(): Promise<User[]> {
