@@ -27,7 +27,8 @@ export class ReviewInfoComponent implements OnInit {
     dateOfBirth: '',
     address: '',
     contactNumber: '',
-    lineId: ''
+    lineId: '',
+    availableTimes: []
   };
 
   jobInfo: DoctorJobInfo = {
@@ -51,16 +52,16 @@ export class ReviewInfoComponent implements OnInit {
   private initiateFields() {
     let basicInfoString = sessionStorage.getItem('basicInfo');
     if (basicInfoString) {
-      const { id, initial, firstName, lastName, dateOfBirth,
-        address, contactNumber, lineId } = JSON.parse(basicInfoString);
+      const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber,
+        lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.basicInfo = {
         id, initial, firstName, lastName, dateOfBirth,
-        address, contactNumber, lineId
+        address, contactNumber, lineId, availableTimes
       };
     }
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
       this.jobInfo = { specializedFields, medCertificateId };
     }
   }

@@ -105,7 +105,7 @@ export class VerifyIdComponent implements OnInit {
   buildBasicInfo(): BasicInfo {
     return {
       id: this.verifyForm.controls.id.value, initial: '', firstName: '', lastName: '',
-      dateOfBirth: '', address: '', contactNumber: '', lineId: ''
+      dateOfBirth: '', address: '', contactNumber: '', lineId: '', availableTimes: []
     }
   }
 

@@ -17,7 +17,6 @@ interface specializedFieldCheckbox {
 export class DoctorJobInfoFormComponent implements OnInit {
 
   role = '';
-
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medCertificateId: 0
@@ -50,7 +49,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
   private patchValue() {
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
       this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
 
       if (specializedFields.length !== 0) {
@@ -66,7 +65,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
   onSubmit(): void {
     const jobInfo = this.buildJobInfo();
     sessionStorage.setItem('jobInfo', JSON.stringify(jobInfo));
-    this.router.navigate([`/${this.role}/review-info`]);
+    this.router.navigate([`/${this.role}/available-time`]);
   }
 
   buildJobInfo(): DoctorJobInfo {

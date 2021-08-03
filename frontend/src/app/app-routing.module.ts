@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminLoginComponent } from './component/admin-login/admin-login.component';
+import { AvailableTimeFormComponent } from './component/available-time-form/available-time-form.component';
 import { BasicInfoFormComponent } from './component/basic-info-form/basic-info-form.component';
 import { DoctorJobInfoFormComponent } from './component/doctor-job-info-form/doctor-job-info-form.component';
 import { MainComponent } from './component/main/main.component';
@@ -22,9 +23,9 @@ const routes: Routes = [
       path: 'basic-info', component: BasicInfoFormComponent
     }, {
       path: 'job-info', component: DoctorJobInfoFormComponent
-    },
-    // TODO: add doctor specific available time component here
-    {
+    }, {
+      path: 'available-time', component: AvailableTimeFormComponent
+    }, {
       path: 'review-info', component: ReviewInfoComponent
     }]
   },

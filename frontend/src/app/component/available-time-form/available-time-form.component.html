@@ -1,0 +1,22 @@
+<app-toolbar [toolbarTitle]="'ระบุวันและเวลาที่สะดวก'"></app-toolbar>
+<div class="form-container">
+  <form [formGroup]="availableTimeForm" (ngSubmit)="onSubmit()">
+    <div class="form-array-container">
+      <p class="available-time-paragraph"><b>โปรดระบุวันและเวลาที่สะดวก</b></p>
+      <div class="form-field-container" *ngFor="let day of days">
+        <p class="mat-form-field-day"><b>{{day.viewValue}}</b></p>
+        <mat-form-field class="mat-form-field-shift">
+          <mat-label>-- เลือกช่วงเวลา --</mat-label>
+          <mat-select [formControlName]="day.value">
+            <mat-option *ngFor="let shift of shifts" [value]="shift.value">
+              {{shift.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!availableTimeForm.valid">
+      ถัดไป <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </form>
+</div>
