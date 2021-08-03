@@ -19,9 +19,8 @@ import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
+import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
 import { SharedModule } from './module/shared.module';
-import { ChangePasswordFormComponent } from './component/change-password-form/change-password-form.component';
-import { UserAccountDialogComponent } from './dialog/user-account-dialog/user-account-dialog.component';
 
 export const DATE_FORMAT = {
   parse: {
@@ -49,6 +48,7 @@ export const DATE_FORMAT = {
     ReviewInfoComponent,
     AdminLoginComponent,
     AvailableTimeFormComponent,
+    VolunteerJobInfoFormComponent
   ],
   imports: [
     BrowserModule,
