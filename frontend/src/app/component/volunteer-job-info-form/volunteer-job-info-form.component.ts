@@ -52,7 +52,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   }
 
   private patchValue() {
-    let jobInfoString = sessionStorage.getItem('jobInfo');
+    let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
       const { departments, medCertificateId } = JSON.parse(
         jobInfoString
