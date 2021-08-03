@@ -8,7 +8,7 @@ export enum DepartmentLabel {
   DEPARTMENT4 = 'เฝ้าระวัง',
   DEPARTMENT5 = 'พูดคุยกับผู้ป่วย',
   DEPARTMENT6 = 'IT Support',
-  DEPARTMENT7 = 'อบรวมอาสาสมัคร',
+  DEPARTMENT7 = 'อบรมอาสาสมัคร',
   DEPARTMENT8 = 'จัดซื้อ/หาของ',
   DEPARTMENT9 = 'ประสานงานเเละเอกสาร',
   DEPARTMENT10 = 'เเพทย์อาสา',

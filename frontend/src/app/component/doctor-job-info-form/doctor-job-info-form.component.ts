@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
-
-interface specializedFieldCheckbox {
-  formControlName: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'app-doctor-job-info-form',
@@ -22,7 +17,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
     medCertificateId: 0
   };
 
-  specializedFields: specializedFieldCheckbox[] = SPECIALIZED_FIELDS;
+  specializedFields = SPECIALIZED_FIELDS;
 
   jobInfoForm = this.fb.group({
     field1: [{ value: true, disabled: true }], field2: false,
@@ -37,7 +32,6 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
   ) { }
 

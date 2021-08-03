@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DEPARTMENTS } from 'src/app/constant/departments';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
-
-interface departmentCheckbox {
-  formControlName: string;
-  viewValue: string;
-  isOnline: boolean;
-}
 
 @Component({
   selector: 'app-volunteer-job-info-form',
@@ -16,13 +10,14 @@ interface departmentCheckbox {
   styleUrls: ['./volunteer-job-info-form.component.scss'],
 })
 export class VolunteerJobInfoFormComponent implements OnInit {
-  role = '';
+
+  role = 'volunteer';
   jobInfo: VolunteerJobInfo = {
     departments: [],
-    medCertificateId: 0,
+    medCertificateId: 0
   };
 
-  departments: departmentCheckbox[] = DEPARTMENTS;
+  departments = DEPARTMENTS;
 
   jobInfoForm = this.fb.group({
     department1: [{ value: true, disabled: true }],
@@ -42,32 +37,24 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe((data) => (this.role = data.role || this.role));
     this.patchValue();
   }
 
   private patchValue() {
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { departments, medCertificateId } = JSON.parse(
-        jobInfoString
-      ) as VolunteerJobInfo;
+      const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
       this.jobInfoForm.patchValue({ departments, medCertificateId });
 
       if (departments.length !== 0) {
         departments.forEach((viewValue: string) => {
           this.departments
-            .filter((department) => department.viewValue === viewValue)
-            .map((department) =>
-              this.jobInfoForm.controls[department.formControlName].setValue(
-                true
-              )
-            );
+            .filter(department => department.viewValue === viewValue)
+            .map(department => this.jobInfoForm.controls[department.formControlName].setValue(true));
         });
       }
     }
@@ -89,21 +76,14 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   buildDepartments() {
     return this.departments.reduce((result, department) => {
-      if (
-        this.jobInfoForm.controls[department.formControlName].value === true
-      ) {
+      if (this.jobInfoForm.controls[department.formControlName].value === true) {
         result.push(department.viewValue);
       }
       return result;
     }, [] as any);
   }
 
-  filterType(
-    departments: departmentCheckbox[],
-    isOnline: boolean
-  ): departmentCheckbox[] {
-    return departments.filter(
-      (department: departmentCheckbox) => department.isOnline == isOnline
-    );
+  filterType(isOnline = true) {
+    return this.departments.filter(department => department.isOnline === isOnline);
   }
 }
