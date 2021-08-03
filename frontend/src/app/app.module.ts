@@ -20,6 +20,7 @@ import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { SharedModule } from './module/shared.module';
+import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
 
 export const DATE_FORMAT = {
   parse: {
@@ -46,7 +47,8 @@ export const DATE_FORMAT = {
     DoctorJobInfoFormComponent,
     ReviewInfoComponent,
     AdminLoginComponent,
-    AvailableTimeFormComponent
+    AvailableTimeFormComponent,
+    VolunteerJobInfoFormComponent
   ],
   imports: [
     BrowserModule,
