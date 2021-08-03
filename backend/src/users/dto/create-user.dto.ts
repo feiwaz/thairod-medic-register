@@ -17,9 +17,6 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty()
-  salt: string;
-
-  @IsNotEmpty()
   firstName: string;
 
   @IsNotEmpty()
