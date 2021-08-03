@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { responseDoctorDto } from './dto/response-doctor.dto';
+import { VerifyDoctorDto } from './dto/verify-doctor.dto';
 import { Doctor } from './entities/doctor.entity';
 import { SpecializedField } from './entities/specializedField.entity';
 
@@ -68,5 +69,9 @@ export class DoctorsService {
 
   async remove(id: number): Promise<void> {
     await this.doctorRepository.delete(id);
+  }
+
+  updateStatus(id: number, verifyDoctor: VerifyDoctorDto) {
+    this.doctorRepository.update(id, { status: verifyDoctor.status });
   }
 }
