@@ -1,5 +1,5 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
-import { UserInitial, UserStatus } from "../entities/user.entity";
+import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
+import { UserRole } from "../entities/user.entity";
 
 export class CreateUserDto {
 
@@ -10,8 +10,14 @@ export class CreateUserDto {
   id: string;
 
   @IsNotEmpty()
-  @IsEnum(UserInitial, { message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง' })
-  initial: UserInitial;
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
+  salt: string;
 
   @IsNotEmpty()
   firstName: string;
@@ -20,20 +26,15 @@ export class CreateUserDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  dateOfBirth: string;
-
-  @IsNotEmpty()
-  address: string;
-
-  @IsNotEmpty()
   contactNumber: string;
 
   @IsNotEmpty()
-  lineId: string;
+  @IsEnum(UserRole, { message: 'role must be Admin or User'})
 
-  @IsOptional()
-  @IsEnum(UserStatus, { message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว' })
-  status: UserStatus;
+  @IsNotEmpty()
+  isActive: boolean;
+
+  @IsNotEmpty()
+  createdBy: string;
 
 }
