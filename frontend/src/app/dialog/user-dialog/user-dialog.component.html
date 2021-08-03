@@ -46,10 +46,10 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle formControlName="isActive">เปิดใช้งาน</mat-slide-toggle>
-            <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
-                type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
+            <mat-slide-toggle class="mat-form-field" formControlName="isActive">เปิดใช้งาน</mat-slide-toggle>
         </form>
+        <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
+            type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
     </div>
 </div>
 <mat-dialog-actions align="end">
