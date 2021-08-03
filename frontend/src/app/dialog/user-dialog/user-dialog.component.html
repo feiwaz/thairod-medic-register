@@ -17,9 +17,24 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input matInput #name maxlength="32" placeholder="ชื่อ-นามสกุล" formControlName="name">
-                <mat-hint align="end">{{name.value.length}} / 32</mat-hint>
-                <mat-error *ngIf="userForm.controls.name.hasError('required')">
+                <input matInput #firstName maxlength="32" placeholder="ชื่อ" formControlName="firstName">
+                <mat-hint align="end">{{firstName.value.length}} / 32</mat-hint>
+                <mat-error *ngIf="userForm.controls.firstName.hasError('required')">
+                    จำเป็นต้องใส่*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput #lastName maxlength="32" placeholder="นามสกุล" formControlName="lastName">
+                <mat-hint align="end">{{lastName.value.length}} / 32</mat-hint>
+                <mat-error *ngIf="userForm.controls.lastName.hasError('required')">
+                    จำเป็นต้องใส่*
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput #contactNumber maxlength="32" placeholder="เบอร์โทรศัพท์"
+                    formControlName="contactNumber">
+                <mat-hint align="end">{{contactNumber.value.length}} / 32</mat-hint>
+                <mat-error *ngIf="userForm.controls.contactNumber.hasError('required')">
                     จำเป็นต้องใส่*
                 </mat-error>
             </mat-form-field>
@@ -31,6 +46,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+            <mat-slide-toggle formControlName="isActive">เปิดใช้งาน</mat-slide-toggle>
             <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
                 type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
         </form>

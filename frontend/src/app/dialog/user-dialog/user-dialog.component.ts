@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { Role } from 'src/app/model/role.model';
 import { User } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
 
@@ -19,9 +18,14 @@ export class UserDialogComponent implements OnInit {
   roleOptions: { value: number, viewValue: string }[] = [];
 
   userForm = this.fb.group({
-    email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-    name: [{ value: '', disabled: true }, [Validators.required]],
-    role: [{ value: 0, disabled: true }, [Validators.required]]
+    email: ['', [Validators.required, Validators.email]],
+    password: [''],
+    confirmPassword: [''],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    contactNumber: ['', Validators.required],
+    role: [0, Validators.required],
+    isActive: [true, Validators.required]
   });
 
   constructor(
@@ -35,42 +39,14 @@ export class UserDialogComponent implements OnInit {
   ngOnInit(): void {
     if (!this.data || !this.data.row) {
       this.isCreatingNew = true;
-    }
-    this.initRoleOptions();
-  }
-
-  private initRoleOptions(): void {
-    this.isLoading = true;
-    // this.roleService.getRoles().subscribe(
-    //   response => this.handleSuccessfulGetRoles(response as Role[]),
-    //   errorResponse => this.handleErrorGetRoles()
-    // );
-  }
-
-  private handleSuccessfulGetRoles(roles: Role[]): void {
-    roles.forEach(role => {
-      const { value, text } = role;
-      this.roleOptions.push({ value, viewValue: text });
-    });
-    this.isLoading = false;
-    this.userForm.enable();
-    this.initForm();
-  }
-
-  private handleErrorGetRoles(): void {
-    this.isLoading = false;
-    this.userForm.enable();
-  }
-
-  private initForm(): void {
-    if (this.data && this.data.row) {
+    } else {
       this.initUpdateForm();
     }
   }
 
   private initUpdateForm(): void {
-    const { _id, email, name, role } = this.data.row as User;
-    this.userForm.patchValue({ _id, email, name, role: (role as Role)?.value });
+    const { _id, firstName, lastName, email, role, contactNumber, isActive } = this.data.row as User;
+    this.userForm.patchValue({ _id, firstName, lastName, email, role, contactNumber, isActive });
   }
 
   onSubmit(): void {
@@ -88,9 +64,13 @@ export class UserDialogComponent implements OnInit {
 
   private buildRequestBody(): User {
     return {
+      firstName: this.userForm.controls.firstName.value,
+      lastName: this.userForm.controls.lastName.value,
       email: this.userForm.controls.email.value,
-      name: this.userForm.controls.name.value,
-      role: this.userForm.controls.role.value
+      contactNumber: this.userForm.controls.contactNumber.value,
+      isActive: this.userForm.controls.isActive.value,
+      password: this.userForm.controls.password.value,
+      role: 'user'
     };
   }
 
