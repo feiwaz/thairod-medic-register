@@ -73,7 +73,7 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   @IsEnum(DepartmentLabel, {
     message:
-      'specializedFields must be like สาขาหนึ่ง, สาขาสอง, สาขาสาม, สาขาสี่, สาขาห้า, อื่นๆ',
+      'specializedFields must be like ' + Object.values(DepartmentLabel).join(', '),
     each: true,
   })
   department: Department[];
