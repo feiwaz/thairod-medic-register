@@ -16,7 +16,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const user = await this.mapDtoToEntity(createUserDto);
+      const user = await this.mapCreateDtoToEntity(createUserDto);
       await this.userRepository.save(user);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
@@ -26,9 +26,8 @@ export class UsersService {
     }
   }
 
-  private async mapDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
-    const { ...userEntities } = createUserDto;
-    const user = Object.assign(new User(), userEntities);
+  private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
+    const user = Object.assign(new User(), createUserDto);
 
     const salt = await genSalt();
     user.password = await hash(createUserDto.password, salt);
@@ -48,8 +47,23 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user with body ${updateUserDto}`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.mapUpdateDtoToEntity(id, updateUserDto);
+      await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException(error.code);
+    }
+  }
+
+  private async mapUpdateDtoToEntity(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = Object.assign(await this.findOne(id), updateUserDto);
+
+    if (updateUserDto.hasOwnProperty('password')) {
+      user.password = await hash(updateUserDto.password, user.salt);
+    }
+
+    return user;
   }
 
   async remove(id: number): Promise<void> {
