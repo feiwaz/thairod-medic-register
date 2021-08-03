@@ -1,9 +1,8 @@
-import { type } from "os";
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserRole {
   ADMIN = 'Admin',
-  USER = 'User'
+  USER = 'User',
 }
 
 @Entity()

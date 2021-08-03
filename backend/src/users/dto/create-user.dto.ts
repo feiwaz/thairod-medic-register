@@ -1,4 +1,4 @@
-import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, Max, Min } from "class-validator";
 import { UserRole } from "../entities/user.entity";
 
 export class CreateUserDto {
@@ -30,6 +30,7 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsEnum(UserRole, { message: 'role must be Admin or User'})
+  role: UserRole;
 
   @IsNotEmpty()
   isActive: boolean;
