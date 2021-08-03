@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 import { SafeHtmlPipe } from 'src/app/pipe/safe-html.pipe';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { AccountMenuComponent } from '../account-menu/account-menu.component';
+import { ManageRegisteredUserComponent } from '../manage-registered-user/manage-registered-user.component';
 import { AdminMainComponent } from './admin-main.component';
 
 describe('AdminMainComponent', () => {
@@ -34,7 +35,10 @@ describe('AdminMainComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes(
-          [{ path: 'admin/main/manage-account', component: AdminMainComponent }]
+          [
+            { path: 'admin/main/manage-account', component: AdminMainComponent },
+            { path: 'admin/main/manage-registered-user', component: ManageRegisteredUserComponent }
+          ]
         ),
         MatIconModule,
         MatListModule,

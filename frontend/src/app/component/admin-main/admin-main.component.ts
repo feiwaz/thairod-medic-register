@@ -16,7 +16,7 @@ export class AdminMainComponent implements OnInit, OnDestroy {
     relativePath: './manage-account',
     label: 'การจัดการบัญชี'
   }, {
-    relativePath: './manage-user',
+    relativePath: './manage-registered-user',
     label: 'รายชื่อผู้ลงทะเบียน'
   }, {
     relativePath: './manage-user-training-status',
