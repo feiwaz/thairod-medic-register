@@ -58,9 +58,7 @@ export class VolunteersService {
   findAll(): Promise<Volunteer[]> {
     return this.volunteerRepository.find({
       relations: ['volunteerDepartment'],
-      order: {
-        updatedTime: 'DESC',
-      },
+      order: { updatedTime: 'DESC' }
     });
   }
 
