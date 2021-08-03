@@ -63,7 +63,7 @@ export class Doctor {
   @Column({
     type: 'enum',
     enum: DoctorStatus,
-    default: DoctorStatus.PENDING,
+    default: DoctorStatus.PENDING
   })
   status: DoctorStatus;
 

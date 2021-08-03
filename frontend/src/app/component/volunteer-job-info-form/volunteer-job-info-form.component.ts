@@ -68,10 +68,12 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   buildJobInfo(): VolunteerJobInfo {
     const departments = this.buildDepartments();
-    return {
-      departments,
-      medCertificateId: this.jobInfoForm.controls.medCertificateId.value,
-    };
+    const medCertificateId = this.jobInfoForm.controls.medCertificateId.value;
+    let jobInfo = { departments } as VolunteerJobInfo;
+    if (medCertificateId) {
+      jobInfo.medCertificateId = medCertificateId;
+    }
+    return jobInfo;
   }
 
   buildDepartments() {

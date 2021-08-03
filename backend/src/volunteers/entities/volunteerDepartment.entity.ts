@@ -4,6 +4,7 @@ import { Volunteer } from './volunteer.entity';
 
 @Entity()
 export class VolunteerDepartment {
+
   @PrimaryColumn({ type: 'bigint' })
   volunteerId: string;
 
@@ -23,8 +24,7 @@ export class VolunteerDepartment {
   )
   department: Department;
 
-  @Column({
-    default: 1,
-  })
+  @Column({ default: 0 })
   trainingStatus: number;
+
 }

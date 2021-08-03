@@ -46,7 +46,7 @@ export class Volunteer {
   @Column()
   lineId: string;
 
-  @Column()
+  @Column({ nullable: true })
   medCertificateId: number;
 
   @Column({ nullable: true })
@@ -64,7 +64,7 @@ export class Volunteer {
   @Column({
     type: 'enum',
     enum: VolunteerStatus,
-    default: VolunteerStatus.PENDING,
+    default: VolunteerStatus.PENDING
   })
   status: VolunteerStatus;
 

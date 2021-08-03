@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
+import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId } from 'src/app/util/util-functions';
@@ -31,8 +32,9 @@ export class ReviewInfoComponent implements OnInit {
     availableTimes: []
   };
 
-  jobInfo: DoctorJobInfo = {
+  jobInfo: any = {
     specializedFields: [],
+    departments: [],
     medCertificateId: 0
   };
 
@@ -59,10 +61,16 @@ export class ReviewInfoComponent implements OnInit {
         address, contactNumber, lineId, availableTimes
       };
     }
+
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
-      this.jobInfo = { specializedFields, medCertificateId };
+      if (this.role === 'doctor') {
+        const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
+        this.jobInfo = { specializedFields, medCertificateId } as DoctorJobInfo;
+      } else {
+        const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
+        this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
+      }
     }
   }
 
