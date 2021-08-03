@@ -49,6 +49,7 @@ export class VerifyIdComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    sessionStorage.clear();
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();

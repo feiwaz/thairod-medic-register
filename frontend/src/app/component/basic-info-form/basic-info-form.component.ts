@@ -82,7 +82,6 @@ export class BasicInfoFormComponent implements OnInit {
   }
 
   onBackToVerifyId(): void {
-    sessionStorage.clear();
     this.router.navigate([`/${this.role}/verify-id`]);
   }
 
