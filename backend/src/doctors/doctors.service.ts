@@ -76,7 +76,7 @@ export class DoctorsService {
     try {
       this.doctorRepository.update(id, { status: verifyDoctor.status });
     } catch (error) {
-      throw new NotFoundException("ไม่พบ id นี้" + error.code)
+      throw new NotFoundException("ไม่พบ id นี้" + error.code);
     }
   }
 }

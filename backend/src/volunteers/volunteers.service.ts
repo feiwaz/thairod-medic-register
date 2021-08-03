@@ -115,7 +115,7 @@ export class VolunteersService {
     try {
       this.volunteerRepository.update(id, { status: verifyVolunteer.status });
     } catch (error) {
-      throw new NotFoundException("ไม่พบ id นี้" + error.code)
+      throw new NotFoundException("ไม่พบ id นี้" + error.code);
     }
   }
 }
