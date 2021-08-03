@@ -4,6 +4,7 @@ import { AdminLoginComponent } from './component/admin-login/admin-login.compone
 import { AvailableTimeFormComponent } from './component/available-time-form/available-time-form.component';
 import { BasicInfoFormComponent } from './component/basic-info-form/basic-info-form.component';
 import { DoctorJobInfoFormComponent } from './component/doctor-job-info-form/doctor-job-info-form.component';
+import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
 import { MainComponent } from './component/main/main.component';
 import { ReviewInfoComponent } from './component/review-info/review-info.component';
 import { ReviewTcComponent } from './component/review-tc/review-tc.component';
@@ -39,7 +40,9 @@ const routes: Routes = [
     }, {
       path: 'basic-info', component: BasicInfoFormComponent
     },
-    // TODO: add volunteer specific job info component here
+    {
+      path : 'job-info' , component: VolunteerJobInfoFormComponent
+    },
     // TODO: add volunteer specific available time component here
     {
       path: 'review-info', component: ReviewInfoComponent

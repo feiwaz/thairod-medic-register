@@ -45,7 +45,6 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   lineId: string;
 
-  @IsNotEmpty()
   @IsNumber()
   @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
   @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
@@ -73,7 +72,7 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   @IsEnum(DepartmentLabel, {
     message:
-      'specializedFields must be like สาขาหนึ่ง, สาขาสอง, สาขาสาม, สาขาสี่, สาขาห้า, อื่นๆ',
+      'department must be like เเอดมินตอบ LINE,คัดกรอง,ส่งต่อประสานงาน,เฝ้าระวัง,พูดคุยกับผู้ป่วย,IT Support,อบรวมอาสาสมัคร,จัดซื้อ/หาของ,ประสานงานเเละเอกสาร,เเพทย์อาสา,เเพคเเละคลัง',
     each: true,
   })
   department: Department[];
