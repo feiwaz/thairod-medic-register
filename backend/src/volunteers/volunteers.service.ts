@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
@@ -10,6 +11,7 @@ import {
   FindOneVolunteerDto,
   VolunteerToDepartment,
 } from './dto/find-one-volunteer.dto';
+import { VerifyVolunteerDto } from './dto/verify-volunteer.dto';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
@@ -107,5 +109,13 @@ export class VolunteersService {
 
   async remove(id: number): Promise<void> {
     await this.volunteerRepository.delete(id);
+  }
+
+  updateStatus(id: number, verifyVolunteer: VerifyVolunteerDto) {
+    try {
+      this.volunteerRepository.update(id, { status: verifyVolunteer.status });
+    } catch (error) {
+      throw new NotFoundException("ไม่พบ id นี้" + error.code)
+    }
   }
 }

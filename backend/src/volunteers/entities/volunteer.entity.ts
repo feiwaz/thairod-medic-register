@@ -12,6 +12,7 @@ export enum VolunteerInitial {
 export enum VolunteerStatus {
   PENDING = 'รอการอนุมัติ',
   APPROVED = 'อนุมัติแล้ว',
+  DENIED = 'ไม่อนุมัติ'
 }
 
 @Entity()
