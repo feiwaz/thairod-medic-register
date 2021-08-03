@@ -7,12 +7,11 @@ export enum DepartmentLabel {
   INIT3 = 'สาขาสาม',
   INIT4 = 'สาขาสี่',
   INIT5 = 'สาขาห้า',
-  INIT6 = 'สาขาหก',
+  INIT6 = 'อื่นๆ',
 }
 
 @Entity()
 export class Department {
-
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -24,8 +23,8 @@ export class Department {
 
   @OneToMany(
     () => VolunteerDepartment,
-    volunteerDepartment => volunteerDepartment.department,
-    { cascade: true }
+    (volunteerDepartment) => volunteerDepartment.department,
+    { cascade: true },
   )
   volunteerDepartment: VolunteerDepartment[];
 

@@ -32,6 +32,6 @@ ENV TZ=Asia/Bangkok
 WORKDIR /opt/app
 COPY  --from=dependency /opt/app/backend/node_modules /opt/app/node_modules
 COPY  --from=build /opt/app/backend/dist/ /opt/app/
-COPY  --from=build /opt/app/frontend/dist/ /opt/app/public/
+COPY  --from=build /opt/app/frontend/dist/ /opt/public/
 
 CMD node main
