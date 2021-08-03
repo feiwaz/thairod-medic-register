@@ -75,8 +75,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   onSubmit(): void {
     const jobInfo = this.buildJobInfo();
-    console.log(jobInfo);
-    sessionStorage.setItem('jobInfo', JSON.stringify(jobInfo));
+    sessionStorage.setItem(`${this.role}JobInfo`, JSON.stringify(jobInfo));
     this.router.navigate([`/${this.role}/available-time`]);
   }
 
