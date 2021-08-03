@@ -10,7 +10,8 @@ export enum UserInitial {
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
-  APPROVED = 'อนุมัติแล้ว'
+  APPROVED = 'อนุมัติแล้ว',
+  DENIED = 'ไม่อนุมัติ'
 }
 
 @Entity()
