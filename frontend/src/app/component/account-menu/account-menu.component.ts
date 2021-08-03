@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { UserAccountDialogComponent } from 'src/app/dialog/user-account-dialog/user-account-dialog.component';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
@@ -19,7 +20,13 @@ export class AccountMenuComponent {
     this.authService.isLoggedIn = true;
   }
 
-  openAccountCard(): void { }
+  openAccountCard(): void {
+    this.dialog.open(UserAccountDialogComponent, {
+      height: '550px',
+      width: '450px',
+      autoFocus: false
+    });
+  }
 
   onLogOutClick(): void {
     this.toastrService.success('ออกจากระบบสำเร็จ');
