@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
+import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId } from 'src/app/util/util-functions';
@@ -27,11 +28,13 @@ export class ReviewInfoComponent implements OnInit {
     dateOfBirth: '',
     address: '',
     contactNumber: '',
-    lineId: ''
+    lineId: '',
+    availableTimes: []
   };
 
-  jobInfo: DoctorJobInfo = {
+  jobInfo: any = {
     specializedFields: [],
+    departments: [],
     medCertificateId: 0
   };
 
@@ -49,19 +52,25 @@ export class ReviewInfoComponent implements OnInit {
   }
 
   private initiateFields() {
-    let basicInfoString = sessionStorage.getItem('basicInfo');
+    let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
-      const { id, initial, firstName, lastName, dateOfBirth,
-        address, contactNumber, lineId } = JSON.parse(basicInfoString);
+      const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber,
+        lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.basicInfo = {
         id, initial, firstName, lastName, dateOfBirth,
-        address, contactNumber, lineId
+        address, contactNumber, lineId, availableTimes
       };
     }
-    let jobInfoString = sessionStorage.getItem('jobInfo');
+
+    let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
-      this.jobInfo = { specializedFields, medCertificateId };
+      if (this.role === 'doctor') {
+        const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
+        this.jobInfo = { specializedFields, medCertificateId } as DoctorJobInfo;
+      } else {
+        const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
+        this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
+      }
     }
   }
 
@@ -85,6 +94,7 @@ export class ReviewInfoComponent implements OnInit {
       }
     });
   }
+
   handleErrorResponse(): void {
     this.isLoading = false;
     this.errorResponse = true;
@@ -92,7 +102,7 @@ export class ReviewInfoComponent implements OnInit {
 
   onEditInfo(path = 'basic-info'): void {
     this.router.navigate([`/${this.role}/${path}`], {
-      state: { basicInfo: this.basicInfo, jobInfo: this.jobInfo }
+      state: { isEditing: true }
     });
   }
 

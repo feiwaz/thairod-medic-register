@@ -1,8 +1,6 @@
-import {
-  VolunteerInitial,
-  VolunteerStatus,
-} from '../entities/volunteer.entity';
+import { VolunteerInitial } from '../entities/volunteer.entity';
 import { DepartmentLabel } from '../entities/department.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
 
 export class FindOneVolunteerDto {
   id: string;
@@ -18,7 +16,7 @@ export class FindOneVolunteerDto {
   jobCertificateSelfieImg: string;
   idCardImg: string;
   idCardSelfieImg: string;
-  status: VolunteerStatus;
+  status: UserStatus;
   departments: VolunteerToDepartment[];
 }
 

@@ -1,16 +1,16 @@
 .form-container {
   position: fixed;
   top: 56px;
-  height: 100%;
+  height: calc(100% - 56px);
   width: 100%;
+  overflow: auto;
 }
 
 form {
   flex-direction: column;
   display: flex;
   justify-content: flex-start;
-  height: 100%;
-  margin: 25px 20px 0 20px;
+  margin: 25px 20px;
 }
 
 .editable-info {
@@ -49,6 +49,10 @@ form {
   margin-left: 10px;
 }
 
+.second-item {
+  margin-top: 15px;
+}
+
 .last-item {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -61,6 +65,7 @@ button {
 @media only screen and (min-width: 600px) {
   .form-container {
     top: 64px;
+    height: calc(100% - 64px);
   }
 
   form {

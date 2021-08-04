@@ -56,5 +56,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo 'deploy to server'
+          curl --location --request POST 'https://app.manage.proen.cloud/1.0/environment/control/rest/redeploycontainersbygroup?envName=thairod-register&session=${{ secrets.PROEN_TOKEN }}&tag=main&nodeGroup=cp' 
     

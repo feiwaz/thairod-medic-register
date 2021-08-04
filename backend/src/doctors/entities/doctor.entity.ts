@@ -1,3 +1,4 @@
+import { UserStatus } from 'src/users/entities/user.entity';
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { SpecializedField } from './specializedField.entity';
 
@@ -6,11 +7,6 @@ export enum DoctorInitial {
   INIT2 = 'แพทย์หญิง',
   INIT3 = 'เภสัชกรชาย',
   INIT4 = 'เภสัชกรหญิง',
-}
-
-export enum DoctorStatus {
-  PENDING = 'รอการอนุมัติ',
-  APPROVED = 'อนุมัติแล้ว',
 }
 
 @Entity()
@@ -62,10 +58,10 @@ export class Doctor {
 
   @Column({
     type: 'enum',
-    enum: DoctorStatus,
-    default: DoctorStatus.PENDING,
+    enum: UserStatus,
+    default: UserStatus.PENDING
   })
-  status: DoctorStatus;
+  status: UserStatus;
 
   @ManyToMany(
     () => SpecializedField,

@@ -4,6 +4,7 @@ import { Volunteer } from './volunteer.entity';
 
 @Entity()
 export class VolunteerDepartment {
+
   @PrimaryColumn({ type: 'bigint' })
   volunteerId: string;
 
@@ -12,19 +13,18 @@ export class VolunteerDepartment {
 
   @ManyToOne(
     () => Volunteer,
-    volunteer => volunteer.volunteerDepartment,
+    volunteer => volunteer.volunteerDepartments,
     { onDelete: 'CASCADE' }
   )
   volunteer: Volunteer;
 
   @ManyToOne(
     () => Department,
-    department => department.volunteerDepartment
+    department => department.volunteerDepartments
   )
   department: Department;
 
-  @Column({
-    default: 1,
-  })
+  @Column({ default: 0 })
   trainingStatus: number;
+
 }

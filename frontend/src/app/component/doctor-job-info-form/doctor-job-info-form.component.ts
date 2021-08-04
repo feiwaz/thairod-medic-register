@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
-
-interface specializedFieldCheckbox {
-  formControlName: string;
-  viewValue: string;
-}
 
 @Component({
   selector: 'app-doctor-job-info-form',
@@ -16,14 +11,14 @@ interface specializedFieldCheckbox {
 })
 export class DoctorJobInfoFormComponent implements OnInit {
 
-  role = '';
-
+  role = 'doctor';
+  isEditing = false;
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medCertificateId: 0
   };
 
-  specializedFields: specializedFieldCheckbox[] = SPECIALIZED_FIELDS;
+  specializedFields = SPECIALIZED_FIELDS;
 
   jobInfoForm = this.fb.group({
     field1: [{ value: true, disabled: true }], field2: false,
@@ -38,19 +33,22 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
-  ) { }
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation) {
+      this.isEditing = currentNavigation.extras.state?.isEditing || false;
+    }
+  }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.patchValue();
   }
 
   private patchValue() {
-    let jobInfoString = sessionStorage.getItem('jobInfo');
+    let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
       this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
 
       if (specializedFields.length !== 0) {
@@ -65,8 +63,12 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   onSubmit(): void {
     const jobInfo = this.buildJobInfo();
-    sessionStorage.setItem('jobInfo', JSON.stringify(jobInfo));
-    this.router.navigate([`/${this.role}/review-info`]);
+    sessionStorage.setItem(`${this.role}JobInfo`, JSON.stringify(jobInfo));
+    if (this.isEditing) {
+      this.router.navigate([`/${this.role}/review-info`]);
+    } else {
+      this.router.navigate([`/${this.role}/available-time`]);
+    }
   }
 
   buildJobInfo(): DoctorJobInfo {

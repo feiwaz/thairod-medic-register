@@ -1,5 +1,6 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
-import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
@@ -11,8 +12,7 @@ export class CreateDoctorDto {
 
   @IsNotEmpty()
   @IsEnum(DoctorInitial, {
-    message:
-      'initial must be like แพทย์หญิง, นายแพทย์, เภสัชกรชาย, เภสัชกรหญิง',
+    message: `initial must be like ${Object.values(DoctorInitial).join(', ')}`
   })
   initial: DoctorInitial;
 
@@ -38,10 +38,10 @@ export class CreateDoctorDto {
   @IsNotEmpty()
   @IsNumber()
   @Min(10000, {
-    message: 'medCertificateId must be equal to 13 characters'
+    message: 'medCertificateId must be equal to 5 characters'
   })
   @Max(99999, {
-    message: 'medCertificateId must be equal to 13 characters'
+    message: 'medCertificateId must be equal to 5 characters'
   })
   medCertificateId: number;
 
@@ -58,14 +58,14 @@ export class CreateDoctorDto {
   idCardSelfieImg: string;
 
   @IsOptional()
-  @IsEnum(DoctorStatus, {
-    message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว',
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
   })
-  status: DoctorStatus;
+  status: UserStatus;
 
   @IsNotEmpty()
   @IsEnum(SpecializedFieldLabel, {
-    message: 'specializedFields must be like เวชปฏิบัติทั่วไป, สูตินรีเวช, อายุรกรรม, ศัลยกรรม, กุมารเวช, อื่นๆ',
+    message: `specializedFields must be like ${Object.values(SpecializedFieldLabel).join(', ')}`,
     each: true
   })
   specializedFields: SpecializedFieldLabel[];

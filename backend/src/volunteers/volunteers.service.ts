@@ -3,13 +3,14 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
+import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
-  FindOneVolunteerDto,
-  VolunteerToDepartment,
+  FindOneVolunteerDto
 } from './dto/find-one-volunteer.dto';
 import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dtp';
 import { Department } from './entities/department.entity';
@@ -25,7 +26,7 @@ export class VolunteersService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
-  ) {}
+  ) { }
 
   async create(createVolunteerDto: CreateVolunteerDto) {
     try {
@@ -35,73 +36,55 @@ export class VolunteersService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException(error.code);
+      throw new InternalServerErrorException();
     }
   }
 
-  private async mapDtoToEntity(
-    createVolunteerDto: CreateVolunteerDto,
-  ): Promise<Volunteer> {
-    const { department, ...volunteerEntities } = createVolunteerDto;
-    const savedDepartment = await this.departmentRepository.find({
-      where: { label: In(department) },
+  private async mapDtoToEntity(createVolunteerDto: CreateVolunteerDto): Promise<Volunteer> {
+    const { departments, ...volunteerEntities } = createVolunteerDto;
+    const savedDepartments = await this.departmentRepository.find({
+      where: { label: In(departments) },
     });
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
-    volunteer.volunteerDepartment = [];
-    savedDepartment.map((department: Department) => {
-      const tempVolunteerDepartment = new VolunteerDepartment();
-      tempVolunteerDepartment.departmentId = department.id;
-      tempVolunteerDepartment.volunteerId = createVolunteerDto.id + '';
-      volunteer.volunteerDepartment.push(tempVolunteerDepartment);
-    });
+    volunteer.volunteerDepartments = savedDepartments.map(department => ({
+      departmentId: department.id,
+      volunteerId: createVolunteerDto.id + ''
+    } as VolunteerDepartment));
     return volunteer;
   }
 
   findAll(): Promise<Volunteer[]> {
     return this.volunteerRepository.find({
-      relations: ['volunteerDepartment'],
-      order: {
-        updatedTime: 'DESC',
-      },
+      relations: ['volunteerDepartments'],
+      order: { updatedTime: 'DESC' }
     });
   }
 
   async findOne(id: number): Promise<FindOneVolunteerDto> {
     const volunteer = await this.volunteerRepository.findOne(id, {
-      relations: ['volunteerDepartment'],
+      relations: ['volunteerDepartments']
     });
     if (!volunteer) {
       return {} as FindOneVolunteerDto;
     }
-    const response = await this.mapEntityToDto(volunteer);
-    return response;
+    return await this.mapEntityToDto(volunteer);
   }
 
-  private async mapEntityToDto(
-    volunteer: Volunteer,
-  ): Promise<FindOneVolunteerDto> {
-    const { volunteerDepartment, ...volunteerEntities } = volunteer;
-    const responseDto = Object.assign(
-      new FindOneVolunteerDto(),
-      volunteerEntities,
-    );
-    responseDto.departments = [];
-
+  private async mapEntityToDto(volunteer: Volunteer): Promise<FindOneVolunteerDto> {
+    const { volunteerDepartments, ...volunteerEntities } = volunteer;
+    const responseDto = Object.assign(new FindOneVolunteerDto(), volunteerEntities);
     const tempDepartment = await this.volunteerDepartmentRepository.find({
       where: { volunteerId: volunteerEntities.id },
       relations: ['department'],
     });
 
-    volunteerDepartment.map((value: VolunteerDepartment) => {
-      const temp = new VolunteerToDepartment();
-      temp.label = tempDepartment.find(
-        ({ departmentId }) => departmentId === value.departmentId,
-      ).department.label;
-      temp.isTrainingRequired = tempDepartment.find(
-        ({ departmentId }) => departmentId === value.departmentId,
-      ).department.isTrainingRequired;
-      temp.trainingStatus = value.trainingStatus;
-      responseDto.departments.push(temp);
+    responseDto.departments = volunteerDepartments.map(volunteerDepartment => {
+      const matchedDepartment = tempDepartment.find(({ departmentId }) => departmentId === volunteerDepartment.departmentId).department;
+      return {
+        label: matchedDepartment.label,
+        isTrainingRequired: matchedDepartment.isTrainingRequired,
+        trainingStatus: volunteerDepartment.trainingStatus
+      }
     });
 
     return responseDto;
@@ -139,5 +122,10 @@ export class VolunteersService {
       }
     }
     return trainingStatusDto;
+  async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
+    let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
+    if (response['affected'] === 0) {
+      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+    }
   }
 }

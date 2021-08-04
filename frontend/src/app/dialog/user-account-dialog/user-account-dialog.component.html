@@ -1,0 +1,9 @@
+<div class="form-container">
+  <div class="user-container">
+    <h2 mat-dialog-title id="user-dialog-title">แก้ไขบัญชีผู้ใช้</h2>
+    <app-change-password-form [data]="{ _id: authService.currentUser._id }"></app-change-password-form>
+  </div>
+</div>
+<mat-dialog-actions align="end">
+  <button mat-button color="primary" type="button" mat-dialog-close>ปิด</button>
+</mat-dialog-actions>

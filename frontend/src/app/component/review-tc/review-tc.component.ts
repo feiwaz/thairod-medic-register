@@ -37,4 +37,8 @@ export class ReviewTcComponent implements OnInit {
     });
   }
 
+  get basicInfoPath(): string {
+    return `/${this.role}/verify-id`;
+  }
+
 }

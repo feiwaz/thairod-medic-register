@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { VolunteersService } from './volunteers.service';
 
@@ -29,5 +30,9 @@ export class VolunteersController {
   @Get(':id/training-status')
   findTrainingStatus(@Param('id') id: number) {
     return this.service.findTrainingStatus(id);
+
+  @Patch(':id/verify-registration-status')
+  update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
+    return this.service.updateStatus(id, verifyStatusDto);
   }
 }
