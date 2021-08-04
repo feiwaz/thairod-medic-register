@@ -4,8 +4,9 @@ import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
 import { VolunteersService } from './volunteers.service';
 
-@Controller('volunteers')
+@Controller('api/volunteers')
 export class VolunteersController {
+
   constructor(private readonly service: VolunteersService) { }
 
   @Post()
@@ -13,6 +14,7 @@ export class VolunteersController {
     return this.service.create(createVolunteerDto);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.service.findAll();
@@ -23,11 +25,13 @@ export class VolunteersController {
     return this.service.findOne(id);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.service.remove(id);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get(':id/training-status')
   findTrainingStatus(@Param('id') id: number) {
     return this.service.findTrainingStatus(id);
@@ -38,8 +42,10 @@ export class VolunteersController {
     return this.service.updateTrainingStatus(id, trainingStatusVolunteerDto);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Patch(':id/verify-registration-status')
   update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
     return this.service.updateStatus(id, verifyStatusDto);
   }
+
 }
