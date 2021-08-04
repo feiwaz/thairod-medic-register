@@ -1,5 +1,11 @@
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
+export enum UserStatus {
+  PENDING = 'รอการอนุมัติ',
+  APPROVED = 'อนุมัติแล้ว',
+  DENIED = 'ไม่อนุมัติ'
+}
+
 export enum UserRole {
   ADMIN = 'Admin',
   USER = 'User',

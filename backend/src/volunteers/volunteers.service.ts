@@ -12,7 +12,7 @@ import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
   FindOneVolunteerDto
 } from './dto/find-one-volunteer.dto';
-import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dtp';
+import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
@@ -122,6 +122,8 @@ export class VolunteersService {
       }
     }
     return trainingStatusDto;
+  }
+
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
     let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
     if (response['affected'] === 0) {

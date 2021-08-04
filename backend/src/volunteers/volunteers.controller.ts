@@ -30,6 +30,7 @@ export class VolunteersController {
   @Get(':id/training-status')
   findTrainingStatus(@Param('id') id: number) {
     return this.service.findTrainingStatus(id);
+  }
 
   @Patch(':id/verify-registration-status')
   update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
