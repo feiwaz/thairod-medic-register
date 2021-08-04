@@ -5,10 +5,10 @@
       <p><b>เลขประจำตัวประชาชน</b></p>
       <mat-form-field class="id-mat-form-field" floatLabel="always">
         <mat-label>เลขประจำตัวประชาชน</mat-label>
-        <input matInput readonly="true" formControlName="id" #id class="user-id-input">
+        <input matInput readonly="true" formControlName="nationalId" #nationalId class="user-id-input">
       </mat-form-field>
       <p class="id-remark">หากท่านต้องการ แก้ไขเลขประจำตัวประชาชน<br>
-        <span *ngIf="!id.value">หรือ <u><b>เป็นค่าว่าง</b></u></span> กรุณา
+        <span *ngIf="!nationalId.value">หรือ <u><b>เป็นค่าว่าง</b></u></span> กรุณา
         <span class="anchor-container">
           <a [routerLink]="" (click)="onBackToVerifyId()" class="enabled"> คลิกเพื่อตรวจสอบ </a>
         </span>อีกครั้ง

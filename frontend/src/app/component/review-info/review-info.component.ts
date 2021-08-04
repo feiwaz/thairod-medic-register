@@ -22,7 +22,7 @@ export class ReviewInfoComponent implements OnInit {
   displaySpecializedFields: string[] = [];
 
   basicInfo: BasicInfo = {
-    id: 0,
+    nationalId: 0,
     initial: '',
     firstName: '',
     lastName: '',
@@ -65,10 +65,10 @@ export class ReviewInfoComponent implements OnInit {
   private initiateFields() {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
-      const { id, initial, firstName, lastName, dateOfBirth, address, contactNumber,
-        lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
+      const { nationalId, initial, firstName, lastName, dateOfBirth, address,
+        contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.basicInfo = {
-        id, initial, firstName, lastName, dateOfBirth,
+        nationalId, initial, firstName, lastName, dateOfBirth,
         address, contactNumber, lineId, availableTimes
       };
     }
@@ -107,10 +107,10 @@ export class ReviewInfoComponent implements OnInit {
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
     sessionStorage.clear();
-    const maskedId = maskId(this.basicInfo.id);
+    const maskedId = maskId(this.basicInfo.nationalId);
     this.router.navigate([`/update-status`], {
       state: {
-        id: maskedId,
+        nationalId: maskedId,
         status: 'ส่งข้อมูลสำเร็จ'
       }
     });

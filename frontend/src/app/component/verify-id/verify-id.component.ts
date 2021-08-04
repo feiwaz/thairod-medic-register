@@ -32,7 +32,7 @@ export class VerifyIdComponent implements OnInit {
   service: DoctorService | VolunteerService = this.volunteerService;
 
   verifyForm = this.fb.group({
-    id: ['', [
+    nationalId: ['', [
       Validators.required,
       Validators.min(1000000000000),
       Validators.max(9999999999999)
@@ -57,7 +57,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   subscribeIdInputValueChanges() {
-    this.verifyForm.controls.id.valueChanges.subscribe(
+    this.verifyForm.controls.nationalId.valueChanges.subscribe(
       value => this.maskedId = partialMaskId(value)
     );
   }
@@ -85,7 +85,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.service.findOne(this.verifyForm.controls.id.value).subscribe(
+    this.service.findOne(this.verifyForm.controls.nationalId.value).subscribe(
       response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -105,7 +105,7 @@ export class VerifyIdComponent implements OnInit {
 
   buildBasicInfo(): BasicInfo {
     return {
-      id: this.verifyForm.controls.id.value, initial: '', firstName: '', lastName: '',
+      nationalId: this.verifyForm.controls.nationalId.value, initial: '', firstName: '', lastName: '',
       dateOfBirth: '', address: '', contactNumber: '', lineId: '', availableTimes: []
     }
   }
@@ -127,7 +127,7 @@ export class VerifyIdComponent implements OnInit {
     if (!this.role) {
       service = this.verifyForm.controls.role.value === 0 ? this.doctorService : this.volunteerService;
     }
-    service.findOne(this.verifyForm.controls.id.value).subscribe(
+    service.findOne(this.verifyForm.controls.nationalId.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -137,9 +137,9 @@ export class VerifyIdComponent implements OnInit {
     if (Object.keys(response).length) {
       this.verifyForm.enable();
       this.isLoading = false;
-      const maskedId = maskId(this.verifyForm.controls.id.value);
+      const maskedId = maskId(this.verifyForm.controls.nationalId.value);
       this.router.navigate([`/update-status`], {
-        state: { id: maskedId, status: response.status }
+        state: { nationalId: maskedId, status: response.status }
       });
     } else {
       this.handleErrorResponse();
@@ -147,7 +147,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   onClearInput() {
-    this.verifyForm.controls.id.setValue('');
+    this.verifyForm.controls.nationalId.setValue('');
     this.isExistingUser = false;
   }
 

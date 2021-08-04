@@ -12,12 +12,30 @@
         </span>
       </div>
       <div class="info-body">
-        <div><span class="info-field">เลขประจำตัวประชาชน:</span><span class="info-value">{{basicInfo.id}}</span></div>
-        <div><span class="info-field">ชื่อ-นามสกุล:</span><span class="info-value">{{basicInfo.initial}} {{basicInfo.firstName}} {{basicInfo.lastName}}</span></div>
-        <div><span class="info-field">วัน/เดือน/ปี เกิด:</span><span class="info-value">{{basicInfo.dateOfBirth}}</span></div>
-        <div><span class="info-field">ที่อยู่:</span><span class="info-value">{{basicInfo.address}}</span></div>
-        <div><span class="info-field">เบอร์โทรศัพท์:</span><span class="info-value">{{basicInfo.contactNumber}}</span></div>
-        <div><span class="info-field">LINE ID:</span><span class="info-value">{{basicInfo.lineId}}</span></div>
+        <div>
+          <span class="info-field">เลขประจำตัวประชาชน:</span>
+          <span class="info-value">{{basicInfo.nationalId}}</span>
+        </div>
+        <div>
+          <span class="info-field">ชื่อ-นามสกุล:</span>
+          <span class="info-value">{{basicInfo.initial}} {{basicInfo.firstName}} {{basicInfo.lastName}}</span>
+        </div>
+        <div>
+          <span class="info-field">วัน/เดือน/ปี เกิด:</span>
+          <span class="info-value">{{basicInfo.dateOfBirth}}</span>
+        </div>
+        <div>
+          <span class="info-field">ที่อยู่:</span>
+          <span class="info-value">{{basicInfo.address}}</span>
+        </div>
+        <div>
+          <span class="info-field">เบอร์โทรศัพท์:</span>
+          <span class="info-value">{{basicInfo.contactNumber}}</span>
+        </div>
+        <div>
+          <span class="info-field">LINE ID:</span>
+          <span class="info-value">{{basicInfo.lineId}}</span>
+        </div>
       </div>
     </div>
     <div class="editable-info second-item">
@@ -32,27 +50,33 @@
       <div class="info-body">
         <div>
           <span class="info-field">{{role === 'doctor' ? 'สาขาที่ถนัด:' : 'แผนกที่สนใจ:'}}</span>
-          <span class="info-value">{{role === 'doctor' ? jobInfo.specializedFields.join(", ") : jobInfo.departments.join(", ")}}</span>
+          <span class="info-value">
+            {{role === 'doctor' ? jobInfo.specializedFields.join(", ") : jobInfo.departments.join(", ")}}
+          </span>
         </div>
         <div *ngIf="jobInfo.medCertificateId">
-          <div class="info-field image-label">เลขที่ใบประกอบวิชาชีพเวชกรรม:</div>
+          <span class="info-field image-label">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span>
           <span class="info-value">{{jobInfo.medCertificateId}}</span>
         </div>
         <div *ngIf="idCardBlob !== ''">
           <span class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob" (error)="onImageError($event)" /></div>
+          <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
+              (error)="onImageError($event)" /></div>
         </div>
         <div *ngIf="idCardSelfieBlob !== ''">
           <span class="info-field image-label">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob" (error)="onImageError($event)" /></div>
+          <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
+              (error)="onImageError($event)" /></div>
         </div>
         <div *ngIf="medCertificateBlob !== ''">
           <span class="info-field image-label">ภาพใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob" (error)="onImageError($event)" /></div>
+          <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob"
+              (error)="onImageError($event)" /></div>
         </div>
         <div *ngIf="medCertificateSelfieBlob !== ''">
           <span class="info-field image-label">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image" [src]="medCertificateSelfieBlob" (error)="onImageError($event)" /></div>
+          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image"
+              [src]="medCertificateSelfieBlob" (error)="onImageError($event)" /></div>
         </div>
       </div>
     </div>
@@ -67,9 +91,12 @@
       </div>
       <div class="info-body">
         <div><span class="info-field">วันและเวลาที่สะดวก:</span>
-          <ul>
+          <ul *ngIf="basicInfo.availableTimes.length > 0 else noInfo">
             <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
           </ul>
+          <ng-template #noInfo>
+            <span class="info-value">-</span>
+          </ng-template>
         </div>
       </div>
     </div>
