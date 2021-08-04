@@ -17,10 +17,10 @@ export class DoctorJobInfoFormComponent implements OnInit {
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medCertificateId: 0,
-    medCertificate: null as any,
-    medCertificateSelfie: null as any,
     idCard: null as any,
-    idCardSelfie: null as any
+    idCardSelfie: null as any,
+    medCertificate: null as any,
+    medCertificateSelfie: null as any
   };
 
   specializedFields = SPECIALIZED_FIELDS;
