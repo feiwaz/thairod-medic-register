@@ -1,5 +1,6 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
-import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
@@ -57,10 +58,10 @@ export class CreateDoctorDto {
   idCardSelfieImg: string;
 
   @IsOptional()
-  @IsEnum(DoctorStatus, {
-    message: `status must be like ${Object.values(DoctorStatus).join(', ')}`
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
   })
-  status: DoctorStatus;
+  status: UserStatus;
 
   @IsNotEmpty()
   @IsEnum(SpecializedFieldLabel, {

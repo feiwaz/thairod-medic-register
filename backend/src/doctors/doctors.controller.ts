@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Patch } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { DoctorsService } from './doctors.service';
-import { VerifyDoctorDto } from './dto/verify-doctor.dto';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -23,8 +23,8 @@ export class DoctorsController {
   }
 
   @Patch(':id/verify-registration-status')
-  update(@Param('id') id: number, @Body() verifyDoctor: VerifyDoctorDto) {
-    return this.service.updateStatus(id, verifyDoctor);
+  update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
+    return this.service.updateStatus(id, verifyStatusDto);
   }
 
   @Delete(':id')

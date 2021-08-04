@@ -5,12 +5,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
   FindOneVolunteerDto
 } from './dto/find-one-volunteer.dto';
-import { VerifyVolunteerDto } from './dto/verify-volunteer.dto';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
@@ -92,8 +92,8 @@ export class VolunteersService {
     await this.volunteerRepository.delete(id);
   }
 
-  async updateStatus(id: number, verifyVolunteer: VerifyVolunteerDto) {
-    let response = await this.volunteerRepository.update(id, { status: verifyVolunteer.status });
+  async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
+    let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
     if (response['affected'] === 0) {
       throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }
