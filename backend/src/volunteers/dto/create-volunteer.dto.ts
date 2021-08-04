@@ -7,11 +7,9 @@ import {
   Max,
   Min
 } from 'class-validator';
+import { UserStatus } from 'src/users/entities/user.entity';
 import { Department, DepartmentLabel } from '../entities/department.entity';
-import {
-  VolunteerInitial,
-  VolunteerStatus
-} from '../entities/volunteer.entity';
+import { VolunteerInitial } from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
 
@@ -65,10 +63,10 @@ export class CreateVolunteerDto {
   idCardSelfieImg: string;
 
   @IsOptional()
-  @IsEnum(VolunteerStatus, {
-    message: `status must be like ${Object.values(VolunteerStatus).join(', ')}`
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
   })
-  status: VolunteerStatus;
+  status: UserStatus;
 
   //can insert with only id field
   @IsNotEmpty()

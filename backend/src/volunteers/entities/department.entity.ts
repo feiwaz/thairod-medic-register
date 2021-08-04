@@ -2,17 +2,17 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
 export enum DepartmentLabel {
-  DEPARTMENT1 = 'เเอดมินตอบ LINE',
-  DEPARTMENT2 = 'คัดกรอง',
-  DEPARTMENT3 = 'ส่งต่อประสานงาน',
-  DEPARTMENT4 = 'เฝ้าระวัง',
-  DEPARTMENT5 = 'พูดคุยกับผู้ป่วย',
-  DEPARTMENT6 = 'IT Support',
-  DEPARTMENT7 = 'อบรมอาสาสมัคร',
-  DEPARTMENT8 = 'จัดซื้อ/หาของ',
-  DEPARTMENT9 = 'ประสานงานเเละเอกสาร',
-  DEPARTMENT10 = 'เเพทย์อาสา',
-  DEPARTMENT11 = 'เเพคเเละคลัง',
+  DEP1 = 'แอดมินตอบ LINE',
+  DEP2 = 'คัดกรอง',
+  DEP3 = 'ส่งต่อประสาน',
+  DEP4 = 'เฝ้าระวัง',
+  DEP5 = 'พูดคุยกับผู้ป่วย',
+  DEP6 = 'IT Support',
+  DEP7 = 'อบรมอาสาสมัคร',
+  DEP8 = 'จัดซื้อ/หาของ',
+  DEP9 = 'ประสานงานและเอกสาร',
+  DEP10 = 'แพทย์อาสา',
+  DEP11 = 'แพคและคลัง'
 }
 
 @Entity()

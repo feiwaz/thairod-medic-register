@@ -1,9 +1,11 @@
 import {
   ConflictException,
   Injectable,
-  InternalServerErrorException
+  InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
@@ -88,5 +90,12 @@ export class VolunteersService {
 
   async remove(id: number): Promise<void> {
     await this.volunteerRepository.delete(id);
+  }
+
+  async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
+    let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
+    if (response['affected'] === 0) {
+      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+    }
   }
 }
