@@ -40,28 +40,29 @@
             {{role === 'doctor' ? jobInfo.specializedFields.join(", ") : jobInfo.departments.join(", ")}}</span>
         </div>
         <div *ngIf="jobInfo.medCertificateId">
-          <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
+          <div class="info-field image-label">เลขที่ใบประกอบวิชาชีพเวชกรรม:</div><span
             class="info-value">{{jobInfo.medCertificateId}}</span>
         </div>
         <div>
-          <span class="info-field">ภาพบัตรประจำตัวประชาชน:</span>
+          <div class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</div>
           <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
               *ngIf="idCardBlob !== ''" (error)="onImageError($event)" /></div>
         </div>
         <div>
-          <span class="info-field">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
+          <div class="info-field image-label">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</div>
           <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
               *ngIf="idCardSelfieBlob !== ''" (error)="onImageError($event)" /></div>
         </div>
         <div>
-          <span class="info-field">ภาพใบประกอบวิชาชีพ:</span>
+          <div class="info-field image-label">ภาพใบประกอบวิชาชีพ:</div>
           <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob"
               *ngIf="medCertificateBlob !== ''" (error)="onImageError($event)" /></div>
         </div>
         <div>
-          <span class="info-field">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image" [src]="medCertificateSelfieBlob" 
-              *ngIf="medCertificateSelfieBlob !== ''" (error)="onImageError($event)" /></div>
+          <div class="info-field image-label">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</div>
+          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image"
+              [src]="medCertificateSelfieBlob" *ngIf="medCertificateSelfieBlob !== ''" (error)="onImageError($event)" />
+          </div>
         </div>
       </div>
     </div>
