@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { VolunteersService } from './volunteers.service';
@@ -9,7 +11,16 @@ export class VolunteersController {
   constructor(private readonly service: VolunteersService) { }
 
   @Post()
-  async create(@Body() createVolunteerDto: CreateVolunteerDto) {
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'file1', maxCount: 1 },
+    { name: 'file2', maxCount: 1 },
+  ]))
+  async create(
+    @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
+    createVolunteerDto: CreateVolunteerDto,
+    @UploadedFiles() files: Express.Multer.File[]
+  ) {
+    console.log(files);
     return this.service.create(createVolunteerDto);
   }
 
@@ -38,7 +49,7 @@ export class VolunteersController {
 
   // @UseGuards(JwtAuthGuard)
   @Patch(':id/verify-registration-status')
-  update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
+  update(@Param('id') id: number, @Body(new ValidationPipe()) verifyStatusDto: RegistrationStatusDto) {
     return this.service.updateStatus(id, verifyStatusDto);
   }
 
