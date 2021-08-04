@@ -34,9 +34,9 @@ export class DoctorJobInfoFormComponent implements OnInit {
       Validators.max(99999)
     ]],
     idCard: [null, Validators.required],
-    idCardSelfie: [null],
-    medCertificate: [null],
-    medCertificateSelfie: [null]
+    idCardSelfie: [null, Validators.required],
+    medCertificate: [null, Validators.required],
+    medCertificateSelfie: [null, Validators.required]
   });
 
   constructor(
