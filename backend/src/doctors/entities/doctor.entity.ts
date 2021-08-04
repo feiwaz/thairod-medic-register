@@ -1,5 +1,5 @@
 import { UserStatus } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { SpecializedField } from './specializedField.entity';
 
 export enum DoctorInitial {
@@ -12,8 +12,14 @@ export enum DoctorInitial {
 @Entity()
 export class Doctor {
 
-  @PrimaryColumn({ type: 'bigint' })
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({
+    type: 'bigint',
+    unique: true
+  })
+  nationalId: string;
 
   @Column({
     type: 'enum',

@@ -3,7 +3,8 @@ import { DepartmentLabel } from '../entities/department.entity';
 import { UserStatus } from 'src/users/entities/user.entity';
 
 export class FindOneVolunteerDto {
-  id: string;
+  id: number;
+  nationalId: string;
   initial: VolunteerInitial;
   firstName: string;
   lastName: string;

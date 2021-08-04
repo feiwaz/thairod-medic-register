@@ -27,6 +27,11 @@ export class VolunteersController {
     return this.service.remove(id);
   }
 
+  @Get(':id/training-status')
+  findTrainingStatus(@Param('id') id: number) {
+    return this.service.findTrainingStatus(id);
+  }
+
   @Patch(':id/verify-registration-status')
   update(@Param('id') id: number, @Body() verifyStatusDto: RegistrationStatusDto) {
     return this.service.updateStatus(id, verifyStatusDto);

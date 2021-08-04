@@ -4,11 +4,12 @@ import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
-  @IsNotEmpty()
+
+  @IsOptional()
   @IsNumber()
   @Min(1000000000000, { message: 'id must be equal to 13 characters' })
   @Max(9999999999999, { message: 'id must be equal to 13 characters' })
-  id: string;
+  nationalId: string;
 
   @IsNotEmpty()
   @IsEnum(DoctorInitial, {

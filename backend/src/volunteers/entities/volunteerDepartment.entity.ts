@@ -5,8 +5,8 @@ import { Volunteer } from './volunteer.entity';
 @Entity()
 export class VolunteerDepartment {
 
-  @PrimaryColumn({ type: 'bigint' })
-  volunteerId: string;
+  @PrimaryColumn()
+  volunteerId: number;
 
   @PrimaryColumn()
   departmentId: number;
