@@ -1,9 +1,8 @@
-import { is } from '@babel/types';
 import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
@@ -45,10 +44,11 @@ export class VolunteersService {
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) },
     });
+    const savedVolunteer = await this.volunteerRepository.findOne(createVolunteerDto.nationalId);
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartments = savedDepartments.map(department => ({
       departmentId: department.id,
-      volunteerId: createVolunteerDto.id
+      volunteerId: savedVolunteer.id
     } as VolunteerDepartment));
     return volunteer;
   }
@@ -101,7 +101,7 @@ export class VolunteersService {
     });
     if (!volunteerDepartmentList) {
       return {} as TrainingStatusVolunteerDto;
-    } 
+    }
     return this.mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList);
   }
 

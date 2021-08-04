@@ -71,9 +71,9 @@ export class DoctorsService {
   }
 
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    let response = await this.doctorRepository.update(id, { status: verifyStatusDto.status });
-    if (response['affected'] === 0) {
-      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+    const response = await this.doctorRepository.update(id, { status: verifyStatusDto.status });
+    if (response.affected === 0) {
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
   }
 }
