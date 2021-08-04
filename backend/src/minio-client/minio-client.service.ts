@@ -1,9 +1,7 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { MinioService } from 'nestjs-minio-client';
-import { Stream } from 'stream';
 import * as dotenv from 'dotenv';
 import { BufferedFile } from './file.model';
-import * as crypto from 'crypto'
 
 dotenv.config();
 
@@ -22,19 +20,16 @@ export class MinioClientService {
     this.logger = new Logger('MinioStorageService');
   }
 
-  public async upload(file: BufferedFile, baseBucket: string = this.baseBucket) {
+  public async upload(file: BufferedFile, folder: string, newName: string, baseBucket: string = this.baseBucket) {
     if(!(file.mimetype.includes('jpeg') || file.mimetype.includes('png'))) {
       throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
     }
-    const temp_filename = Date.now().toString()
-    const hashedFileName = crypto.createHash('md5').update(temp_filename).digest("hex");
+    // const temp_filename = Date.now().toString()
+    // const hashedFileName = crypto.createHash('md5').update(temp_filename).digest("hex");
     const ext = file.originalname.substring(file.originalname.lastIndexOf('.'), file.originalname.length);
-    const filename = hashedFileName + ext
+    const filename = folder + "/" + newName + ext
     const fileName = `${filename}`;
     const fileBuffer = file.buffer;
-    console.log(baseBucket)
-    console.log(fileName)
-    console.log(this.client)
     this.client.putObject(baseBucket,fileName,fileBuffer, function(err, res) {
       if(err) throw new HttpException('Error uploading file', HttpStatus.BAD_REQUEST)
     })

@@ -3,6 +3,8 @@ import {
   InternalServerErrorException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BufferedFile } from 'src/minio-client/file.model';
+import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { responseDoctorDto } from './dto/response-doctor.dto';
@@ -15,13 +17,23 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
     @InjectRepository(SpecializedField)
-    private specializedFieldRepository: Repository<SpecializedField>
+    private specializedFieldRepository: Repository<SpecializedField>,
+    private minioClientService: MinioClientService
   ) { }
 
-  async create(createDoctorDto: CreateDoctorDto) {
+  async create(createDoctorDto: CreateDoctorDto, imageFiles: BufferedFile) {
     try {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
       await this.doctorRepository.save(doctor);
+      const idCardImg = imageFiles['id_card'][0]
+      await this.minioClientService.upload(idCardImg, createDoctorDto.id, createDoctorDto.id + "ID_card")
+      const idCardSelImg = imageFiles['id_card_sel'][0]
+      await this.minioClientService.upload(idCardSelImg, createDoctorDto.id, createDoctorDto.id + "ID_card_selfie")
+      const jobCerImg = imageFiles['job_cer'][0]
+      await this.minioClientService.upload(jobCerImg, createDoctorDto.id, createDoctorDto.id + "Job_cer")
+      const jobCerSelImg = imageFiles['job_cer_sel'][0]
+      await this.minioClientService.upload(jobCerSelImg, createDoctorDto.id, createDoctorDto.id + "ID_cJob_cer_selfie")
+
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
