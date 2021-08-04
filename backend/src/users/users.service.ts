@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { genSalt, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -15,13 +16,23 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     try {
-      await this.userRepository.insert(createUserDto);
+      const user = await this.mapCreateDtoToEntity(createUserDto);
+      await this.userRepository.save(user);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException(error.code);
     }
+  }
+
+  private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
+    const user = Object.assign(new User(), createUserDto);
+
+    const salt = await genSalt();
+    user.password = await hash(createUserDto.password, salt);
+    user.salt = salt;
+    return user;
   }
 
   findAll(): Promise<User[]> {
@@ -36,8 +47,23 @@ export class UsersService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user with body ${updateUserDto}`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    try {
+      const user = await this.mapUpdateDtoToEntity(id, updateUserDto);
+      await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException(error.code);
+    }
+  }
+
+  private async mapUpdateDtoToEntity(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = Object.assign(await this.findOne(id), updateUserDto);
+
+    if (updateUserDto.hasOwnProperty('password')) {
+      user.password = await hash(updateUserDto.password, user.salt);
+    }
+
+    return user;
   }
 
   async remove(id: number): Promise<void> {

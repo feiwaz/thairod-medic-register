@@ -72,7 +72,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
     if (this.isEditing) {
       this.router.navigate([`/${this.role}/review-info`]);
     } else {
-      this.router.navigate([`/${this.role}/job-info`]);
+      this.router.navigate([`/${this.role}/available-time`]);
     }
   }
 

@@ -1,5 +1,5 @@
 import { UserStatus } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
 export enum VolunteerInitial {
@@ -13,8 +13,14 @@ export enum VolunteerInitial {
 @Entity()
 export class Volunteer {
 
-  @PrimaryColumn({ type: 'bigint' })
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
+
+  @Column({
+    type: 'bigint',
+    unique: true
+  })
+  nationalId: string;
 
   @Column({
     type: 'enum',
