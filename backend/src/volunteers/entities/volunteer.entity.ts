@@ -1,3 +1,4 @@
+import { UserStatus } from 'src/users/entities/user.entity';
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
@@ -7,11 +8,6 @@ export enum VolunteerInitial {
   INIT3 = 'นาง',
   INIT4 = 'เด็กชาย',
   INIT5 = 'เด็กหญิง',
-}
-
-export enum VolunteerStatus {
-  PENDING = 'รอการอนุมัติ',
-  APPROVED = 'อนุมัติแล้ว',
 }
 
 @Entity()
@@ -63,10 +59,10 @@ export class Volunteer {
 
   @Column({
     type: 'enum',
-    enum: VolunteerStatus,
-    default: VolunteerStatus.PENDING
+    enum: UserStatus,
+    default: UserStatus.PENDING
   })
-  status: VolunteerStatus;
+  status: UserStatus;
 
   // @ManyToMany(() => Department, (department) => department.volunteers, {
   //   cascade: true,
