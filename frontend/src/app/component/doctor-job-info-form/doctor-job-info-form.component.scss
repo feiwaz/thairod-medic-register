@@ -58,6 +58,7 @@ input.user-id-input {
 @media only screen and (min-width: 600px) {
   .form-container {
     top: 64px;
+    height: calc(100% - 64px);
   }
 
   form {

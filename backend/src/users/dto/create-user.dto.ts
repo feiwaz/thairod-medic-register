@@ -10,7 +10,9 @@ export class CreateUserDto {
   id: string;
 
   @IsNotEmpty()
-  @IsEnum(UserInitial, { message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง' })
+  @IsEnum(UserInitial, {
+    message: `initial must be like ${Object.values(UserInitial).join(', ')}`
+  })
   initial: UserInitial;
 
   @IsNotEmpty()
@@ -33,7 +35,9 @@ export class CreateUserDto {
   lineId: string;
 
   @IsOptional()
-  @IsEnum(UserStatus, { message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว' })
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
+  })
   status: UserStatus;
 
 }

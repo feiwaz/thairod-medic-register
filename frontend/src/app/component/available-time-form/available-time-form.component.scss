@@ -1,0 +1,62 @@
+.form-container {
+  position: fixed;
+  top: 56px;
+  height: calc(100% - 56px);
+  width: 100%;
+  overflow: auto;
+}
+
+p {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  margin: 25px;
+}
+
+.form-array-container {
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 10px;
+}
+
+.available-time-paragraph {
+  margin-bottom: 15px;
+}
+
+mat-form-field.mat-form-field,
+button {
+  font-size: 16px;
+}
+
+.form-field-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-form-field-day {
+  width: 30%;
+}
+
+.mat-form-field-shift {
+  width: 55%;
+}
+
+@media only screen and (min-width: 600px) {
+  .form-container {
+    top: 64px;
+    height: calc(100% - 64px);
+  }
+
+  form {
+    width: 460px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

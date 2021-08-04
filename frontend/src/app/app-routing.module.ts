@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminLoginComponent } from './component/admin-login/admin-login.component';
+import { AvailableTimeFormComponent } from './component/available-time-form/available-time-form.component';
 import { BasicInfoFormComponent } from './component/basic-info-form/basic-info-form.component';
 import { DoctorJobInfoFormComponent } from './component/doctor-job-info-form/doctor-job-info-form.component';
 import { MainComponent } from './component/main/main.component';
@@ -8,6 +9,7 @@ import { ReviewInfoComponent } from './component/review-info/review-info.compone
 import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
+import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
 
 const routes: Routes = [
   { path: 'main', component: MainComponent },
@@ -15,32 +17,33 @@ const routes: Routes = [
     path: 'doctor',
     data: { role: 'doctor' },
     children: [{
-      path: 'verify-id', component: VerifyIdComponent,
+      path: 'verify-id', component: VerifyIdComponent
     }, {
       path: 'review-tc', component: ReviewTcComponent
     }, {
       path: 'basic-info', component: BasicInfoFormComponent
     }, {
       path: 'job-info', component: DoctorJobInfoFormComponent
-    },
-    // TODO: add doctor specific available time component here
-    {
+    }, {
+      path: 'available-time', component: AvailableTimeFormComponent
+    }, {
       path: 'review-info', component: ReviewInfoComponent
     }]
   },
   {
-    path: 'volunteer', component: VerifyIdComponent,
+    path: 'volunteer',
     data: { role: 'volunteer' },
     children: [{
-      path: 'verify-id', component: VerifyIdComponent,
+      path: 'verify-id', component: VerifyIdComponent
     }, {
       path: 'review-tc', component: ReviewTcComponent
     }, {
       path: 'basic-info', component: BasicInfoFormComponent
-    },
-    // TODO: add volunteer specific job info component here
-    // TODO: add volunteer specific available time component here
-    {
+    }, {
+      path: 'job-info', component: VolunteerJobInfoFormComponent
+    }, {
+      path: 'available-time', component: AvailableTimeFormComponent
+    }, {
       path: 'review-info', component: ReviewInfoComponent
     }]
   },

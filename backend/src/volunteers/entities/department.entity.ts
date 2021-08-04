@@ -2,17 +2,21 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { VolunteerDepartment } from './volunteerDepartment.entity';
 
 export enum DepartmentLabel {
-  INIT1 = 'สาขาหนึ่ง',
-  INIT2 = 'สาขาสอง',
-  INIT3 = 'สาขาสาม',
-  INIT4 = 'สาขาสี่',
-  INIT5 = 'สาขาห้า',
-  INIT6 = 'สาขาหก',
+  DEP1 = 'แอดมินตอบ LINE',
+  DEP2 = 'คัดกรอง',
+  DEP3 = 'ส่งต่อประสาน',
+  DEP4 = 'เฝ้าระวัง',
+  DEP5 = 'พูดคุยกับผู้ป่วย',
+  DEP6 = 'IT Support',
+  DEP7 = 'อบรมอาสาสมัคร',
+  DEP8 = 'จัดซื้อ/หาของ',
+  DEP9 = 'ประสานงานและเอกสาร',
+  DEP10 = 'แพทย์อาสา',
+  DEP11 = 'แพคและคลัง'
 }
 
 @Entity()
 export class Department {
-
   @PrimaryGeneratedColumn('increment')
   id: number;
 
@@ -24,10 +28,10 @@ export class Department {
 
   @OneToMany(
     () => VolunteerDepartment,
-    volunteerDepartment => volunteerDepartment.department,
-    { cascade: true }
+    (volunteerDepartment) => volunteerDepartment.department,
+    { cascade: true },
   )
-  volunteerDepartment: VolunteerDepartment[];
+  volunteerDepartments: VolunteerDepartment[];
 
   @Column({ default: false })
   isTrainingRequired: boolean;

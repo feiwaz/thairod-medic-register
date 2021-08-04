@@ -9,7 +9,6 @@
 
 .main-logo {
   flex-basis: 100%;
-  margin-top: 70px;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -30,11 +29,10 @@ button {
 
 .last-button-flex-item {
   flex-basis: 100%;
-  margin: 10px 10px 140px 10px;
+  margin-top: 10px;
   text-align: center;
 }
 
-.inline-text {
-  margin-left: 14px;
-  margin-right: 24px;
+.last-button-flex-item > button {
+  width: 372px;
 }

@@ -24,9 +24,15 @@ form {
 }
 
 mat-form-field,
-button[type="submit"] {
+button {
   font-size: 16px;
   margin: 10px 0;
+}
+
+mat-form-field,
+.mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .form-container {

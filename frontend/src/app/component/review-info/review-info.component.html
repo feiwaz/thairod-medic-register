@@ -24,7 +24,7 @@
         <div><span class="info-field">LINE ID:</span><span class="info-value">{{basicInfo.lineId}}</span></div>
       </div>
     </div>
-    <div class="editable-info last-item">
+    <div class="editable-info second-item">
       <div class="info-header">
         <span class="info-field">ข้อมูลประกอบวีชาชีพทางเวชกรรม</span>
         <span>
@@ -34,8 +34,31 @@
         </span>
       </div>
       <div class="info-body">
-        <div><span class="info-field">สาขาที่ถนัด:</span><span class="info-value">
-            {{jobInfo.specializedFields.join(", ")}}</span>
+        <div>
+          <span class="info-field">{{role === 'doctor' ? 'สาขาที่ถนัด:' : 'แผนกที่สนใจ:'}}</span><span
+            class="info-value">
+            {{role === 'doctor' ? jobInfo.specializedFields.join(", ") : jobInfo.departments.join(", ")}}</span>
+        </div>
+        <div *ngIf="jobInfo.medCertificateId">
+          <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
+            class="info-value">{{jobInfo.medCertificateId}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="editable-info last-item">
+      <div class="info-header">
+        <span class="info-field">วันและเวลาที่สะดวก</span>
+        <span>
+          <button type="button" mat-button (click)="onEditInfo('available-time')">
+            <mat-icon>edit</mat-icon> แก้ไขข้อมูล
+          </button>
+        </span>
+      </div>
+      <div class="info-body">
+        <div><span class="info-field">วันและเวลาที่สะดวก:</span>
+          <ul>
+            <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
+          </ul>
         </div>
         <div><span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
             class="info-value">{{jobInfo.medCertificateId}}</span></div>
@@ -59,7 +82,7 @@
     </div>
     <button mat-flat-button type="submit" color="primary" style="width:100%" [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
     <ng-container *ngIf="errorResponse">
-      <p>ไม่พบผู้ใช้นี้ในระบบ กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
+      <p>ไม่พบผู้ใช้นี้ในระบบหรือกรอกข้อมูลไม่ครบ<br>กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
     </ng-container>
   </form>
 </div>

@@ -18,15 +18,17 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class ManageAccountComponent implements OnInit {
 
-  displayedColumns = ['email', 'name', '_id', 'role', 'action'];
-  selectedFilterColumn = 'email';
+  displayedColumns = ['_id', 'name', 'role', 'contactNumber', 'email', 'isActive', 'action'];
+  selectedFilterColumn = 'name';
 
   readonly pageSizeOptions = [6, 16, 30];
   readonly USER_COLUMN_MAP: any = {
-    email: 'อีเมล',
-    name: 'ชื่อ-นามสกุล',
     _id: 'ID',
-    role: 'บทบาทในเว็ป'
+    name: 'ชื่อ-นามสกุล',
+    role: 'บทบาทในเว็ป',
+    contactNumber: 'เบอร์โทรศัพท์',
+    email: 'อีเมล',
+    isActive: 'สถานะ'
   };
 
   isLoading = true;

@@ -7,13 +7,12 @@ import {
   Max,
   Min
 } from 'class-validator';
-import { Department } from '../entities/department.entity';
-import {
-  VolunteerInitial,
-  VolunteerStatus
-} from '../entities/volunteer.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { Department, DepartmentLabel } from '../entities/department.entity';
+import { VolunteerInitial } from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
+
   @IsNotEmpty()
   @IsNumber()
   @Min(1000000000000, { message: 'id must be equal to 13 characters' })
@@ -22,7 +21,7 @@ export class CreateVolunteerDto {
 
   @IsNotEmpty()
   @IsEnum(VolunteerInitial, {
-    message: 'initial must be like นาย, นางสาว, นาง, เด็กชาย, เด็กหญิง',
+    message: `initial must be like ${Object.values(VolunteerInitial).join(', ')}`
   })
   initial: VolunteerInitial;
 
@@ -45,7 +44,7 @@ export class CreateVolunteerDto {
   @IsNotEmpty()
   lineId: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
   @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
@@ -64,13 +63,17 @@ export class CreateVolunteerDto {
   idCardSelfieImg: string;
 
   @IsOptional()
-  @IsEnum(VolunteerStatus, {
-    message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว',
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
   })
-  status: VolunteerStatus;
+  status: UserStatus;
 
   //can insert with only id field
-  @IsOptional()
-  department: Department[];
+  @IsNotEmpty()
+  @IsEnum(DepartmentLabel, {
+    message: `department must be like ${Object.values(DepartmentLabel).join(', ')}`,
+    each: true,
+  })
+  departments: Department[];
 
 }

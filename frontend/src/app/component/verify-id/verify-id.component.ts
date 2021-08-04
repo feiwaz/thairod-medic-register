@@ -49,6 +49,7 @@ export class VerifyIdComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    sessionStorage.clear();
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();
@@ -97,7 +98,7 @@ export class VerifyIdComponent implements OnInit {
       this.isExistingUser = true;
     } else {
       const basicInfo = this.buildBasicInfo();
-      sessionStorage.setItem('basicInfo', JSON.stringify(basicInfo));
+      sessionStorage.setItem(`${this.role}BasicInfo`, JSON.stringify(basicInfo));
       this.router.navigate([`/${this.role}/review-tc`]);
     }
   }
@@ -105,7 +106,7 @@ export class VerifyIdComponent implements OnInit {
   buildBasicInfo(): BasicInfo {
     return {
       id: this.verifyForm.controls.id.value, initial: '', firstName: '', lastName: '',
-      dateOfBirth: '', address: '', contactNumber: '', lineId: ''
+      dateOfBirth: '', address: '', contactNumber: '', lineId: '', availableTimes: []
     }
   }
 
