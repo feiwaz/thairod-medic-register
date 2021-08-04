@@ -11,8 +11,8 @@ export class VolunteerService {
 
   constructor(private http: HttpClient) { }
 
-  findOne(id: number): Observable<any> {
-    const url = `${environment.apiPrefix}/volunteers/${id}`;
+  findOne(nationalId: number): Observable<any> {
+    const url = `${environment.apiPrefix}/volunteers/${nationalId}`;
     return this.http.get<any>(url);
   }
 

@@ -1,11 +1,11 @@
-export function maskId(id: number | string): string {
-  return (id + '').replace(/(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})/, "$1-$2-$3-$4-$5")
+export function maskId(nationalId: number | string): string {
+  return (nationalId + '').replace(/(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})/, "$1-$2-$3-$4-$5")
 }
 
-export function partialMaskId(id: number | string): string {
+export function partialMaskId(nationalId: number | string): string {
   let finalValue = '';
-  if (id) {
-    const inputValue = (id + '').trim().split('-').join('');
+  if (nationalId) {
+    const inputValue = (nationalId + '').trim().split('-').join('');
     finalValue = inputValue;
     if (inputValue.length < 5) {
       finalValue = inputValue.replace(/(\d{1})/, "$1-")

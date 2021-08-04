@@ -11,8 +11,8 @@ export class DoctorService {
 
   constructor(private http: HttpClient) { }
 
-  findOne(id: number): Observable<any> {
-    const url = `${environment.apiPrefix}/doctors/${id}`;
+  findOne(nationalId: number): Observable<any> {
+    const url = `${environment.apiPrefix}/doctors/${nationalId}`;
     return this.http.get<any>(url);
   }
 
