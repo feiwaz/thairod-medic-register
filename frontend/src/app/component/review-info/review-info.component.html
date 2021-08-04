@@ -43,6 +43,26 @@
           <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
             class="info-value">{{jobInfo.medCertificateId}}</span>
         </div>
+        <div>
+          <span class="info-field">ภาพบัตรประจำตัวประชาชน:</span>
+          <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
+              *ngIf="idCardBlob !== ''" (error)="onImageError($event)" /></div>
+        </div>
+        <div>
+          <span class="info-field">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
+          <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
+              *ngIf="idCardSelfieBlob !== ''" (error)="onImageError($event)" /></div>
+        </div>
+        <div>
+          <span class="info-field">ภาพใบประกอบวิชาชีพ:</span>
+          <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob"
+              *ngIf="medCertificateBlob !== ''" (error)="onImageError($event)" /></div>
+        </div>
+        <div>
+          <span class="info-field">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
+          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image" [src]="medCertificateSelfieBlob" 
+              *ngIf="medCertificateSelfieBlob !== ''" (error)="onImageError($event)" /></div>
+        </div>
       </div>
     </div>
     <div class="editable-info last-item">
@@ -60,27 +80,10 @@
             <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
           </ul>
         </div>
-        <div><span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
-            class="info-value">{{jobInfo.medCertificateId}}</span></div>
-        <div style="height: auto;">
-          <span class="info-field">ภาพบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob" *ngIf="idCardBlob !== ''" (error)="onImageError($event)" /></div>
-        </div>
-        <div style="height: auto;">
-          <span class="info-field">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob" *ngIf="idCardSelfieBlob !== ''" (error)="onImageError($event)" /></div>
-        </div>
-        <div style="height: auto;">
-          <span class="info-field">ภาพใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob" *ngIf="medCertificateBlob !== ''" (error)="onImageError($event)" /></div>
-        </div>
-        <div style="height: auto;">
-          <span class="info-field">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image" [src]="medCertificateSelfieBlob" *ngIf="medCertificateSelfieBlob !== ''" (error)="onImageError($event)" /></div>
-        </div>
       </div>
     </div>
-    <button mat-flat-button type="submit" color="primary" style="width:100%" [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
+    <button mat-flat-button type="submit" color="primary" style="width:100%"
+      [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
     <ng-container *ngIf="errorResponse">
       <p>ไม่พบผู้ใช้นี้ในระบบหรือกรอกข้อมูลไม่ครบ<br>กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
     </ng-container>
