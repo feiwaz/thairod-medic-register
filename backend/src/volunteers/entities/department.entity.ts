@@ -24,6 +24,7 @@ export class Department {
   @Column({
     type: 'enum',
     enum: DepartmentLabel,
+    unique: true
   })
   label: DepartmentLabel;
 
