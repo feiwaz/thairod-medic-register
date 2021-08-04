@@ -37,10 +37,10 @@ export class CreateDoctorDto {
   @IsNotEmpty()
   @IsNumber()
   @Min(10000, {
-    message: 'medCertificateId must be equal to 13 characters'
+    message: 'medCertificateId must be equal to 5 characters'
   })
   @Max(99999, {
-    message: 'medCertificateId must be equal to 13 characters'
+    message: 'medCertificateId must be equal to 5 characters'
   })
   medCertificateId: number;
 
