@@ -99,7 +99,7 @@ export class VolunteersService {
       where: { volunteerId: id },
       relations: ['department'],
     });
-    if (!volunteerDepartmentList) {
+    if (volunteerDepartmentList.length === 0) {
       return {} as TrainingStatusVolunteerDto;
     }
     return this.mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList);
@@ -122,6 +122,37 @@ export class VolunteersService {
       }
     }
     return trainingStatusDto;
+  }
+
+  async updateTrainingStatus(id: number, trainingStatusDto: TrainingStatusVolunteerDto) {
+    try {
+      const volunteerDepartmentUpdateList = await this.mapTrainingStatusDtoToEntity(id, trainingStatusDto);
+      await this.volunteerDepartmentRepository.save(volunteerDepartmentUpdateList);
+    } catch (error) {
+      throw  new InternalServerErrorException(error.code);
+    }
+  }
+
+  private async mapTrainingStatusDtoToEntity(id: number, trainingStatusDto: TrainingStatusVolunteerDto): Promise<VolunteerDepartment[]> {
+    let VolunteerDepartmentList = [];
+    let tempVolunteerDepartment = null;
+
+    for (const passedDepartment of trainingStatusDto.passedDepartment) {
+      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
+      tempVolunteerDepartment.volunteerId = id;
+      tempVolunteerDepartment.departmentId = passedDepartment.id;
+      tempVolunteerDepartment.trainingStatus = 1;
+      VolunteerDepartmentList.push(tempVolunteerDepartment)
+    }
+    for (const failedDepartment of trainingStatusDto.failedDepartment) {
+      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
+      tempVolunteerDepartment.volunteerId = id;
+      tempVolunteerDepartment.departmentId = failedDepartment.id;
+      tempVolunteerDepartment.trainingStatus = 0;
+      VolunteerDepartmentList.push(tempVolunteerDepartment)
+    }
+
+    return VolunteerDepartmentList;
   }
 
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
