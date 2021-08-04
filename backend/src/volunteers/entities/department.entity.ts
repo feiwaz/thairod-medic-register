@@ -31,7 +31,7 @@ export class Department {
     (volunteerDepartment) => volunteerDepartment.department,
     { cascade: true },
   )
-  volunteerDepartment: VolunteerDepartment[];
+  volunteerDepartments: VolunteerDepartment[];
 
   @Column({ default: false })
   isTrainingRequired: boolean;

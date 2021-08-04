@@ -13,14 +13,14 @@ export class VolunteerDepartment {
 
   @ManyToOne(
     () => Volunteer,
-    volunteer => volunteer.volunteerDepartment,
+    volunteer => volunteer.volunteerDepartments,
     { onDelete: 'CASCADE' }
   )
   volunteer: Volunteer;
 
   @ManyToOne(
     () => Department,
-    department => department.volunteerDepartment
+    department => department.volunteerDepartments
   )
   department: Department;
 

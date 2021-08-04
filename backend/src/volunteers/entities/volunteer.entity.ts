@@ -79,7 +79,7 @@ export class Volunteer {
     volunteerDepartment => volunteerDepartment.volunteer,
     { cascade: true }
   )
-  volunteerDepartment: VolunteerDepartment[];
+  volunteerDepartments: VolunteerDepartment[];
 
   @CreateDateColumn()
   createdTime: Date;

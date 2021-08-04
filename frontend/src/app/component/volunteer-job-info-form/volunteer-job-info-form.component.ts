@@ -32,7 +32,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
     department10: false,
     department11: false,
     medCertificateId: ['', [Validators.min(10000), Validators.max(99999)]],
-    idCard: [''],
+    idCard: ['']
   });
 
   constructor(
