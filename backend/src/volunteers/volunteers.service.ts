@@ -44,11 +44,11 @@ export class VolunteersService {
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) },
     });
-    const savedVolunteer = await this.volunteerRepository.findOne(createVolunteerDto.nationalId);
+    const savedVolunteer = new Volunteer();
+    savedVolunteer.nationalId = createVolunteerDto.nationalId;
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartments = savedDepartments.map(department => ({
-      departmentId: department.id,
-      volunteerId: savedVolunteer.id
+      departmentId: department.id
     } as VolunteerDepartment));
     return volunteer;
   }
@@ -60,8 +60,9 @@ export class VolunteersService {
     });
   }
 
-  async findOne(id: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne(id, {
+  async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
+    const volunteer = await this.volunteerRepository.findOne({
+      where: { nationalId },
       relations: ['volunteerDepartments']
     });
     if (!volunteer) {

@@ -12,7 +12,7 @@ export enum DoctorInitial {
 @Entity()
 export class Doctor {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({

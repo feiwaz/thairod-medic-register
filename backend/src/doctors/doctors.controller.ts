@@ -18,9 +18,9 @@ export class DoctorsController {
     return this.service.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.service.findOne(id);
+  @Get(':nationalId')
+  findOne(@Param('nationalId') nationalId: number) {
+    return this.service.findOne(nationalId);
   }
 
   // @UseGuards(JwtAuthGuard)
