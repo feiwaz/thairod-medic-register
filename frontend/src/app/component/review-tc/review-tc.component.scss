@@ -13,14 +13,17 @@ form {
   margin: 25px 25px;
 }
 
-mat-checkbox {
-  margin-left: 1em;
+form > h3 {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-.scrollable {
-  overflow: auto;
-  margin-bottom: 10px;
-  height: 450px;
+form > button {
+  margin-top: 15px;
+}
+
+mat-checkbox {
+  margin-left: 1em;
 }
 
 button {
