@@ -72,11 +72,10 @@ export class DoctorsService {
     await this.doctorRepository.delete(id);
   }
 
-  updateStatus(id: number, verifyDoctor: VerifyDoctorDto) {
-    try {
-      this.doctorRepository.update(id, { status: verifyDoctor.status });
-    } catch (error) {
-      throw new NotFoundException("ไม่พบ id นี้" + error.code);
+  async updateStatus(id: number, verifyDoctor: VerifyDoctorDto) {
+    let response = await this.doctorRepository.update(id, { status: verifyDoctor.status });
+    if (response['affected'] === 0) {
+      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }
   }
 }

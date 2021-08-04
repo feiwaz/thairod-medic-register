@@ -111,11 +111,10 @@ export class VolunteersService {
     await this.volunteerRepository.delete(id);
   }
 
-  updateStatus(id: number, verifyVolunteer: VerifyVolunteerDto) {
-    try {
-      this.volunteerRepository.update(id, { status: verifyVolunteer.status });
-    } catch (error) {
-      throw new NotFoundException("ไม่พบ id นี้" + error.code);
+  async updateStatus(id: number, verifyVolunteer: VerifyVolunteerDto) {
+    let response = await this.volunteerRepository.update(id, { status: verifyVolunteer.status });
+    if (response['affected'] === 0) {
+      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }
   }
 }
