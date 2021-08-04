@@ -1,16 +1,16 @@
 .form-container {
   position: fixed;
   top: 56px;
-  height: 100%;
+  height: calc(100% - 56px);
   width: 100%;
+  overflow: auto;
 }
 
 form {
   flex-direction: column;
   display: flex;
   justify-content: flex-start;
-  height: 100%;
-  margin: 25px 25px 0 25px;
+  margin: 25px 25px;
 }
 
 mat-checkbox {
@@ -30,6 +30,7 @@ button {
 @media only screen and (min-width: 600px) {
   .form-container {
     top: 64px;
+    height: calc(100% - 64px);
   }
 
   form {
