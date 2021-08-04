@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -50,7 +50,7 @@ export class User {
   @UpdateDateColumn()
   updatedTime: Date;
 
-  @ManyToOne(type => User, user => user.id)
+  @OneToMany(() => User, user => user.id)
   createdBy: User;
 
 }
