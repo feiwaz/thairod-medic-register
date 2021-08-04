@@ -24,7 +24,7 @@
         <div><span class="info-field">LINE ID:</span><span class="info-value">{{basicInfo.lineId}}</span></div>
       </div>
     </div>
-    <div class="editable-info last-item">
+    <div class="editable-info second-item">
       <div class="info-header">
         <span class="info-field">ข้อมูลประกอบวีชาชีพทางเวชกรรม</span>
         <span>
@@ -42,6 +42,23 @@
         <div *ngIf="jobInfo.medCertificateId">
           <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span><span
             class="info-value">{{jobInfo.medCertificateId}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="editable-info last-item">
+      <div class="info-header">
+        <span class="info-field">วันและเวลาที่สะดวก</span>
+        <span>
+          <button type="button" mat-button (click)="onEditInfo('available-time')">
+            <mat-icon>edit</mat-icon> แก้ไขข้อมูล
+          </button>
+        </span>
+      </div>
+      <div class="info-body">
+        <div><span class="info-field">วันและเวลาที่สะดวก:</span>
+          <ul>
+            <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
+          </ul>
         </div>
       </div>
     </div>

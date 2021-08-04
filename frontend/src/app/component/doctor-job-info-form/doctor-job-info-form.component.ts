@@ -12,6 +12,7 @@ import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 export class DoctorJobInfoFormComponent implements OnInit {
 
   role = 'doctor';
+  isEditing = false;
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
     medCertificateId: 0
@@ -33,7 +34,12 @@ export class DoctorJobInfoFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-  ) { }
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation) {
+      this.isEditing = currentNavigation.extras.state?.isEditing || false;
+    }
+  }
 
   ngOnInit(): void {
     this.patchValue();
@@ -58,7 +64,11 @@ export class DoctorJobInfoFormComponent implements OnInit {
   onSubmit(): void {
     const jobInfo = this.buildJobInfo();
     sessionStorage.setItem(`${this.role}JobInfo`, JSON.stringify(jobInfo));
-    this.router.navigate([`/${this.role}/available-time`]);
+    if (this.isEditing) {
+      this.router.navigate([`/${this.role}/review-info`]);
+    } else {
+      this.router.navigate([`/${this.role}/job-info`]);
+    }
   }
 
   buildJobInfo(): DoctorJobInfo {

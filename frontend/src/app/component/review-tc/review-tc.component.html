@@ -1,4 +1,5 @@
-<app-toolbar [toolbarTitle]="'หนังสือยินยอมทางการรักษา'"></app-toolbar>
+<app-toolbar [toolbarTitle]="'หนังสือยินยอมทางการรักษา'" [navigateBackPath]="basicInfoPath">
+</app-toolbar>
 <div class="form-container">
   <form [formGroup]="tcForm" (ngSubmit)="onSubmit()">
     <h3><b>หนังสือยินยอม-รับผิดชอบทางการรักษา</b></h3>

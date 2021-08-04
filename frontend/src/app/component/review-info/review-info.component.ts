@@ -102,7 +102,7 @@ export class ReviewInfoComponent implements OnInit {
 
   onEditInfo(path = 'basic-info'): void {
     this.router.navigate([`/${this.role}/${path}`], {
-      state: { basicInfo: this.basicInfo, jobInfo: this.jobInfo }
+      state: { isEditing: true }
     });
   }
 

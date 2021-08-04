@@ -39,6 +39,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   role = '';
   id = '';
+  isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
 
@@ -57,7 +58,12 @@ export class BasicInfoFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {
+    const currentNavigation = this.router.getCurrentNavigation();
+    if (currentNavigation) {
+      this.isEditing = currentNavigation.extras.state?.isEditing || false;
+    }
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
@@ -88,7 +94,11 @@ export class BasicInfoFormComponent implements OnInit {
   onSubmit(): void {
     const basicInfo = this.buildBasicInfo();
     sessionStorage.setItem(`${this.role}BasicInfo`, JSON.stringify(basicInfo));
-    this.router.navigate([`/${this.role}/job-info`]);
+    if (this.isEditing) {
+      this.router.navigate([`/${this.role}/review-info`]);
+    } else {
+      this.router.navigate([`/${this.role}/job-info`]);
+    }
   }
 
   buildBasicInfo(): BasicInfo {
