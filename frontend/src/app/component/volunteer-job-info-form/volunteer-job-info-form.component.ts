@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Event, Router } from '@angular/router';
 import { DEPARTMENTS } from 'src/app/constant/departments';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
+import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 @Component({
   selector: 'app-volunteer-job-info-form',
@@ -15,7 +16,11 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   isEditing = false;
   jobInfo: VolunteerJobInfo = {
     departments: [],
-    medCertificateId: 0
+    idCard: null as any,
+    idCardSelfie: null as any,
+    medCertificateId: 0,
+    medCertificate: null as any,
+    medCertificateSelfie: null as any
   };
 
   departments = DEPARTMENTS;
@@ -32,12 +37,16 @@ export class VolunteerJobInfoFormComponent implements OnInit {
     department9: false,
     department10: false,
     department11: false,
+    idCard: [null, Validators.required],
+    idCardSelfie: [null, Validators.required],
     medCertificateId: ['', [Validators.min(10000), Validators.max(99999)]],
-    idCard: ['']
+    medCertificate: [null],
+    medCertificateSelfie: [null]
   });
 
   constructor(
     private fb: FormBuilder,
+    private imageCachingService: ImageCachingService,
     private router: Router
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
@@ -53,8 +62,8 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   private patchValue() {
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
-      this.jobInfoForm.patchValue({ departments, medCertificateId });
+      const { departments, idCard, idCardSelfie, medCertificateId, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString) as VolunteerJobInfo;
+      this.jobInfoForm.patchValue({ departments, idCard, idCardSelfie, medCertificateId, medCertificate, medCertificateSelfie });
 
       if (departments.length !== 0) {
         departments.forEach((viewValue: string) => {
@@ -79,9 +88,19 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   buildJobInfo(): VolunteerJobInfo {
     const departments = this.buildDepartments();
     const medCertificateId = this.jobInfoForm.controls.medCertificateId.value;
-    let jobInfo = { departments } as VolunteerJobInfo;
+    const idCard = this.jobInfoForm.controls.idCard.value;
+    const idCardSelfie = this.jobInfoForm.controls.idCardSelfie.value;
+    const medCertificate = this.jobInfoForm.controls.medCertificate.value;
+    const medCertificateSelfie = this.jobInfoForm.controls.medCertificateSelfie.value;
+    let jobInfo = { departments, idCard, idCardSelfie } as VolunteerJobInfo;
     if (medCertificateId) {
       jobInfo.medCertificateId = medCertificateId;
+    }
+    if (medCertificate) {
+      jobInfo.medCertificate = medCertificate;
+    }
+    if (medCertificateSelfie) {
+      jobInfo.medCertificateSelfie = medCertificateSelfie;
     }
     return jobInfo;
   }
@@ -98,4 +117,16 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   filterType(isOnline = true) {
     return this.departments.filter(department => department.isOnline === isOnline);
   }
+
+  clearValue(id: string) {
+    this.jobInfoForm.patchValue({ [id]: '' });
+  }
+
+  onImageChanged(imageObject: any, id: string): void {
+    if (imageObject.files.length > 0) {
+      this.jobInfoForm.patchValue({ [id]: { fileName: [imageObject.files[0].name], blobUrl: imageObject.blobUrl } });
+      this.imageCachingService.cacheBlobUrl(id, imageObject.files[0].name, imageObject.blobUrl);
+    }
+  }
+
 }
