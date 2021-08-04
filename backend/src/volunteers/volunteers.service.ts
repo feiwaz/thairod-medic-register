@@ -125,7 +125,7 @@ export class VolunteersService {
   }
 
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
+    const response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
     if (response['affected'] === 0) {
       throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }
