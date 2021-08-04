@@ -14,12 +14,23 @@ $accent: mat-palette($mat-pink, 500, 200, A100);
 $theme: mat-light-theme($primary, $accent);
 @include angular-material-theme($theme);
 
+$custom-typography: mat-typography-config(
+  $font-family: "FC Minimal"
+);
+@include angular-material-typography($custom-typography);
+
+@font-face {
+  font-family: "FC Minimal";
+  src: url('./assets/font/FC\ Minimal\ Regular.ttf') format(".ttf"),
+      url('./assets/font/FC\ Minimal\ Bold.ttf') format(".ttf");
+}
+
 html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "FC Minimal", Roboto, "Helvetica Neue", sans-serif;
   color: rgb(0, 23, 64);
 }
