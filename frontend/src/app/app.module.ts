@@ -19,6 +19,7 @@ import { UpdateStatusComponent } from './component/update-status/update-status.c
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { SharedModule } from './module/shared.module';
 import { SafeHtmlPipe } from './pipe/safe-html.pipe';
+import { UploadPhotoComponent } from './component/upload-photo/upload-photo.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SafeHtmlPipe } from './pipe/safe-html.pipe';
     BasicInfoFormComponent,
     DoctorJobInfoFormComponent,
     ReviewInfoComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
+    UploadPhotoComponent
   ],
   imports: [
     BrowserModule,

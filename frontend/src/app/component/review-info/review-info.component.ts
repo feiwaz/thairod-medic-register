@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
@@ -32,14 +33,24 @@ export class ReviewInfoComponent implements OnInit {
 
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
-    medCertificateId: 0
+    medCertificateId: 0,
+    idCard: null as any,
+    idCardSelfie: null as any,
+    medCertificate: null as any,
+    medCertificateSelfie: null as any
   };
+
+  idCardBlob: SafeUrl = '';
+  idCardSelfieBlob: SafeUrl = '';
+  medCertificateBlob: SafeUrl = '';
+  medCertificateSelfieBlob: SafeUrl = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
+    private sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit(): void {
@@ -60,14 +71,24 @@ export class ReviewInfoComponent implements OnInit {
     }
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
-      this.jobInfo = { specializedFields, medCertificateId };
+      const { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString);
+      this.jobInfo = { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie };
     }
+    this.idCardBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('idCard'));
+    this.idCardSelfieBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('idCardSelfie'));
+    this.medCertificateBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('medCertificate'));
+    this.medCertificateSelfieBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('medCertificateSelfie'));
   }
 
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
+    /* 
+      TO DO
+      - Need to clarify what data type to be used to upload image  
+      - Before sending request to create user, convert blob:url to File or Base64 image
+      - Can be done either it in 1) this file 2) this.service or 3) at backend
+    */
     this.service.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()
@@ -94,6 +115,19 @@ export class ReviewInfoComponent implements OnInit {
     this.router.navigate([`/${this.role}/${path}`], {
       state: { basicInfo: this.basicInfo, jobInfo: this.jobInfo }
     });
+  }
+
+  getBlobUrl(id: string): string {
+    const cachedObject = localStorage.getItem(id);
+    if (cachedObject) {
+      const cachedImage = JSON.parse(cachedObject);
+      return cachedImage.blobUrl;
+    }
+    return '';
+  }
+
+  onImageError(event: any): void {
+    event.target.style.display = 'none';
   }
 
 }

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
+import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 interface specializedFieldCheckbox {
   formControlName: string;
@@ -20,7 +21,11 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   jobInfo: DoctorJobInfo = {
     specializedFields: [],
-    medCertificateId: 0
+    medCertificateId: 0,
+    medCertificate: null as any,
+    medCertificateSelfie: null as any,
+    idCard: null as any,
+    idCardSelfie: null as any
   };
 
   specializedFields: specializedFieldCheckbox[] = SPECIALIZED_FIELDS;
@@ -33,13 +38,17 @@ export class DoctorJobInfoFormComponent implements OnInit {
       Validators.min(10000),
       Validators.max(99999)
     ]],
-    idCard: ['']
+    idCard: [null, Validators.required],
+    idCardSelfie: [null],
+    medCertificate: [null],
+    medCertificateSelfie: [null]
   });
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private imageCachingService: ImageCachingService,
   ) { }
 
   ngOnInit(): void {
@@ -50,9 +59,8 @@ export class DoctorJobInfoFormComponent implements OnInit {
   private patchValue() {
     let jobInfoString = sessionStorage.getItem('jobInfo');
     if (jobInfoString) {
-      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
-      this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
-
+      const { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString);
+      this.jobInfoForm.patchValue({ specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie });
       if (specializedFields.length !== 0) {
         specializedFields.forEach((viewValue: string) => {
           this.specializedFields
@@ -73,7 +81,11 @@ export class DoctorJobInfoFormComponent implements OnInit {
     const specializedFields = this.buildSpecializedFields();
     return {
       specializedFields,
-      medCertificateId: this.jobInfoForm.controls.medCertificateId.value
+      medCertificateId: this.jobInfoForm.controls.medCertificateId.value,
+      idCard: this.jobInfoForm.controls.idCard.value,
+      idCardSelfie: this.jobInfoForm.controls.idCardSelfie.value,
+      medCertificate: this.jobInfoForm.controls.medCertificate.value,
+      medCertificateSelfie: this.jobInfoForm.controls.medCertificateSelfie.value
     }
   }
 
@@ -84,6 +96,13 @@ export class DoctorJobInfoFormComponent implements OnInit {
       }
       return result;
     }, [] as any);
+  }
+
+  onImageChanged(imageObject: any, id: string): void {
+    if (imageObject.files.length > 0) {
+      this.jobInfoForm.patchValue({ [id]: { fileName: [imageObject.files[0].name], blobUrl: imageObject.blobUrl } });
+      this.imageCachingService.cacheBlobUrl(id, imageObject.files[0].name, imageObject.blobUrl);
+    }
   }
 
 }
