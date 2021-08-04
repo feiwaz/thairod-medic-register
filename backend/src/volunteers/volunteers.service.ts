@@ -1,3 +1,4 @@
+import { is } from '@babel/types';
 import {
   ConflictException,
   Injectable,
@@ -10,6 +11,7 @@ import {
   FindOneVolunteerDto,
   VolunteerToDepartment,
 } from './dto/find-one-volunteer.dto';
+import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dtp';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
@@ -107,5 +109,35 @@ export class VolunteersService {
 
   async remove(id: number): Promise<void> {
     await this.volunteerRepository.delete(id);
+  }
+
+  async findTrainingStatus(id: number): Promise<TrainingStatusVolunteerDto> {
+    const volunteerDepartmentList = await this.volunteerDepartmentRepository.find({
+      where: { volunteerId: id },
+      relations: ['department'],
+    });
+    if (!volunteerDepartmentList) {
+      return {} as TrainingStatusVolunteerDto;
+    } 
+    return this.mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList);
+  }
+
+  private mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList: VolunteerDepartment[]): Promise<TrainingStatusVolunteerDto> {
+    const trainingStatusDto = Object.assign(new TrainingStatusVolunteerDto());
+    trainingStatusDto.id = null;
+    trainingStatusDto.passedDepartment = [];
+    trainingStatusDto.failedDepartment = [];
+
+    for (const volunteerDepmt of volunteerDepartmentList) {
+      const { department, ...volunteerDepartment } = volunteerDepmt;
+      if (trainingStatusDto.id == null) { trainingStatusDto.id = volunteerDepartment.volunteerId; }
+
+      if (volunteerDepartment.trainingStatus == 1) {
+        trainingStatusDto.passedDepartment.push(department);
+      } else if (volunteerDepartment.trainingStatus == 0) {
+        trainingStatusDto.failedDepartment.push(department);
+      }
+    }
+    return trainingStatusDto;
   }
 }

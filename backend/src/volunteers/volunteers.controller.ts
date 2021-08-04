@@ -25,4 +25,9 @@ export class VolunteersController {
   remove(@Param('id') id: number) {
     return this.service.remove(id);
   }
+
+  @Get(':id/training-status')
+  findTrainingStatus(@Param('id') id: number) {
+    return this.service.findTrainingStatus(id);
+  }
 }
