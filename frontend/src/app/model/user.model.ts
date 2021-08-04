@@ -1,8 +1,12 @@
-import { Role } from './role.model';
 
 export interface User {
   _id?: string;
   email: string;
-  name?: string;
-  role?: Role;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  contactNumber?: string;
+  role?: 'admin' | 'user';
+  isActive?: boolean;
+  createdBy?: string;
 }

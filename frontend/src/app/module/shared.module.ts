@@ -15,6 +15,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -44,6 +45,7 @@ import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
         MatProgressSpinnerModule,
         MatSelectModule,
         MatSidenavModule,
+        MatSlideToggleModule,
         MatSortModule,
         MatTableModule,
         MatTabsModule,
@@ -69,6 +71,7 @@ import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
         MatProgressSpinnerModule,
         MatSelectModule,
         MatSidenavModule,
+        MatSlideToggleModule,
         MatSortModule,
         MatTableModule,
         MatTabsModule,

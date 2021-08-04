@@ -94,8 +94,8 @@ export class AuthenticationService {
   }
 
   updateCurrentUser(user: User): void {
-    const { _id, name, email, role } = user;
-    this.currentUser = { _id, name, email, role: role?.text } as any;
+    const { _id, firstName, lastName, email, role } = user;
+    this.currentUser = { _id, firstName, lastName, email, role } as any;
   }
 
 }

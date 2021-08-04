@@ -11,8 +11,7 @@ export class CreateDoctorDto {
 
   @IsNotEmpty()
   @IsEnum(DoctorInitial, {
-    message:
-      'initial must be like แพทย์หญิง, นายแพทย์, เภสัชกรชาย, เภสัชกรหญิง',
+    message: `initial must be like ${Object.values(DoctorInitial).join(', ')}`
   })
   initial: DoctorInitial;
 
@@ -59,13 +58,13 @@ export class CreateDoctorDto {
 
   @IsOptional()
   @IsEnum(DoctorStatus, {
-    message: 'status must be like รอการอนุมัติ, อนุมัติแล้ว',
+    message: `status must be like ${Object.values(DoctorStatus).join(', ')}`
   })
   status: DoctorStatus;
 
   @IsNotEmpty()
   @IsEnum(SpecializedFieldLabel, {
-    message: 'specializedFields must be like เวชปฏิบัติทั่วไป, สูตินรีเวช, อายุรกรรม, ศัลยกรรม, กุมารเวช, อื่นๆ',
+    message: `specializedFields must be like ${Object.values(SpecializedFieldLabel).join(', ')}`,
     each: true
   })
   specializedFields: SpecializedFieldLabel[];

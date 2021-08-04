@@ -47,7 +47,7 @@ export class Volunteer {
   @Column()
   lineId: string;
 
-  @Column()
+  @Column({ nullable: true })
   medCertificateId: number;
 
   @Column({ nullable: true })
@@ -65,7 +65,7 @@ export class Volunteer {
   @Column({
     type: 'enum',
     enum: VolunteerStatus,
-    default: VolunteerStatus.PENDING,
+    default: VolunteerStatus.PENDING
   })
   status: VolunteerStatus;
 
@@ -80,7 +80,7 @@ export class Volunteer {
     volunteerDepartment => volunteerDepartment.volunteer,
     { cascade: true }
   )
-  volunteerDepartment: VolunteerDepartment[];
+  volunteerDepartments: VolunteerDepartment[];
 
   @CreateDateColumn()
   createdTime: Date;

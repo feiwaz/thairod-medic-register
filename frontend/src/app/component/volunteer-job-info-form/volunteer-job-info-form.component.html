@@ -1,0 +1,54 @@
+<app-toolbar [toolbarTitle]="'ระบุข้อมูลการประกอบวิชาชีพทางเวชกรรม'"></app-toolbar>
+<div class="form-container">
+  <form [formGroup]="jobInfoForm" (ngSubmit)="onSubmit()">
+    <div class="form-field-container">
+      <p>
+        <b>เเผนกที่สนใจ <span class="text-danger">*</span></b>
+      </p>
+      <p><b>สามารถทำงานออนไลน์ได้</b></p>
+      <section class="checkbox-flex-container">
+        <p *ngFor="let field of filterType()">
+          <mat-checkbox [formControlName]="field.formControlName">
+            {{ field.viewValue }}
+          </mat-checkbox>
+        </p>
+      </section>
+      <p><b>ทำงานที่ไซต์เท่านั้น</b></p>
+      <section class="checkbox-flex-container">
+        <p *ngFor="let field of filterType(false)">
+          <mat-checkbox [formControlName]="field.formControlName">
+            {{ field.viewValue }}
+          </mat-checkbox>
+        </p>
+      </section>
+      <p>
+        <b>อัพโหลดภาพบัตรประชาชน <span class="text-danger">*</span></b>
+      </p>
+      <input type="file" accept="image/*" capture="environment" formControlName="idCard" min="10000" max="99999"
+        #idCard />
+      <p>
+        <b>เลขที่ใบประกอบวิชาชีพเวชกรรม (ถ้ามี)</b>
+      </p>
+      <mat-form-field>
+        <input matInput type="number" formControlName="medCertificateId" placeholder="กรอกเฉพาะตัวเลข 5 หลัก"
+          #medCertificateId class="user-id-input" />
+        <button *ngIf="medCertificateId" type="button" matSuffix mat-icon-button aria-label="Clear"
+          (click)="medCertificateId.value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-hint align="end">{{ medCertificateId.value.length }} / 5</mat-hint>
+        <mat-error
+          *ngIf="jobInfoForm.get('medCertificateId')?.hasError('min') || jobInfoForm.get('medCertificateId')?.hasError('max')">
+          กรุณาใส่เลขให้ครบ 5 หลัก
+          <mat-hint class="mat-hint-error">{{ medCertificateId.value.length }} / 5</mat-hint>
+        </mat-error>
+        <mat-error *ngIf="jobInfoForm.get('medCertificateId')?.hasError('required')">
+          จำเป็นต้องใส่*
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid">
+      ถัดไป <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </form>
+</div>
