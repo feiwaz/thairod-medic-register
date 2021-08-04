@@ -3,11 +3,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BasicInfo } from 'src/app/model/basic-info';
 
 @Component({
-  selector: 'app-verify-list',
-  templateUrl: './verify-list.component.html',
-  styleUrls: ['./verify-list.component.scss']
+  selector: 'app-table-list',
+  templateUrl: './table-list.component.html',
+  styleUrls: ['./table-list.component.scss']
 })
-export class VerifyListComponent implements OnInit {
+export class TableListComponent implements OnInit {
 
   displayedColumns = ['dateTime', 'name', 'status', 'action'];
   selectedFilterColumn = 'dateTime';
