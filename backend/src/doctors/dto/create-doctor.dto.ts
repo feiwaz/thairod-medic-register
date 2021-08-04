@@ -7,8 +7,8 @@ export class CreateDoctorDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(1000000000000, { message: 'id must be equal to 13 characters' })
-  @Max(9999999999999, { message: 'id must be equal to 13 characters' })
+  @Min(1000000000000, { message: 'nationalId must be equal to 13 characters' })
+  @Max(9999999999999, { message: 'nationalId must be equal to 13 characters' })
   nationalId: string;
 
   @IsNotEmpty()

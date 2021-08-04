@@ -20,15 +20,15 @@ export class VolunteersController {
     return this.service.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.service.findOne(id);
+  @Get(':nationalId')
+  findOne(@Param('nationalId') nationalId: number) {
+    return this.service.findOne(nationalId);
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.service.remove(id);
+  @Delete(':nationalId')
+  remove(@Param('nationalId') nationalId: number) {
+    return this.service.remove(nationalId);
   }
 
   // @UseGuards(JwtAuthGuard)

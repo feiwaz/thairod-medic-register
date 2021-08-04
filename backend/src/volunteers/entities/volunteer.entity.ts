@@ -13,7 +13,7 @@ export enum VolunteerInitial {
 @Entity()
 export class Volunteer {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({

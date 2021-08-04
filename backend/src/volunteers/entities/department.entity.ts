@@ -17,7 +17,8 @@ export enum DepartmentLabel {
 
 @Entity()
 export class Department {
-  @PrimaryGeneratedColumn('increment')
+
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
