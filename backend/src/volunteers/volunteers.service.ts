@@ -32,7 +32,7 @@ export class VolunteersService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException(error.code);
+      throw new InternalServerErrorException();
     }
   }
 
