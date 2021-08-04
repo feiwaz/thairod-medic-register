@@ -4,12 +4,6 @@ import { UserRole } from "../entities/user.entity";
 export class CreateUserDto {
 
   @IsNotEmpty()
-  @IsNumber()
-  @Min(1000000000000, { message: 'id must be equal to 13 characters' })
-  @Max(9999999999999, { message: 'id must be equal to 13 characters' })
-  id: string;
-
-  @IsNotEmpty()
   @IsEmail()
   email: string;
 

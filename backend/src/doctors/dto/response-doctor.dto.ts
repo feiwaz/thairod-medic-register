@@ -3,7 +3,8 @@ import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class responseDoctorDto {
-  id: string;
+  id: number;
+  nationalId: string;
   initial: DoctorInitial;
   firstName: string;
   lastName: string;

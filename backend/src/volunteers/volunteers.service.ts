@@ -48,7 +48,7 @@ export class VolunteersService {
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartments = savedDepartments.map(department => ({
       departmentId: department.id,
-      volunteerId: createVolunteerDto.id + ''
+      volunteerId: createVolunteerDto.id
     } as VolunteerDepartment));
     return volunteer;
   }

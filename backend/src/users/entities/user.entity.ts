@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -14,8 +14,8 @@ export enum UserRole {
 @Entity()
 export class User {
 
-  @PrimaryColumn({ type: 'bigint' })
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column()
   email: string;

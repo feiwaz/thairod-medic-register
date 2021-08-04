@@ -13,11 +13,10 @@ import { VolunteerInitial } from '../entities/volunteer.entity';
 
 export class CreateVolunteerDto {
 
-  @IsNotEmpty()
-  @IsNumber()
+  @IsOptional()
   @Min(1000000000000, { message: 'id must be equal to 13 characters' })
   @Max(9999999999999, { message: 'id must be equal to 13 characters' })
-  id: string;
+  nationalId: string;
 
   @IsNotEmpty()
   @IsEnum(VolunteerInitial, {
