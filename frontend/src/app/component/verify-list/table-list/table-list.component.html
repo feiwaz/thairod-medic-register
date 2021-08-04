@@ -8,19 +8,37 @@
             matSortDisableClear>
             <ng-container matColumnDef="dateTime" class="first-column">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> วันเวลาที่ลงทะเบียน </th>
-                <td mat-cell *matCellDef="let row"> {{row.dateTime}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.createdTime}} </td>
             </ng-container>
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ชื่อ-นามสกุล </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                <td mat-cell *matCellDef="let row"> {{row.initial}} {{row.firstName}} {{row.lastName}}</td>
             </ng-container>
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> สถานะ </th>
-                <td mat-cell *matCellDef="let row"> {{row.status?.text}} </td>
+                <td mat-cell *matCellDef="let row">
+                    <ng-container *ngIf="row.status === 'รอการอนุมัติ';else second">
+                        <button mat-flat-button disabled>รอตรวจสอบ</button>
+                    </ng-container>
+                    <ng-template #second>
+                        <ng-container *ngIf="row.status === 'อนุมัติแล้ว';else third">
+                            <button mat-flat-button disabled color="warn">ผ่าน</button>
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #third>
+                        <button mat-flat-button disabled>ไม่ผ่าน</button>
+                    </ng-template>
+                </td>
             </ng-container>
             <ng-container matColumnDef="action" stickyEnd>
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let row">
+                    <ng-container *ngIf="row.status === 'รอการอนุมัติ';else second">
+                        <button mat-stroked-button><mat-icon>search</mat-icon>ตรวจสอบ</button>
+                    </ng-container>
+                    <ng-template #second>
+                        <button mat-stroked-button><mat-icon>description</mat-icon>ดูข้อมูล</button>
+                    </ng-template>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

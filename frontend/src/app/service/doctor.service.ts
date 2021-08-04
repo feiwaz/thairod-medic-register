@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { BasicInfo } from '../model/basic-info';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +20,10 @@ export class DoctorService {
     user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const url = `${environment.apiPrefix}/doctors`;
     return this.http.post<any>(url, user);
+  }
+
+  getDoctors(): Observable<BasicInfo[]> {
+    return this.http.get<BasicInfo[]>(`${environment.apiPrefix}/doctors`);
   }
 
 }
