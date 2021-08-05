@@ -9,7 +9,6 @@ import { DoctorsModule } from './doctors/doctors.module';
 import { UsersModule } from './users/users.module';
 import { VolunteersModule } from './volunteers/volunteers.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
-import { FileUploadModule } from './file-upload/file-upload.module';
 
 dotenv.config();
 console.log(process.env);
@@ -34,8 +33,7 @@ console.log(process.env);
     UsersModule,
     VolunteersModule,
     DoctorsModule,
-    MinioClientModule,
-    FileUploadModule
+    MinioClientModule
   ],
   controllers: [AppController],
   providers: [AppService],
