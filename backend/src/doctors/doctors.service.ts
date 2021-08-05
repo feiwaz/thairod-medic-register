@@ -27,16 +27,20 @@ export class DoctorsService {
     try {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
       const nId = createDoctorDto.nationalId
-      await this.doctorRepository.save(doctor);
+      const suffix = "-doc"
       const idCardImg = imageFiles['id_card'][0]
-      await this.minioClientService.upload(idCardImg, nId, nId + "ID_card")
+      const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
       const idCardSelImg = imageFiles['id_card_sel'][0]
-      await this.minioClientService.upload(idCardSelImg, nId, nId + "ID_card_selfie")
+      const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
       const jobCerImg = imageFiles['job_cer'][0]
-      await this.minioClientService.upload(jobCerImg, nId, nId + "Job_cer")
+      const jobCerRes = await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer")
       const jobCerSelImg = imageFiles['job_cer_sel'][0]
-      await this.minioClientService.upload(jobCerSelImg, nId, nId + "ID_cJob_cer_selfie")
-
+      const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie")
+      doctor.idCardImg = idCardRes.url
+      doctor.idCardSelfieImg = idCardSelRes.url
+      doctor.jobCertificateImg = jobCerRes.url
+      doctor.jobCertificateSelfieImg = jobCerSelRes.url
+      await this.doctorRepository.save(doctor);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');

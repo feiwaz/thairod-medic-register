@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MinioClientService } from './minio-client.service';
 import { MinioModule } from 'nestjs-minio-client';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -9,7 +8,7 @@ dotenv.config();
 @Module({
   imports: [
     MinioModule.registerAsync({
-      imports: [ConfigModule],
+      imports: [],
       useFactory: async () => ({
         endPoint: process.env.MINIO_ENDPOINT,
         port: parseInt(process.env.MINIO_PORT),
@@ -17,7 +16,7 @@ dotenv.config();
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY,
       }),
-      inject: [ConfigService],
+      inject: [],
     }),
   ],
   providers: [MinioClientService],
