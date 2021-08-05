@@ -12,9 +12,4 @@ export class AuthController {
   async create(@Request() req) {
     return this.service.login(req.user);
   }
-
-  // @Post('test')
-  // async test() {
-  //   return this.service.tmpPwd();
-  // }
 }
