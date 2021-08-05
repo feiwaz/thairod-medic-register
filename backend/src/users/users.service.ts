@@ -28,7 +28,7 @@ export class UsersService {
 
   private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
     const user: User = Object.assign(new User(), createUserDto);
-    const createByUser = await this.userRepository.findOne(createUserDto.createdBy);
+    const createByUser = await this.userRepository.findOne(createUserDto.createdById);
 
     if (!createByUser) {
       throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
@@ -37,7 +37,7 @@ export class UsersService {
     const salt = await genSalt();
     user.password = await hash(createUserDto.password, salt);
     user.salt = salt;
-    user.createdBy = createByUser;
+    user.createdById = createByUser;
     return user;
   }
 
