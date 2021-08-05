@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ChangePassword } from '../model/change-password.model';
 import { User } from '../model/user.model';
@@ -46,6 +47,10 @@ export class UserService {
 
   changePassword(id: string, credential: ChangePassword): Observable<any> {
     return this.http.put<any>(`${environment.apiPrefix}/users/${id}/change-password`, credential);
+  }
+
+  patchUser(id: string, user: User): Observable<any> {
+    return this.http.patch<any>(`${environment.apiPrefix}/users/${id}`, user);
   }
 
 }
