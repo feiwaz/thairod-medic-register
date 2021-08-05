@@ -57,7 +57,7 @@ export class ManageAccountComponent implements OnInit {
       users => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(users as User[]);
-        this.proceedSuccessResponse(isCreatingNew, '_id');
+        this.proceedSuccessResponse(isCreatingNew, 'id');
       },
       errorResponse => this.isLoading = false
     );
@@ -122,7 +122,7 @@ export class ManageAccountComponent implements OnInit {
 
   private checkIfSelfUpdate(result: any): void {
     const currentUser = this.authService.currentUser;
-    if (!result.isCreatingNew && currentUser._id === result.user._id) {
+    if (!result.isCreatingNew && currentUser.id === result.user.id) {
       this.authService.updateCurrentUser(result.user);
       const newRole = result.user.role?.text || '';
       if (newRole.toLowerCase() !== 'admin') {

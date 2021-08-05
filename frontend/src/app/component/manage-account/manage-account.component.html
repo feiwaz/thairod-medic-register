@@ -12,7 +12,7 @@
     <div class="mat-elevation-z5">
         <div class="manage-account-table-container">
             <mat-progress-bar *ngIf="isLoading" color="primary" mode="indeterminate"> </mat-progress-bar>
-            <table mat-table [dataSource]="dataSource" matSort matSortActive="_id" matSortDirection="asc"
+            <table mat-table [dataSource]="dataSource" matSort matSortActive="id" matSortDirection="asc"
                 matSortDisableClear>
                 <ng-container matColumnDef="id" class="first-column">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>

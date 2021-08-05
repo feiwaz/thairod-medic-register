@@ -13,7 +13,7 @@ import { User } from '../model/user.model';
 export class AuthenticationService {
 
   isLoggedIn = false;
-  currentUser = { _id: '', email: '', name: '', role: '' };
+  currentUser = { id: '', email: '', name: '', role: '' };
 
   constructor(
     private http: HttpClient,
@@ -68,7 +68,7 @@ export class AuthenticationService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     this.isLoggedIn = false;
-    this.currentUser = { _id: '', email: '', name: '', role: '' };
+    this.currentUser = { id: '', email: '', name: '', role: '' };
     this.dialog.closeAll();
     this.router.navigate(['/admin']);
   }
@@ -78,8 +78,8 @@ export class AuthenticationService {
       const accessToken = localStorage.getItem('accessToken') || '';
       const decodedUser = this.jwtHelper.decodeToken(accessToken).user;
       this.isLoggedIn = true;
-      const { _id, name, email, role } = decodedUser;
-      this.currentUser = { _id, name, email, role: role.text };
+      const { id, name, email, role } = decodedUser;
+      this.currentUser = { id, name, email, role: role.text };
     } catch (error) {
       this.logout();
     }
@@ -94,8 +94,8 @@ export class AuthenticationService {
   }
 
   updateCurrentUser(user: User): void {
-    const { _id, firstName, lastName, email, role } = user;
-    this.currentUser = { _id, firstName, lastName, email, role } as any;
+    const { id, firstName, lastName, email, role } = user;
+    this.currentUser = { id, firstName, lastName, email, role } as any;
   }
 
 }

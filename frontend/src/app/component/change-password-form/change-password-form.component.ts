@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
@@ -20,14 +20,14 @@ export class ChangePasswordFormComponent implements OnInit {
 
   changePasswordForm = this.fb.group({
     changePasswordCheckbox: [false],
-    credential: this.fb.group({
-      currentPassword: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', Validators.required]
+    credential: new FormGroup({
+      currentPassword: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+      confirmPassword: new FormControl('', Validators.required)
     }, CustomValidators.compareConfirmPassword)
   });
 
-  @Input() data = { _id: '' };
+  @Input() data = { id: '' };
   @ViewChild('currentPassword') currentPasswordElement: any;
 
   constructor(
@@ -60,7 +60,7 @@ export class ChangePasswordFormComponent implements OnInit {
     const currentPassword = credentialForm.get('currentPassword')?.value;
     const password = credentialForm.get('password')?.value;
     const confirmPassword = credentialForm.get('confirmPassword')?.value;
-    this.userService.changePassword(this.data._id, { currentPassword, password, confirmPassword }).subscribe(
+    this.userService.changePassword(this.data.id, { currentPassword, password, confirmPassword }).subscribe(
       response => this.handleSuccessfulUpdate(),
       errorResponse => this.handleErrorUpdate()
     );
