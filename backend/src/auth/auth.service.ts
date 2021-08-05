@@ -1,7 +1,7 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -13,28 +13,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) { }
 
-  async findByEmail(email: string): Promise<User> {
-    const user = await this.userRepository.findOne({ email: 'aaa@aaa.com' });
-    return user;
+  async validateUser(username: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOne({ email: username }, {
+      select: ['id', 'email', 'password', 'firstName', 'lastName', 'contactNumber', 'role', 'isActive']
+    });
+    if (user && await bcrypt.compare(password, user.password)) {
+      const { id, email, firstName, lastName, contactNumber, role, isActive } = user;
+      return { id, email, firstName, lastName, contactNumber, role, isActive } as User;
+    }
+    return null;
   }
 
-  async verifyLogin(username: string, password: string): Promise<any> {
-    const user = await this.findByEmail(username);
-    if (!user) {
-      throw new UnauthorizedException('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
-    }
-    const pwd = await hash(password, user.salt);
-    if (pwd !== user.password){
-      throw new UnauthorizedException('อีเมลหรือรหัสผ่านไม่ถูกต้อง')
-    }
-    return user;
-  }
-
-  async login(user: any) {
-    console.log(user);
-    const payload = { user: user.toJSON() };
+  async login(user: User) {
+    const payload = { user: JSON.stringify(user) };
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: this.jwtService.sign(payload)
     };
   }
 }

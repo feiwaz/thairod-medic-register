@@ -1,6 +1,5 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { genSalt, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -34,10 +33,7 @@ export class UsersService {
       throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
     }
 
-    const salt = await genSalt();
-    user.password = await hash(createUserDto.password, salt);
-    user.salt = salt;
-    user.createdById = createByUser;
+    user.createdBy = createByUser;
     return user;
   }
 
@@ -55,21 +51,12 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.mapUpdateDtoToEntity(id, updateUserDto);
-      await this.userRepository.save(user);
+      const user = await this.userRepository.findOne(id);
+      const savedUser = Object.assign(user, updateUserDto);
+      await this.userRepository.save(savedUser);
     } catch (error) {
       throw new InternalServerErrorException(error.code);
     }
-  }
-
-  private async mapUpdateDtoToEntity(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = Object.assign(await this.findOne(id), updateUserDto);
-
-    if (updateUserDto.hasOwnProperty('password')) {
-      user.password = await hash(updateUserDto.password, user.salt);
-    }
-
-    return user;
   }
 
   async remove(id: number): Promise<void> {

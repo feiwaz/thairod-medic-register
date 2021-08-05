@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 // @import "~bootstrap/scss/bootstrap";
 @import "~@angular/material/theming";
+@import url(assets/font/stylesheet.css);
+
 @include mat-core();
 
 $thairod-red: (
@@ -15,14 +17,16 @@ $theme: mat-light-theme($primary, $accent);
 @include angular-material-theme($theme);
 
 $custom-typography: mat-typography-config(
-  $font-family: "FC Minimal"
+  $font-family: "FC Minimal",
 );
 @include angular-material-typography($custom-typography);
+* {
+  font-size: 1.05em;
+}
 
-@font-face {
-  font-family: "FC Minimal";
-  src: url('./assets/font/FC\ Minimal\ Regular.ttf') format(".ttf"),
-      url('./assets/font/FC\ Minimal\ Bold.ttf') format(".ttf");
+h4 {
+  font-size: 1.1em;
+  margin: 0;
 }
 
 html,

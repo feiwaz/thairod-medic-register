@@ -18,13 +18,13 @@ import { UserService } from 'src/app/service/user.service';
 })
 export class ManageAccountComponent implements OnInit {
 
-  displayedColumns = ['_id', 'name', 'role', 'contactNumber', 'email', 'isActive', 'action'];
-  selectedFilterColumn = 'name';
+  displayedColumns = ['id', 'firstName', 'role', 'contactNumber', 'email', 'isActive', 'action'];
+  selectedFilterColumn = 'firstName';
 
   readonly pageSizeOptions = [6, 16, 30];
   readonly USER_COLUMN_MAP: any = {
-    _id: 'ID',
-    name: 'ชื่อ-นามสกุล',
+    id: 'ID',
+    firstName: 'ชื่อ-นามสกุล',
     role: 'บทบาทในเว็ป',
     contactNumber: 'เบอร์โทรศัพท์',
     email: 'อีเมล',
@@ -57,7 +57,7 @@ export class ManageAccountComponent implements OnInit {
       users => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(users as User[]);
-        this.proceedSuccessResponse(isCreatingNew, '_id');
+        this.proceedSuccessResponse(isCreatingNew, 'id');
       },
       errorResponse => this.isLoading = false
     );
@@ -122,7 +122,7 @@ export class ManageAccountComponent implements OnInit {
 
   private checkIfSelfUpdate(result: any): void {
     const currentUser = this.authService.currentUser;
-    if (!result.isCreatingNew && currentUser._id === result.user._id) {
+    if (!result.isCreatingNew && currentUser.id === result.user.id) {
       this.authService.updateCurrentUser(result.user);
       const newRole = result.user.role?.text || '';
       if (newRole.toLowerCase() !== 'admin') {
@@ -180,6 +180,14 @@ export class ManageAccountComponent implements OnInit {
 
   onFilterTextCleared(filterText: string): void {
     this.dataSource.filter = filterText;
+  }
+
+  onIsActiveChange(userId: string, checked: boolean): void {
+    this.isLoading = true;
+    this.service.patchUser(userId, { isActive: checked } as User).subscribe(
+      response => this.isLoading = false,
+      errorResponse => this.isLoading = false
+    );
   }
 
 }

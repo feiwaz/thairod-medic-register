@@ -11,7 +11,7 @@ import { UserService } from 'src/app/service/user.service';
 export class UserAccountDialogComponent implements OnInit {
 
   isLoading = true;
-  user: User = { _id: '', email: '', firstName: '' };
+  user: User = { id: '', email: '', firstName: '' };
 
   constructor(
     private userService: UserService,
@@ -23,7 +23,7 @@ export class UserAccountDialogComponent implements OnInit {
   }
 
   private getUser(): void {
-    this.userService.getUser(this.authService.currentUser._id).subscribe(
+    this.userService.getUser(this.authService.currentUser.id).subscribe(
       user => {
         this.isLoading = false;
         console.log(user);
