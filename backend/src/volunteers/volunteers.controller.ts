@@ -3,6 +3,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
+import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
 import { VolunteersService } from './volunteers.service';
 
 @Controller('volunteers')
@@ -45,6 +46,11 @@ export class VolunteersController {
   @Get(':id/training-status')
   findTrainingStatus(@Param('id') id: number) {
     return this.service.findTrainingStatus(id);
+  }
+
+  @Patch(':id/training-status')
+  updateTrainingStatus(@Param('id') id: number, @Body() trainingStatusVolunteerDto: TrainingStatusVolunteerDto) {
+    return this.service.updateTrainingStatus(id, trainingStatusVolunteerDto);
   }
 
   // @UseGuards(JwtAuthGuard)
