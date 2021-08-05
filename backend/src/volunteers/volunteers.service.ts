@@ -5,6 +5,7 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import e from 'express';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
@@ -39,9 +40,9 @@ export class VolunteersService {
       const idCardSelImg = imageFiles['id_card_sel'][0]
       const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
       const jobCerImg = imageFiles['job_cer'][0]
-      const jobCerRes = await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer")
+      const jobCerRes = (jobCerImg != null) ? await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer") : null
       const jobCerSelImg = imageFiles['job_cer_sel'][0]
-      const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie")
+      const jobCerSelRes = (jobCerSelImg != null) ? await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie") : null
       volunteer.idCardImg = idCardRes.url
       volunteer.idCardSelfieImg = idCardSelRes.url
       volunteer.jobCertificateImg = jobCerRes.url
