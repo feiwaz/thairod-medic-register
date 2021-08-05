@@ -62,6 +62,20 @@ button {
   font-size: 16px;
 }
 
+.image-label {
+  margin-bottom: 10px;
+}
+
+.preview-image-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.preview-image {
+  width: 120px;
+}
+
 @media only screen and (min-width: 600px) {
   .form-container {
     top: 64px;

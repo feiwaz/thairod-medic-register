@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -7,14 +7,14 @@ export enum UserStatus {
 }
 
 export enum UserRole {
-  ADMIN = 'Admin',
-  USER = 'User',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 @Entity()
 export class User {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
@@ -50,7 +50,7 @@ export class User {
   @UpdateDateColumn()
   updatedTime: Date;
 
-  @OneToMany(() => User, user => user.id)
-  createdBy: User;
+  @OneToOne(() => User, user => user.id)
+  createdById: User;
 
 }

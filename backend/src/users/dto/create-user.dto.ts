@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber, Max, Min } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
 import { UserRole } from "../entities/user.entity";
 
 export class CreateUserDto {
@@ -20,13 +20,13 @@ export class CreateUserDto {
   contactNumber: string;
 
   @IsNotEmpty()
-  @IsEnum(UserRole, { message: 'role must be Admin or User'})
+  @IsEnum(UserRole, { message: 'role must be admin or user' })
   role: UserRole;
 
   @IsNotEmpty()
   isActive: boolean;
 
   @IsNotEmpty()
-  createdBy: string;
+  createdById: number;
 
 }

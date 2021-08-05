@@ -49,9 +49,10 @@ export class DoctorsService {
     });
   }
 
-  async findOne(id: number): Promise<responseDoctorDto> {
-    const doctor = await this.doctorRepository.findOne(id, {
-      relations: ['specializedFields'],
+  async findOne(nationalId: number): Promise<responseDoctorDto> {
+    const doctor = await this.doctorRepository.findOne({
+      where: { nationalId },
+      relations: ['specializedFields']
     });
     if (!doctor) {
       return {} as responseDoctorDto;

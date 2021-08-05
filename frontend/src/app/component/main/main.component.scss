@@ -14,13 +14,21 @@
 }
 
 button {
-  padding: 10px;
+  padding: 10px 15px;
   background-color: rgb(235, 235, 235);
   border-radius: 10px;
 }
 
 .doctor-button-flex-item {
   margin-right: 5px;
+}
+
+.doctor-button-flex-item > button {
+  padding: 10px 8px;
+}
+
+.doctor-long-text {
+  font-size: 13px;
 }
 
 .volunteer-button-flex-item {
@@ -34,5 +42,5 @@ button {
 }
 
 .last-button-flex-item > button {
-  width: 372px;
+  width: 366px;
 }

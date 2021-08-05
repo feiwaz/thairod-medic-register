@@ -1,10 +1,10 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { genSalt, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { genSalt, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -22,16 +22,22 @@ export class UsersService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException(error.code);
+      throw error;
     }
   }
 
   private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
-    const user = Object.assign(new User(), createUserDto);
+    const user: User = Object.assign(new User(), createUserDto);
+    const createByUser = await this.userRepository.findOne(createUserDto.createdById);
+
+    if (!createByUser) {
+      throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
+    }
 
     const salt = await genSalt();
     user.password = await hash(createUserDto.password, salt);
     user.salt = salt;
+    user.createdById = createByUser;
     return user;
   }
 

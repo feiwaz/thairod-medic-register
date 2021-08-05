@@ -1,8 +1,8 @@
 <div class="flex-container">
   <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
-  <div class="center-align" *ngIf="id else noInfo">
+  <div class="center-align" *ngIf="nationalId else noInfo">
     <p>สถานะของผู้ใช้ที่มีเลขประจำตัวประชาชน</p>
-    <p>{{id}}:<span class="status-text">{{status}}</span></p>
+    <p>{{nationalId}}:<span class="status-text">{{status}}</span></p>
   </div>
   <ng-template #noInfo>
     <div class="center-align">

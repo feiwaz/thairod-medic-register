@@ -32,6 +32,10 @@ button {
   font-size: 16px;
 }
 
+button[type="submit"] {
+  margin-top: 15px;
+}
+
 .checkbox-flex-container {
   display: flex;
   flex-wrap: wrap;

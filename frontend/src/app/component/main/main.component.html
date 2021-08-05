@@ -3,7 +3,9 @@
   <div class="doctor-button-flex-item">
     <button mat-button type="button" (click)="onRegister('doctor')">
       <div [innerHTML]="doctorImg | safeHtml"> </div>
-      <div><b>ลงทะเบียนแพทย์</b><br>ผู้ที่มีใบประกอบวิชาชีพเวชกรรม</div>
+      <div><b>ลงทะเบียนแพทย์</b><br>
+        <span class="doctor-long-text">ผู้ที่มีใบประกอบวิชาชีพเวชกรรม</span>
+      </div>
     </button>
   </div>
   <div class="volunteer-button-flex-item">
@@ -15,7 +17,7 @@
   <div class="last-button-flex-item">
     <button mat-button type="button" (click)="onCheckStatus()">
       <span [innerHTML]="checkStatusLogo | safeHtml"> </span>
-      <span><b>ตรวจสอบสถานะการลงทะเบียน</b></span>
+      <span class="inline-text"><b>ตรวจสอบสถานะการลงทะเบียน</b></span>
     </button>
   </div>
 </div>
