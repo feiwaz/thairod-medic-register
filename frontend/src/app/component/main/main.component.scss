@@ -27,10 +27,6 @@ button {
   padding: 10px 8px;
 }
 
-.doctor-long-text {
-  font-size: 13px;
-}
-
 .volunteer-button-flex-item {
   margin-left: 5px;
 }
@@ -43,4 +39,12 @@ button {
 
 .last-button-flex-item > button {
   width: 366px;
+}
+
+.checkstatus {
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }
