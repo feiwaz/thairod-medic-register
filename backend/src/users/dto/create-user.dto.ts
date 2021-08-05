@@ -27,6 +27,6 @@ export class CreateUserDto {
   isActive: boolean;
 
   @IsNotEmpty()
-  createdBy: string;
+  createdBy: number;
 
 }

@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Controller, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,16 +22,22 @@ export class UsersService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException(error.code);
+      throw error;
     }
   }
 
   private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
-    const user = Object.assign(new User(), createUserDto);
-
+    const user : User = Object.assign(new User(), createUserDto);
+    const createByUser = await this.userRepository.findOne(createUserDto.createdBy);
+    
+    if (!createByUser){
+      throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
+    }
+  
     const salt = await genSalt();
     user.password = await hash(createUserDto.password, salt);
     user.salt = salt;
+    user.createdBy = createByUser;
     return user;
   }
 
