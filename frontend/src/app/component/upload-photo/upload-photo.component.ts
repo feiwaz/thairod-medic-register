@@ -18,7 +18,7 @@ export class UploadPhotoComponent implements OnInit {
 
   @ViewChild('file')
   file!: ElementRef;
-  
+
   @ViewChild('thumbnail')
   thumbnail!: ElementRef;
 

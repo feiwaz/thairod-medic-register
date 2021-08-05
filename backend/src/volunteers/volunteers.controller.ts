@@ -5,7 +5,7 @@ import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { VolunteersService } from './volunteers.service';
 
-@Controller('api/volunteers')
+@Controller('volunteers')
 export class VolunteersController {
 
   constructor(private readonly service: VolunteersService) { }

@@ -5,7 +5,7 @@ import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 
-@Controller('api/doctors')
+@Controller('doctors')
 export class DoctorsController {
 
   constructor(private readonly service: DoctorsService) { }

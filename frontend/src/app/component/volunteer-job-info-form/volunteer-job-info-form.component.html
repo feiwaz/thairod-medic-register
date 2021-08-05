@@ -1,4 +1,4 @@
-<app-toolbar [toolbarTitle]="'ระบุข้อมูลการประกอบวิชาชีพทางเวชกรรม'"></app-toolbar>
+<app-toolbar [toolbarTitle]="'ระบุแผนกที่สนใจ'"></app-toolbar>
 <div class="form-container">
   <form [formGroup]="jobInfoForm" (ngSubmit)="onSubmit()">
     <div class="form-field-container">
@@ -21,22 +21,14 @@
           </mat-checkbox>
         </p>
       </section>
-      <app-upload-photo
-        id="idCard" 
-        matIcon="cloud_upload" 
-        header="อัพโหลดภาพบัตรประจำตัวประชาชน" 
-        subHeader=""
+      <app-upload-photo id="idCard" matIcon="cloud_upload" header="อัพโหลดภาพบัตรประจำตัวประชาชน" subHeader=""
         (image)="onImageChanged($event, 'idCard')">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
-      <app-upload-photo
-        id="idCardSelfie" 
-        matIcon="photo_camera" 
-        header="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน" 
-        subHeader=""
-        (image)="onImageChanged($event, 'idCardSelfie')">
+      <app-upload-photo id="idCardSelfie" matIcon="photo_camera" header="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน"
+        subHeader="" (image)="onImageChanged($event, 'idCardSelfie')">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCardSelfie')?.hasError('required')">
         จำเป็นต้องใส่*
@@ -45,8 +37,10 @@
         <b>เลขที่ใบประกอบวิชาชีพเวชกรรม (ถ้ามี)</b>
       </p>
       <mat-form-field>
-        <input matInput #medCertificateId type="number" formControlName="medCertificateId" placeholder="กรอกเฉพาะตัวเลข 5 หลัก" class="user-id-input" />
-        <button *ngIf="medCertificateId" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearValue('medCertificateId')">
+        <input matInput #medCertificateId type="number" formControlName="medCertificateId"
+          placeholder="กรอกเฉพาะตัวเลข 5 หลัก" class="user-id-input" />
+        <button *ngIf="medCertificateId" type="button" matSuffix mat-icon-button aria-label="Clear"
+          (click)="clearValue('medCertificateId')">
           <mat-icon>close</mat-icon>
         </button>
         <mat-hint align="end">{{ medCertificateId.value.length }} / 5</mat-hint>
@@ -59,19 +53,11 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <app-upload-photo
-        id="medCertificate" 
-        matIcon="cloud_upload" 
-        header="อัพโหลดภาพใบประกอบวิชาชีพ (ถ้ามี)" 
-        subHeader=""
-        (image)="onImageChanged($event, 'medCertificate')">
+      <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="อัพโหลดภาพใบประกอบวิชาชีพ (ถ้ามี)"
+        subHeader="" (image)="onImageChanged($event, 'medCertificate')">
       </app-upload-photo>
-      <app-upload-photo
-        id="medCertificateSelfie" 
-        matIcon="photo_camera" 
-        header="ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ (ถ้ามี)" 
-        subHeader=""
-        (image)="onImageChanged($event, 'medCertificateSelfie')">
+      <app-upload-photo id="medCertificateSelfie" matIcon="photo_camera" header="ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ (ถ้ามี)"
+        subHeader="" (image)="onImageChanged($event, 'medCertificateSelfie')">
       </app-upload-photo>
     </div>
     <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid">
