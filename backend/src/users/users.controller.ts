@@ -26,7 +26,7 @@ export class UsersController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto) {
-    return this.service.update(id, updateUserDto);
+    return this.service.update(+id, updateUserDto);
   }
 
   @Delete(':id')
