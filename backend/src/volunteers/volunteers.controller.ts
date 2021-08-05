@@ -13,10 +13,10 @@ export class VolunteersController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    { name: 'id_card', maxCount: 1 },
-    { name: 'id_card_sel', maxCount: 1 },
-    { name: 'job_cer', maxCount: 1 },
-    { name: 'job_cer_sel', maxCount: 1 }
+    { name: 'idCard', maxCount: 1 },
+    { name: 'idCardSelfie', maxCount: 1 },
+    { name: 'medCertificate', maxCount: 1 },
+    { name: 'medCertificateSelfie', maxCount: 1 }
   ]))
   async create(
     @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
