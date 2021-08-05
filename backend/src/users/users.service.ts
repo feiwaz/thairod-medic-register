@@ -1,10 +1,10 @@
-import { ConflictException, Controller, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { genSalt, hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { genSalt, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -27,13 +27,13 @@ export class UsersService {
   }
 
   private async mapCreateDtoToEntity(createUserDto: CreateUserDto): Promise<User> {
-    const user : User = Object.assign(new User(), createUserDto);
+    const user: User = Object.assign(new User(), createUserDto);
     const createByUser = await this.userRepository.findOne(createUserDto.createdBy);
-    
-    if (!createByUser){
+
+    if (!createByUser) {
       throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
     }
-  
+
     const salt = await genSalt();
     user.password = await hash(createUserDto.password, salt);
     user.salt = salt;

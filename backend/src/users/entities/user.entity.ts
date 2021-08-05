@@ -7,8 +7,8 @@ export enum UserStatus {
 }
 
 export enum UserRole {
-  ADMIN = 'Admin',
-  USER = 'User',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 @Entity()
@@ -51,6 +51,6 @@ export class User {
   updatedTime: Date;
 
   @OneToOne(() => User, user => user.id)
-  createdBy: User;
+  createdById: User;
 
 }

@@ -52,7 +52,7 @@ export class DoctorsService {
   async findOne(nationalId: number): Promise<responseDoctorDto> {
     const doctor = await this.doctorRepository.findOne({
       where: { nationalId },
-      relations: ['specializedFields'],
+      relations: ['specializedFields']
     });
     if (!doctor) {
       return {} as responseDoctorDto;
