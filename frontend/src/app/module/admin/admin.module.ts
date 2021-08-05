@@ -11,6 +11,7 @@ import { VerifyProcessComponent } from 'src/app/component/manage-registered-user
 import { DeleteDialogComponent } from 'src/app/dialog/delete-dialog/delete-dialog.component';
 import { UserAccountDialogComponent } from 'src/app/dialog/user-account-dialog/user-account-dialog.component';
 import { UserDialogComponent } from 'src/app/dialog/user-dialog/user-dialog.component';
+import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { SharedModule } from '../shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -27,7 +28,8 @@ import { AdminRoutingModule } from './admin-routing.module';
     ManageRegisteredUserComponent,
     VerifyListComponent,
     VerifyProcessComponent,
-    TableListComponent
+    TableListComponent,
+    VerifyDetailDialogComponent
   ],
   entryComponents: [
     UserDialogComponent,
