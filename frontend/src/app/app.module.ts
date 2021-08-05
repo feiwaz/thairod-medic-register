@@ -21,6 +21,8 @@ import { UpdateStatusComponent } from './component/update-status/update-status.c
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
 import { SharedModule } from './module/shared.module';
+import { SafeHtmlPipe } from './pipe/safe-html.pipe';
+import { UploadPhotoComponent } from './component/upload-photo/upload-photo.component';
 
 export const DATE_FORMAT = {
   parse: {
@@ -47,6 +49,7 @@ export const DATE_FORMAT = {
     DoctorJobInfoFormComponent,
     ReviewInfoComponent,
     AdminLoginComponent,
+    UploadPhotoComponent,
     AvailableTimeFormComponent,
     VolunteerJobInfoFormComponent
   ],

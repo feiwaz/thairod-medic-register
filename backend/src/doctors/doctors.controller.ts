@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { CreateDoctorDto } from './dto/create-doctor.dto';
-import { DoctorsService } from './doctors.service';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
+import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
+import { DoctorsService } from './doctors.service';
+import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { BufferedFile } from 'src/minio-client/file.model';
 
 @Controller('doctors')
 export class DoctorsController {
+
   constructor(private readonly service: DoctorsService) { }
 
   @Post()
@@ -15,24 +18,38 @@ export class DoctorsController {
     { name: 'job_cer', maxCount: 1 },
     { name: 'job_cer_sel', maxCount: 1 }
   ]))
-  async create(@Body() body: any, @UploadedFiles() images: BufferedFile
+  async create(
+    @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
+    createDoctorDto: CreateDoctorDto,
+    @UploadedFiles() images: BufferedFile
   ) {
-    const doctorInfo = JSON.parse(body['body']) as CreateDoctorDto;
-    return this.service.create(doctorInfo, images);
+    return this.service.create(createDoctorDto, images);
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.service.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.service.findOne(id);
+  @Get(':nationalId')
+  findOne(@Param('nationalId') nationalId: number) {
+    return this.service.findOne(nationalId);
   }
 
+  // @UseGuards(JwtAuthGuard)
+  @Patch(':id/verify-registration-status')
+  update(
+    @Param('id') id: number,
+    @Body(new ValidationPipe()) verifyStatusDto: RegistrationStatusDto
+  ) {
+    return this.service.updateStatus(id, verifyStatusDto);
+  }
+
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.service.remove(id);
   }
+
 }

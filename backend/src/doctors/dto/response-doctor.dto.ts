@@ -1,8 +1,10 @@
-import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class responseDoctorDto {
-  id: string;
+  id: number;
+  nationalId: string;
   initial: DoctorInitial;
   firstName: string;
   lastName: string;
@@ -15,6 +17,6 @@ export class responseDoctorDto {
   jobCertificateSelfieImg: string;
   idCardImg: string;
   idCardSelfieImg: string;
-  status: DoctorStatus;
+  status: UserStatus;
   specializedFields: SpecializedFieldLabel[];
 }

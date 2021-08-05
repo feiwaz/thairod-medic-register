@@ -11,7 +11,7 @@ export class UpdateStatusComponent implements OnInit {
 
   mainLogo = '';
   verifyStatusLogo = '';
-  id = '';
+  nationalId = '';
   status = '';
 
   constructor(
@@ -20,7 +20,7 @@ export class UpdateStatusComponent implements OnInit {
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
-      this.id = currentNavigation.extras.state?.id || this.id;
+      this.nationalId = currentNavigation.extras.state?.nationalId || this.nationalId;
       this.status = currentNavigation.extras.state?.status || this.status;
     }
   }

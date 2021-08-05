@@ -1,19 +1,14 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from "class-validator";
-import { UserInitial, UserStatus } from "../entities/user.entity";
+import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
+import { UserRole } from "../entities/user.entity";
 
 export class CreateUserDto {
 
   @IsNotEmpty()
-  @IsNumber()
-  @Min(1000000000000, { message: 'id must be equal to 13 characters' })
-  @Max(9999999999999, { message: 'id must be equal to 13 characters' })
-  id: string;
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
-  @IsEnum(UserInitial, {
-    message: `initial must be like ${Object.values(UserInitial).join(', ')}`
-  })
-  initial: UserInitial;
+  password: string;
 
   @IsNotEmpty()
   firstName: string;
@@ -22,22 +17,16 @@ export class CreateUserDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsDateString()
-  dateOfBirth: string;
-
-  @IsNotEmpty()
-  address: string;
-
-  @IsNotEmpty()
   contactNumber: string;
 
   @IsNotEmpty()
-  lineId: string;
+  @IsEnum(UserRole, { message: 'role must be admin or user' })
+  role: UserRole;
 
-  @IsOptional()
-  @IsEnum(UserStatus, {
-    message: `status must be like ${Object.values(UserStatus).join(', ')}`
-  })
-  status: UserStatus;
+  @IsNotEmpty()
+  isActive: boolean;
+
+  @IsNotEmpty()
+  createdById: number;
 
 }

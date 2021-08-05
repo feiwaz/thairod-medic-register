@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ReviewTcComponent implements OnInit {
 
   role = '';
-  id = '';
+  nationalId = '';
 
   tcForm = this.fb.group({
     consentCheckbox: [false, Validators.required]
@@ -23,7 +23,7 @@ export class ReviewTcComponent implements OnInit {
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
-      this.id = currentNavigation.extras.state?.id || this.id;
+      this.nationalId = currentNavigation.extras.state?.nationalId || this.nationalId;
     }
   }
 
@@ -33,7 +33,7 @@ export class ReviewTcComponent implements OnInit {
 
   onSubmit(): void {
     this.router.navigate([`/${this.role}/basic-info`], {
-      state: { id: this.id }
+      state: { nationalId: this.nationalId }
     });
   }
 

@@ -38,13 +38,13 @@ function getLocale() {
 export class BasicInfoFormComponent implements OnInit {
 
   role = '';
-  id = '';
+  nationalId = '';
   isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
 
   basicInfoForm = this.fb.group({
-    id: ['', Validators.required],
+    nationalId: ['', Validators.required],
     initial: ['', Validators.required],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -74,12 +74,12 @@ export class BasicInfoFormComponent implements OnInit {
   private patchValue() {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
-      const { id, initial, firstName, lastName, dateOfBirth, address,
+      const { nationalId, initial, firstName, lastName, dateOfBirth, address,
         contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
-      this.id = id + '' || this.id;
+      this.nationalId = nationalId + '' || this.nationalId;
       this.availableTimes = availableTimes;
       this.basicInfoForm.patchValue({
-        id: partialMaskId(id),
+        nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
         firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY'),
         address, contactNumber, lineId
@@ -103,7 +103,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   buildBasicInfo(): BasicInfo {
     return {
-      id: +this.id,
+      nationalId: +this.nationalId,
       initial: this.initials.find(option => option.value === this.basicInfoForm.controls.initial.value)?.viewValue || '',
       firstName: this.basicInfoForm.controls.firstName.value,
       lastName: this.basicInfoForm.controls.lastName.value,

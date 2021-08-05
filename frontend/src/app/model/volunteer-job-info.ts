@@ -1,4 +1,8 @@
 export interface VolunteerJobInfo {
   departments: string[];
-  medCertificateId: number;
+  idCard: File;
+  idCardSelfie: File;
+  medCertificateId?: number;
+  medCertificate?: File;
+  medCertificateSelfie?: File;
 }

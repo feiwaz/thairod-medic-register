@@ -1,13 +1,15 @@
 import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
-import { DoctorInitial, DoctorStatus } from '../entities/doctor.entity';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specializedField.entity';
 
 export class CreateDoctorDto {
-  @IsNotEmpty()
+
+  @IsOptional()
   @IsNumber()
-  @Min(1000000000000, { message: 'id must be equal to 13 characters' })
-  @Max(9999999999999, { message: 'id must be equal to 13 characters' })
-  id: string;
+  @Min(1000000000000, { message: 'nationalId must be equal to 13 characters' })
+  @Max(9999999999999, { message: 'nationalId must be equal to 13 characters' })
+  nationalId: string;
 
   @IsNotEmpty()
   @IsEnum(DoctorInitial, {
@@ -57,10 +59,10 @@ export class CreateDoctorDto {
   idCardSelfieImg: string;
 
   @IsOptional()
-  @IsEnum(DoctorStatus, {
-    message: `status must be like ${Object.values(DoctorStatus).join(', ')}`
+  @IsEnum(UserStatus, {
+    message: `status must be like ${Object.values(UserStatus).join(', ')}`
   })
-  status: DoctorStatus;
+  status: UserStatus;
 
   @IsNotEmpty()
   @IsEnum(SpecializedFieldLabel, {

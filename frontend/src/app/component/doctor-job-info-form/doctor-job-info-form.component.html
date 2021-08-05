@@ -28,9 +28,44 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>อัพโหลดภาพบัตรประจำตัวประชาชน</b></p>
-      <input type="file" accept="image/*" capture="environment" formControlName="idCard" #idCard>
+      <app-upload-photo
+        id="medCertificate" 
+        matIcon="cloud_upload" 
+        header="อัพโหลดภาพใบประกอบวิชาชีพ" 
+        subHeader=""
+        (image)="onImageChanged($event, 'medCertificate')">
+      </app-upload-photo>
+      <mat-error *ngIf="jobInfoForm.get('medCertificate')?.hasError('required')">
+        จำเป็นต้องใส่*
+      </mat-error>
+      <app-upload-photo
+        id="medCertificateSelfie" 
+        matIcon="photo_camera" 
+        header="ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ" 
+        subHeader=""
+        (image)="onImageChanged($event, 'medCertificateSelfie')">
+      </app-upload-photo>
+      <mat-error *ngIf="jobInfoForm.get('medCertificateSelfie')?.hasError('required')">
+        จำเป็นต้องใส่*
+      </mat-error>
+      <app-upload-photo
+        id="idCard" 
+        matIcon="cloud_upload" 
+        header="อัพโหลดภาพบัตรประจำตัวประชาชน" 
+        subHeader=""
+        (image)="onImageChanged($event, 'idCard')">
+      </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
+        จำเป็นต้องใส่*
+      </mat-error>
+      <app-upload-photo
+        id="idCardSelfie" 
+        matIcon="photo_camera" 
+        header="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน" 
+        subHeader=""
+        (image)="onImageChanged($event, 'idCardSelfie')">
+      </app-upload-photo>
+      <mat-error *ngIf="jobInfoForm.get('idCardSelfie')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
     </div>
