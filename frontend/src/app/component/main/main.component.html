@@ -17,15 +17,10 @@
     </button>
   </div>
   <div class="last-button-flex-item">
-    <button
-      class="checkstatus"
-      mat-button
-      type="button"
-      (click)="onCheckStatus()"
-    >
+    <button class="checkstatus" mat-button type="button" (click)="onCheckStatus()">
       <div>
         <span [innerHTML]="checkStatusLogo | safeHtml"> </span>
-        <h4>ตรวจสอบสถานะการลงทะเบียน</h4>
+        <h4 class="check-status-text">ตรวจสอบสถานะการลงทะเบียน</h4>
       </div>
     </button>
   </div>

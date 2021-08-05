@@ -37,14 +37,15 @@ button {
   text-align: center;
 }
 
-.last-button-flex-item > button {
-  width: 366px;
-}
-
 .checkstatus {
   div {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
+}
+
+.check-status-text {
+  margin-left: 6px;
+  margin-right: 10px;
 }
