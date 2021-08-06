@@ -31,8 +31,8 @@ export class ImageCachingService {
     localStorage.setItem(imgElement.id, this.converToDataURL(imgElement));
   }
 
-  cacheBlobUrl(id: string, fileName: string, blobUrl: string) {
-    const fileObject = { fileName, blobUrl };
+  cacheBlobUrl(id: string, fileName: string, blobUrl: string, type: string) {
+    const fileObject = { fileName, blobUrl, type };
     localStorage.setItem(id, JSON.stringify(fileObject));
   }
 

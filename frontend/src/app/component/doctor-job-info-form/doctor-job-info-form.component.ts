@@ -103,8 +103,9 @@ export class DoctorJobInfoFormComponent implements OnInit {
 
   onImageChanged(imageObject: any, id: string): void {
     if (imageObject.files.length > 0) {
-      this.jobInfoForm.patchValue({ [id]: { fileName: [imageObject.files[0].name], blobUrl: imageObject.blobUrl } });
-      this.imageCachingService.cacheBlobUrl(id, imageObject.files[0].name, imageObject.blobUrl);
+      const file = imageObject.files[0];
+      this.jobInfoForm.patchValue({ [id]: { fileName: [file.name], blobUrl: imageObject.blobUrl } });
+      this.imageCachingService.cacheBlobUrl(id, file.name, imageObject.blobUrl, file.type);
     }
   }
 

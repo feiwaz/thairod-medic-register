@@ -23,13 +23,26 @@ export class DoctorService {
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));
 
-    if (blobs && blobs[0]) formData.append('idCard', new File([blobs[0]], 'idCard'))
-    if (blobs && blobs[1]) formData.append('idCardSelfie', new File([blobs[1]], 'idCardSelfie'))
-    if (blobs && blobs[2]) formData.append('medCertificate', new File([blobs[2]], 'medCertificate'))
-    if (blobs && blobs[3]) formData.append('medCertificateSelfie', new File([blobs[3]], 'medCertificateSelfie'))
+    if (blobs && blobs[0]) formData.append('idCard', this.createFile([blobs[0]], 'idCard'))
+    if (blobs && blobs[1]) formData.append('idCardSelfie', this.createFile([blobs[1]], 'idCardSelfie'))
+    if (blobs && blobs[2]) formData.append('medCertificate', this.createFile([blobs[2]], 'medCertificate'))
+    if (blobs && blobs[3]) formData.append('medCertificateSelfie', this.createFile([blobs[3]], 'medCertificateSelfie'))
 
     const url = `${environment.apiPrefix}/doctors`;
     return this.http.post<any>(url, formData);
+  }
+
+  createFile(fileBits: BlobPart[], fileName: string): File {
+    return new File(fileBits, fileName, this.getType(fileName));
+  }
+
+  getType(storageKey: string): { type: string } {
+    let type = '';
+    const jsonString = localStorage.getItem(storageKey);
+    if (jsonString) {
+      type = JSON.parse(jsonString).type;
+    }
+    return { type }
   }
 
 }

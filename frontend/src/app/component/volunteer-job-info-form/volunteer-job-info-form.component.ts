@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Event, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { DEPARTMENTS } from 'src/app/constant/departments';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
@@ -124,8 +124,9 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   onImageChanged(imageObject: any, id: string): void {
     if (imageObject.files.length > 0) {
-      this.jobInfoForm.patchValue({ [id]: { fileName: [imageObject.files[0].name], blobUrl: imageObject.blobUrl } });
-      this.imageCachingService.cacheBlobUrl(id, imageObject.files[0].name, imageObject.blobUrl);
+      const file = imageObject.files[0];
+      this.jobInfoForm.patchValue({ [id]: { fileName: [file.name], blobUrl: imageObject.blobUrl } });
+      this.imageCachingService.cacheBlobUrl(id, file.name, imageObject.blobUrl, file.type);
     }
   }
 
