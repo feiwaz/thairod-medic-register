@@ -103,7 +103,7 @@ export class UserDialogComponent implements OnInit {
     // createdById: this.authService
     this.userService.createUser(requestBody).subscribe(
       response => this.handleSuccessfulUpdate(),
-      errorResponse => this.handleErrorUpdate()
+      errorResponse => this.handleErrorUpdate(errorResponse)
     );
   }
 
@@ -115,7 +115,7 @@ export class UserDialogComponent implements OnInit {
     };
     this.userService.patchUser(user?.id as string, requestBody).subscribe(
       response => this.handleSuccessfulUpdate(),
-      errorResponse => this.handleErrorUpdate()
+      errorResponse => this.handleErrorUpdate(errorResponse)
     );
   }
 
@@ -130,10 +130,17 @@ export class UserDialogComponent implements OnInit {
     });
   }
 
-  private handleErrorUpdate(): void {
+  private handleErrorUpdate(errorResponse: any): void {
     this.isLoading = false;
     this.userForm.enable();
-    this.toastrService.warning('ทำรายการไม่สำเร็จ โปรดลองใหม่อีกครั้ง');
+    let warningText = 'ทำรายการไม่สำเร็จ โปรดลองใหม่อีกครั้ง';
+    const errorMessage = errorResponse.error.message;
+    if (Array.isArray(errorMessage) && errorMessage.includes('email must be an email')) {
+      warningText = 'รูปแบบอีเมลไม่ถูกต้อง';
+    } else {
+      warningText = `${this.userForm.controls.email.value} ${errorMessage}`;
+    }
+    this.toastrService.warning(warningText);
   }
 
 }
