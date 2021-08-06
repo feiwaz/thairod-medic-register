@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -20,10 +20,10 @@ export class User {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ select: false })
   salt: string;
 
   @Column()
@@ -44,10 +44,10 @@ export class User {
   @Column()
   isActive: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdTime: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedTime: Date;
 
   @OneToOne(() => User, user => user.id)
