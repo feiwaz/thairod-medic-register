@@ -28,13 +28,13 @@ export class DoctorsService {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
       const nId = createDoctorDto.nationalId
       const suffix = "-doc"
-      const idCardImg = imageFiles['id_card'][0]
+      const idCardImg = createDoctorDto['idCard'][0]
       const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
-      const idCardSelImg = imageFiles['id_card_sel'][0]
+      const idCardSelImg = imageFiles['idCardSelfie'][0]
       const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
-      const jobCerImg = imageFiles['job_cer'][0]
+      const jobCerImg = imageFiles['medCertificate'][0]
       const jobCerRes = await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer")
-      const jobCerSelImg = imageFiles['job_cer_sel'][0]
+      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
       const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie")
       doctor.idCardImg = idCardRes.url
       doctor.idCardSelfieImg = idCardSelRes.url

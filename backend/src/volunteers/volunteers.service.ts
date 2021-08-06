@@ -35,13 +35,13 @@ export class VolunteersService {
       const volunteer = await this.mapDtoToEntity(createVolunteerDto);
       const nId = createVolunteerDto.nationalId
       const suffix = "-vol"
-      const idCardImg = imageFiles['id_card'][0]
+      const idCardImg = imageFiles['idCard'][0]
       const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
-      const idCardSelImg = imageFiles['id_card_sel'][0]
+      const idCardSelImg = imageFiles['idCardSelfie'][0]
       const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
-      const jobCerImg = imageFiles['job_cer'][0]
+      const jobCerImg = imageFiles['medCertificate'][0]
       const jobCerRes = (jobCerImg != null) ? await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer") : null
-      const jobCerSelImg = imageFiles['job_cer_sel'][0]
+      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
       const jobCerSelRes = (jobCerSelImg != null) ? await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie") : null
       volunteer.idCardImg = idCardRes.url
       volunteer.idCardSelfieImg = idCardSelRes.url
