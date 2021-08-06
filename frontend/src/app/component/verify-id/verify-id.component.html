@@ -9,7 +9,8 @@
         <mat-label>เลขประจำตัวประชาชน</mat-label>
         <input matInput type="number" formControlName="nationalId" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #nationalId
           class="user-id-input">
-        <button *ngIf="nationalId" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()">
+        <button *ngIf="nationalId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="onClearInput()">
           <mat-icon>close</mat-icon>
         </button>
         <mat-hint align="end">{{nationalId.value.length}} / 13</mat-hint>

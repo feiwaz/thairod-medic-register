@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { InternalServerErrorException } from "@nestjs/common";
+import * as bcrypt from 'bcrypt';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -17,14 +19,33 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column({ select: false })
   password: string;
 
-  @Column({ select: false })
-  salt: string;
+  private tempPassword: string;
+
+  @AfterLoad()
+  private loadTempPassword(): void {
+    this.tempPassword = this.password;
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword(): Promise<void> {
+    if (this.password) {
+      if (this.tempPassword !== this.password) {
+        try {
+          const salt = await bcrypt.genSalt();
+          this.password = await bcrypt.hash(this.password, salt);
+        } catch (e) {
+          throw new InternalServerErrorException('Unable to hash password')
+        }
+      }
+    }
+  }
 
   @Column()
   firstName: string;
@@ -51,6 +72,6 @@ export class User {
   updatedTime: Date;
 
   @OneToOne(() => User, user => user.id)
-  createdById: User;
+  createdBy: User;
 
 }

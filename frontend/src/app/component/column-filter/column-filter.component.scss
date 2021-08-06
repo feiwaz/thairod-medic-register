@@ -1,6 +1,7 @@
 .column-filter-container {
     display: flex;
     flex-flow: row wrap;
+    align-items: center;
 }
 
 .select-form-field,
@@ -20,6 +21,7 @@ mat-form-field.mat-form-field {
 
     .input-form-field {
         flex: 0 0 320px;
+        margin-top: 6px;
     }
 }
 

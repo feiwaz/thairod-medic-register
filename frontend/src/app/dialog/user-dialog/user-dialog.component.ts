@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
+import { CustomValidators } from 'src/app/util/custom-validators';
 
 @Component({
   selector: 'app-user-dialog',
@@ -14,21 +15,21 @@ export class UserDialogComponent implements OnInit {
 
   isLoading = false;
   isCreatingNew = false;
+  hidePassword = true;
+  hideConfirmPassword = true;
   errorMessage = 'Please try again later';
-  roleOptions: { value: number, viewValue: string }[] = [
-    { value: 0, viewValue: 'ผู้ตรวจสอบ' },
-    { value: 1, viewValue: 'แอดมิน' }
+
+  roleOptions: { value: string, viewValue: string }[] = [
+    { value: 'user', viewValue: 'ผู้ตรวจสอบ' },
+    { value: 'admin', viewValue: 'แอดมิน' }
   ];
 
   userForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: [''],
-    confirmPassword: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     contactNumber: ['', Validators.required],
-    role: [0, Validators.required],
-    isActive: [true, Validators.required]
+    role: ['user', Validators.required]
   });
 
   constructor(
@@ -42,14 +43,28 @@ export class UserDialogComponent implements OnInit {
   ngOnInit(): void {
     if (!this.data || !this.data.row) {
       this.isCreatingNew = true;
+      this.addFormForNewUser();
     } else {
       this.initUpdateForm();
     }
   }
 
+  private addFormForNewUser() {
+    this.userForm.addControl('isActive', this.fb.control(true, Validators.required));
+    const credentialForm = new FormGroup({
+      password: new FormControl('', [
+        Validators.required,
+        // CustomValidators.atLeastTwoValidator(),
+        Validators.minLength(8)
+      ]),
+      confirmPassword: new FormControl('', Validators.required)
+    }, CustomValidators.compareConfirmPassword);
+    this.userForm.addControl('credential', credentialForm);
+  }
+
   private initUpdateForm(): void {
-    const { _id, firstName, lastName, email, role, contactNumber, isActive } = this.data.row as User;
-    this.userForm.patchValue({ _id, firstName, lastName, email, role, contactNumber, isActive });
+    const { id, firstName, lastName, email, role, contactNumber } = this.data.row as User;
+    this.userForm.patchValue({ id, firstName, lastName, email, role, contactNumber });
   }
 
   onSubmit(): void {
@@ -65,47 +80,67 @@ export class UserDialogComponent implements OnInit {
     }
   }
 
-  private buildRequestBody(): User {
+  private buildCommonBody(): User {
     return {
+      email: this.userForm.controls.email.value,
       firstName: this.userForm.controls.firstName.value,
       lastName: this.userForm.controls.lastName.value,
-      email: this.userForm.controls.email.value,
       contactNumber: this.userForm.controls.contactNumber.value,
-      isActive: this.userForm.controls.isActive.value,
-      password: this.userForm.controls.password.value,
       role: 'user'
     };
   }
 
   private createUser(): void {
-    this.userService.createUser(this.buildRequestBody()).subscribe(
-      response => this.handleSuccessfulUpdate(this.userForm, (response as User).email),
-      errorResponse => this.handleErrorUpdate(this.userForm, errorResponse)
+    const credentialFormGroup = this.userForm.controls.credential;
+    const requestBody = {
+      ...this.buildCommonBody(),
+      password: credentialFormGroup.get('password')?.value,
+      confirmPassword: credentialFormGroup.get('confirmPassword')?.value,
+      isActive: this.userForm.controls.isActive.value,
+      createdById: '1'
+    };
+    // TODO: pull this field from authService
+    // createdById: this.authService
+    this.userService.createUser(requestBody).subscribe(
+      response => this.handleSuccessfulUpdate(),
+      errorResponse => this.handleErrorUpdate(errorResponse)
     );
   }
 
   private updateUser(): void {
-    this.userService.updateUser(this.data.row?._id as string, this.buildRequestBody()).subscribe(
-      response => this.handleSuccessfulUpdate(this.userForm, this.data.row?._id, response as User),
-      errorResponse => this.handleErrorUpdate(this.userForm, errorResponse)
+    const user = this.data.row;
+    const requestBody = {
+      ...this.buildCommonBody(),
+      isActive: user?.isActive
+    };
+    this.userService.patchUser(user?.id as string, requestBody).subscribe(
+      response => this.handleSuccessfulUpdate(),
+      errorResponse => this.handleErrorUpdate(errorResponse)
     );
   }
 
-  private handleSuccessfulUpdate(formGroup: FormGroup, entityId?: string, user?: User): void {
+  private handleSuccessfulUpdate(): void {
     this.isLoading = false;
-    formGroup.enable();
+    this.userForm.enable();
     this.dialogRef.close({
       success: true,
       isCreatingNew: this.isCreatingNew,
-      entityId,
-      user
+      entityId: this.userForm.controls.email.value,
+      user: this.data.row
     });
   }
 
-  private handleErrorUpdate(formGroup: FormGroup, errorResponse: any): void {
+  private handleErrorUpdate(errorResponse: any): void {
     this.isLoading = false;
-    formGroup.enable();
-    this.toastrService.warning(errorResponse?.error?.error?.message);
+    this.userForm.enable();
+    let warningText = 'ทำรายการไม่สำเร็จ โปรดลองใหม่อีกครั้ง';
+    const errorMessage = errorResponse.error.message;
+    if (Array.isArray(errorMessage) && errorMessage.includes('email must be an email')) {
+      warningText = 'รูปแบบอีเมลไม่ถูกต้อง';
+    } else {
+      warningText = `${this.userForm.controls.email.value} ${errorMessage}`;
+    }
+    this.toastrService.warning(warningText);
   }
 
 }

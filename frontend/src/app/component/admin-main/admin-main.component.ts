@@ -1,6 +1,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 @Component({
@@ -26,6 +27,7 @@ export class AdminMainComponent implements OnInit, OnDestroy {
   private mobileQueryListener: () => void;
 
   constructor(
+    private authService: AuthenticationService,
     private imgCachingService: ImageCachingService,
     private router: Router,
     changeDetectorRef: ChangeDetectorRef,
@@ -37,6 +39,7 @@ export class AdminMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.authService.getRefreshToken();
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo', { width: '80px', height: '68px' });
     this.router.navigate(['/admin/main/manage-account']);
   }

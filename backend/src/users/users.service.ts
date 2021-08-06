@@ -1,7 +1,8 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { genSalt, hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
+import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -34,10 +35,7 @@ export class UsersService {
       throw new ConflictException('ไม่พบผู้ใช้นี้ในระบบ');
     }
 
-    const salt = await genSalt();
-    user.password = await hash(createUserDto.password, salt);
-    user.salt = salt;
-    user.createdById = createByUser;
+    user.createdBy = createByUser;
     return user;
   }
 
@@ -55,25 +53,56 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.mapUpdateDtoToEntity(id, updateUserDto);
-      await this.userRepository.save(user);
+      const user = await this.adminGuard(id);
+      const savedUser = Object.assign(user, updateUserDto);
+      await this.userRepository.save(savedUser);
     } catch (error) {
-      throw new InternalServerErrorException(error.code);
+      throw error;
     }
-  }
-
-  private async mapUpdateDtoToEntity(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = Object.assign(await this.findOne(id), updateUserDto);
-
-    if (updateUserDto.hasOwnProperty('password')) {
-      user.password = await hash(updateUserDto.password, user.salt);
-    }
-
-    return user;
   }
 
   async remove(id: number): Promise<void> {
-    await this.userRepository.delete(id);
+    try {
+      const user = await this.adminGuard(id);
+      if (user) {
+        await this.userRepository.delete(id);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async adminGuard(id: number): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne(id);
+      if (user && user.email === 'admin@admin.com') {
+        throw new ForbiddenException('You are not allowed to modify admin user');
+      }
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async changePassword(id: number, changePasswordDto: ChangePasswordDto) {
+    try {
+      if (changePasswordDto.password !== changePasswordDto.confirmPassword) {
+        throw new BadRequestException('New password and confirm password did not match');
+      }
+      const user = await this.userRepository.findOne(id, { select: ['password'] });
+      if (!user) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      const isMatched = await bcrypt.compare(changePasswordDto.currentPassword, user.password);
+      if (!isMatched) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      user.id = id;
+      user.password = changePasswordDto.password;
+      await this.userRepository.save(user);
+    } catch (error) {
+      throw error;
+    }
   }
 
 }

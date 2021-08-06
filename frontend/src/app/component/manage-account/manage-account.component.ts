@@ -30,10 +30,14 @@ export class ManageAccountComponent implements OnInit {
     email: 'อีเมล',
     isActive: 'สถานะ'
   };
+  readonly ROLE_MAP: any = {
+    user: 'ผู้ตรวจสอบ',
+    admin: 'แอดมิน'
+  };
 
   isLoading = true;
   selectColumnOptions: any = [];
-  excludedSelectColumnOptions = ['action'];
+  excludedSelectColumnOptions = ['isActive', 'action'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator: any;
@@ -57,7 +61,7 @@ export class ManageAccountComponent implements OnInit {
       users => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(users as User[]);
-        this.proceedSuccessResponse(isCreatingNew, '_id');
+        this.proceedSuccessResponse(isCreatingNew, 'id');
       },
       errorResponse => this.isLoading = false
     );
@@ -93,10 +97,15 @@ export class ManageAccountComponent implements OnInit {
     this.dataSource.filterPredicate = (row: any, filter: string) => {
       const rowValue = row[this.selectedFilterColumn];
       if (rowValue) {
-        if (Array.isArray(rowValue)) {
-          return rowValue.map(value => value.toLowerCase()).includes(filter);
+        if (this.selectedFilterColumn === 'role') {
+          return this.ROLE_MAP[rowValue].includes(filter);
         } else {
-          return rowValue.toString().toLowerCase().includes(filter);
+          if (this.selectedFilterColumn === 'firstName') {
+            const fullName = `${rowValue} ${row.lastName}`;
+            return fullName.toString().toLowerCase().includes(filter);
+          } else {
+            return rowValue.toString().toLowerCase().includes(filter);
+          }
         }
       } else {
         return false;
@@ -122,7 +131,7 @@ export class ManageAccountComponent implements OnInit {
 
   private checkIfSelfUpdate(result: any): void {
     const currentUser = this.authService.currentUser;
-    if (!result.isCreatingNew && currentUser._id === result.user._id) {
+    if (!result.isCreatingNew && currentUser.id === result.user.id) {
       this.authService.updateCurrentUser(result.user);
       const newRole = result.user.role?.text || '';
       if (newRole.toLowerCase() !== 'admin') {
@@ -182,11 +191,16 @@ export class ManageAccountComponent implements OnInit {
     this.dataSource.filter = filterText;
   }
 
-  onIsActiveChange(userId: string, checked: boolean): void {
+  onIsActiveChange(row: any, checked: boolean): void {
     this.isLoading = true;
-    this.service.patchUser(userId, { isActive: checked } as User).subscribe(
+    row.isActive = checked;
+    this.service.patchUser(row.id, { isActive: checked } as User).subscribe(
       response => this.isLoading = false,
-      errorResponse => this.isLoading = false
+      errorResponse => {
+        this.isLoading = false;
+        row.isActive = !checked;
+        this.toastrService.warning('แก้ไขไม่สำเร็จ');
+      }
     );
   }
 

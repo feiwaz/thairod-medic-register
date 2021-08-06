@@ -15,15 +15,16 @@
         <mat-error *ngIf="loginForm.controls.email.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
-        <button *ngIf="email" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()">
+        <button *ngIf="email" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="onClearInput()">
           <mat-icon>close</mat-icon>
         </button>
       </mat-form-field>
       <mat-form-field formGroupName="credential">
         <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" placeholder="รหัสผ่าน"
           (keydown.space)="$event.preventDefault();" (paste)="$event.preventDefault();">
-        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
-          [attr.aria-pressed]="hidePassword" type="button">
+        <button mat-icon-button matSuffix tabindex="-1" (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
           <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>

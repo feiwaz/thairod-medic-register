@@ -25,7 +25,7 @@
       <p><b>ชื่อ</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="firstName" placeholder="ชื่อ" #firstName>
-        <button *ngIf="firstName" type="button" matSuffix mat-icon-button aria-label="Clear"
+        <button *ngIf="firstName" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="firstName.value=''">
           <mat-icon>close</mat-icon>
         </button>
@@ -36,7 +36,8 @@
       <p><b>นามสกุล</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lastName" placeholder="นามสกุล" #lastName>
-        <button *ngIf="lastName" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="lastName.value=''">
+        <button *ngIf="lastName" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="lastName.value=''">
           <mat-icon>close</mat-icon>
         </button>
         <mat-error *ngIf="basicInfoForm.get('lastName')?.hasError('required')">
@@ -49,7 +50,7 @@
           #dateOfBirth>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #picker></mat-datepicker>
-        <button *ngIf="dateOfBirth" type="button" matSuffix mat-icon-button aria-label="Clear"
+        <button *ngIf="dateOfBirth" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="dateOfBirth.value=''">
           <mat-icon>close</mat-icon>
         </button>
@@ -60,7 +61,8 @@
       <p><b>ที่อยู่</b></p>
       <mat-form-field>
         <textarea matInput formControlName="address" placeholder="ที่อยู่" #address rows="4"></textarea>
-        <button *ngIf="address" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="address.value=''">
+        <button *ngIf="address" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="address.value=''">
           <mat-icon>close</mat-icon>
         </button>
         <mat-error *ngIf="basicInfoForm.get('address')?.hasError('required')">
@@ -70,7 +72,7 @@
       <p><b>เบอร์โทรศัพท์</b></p>
       <mat-form-field>
         <input matInput type="tel" formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
-        <button *ngIf="contactNumber" type="button" matSuffix mat-icon-button aria-label="Clear"
+        <button *ngIf="contactNumber" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="contactNumber.value=''">
           <mat-icon>close</mat-icon>
         </button>
@@ -81,7 +83,8 @@
       <p><b>LINE ID</b></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lineId" placeholder="LINE ID" #lineId>
-        <button *ngIf="lineId" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="lineId.value=''">
+        <button *ngIf="lineId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="lineId.value=''">
           <mat-icon>close</mat-icon>
         </button>
         <mat-error *ngIf="basicInfoForm.get('lineId')?.hasError('required')">
