@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
+import { FileService } from 'src/app/service/file.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId } from 'src/app/util/util-functions';
 
@@ -54,6 +55,7 @@ export class ReviewInfoComponent implements OnInit {
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
     private sanitizer: DomSanitizer,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
@@ -98,10 +100,15 @@ export class ReviewInfoComponent implements OnInit {
       - Before sending request to create user, convert blob:url to File or Base64 image
       - Can be done either it in 1) this file 2) this.service or 3) at backend
     */
-    this.service.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
-      response => this.handleSuccessfulCreateUser(),
-      errorResponse => this.handleErrorResponse()
-    );
+    let requestBlobs: Blob[] = [];
+    this.fileService.getFilesByBlobUrl().then(blobs => {
+      requestBlobs = blobs;
+    }).finally(() => {
+      this.service.create({ ...this.basicInfo, ...this.jobInfo }, requestBlobs).subscribe(
+        response => this.handleSuccessfulCreateUser(),
+        errorResponse => this.handleErrorResponse()
+      );
+    });
   }
 
   handleSuccessfulCreateUser(): void {
