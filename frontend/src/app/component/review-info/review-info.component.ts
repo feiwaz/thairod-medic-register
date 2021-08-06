@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
@@ -98,10 +98,15 @@ export class ReviewInfoComponent implements OnInit {
       - Before sending request to create user, convert blob:url to File or Base64 image
       - Can be done either it in 1) this file 2) this.service or 3) at backend
     */
-    this.service.create({ ...this.basicInfo, ...this.jobInfo }).subscribe(
-      response => this.handleSuccessfulCreateUser(),
-      errorResponse => this.handleErrorResponse()
-    );
+    let requestBlobs: Blob[] = [];
+    this.doctorService.getFilesByBlobUrl().then(blobs => {
+      requestBlobs = blobs;
+    }).finally(() => {
+      this.service.create({ ...this.basicInfo, ...this.jobInfo }, requestBlobs).subscribe(
+        response => this.handleSuccessfulCreateUser(),
+        errorResponse => this.handleErrorResponse()
+      );
+    });
   }
 
   handleSuccessfulCreateUser(): void {

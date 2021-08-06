@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
-import { BufferedFile } from 'src/minio-client/file.model';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -14,10 +14,10 @@ export class DoctorsController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    { name: 'idCard', maxCount: 1 },
-    { name: 'idCardSelfie', maxCount: 1 },
-    { name: 'medCertificate', maxCount: 1 },
-    { name: 'medCertificateSelfie', maxCount: 1 }
+    { name: 'file0', maxCount: 1 },
+    { name: 'file1', maxCount: 1 },
+    { name: 'file2', maxCount: 1 },
+    { name: 'file3', maxCount: 1 }
   ]))
   async create(
     @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
