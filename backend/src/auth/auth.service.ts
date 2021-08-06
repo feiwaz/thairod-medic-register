@@ -17,7 +17,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({ email: username }, {
       select: ['id', 'email', 'password', 'firstName', 'lastName', 'contactNumber', 'role', 'isActive']
     });
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && await bcrypt.compare(password, user.password) && user.isActive) {
       const { id, email, firstName, lastName, contactNumber, role, isActive } = user;
       return { id, email, firstName, lastName, contactNumber, role, isActive } as User;
     }
