@@ -26,16 +26,7 @@ export class DoctorsService {
   async create(createDoctorDto: CreateDoctorDto, imageFiles: BufferedFile) {
     try {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
-      const nId = createDoctorDto.nationalId
-      const suffix = "-doc"
-      const idCardImg = imageFiles['idCard'][0]
-      const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
-      const idCardSelImg = imageFiles['idCardSelfie'][0]
-      const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
-      const jobCerImg = imageFiles['medCertificate'][0]
-      const jobCerRes = await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer")
-      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
-      const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie")
+      const { idCardRes, idCardSelRes, jobCerRes, jobCerSelRes } = await this.uploadImageFiles(createDoctorDto.nationalId, imageFiles);
       doctor.idCardImg = idCardRes.url
       doctor.idCardSelfieImg = idCardSelRes.url
       doctor.jobCertificateImg = jobCerRes.url
@@ -50,6 +41,18 @@ export class DoctorsService {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  private async uploadImageFiles(nationalId: string, imageFiles: BufferedFile) {
+    const idCardImg = imageFiles['idCard'][0];
+    const idCardRes = await this.minioClientService.upload(idCardImg, `${nationalId}-doc`, `${nationalId}_id_card`);
+    const idCardSelImg = imageFiles['idCardSelfie'][0];
+    const idCardSelRes = await this.minioClientService.upload(idCardSelImg, `${nationalId}-doc`, `${nationalId}_id_card_selfie`);
+    const jobCerImg = imageFiles['medCertificate'][0];
+    const jobCerRes = await this.minioClientService.upload(jobCerImg, `${nationalId}-doc`, `${nationalId}_job_cer`);
+    const jobCerSelImg = imageFiles['medCertificateSelfie'][0];
+    const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, `${nationalId}-doc`, `${nationalId}_job_cer_selfie`);
+    return { idCardRes, idCardSelRes, jobCerRes, jobCerSelRes };
   }
 
   private async mapDtoToEntity(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
