@@ -13,7 +13,7 @@ import { CustomValidators } from 'src/app/util/custom-validators';
 export class ChangePasswordFormComponent implements OnInit {
 
   isLoading = false;
-  enableCredentialForm = false;
+  enableCredentialForm = true;
   hideCurrentPassword = true;
   hidePassword = true;
   hideConfirmPassword = true;

@@ -38,7 +38,7 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> สถานะ </th>
                     <td mat-cell *matCellDef="let row">
                         <!-- TODO: add [disabled]="if logged in user's role is 'admin'" -->
-                        <mat-slide-toggle [disabled]="row.email === 'admin@admin.com'" class="mat-form-field"
+                        <mat-slide-toggle [disabled]="row.email === 'admin@admin.com'" class="is-active-toggle"
                             [checked]="row.isActive" (change)="onIsActiveChange(row, $event.checked)">
                             เปิดใช้งาน
                         </mat-slide-toggle>

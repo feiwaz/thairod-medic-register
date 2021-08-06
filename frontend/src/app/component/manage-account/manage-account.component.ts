@@ -30,10 +30,14 @@ export class ManageAccountComponent implements OnInit {
     email: 'อีเมล',
     isActive: 'สถานะ'
   };
+  readonly ROLE_MAP: any = {
+    user: 'ผู้ตรวจสอบ',
+    admin: 'แอดมิน'
+  };
 
   isLoading = true;
   selectColumnOptions: any = [];
-  excludedSelectColumnOptions = ['action'];
+  excludedSelectColumnOptions = ['isActive', 'action'];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator: any;
@@ -93,10 +97,15 @@ export class ManageAccountComponent implements OnInit {
     this.dataSource.filterPredicate = (row: any, filter: string) => {
       const rowValue = row[this.selectedFilterColumn];
       if (rowValue) {
-        if (Array.isArray(rowValue)) {
-          return rowValue.map(value => value.toLowerCase()).includes(filter);
+        if (this.selectedFilterColumn === 'role') {
+          return this.ROLE_MAP[rowValue].includes(filter);
         } else {
-          return rowValue.toString().toLowerCase().includes(filter);
+          if (this.selectedFilterColumn === 'firstName') {
+            const fullName = `${rowValue} ${row.lastName}`;
+            return fullName.toString().toLowerCase().includes(filter);
+          } else {
+            return rowValue.toString().toLowerCase().includes(filter);
+          }
         }
       } else {
         return false;

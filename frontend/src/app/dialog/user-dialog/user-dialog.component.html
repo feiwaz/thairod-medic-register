@@ -21,7 +21,7 @@
                     <input matInput formControlName="password" #password maxlength="64"
                         [type]="hidePassword ? 'password' : 'text'" placeholder="รหัสผ่านใหม่"
                         (keydown.space)="$event.preventDefault();" (paste)="$event.preventDefault();">
-                    <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                    <button mat-icon-button matSuffix tabindex="-1" (click)="hidePassword = !hidePassword"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
                         <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
@@ -37,7 +37,7 @@
                     <input matInput formControlName="confirmPassword" #confirmPassword maxlength="64"
                         [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="ใส่รหัสผ่านใหม่อีกครั้ง"
                         (keydown.space)="$event.preventDefault();">
-                    <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword"
+                    <button mat-icon-button matSuffix tabindex="-1" (click)="hideConfirmPassword = !hideConfirmPassword"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword" type="button">
                         <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>

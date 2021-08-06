@@ -12,8 +12,8 @@
     <mat-form-field class="input-form-field">
         <input matInput #searchInput (keyup)="onFilterApplied($event)" placeholder="ใส่คำที่ต้องการค้นหา"
             [disabled]="isLoading">
-        <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" [disabled]="isLoading"
-            (click)="onClearSearchInputClicked()">
+        <button mat-button *ngIf="searchInput.value" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+            [disabled]="isLoading" (click)="onClearSearchInputClicked()">
             <mat-icon>close</mat-icon>
         </button>
     </mat-form-field>

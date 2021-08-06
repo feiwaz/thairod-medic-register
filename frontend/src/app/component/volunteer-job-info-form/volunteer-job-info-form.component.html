@@ -39,7 +39,7 @@
       <mat-form-field>
         <input matInput #medCertificateId type="number" formControlName="medCertificateId"
           placeholder="กรอกเฉพาะตัวเลข 5 หลัก" class="user-id-input" />
-        <button *ngIf="medCertificateId" type="button" matSuffix mat-icon-button aria-label="Clear"
+        <button *ngIf="medCertificateId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="clearValue('medCertificateId')">
           <mat-icon>close</mat-icon>
         </button>
