@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { CustomValidators } from 'src/app/util/custom-validators';
@@ -12,14 +11,11 @@ import { CustomValidators } from 'src/app/util/custom-validators';
 })
 export class ChangePasswordFormComponent implements OnInit {
 
-  isLoading = false;
-  enableCredentialForm = true;
   hideCurrentPassword = true;
   hidePassword = true;
   hideConfirmPassword = true;
 
   changePasswordForm = this.fb.group({
-    changePasswordCheckbox: [false],
     credential: new FormGroup({
       currentPassword: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
@@ -28,6 +24,8 @@ export class ChangePasswordFormComponent implements OnInit {
   });
 
   @Input() data = { id: '' };
+  @Input() isLoading = false;
+  @Output() isLoadingChange = new EventEmitter<boolean>();
   @ViewChild('currentPassword') currentPasswordElement: any;
 
   constructor(
@@ -36,50 +34,42 @@ export class ChangePasswordFormComponent implements OnInit {
     private toastrService: ToastrService
   ) { }
 
-  ngOnInit(): void { this.subscribeChangePasswordCheckboxEvent(); }
+  ngOnInit(): void { }
 
-  private subscribeChangePasswordCheckboxEvent(): void {
-    this.changePasswordForm.controls.changePasswordCheckbox.valueChanges.subscribe(
-      (checked: boolean) => {
-        this.enableCredentialForm = checked;
-        if (checked) {
-          setTimeout(() => this.currentPasswordElement.nativeElement.focus(), 0);
-        }
-      }
-    );
-  }
-
-  onChangePasswordCheckboxChanged(event: MatCheckboxChange): void {
-    this.enableCredentialForm = event.checked;
-  }
-
-  onSubmit(): void {
-    this.isLoading = true;
+  onSubmit(formDirective: FormGroupDirective): void {
+    this.toggleIsLoading(true);
     const credentialForm = this.changePasswordForm.controls.credential;
     credentialForm.disable();
-    const currentPassword = credentialForm.get('currentPassword')?.value;
-    const password = credentialForm.get('password')?.value;
-    const confirmPassword = credentialForm.get('confirmPassword')?.value;
-    this.userService.changePassword(this.data.id, { currentPassword, password, confirmPassword }).subscribe(
-      response => this.handleSuccessfulUpdate(),
+    const changePasswordBody = {
+      currentPassword: credentialForm.get('currentPassword')?.value,
+      password: credentialForm.get('password')?.value,
+      confirmPassword: credentialForm.get('confirmPassword')?.value,
+    }
+    this.userService.changePassword(this.data.id, changePasswordBody).subscribe(
+      response => this.handleSuccessfulUpdate(formDirective),
       errorResponse => this.handleErrorUpdate()
     );
   }
 
-  private handleSuccessfulUpdate(): void {
-    this.isLoading = false;
+  private handleSuccessfulUpdate(formDirective: FormGroupDirective): void {
+    this.toggleIsLoading(false);
     const credentialForm = this.changePasswordForm.controls.credential;
     credentialForm.enable();
     this.changePasswordForm.reset();
-    this.changePasswordForm.markAsPristine();
+    formDirective.resetForm();
     this.toastrService.success('เปลี่ยนรหัสผ่านสำเร็จ');
   }
 
   private handleErrorUpdate(): void {
-    this.isLoading = false;
+    this.toggleIsLoading(false);
     const credentialForm = this.changePasswordForm.controls.credential;
     credentialForm.enable();
     this.toastrService.warning('เปลี่ยนรหัสผ่านไม่สำเร็จ');
+  }
+
+  private toggleIsLoading(state: boolean) {
+    this.isLoading = state;
+    this.isLoadingChange.emit(this.isLoading);
   }
 
 }

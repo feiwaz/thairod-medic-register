@@ -1,8 +1,13 @@
-.user-container {
-  // flex-direction: column;
-  // display: flex;
-  // justify-content: center;
-  // height: 100%;
+.progress-bar-container {
+  height: 4px;
+}
+
+mat-progress-bar {
+  position: relative;
+  z-index: 2;
+  top: -24px;
+  left: -24px;
+  width: calc(100% + 48px);
 }
 
 .form-container {
