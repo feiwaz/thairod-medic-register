@@ -28,7 +28,7 @@ export class DoctorsService {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
       const nId = createDoctorDto.nationalId
       const suffix = "-doc"
-      const idCardImg = createDoctorDto['idCard'][0]
+      const idCardImg = imageFiles['idCard'][0]
       const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
       const idCardSelImg = imageFiles['idCardSelfie'][0]
       const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
@@ -44,8 +44,11 @@ export class DoctorsService {
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+      } else if (error.response === 'Error uploading file') {
+        throw new InternalServerErrorException('อัพโหลดรูปไม่สำเร็จ')
+      } else {
+        throw new InternalServerErrorException();
       }
-      throw new InternalServerErrorException();
     }
   }
 
