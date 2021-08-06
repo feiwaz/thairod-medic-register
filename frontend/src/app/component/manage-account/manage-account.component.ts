@@ -182,11 +182,16 @@ export class ManageAccountComponent implements OnInit {
     this.dataSource.filter = filterText;
   }
 
-  onIsActiveChange(userId: string, checked: boolean): void {
+  onIsActiveChange(row: any, checked: boolean): void {
     this.isLoading = true;
-    this.service.patchUser(userId, { isActive: checked } as User).subscribe(
+    row.isActive = checked;
+    this.service.patchUser(row.id, { isActive: checked } as User).subscribe(
       response => this.isLoading = false,
-      errorResponse => this.isLoading = false
+      errorResponse => {
+        this.isLoading = false;
+        row.isActive = !checked;
+        this.toastrService.warning('แก้ไขไม่สำเร็จ');
+      }
     );
   }
 

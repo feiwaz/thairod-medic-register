@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -51,16 +51,35 @@ export class UsersService {
 
   async update(id: number, updateUserDto: UpdateUserDto) {
     try {
-      const user = await this.userRepository.findOne(id);
+      const user = await this.adminGuard(id);
       const savedUser = Object.assign(user, updateUserDto);
       await this.userRepository.save(savedUser);
     } catch (error) {
-      throw new InternalServerErrorException(error.code);
+      throw error;
     }
   }
 
   async remove(id: number): Promise<void> {
-    await this.userRepository.delete(id);
+    try {
+      const user = await this.adminGuard(id);
+      if (user) {
+        await this.userRepository.delete(id);
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async adminGuard(id: number): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne(id);
+      if (user && user.email === 'admin@admin.com') {
+        throw new ForbiddenException('You are not allowed to modify admin user');
+      }
+      return user;
+    } catch (error) {
+      throw error;
+    }
   }
 
 }

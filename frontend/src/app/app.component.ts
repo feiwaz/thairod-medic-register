@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from './service/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +7,8 @@ import { AuthenticationService } from './service/authentication.service';
 })
 export class AppComponent {
 
-  constructor(private authService: AuthenticationService) { }
+  constructor() { }
 
-  ngOnInit(): void {
-    this.authService.getRefreshToken();
-  }
+  ngOnInit(): void { }
 
 }

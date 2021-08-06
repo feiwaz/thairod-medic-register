@@ -130,7 +130,7 @@ export class VolunteersService {
       const volunteerDepartmentUpdateList = await this.mapTrainingStatusDtoToEntity(id, trainingStatusDto);
       await this.volunteerDepartmentRepository.save(volunteerDepartmentUpdateList);
     } catch (error) {
-      throw new InternalServerErrorException(error.code);
+      throw new InternalServerErrorException();
     }
   }
 
