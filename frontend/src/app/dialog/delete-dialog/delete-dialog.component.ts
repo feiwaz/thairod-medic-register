@@ -12,7 +12,7 @@ import { UserService } from 'src/app/service/user.service';
 export class DeleteDialogComponent {
 
   isLoading = false;
-  errorMessage = 'Cannot delete this entity, please try again later.';
+  errorMessage = 'ไม่สามารถดำเนินการได้ กรุณาลองอีกครั้ง';
 
   constructor(
     private userService: UserService,

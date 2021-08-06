@@ -13,7 +13,10 @@ import { User } from '../model/user.model';
 export class AuthenticationService {
 
   isLoggedIn = false;
-  currentUser = { id: '', email: '', name: '', role: '' };
+  currentUser = {
+    id: '', email: '', firstName: '', lastName: '', contactNumber: '',
+    isActive: '', role: ''
+  };
 
   constructor(
     private http: HttpClient,
@@ -23,26 +26,33 @@ export class AuthenticationService {
   ) { }
 
   getRefreshToken(): void {
-    const refreshToken = localStorage.getItem('refreshToken') || '';
-    if (refreshToken) {
-      this.refreshToken().subscribe();
+    // const refreshToken = localStorage.getItem('refreshToken') || '';
+    // if (refreshToken) {
+    //   this.refreshToken().subscribe();
+    // } else {
+    //   this.logout();
+    // }
+    // TODO: should refresh token
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      this.decodeAccessToken();
     } else {
       this.logout();
     }
   }
 
   register(user: any): Observable<any> {
-    return this.http.post<any>('/auth/register', user);
+    return this.http.post<any>('api/auth/register', user);
   }
 
   login(email: string, password: string): Observable<any> {
-    const body = `email=${email}&password=${encodeURIComponent(password)}`;
+    const body = `username=${email}&password=${encodeURIComponent(password)}`;
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/x-www-form-urlencoded'
       })
     };
-    return this.http.post<any>('/auth/login', body, options).pipe(
+    return this.http.post<any>('api/auth/login', body, options).pipe(
       tap(response => {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
@@ -53,7 +63,7 @@ export class AuthenticationService {
 
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken') || '';
-    return this.http.post<any>('/auth/refresh-token', { refreshToken }).pipe(
+    return this.http.post<any>('api/auth/refresh-token', { refreshToken }).pipe(
       tap({
         next: response => {
           localStorage.setItem('accessToken', response.accessToken);
@@ -68,7 +78,10 @@ export class AuthenticationService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     this.isLoggedIn = false;
-    this.currentUser = { id: '', email: '', name: '', role: '' };
+    this.currentUser = {
+      id: '', email: '', firstName: '', lastName: '', contactNumber: '',
+      isActive: '', role: ''
+    };;
     this.dialog.closeAll();
     this.router.navigate(['/admin']);
   }
@@ -78,8 +91,12 @@ export class AuthenticationService {
       const accessToken = localStorage.getItem('accessToken') || '';
       const decodedUser = this.jwtHelper.decodeToken(accessToken).user;
       this.isLoggedIn = true;
-      const { id, name, email, role } = decodedUser;
-      this.currentUser = { id, name, email, role: role.text };
+      const { id, email, firstName, lastName, contactNumber,
+        isActive, role } = JSON.parse(decodedUser);
+      this.currentUser = {
+        id, email, firstName, lastName, contactNumber,
+        isActive, role
+      };
     } catch (error) {
       this.logout();
     }
@@ -94,8 +111,12 @@ export class AuthenticationService {
   }
 
   updateCurrentUser(user: User): void {
-    const { id, firstName, lastName, email, role } = user;
-    this.currentUser = { id, firstName, lastName, email, role } as any;
+    const { id, email, firstName, lastName,
+      contactNumber, isActive, role } = user;
+    this.currentUser = {
+      id, email, firstName, lastName, contactNumber,
+      isActive, role
+    } as any;
   }
 
 }

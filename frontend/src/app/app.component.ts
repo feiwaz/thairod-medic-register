@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthenticationService } from './service/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
+
+  constructor(private authService: AuthenticationService) { }
+
+  ngOnInit(): void {
+    this.authService.getRefreshToken();
+  }
+
 }
