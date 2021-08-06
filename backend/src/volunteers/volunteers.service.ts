@@ -5,6 +5,8 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import e from 'express';
+import { BufferedFile } from 'src/minio-client/file.model';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
@@ -18,6 +20,7 @@ import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
 
 @Injectable()
 export class VolunteersService {
+  minioClientService: any;
   constructor(
     @InjectRepository(Volunteer)
     private volunteerRepository: Repository<Volunteer>,
@@ -27,9 +30,23 @@ export class VolunteersService {
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
   ) { }
 
-  async create(createVolunteerDto: CreateVolunteerDto) {
+  async create(createVolunteerDto: CreateVolunteerDto, imageFiles: BufferedFile) {
     try {
       const volunteer = await this.mapDtoToEntity(createVolunteerDto);
+      const nId = createVolunteerDto.nationalId
+      const suffix = "-vol"
+      const idCardImg = imageFiles['idCard'][0]
+      const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
+      const idCardSelImg = imageFiles['idCardSelfie'][0]
+      const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
+      const jobCerImg = imageFiles['medCertificate'][0]
+      const jobCerRes = (jobCerImg != null) ? await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer") : null
+      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
+      const jobCerSelRes = (jobCerSelImg != null) ? await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie") : null
+      volunteer.idCardImg = idCardRes.url
+      volunteer.idCardSelfieImg = idCardSelRes.url
+      volunteer.jobCertificateImg = jobCerRes.url
+      volunteer.jobCertificateSelfieImg = jobCerSelRes.url
       await this.volunteerRepository.save(volunteer);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {

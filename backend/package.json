@@ -36,6 +36,7 @@
     "dotenv": "^10.0.0",
     "minio": "^7.0.18",
     "mysql": "^2.18.1",
+    "nestjs-minio-client": "^1.0.6",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",

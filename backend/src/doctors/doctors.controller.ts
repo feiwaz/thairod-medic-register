@@ -5,6 +5,7 @@ import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
+import { BufferedFile } from 'src/minio-client/file.model';
 
 @Controller('doctors')
 export class DoctorsController {
@@ -13,16 +14,17 @@ export class DoctorsController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([
-    { name: 'file1', maxCount: 1 },
-    { name: 'file2', maxCount: 1 },
+    { name: 'idCard', maxCount: 1 },
+    { name: 'idCardSelfie', maxCount: 1 },
+    { name: 'medCertificate', maxCount: 1 },
+    { name: 'medCertificateSelfie', maxCount: 1 }
   ]))
   async create(
     @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
     createDoctorDto: CreateDoctorDto,
-    @UploadedFiles() files: Express.Multer.File[]
+    @UploadedFiles() images: BufferedFile
   ) {
-    console.log(files);
-    return this.service.create(createDoctorDto);
+    return this.service.create(createDoctorDto, images);
   }
 
   @UseGuards(JwtAuthGuard)

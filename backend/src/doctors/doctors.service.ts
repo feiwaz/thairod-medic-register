@@ -4,6 +4,8 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BufferedFile } from 'src/minio-client/file.model';
+import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
@@ -17,12 +19,27 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
     @InjectRepository(SpecializedField)
-    private specializedFieldRepository: Repository<SpecializedField>
+    private specializedFieldRepository: Repository<SpecializedField>,
+    private minioClientService: MinioClientService
   ) { }
 
-  async create(createDoctorDto: CreateDoctorDto) {
+  async create(createDoctorDto: CreateDoctorDto, imageFiles: BufferedFile) {
     try {
       const doctor = await this.mapDtoToEntity(createDoctorDto);
+      const nId = createDoctorDto.nationalId
+      const suffix = "-doc"
+      const idCardImg = createDoctorDto['idCard'][0]
+      const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
+      const idCardSelImg = imageFiles['idCardSelfie'][0]
+      const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
+      const jobCerImg = imageFiles['medCertificate'][0]
+      const jobCerRes = await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer")
+      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
+      const jobCerSelRes = await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie")
+      doctor.idCardImg = idCardRes.url
+      doctor.idCardSelfieImg = idCardSelRes.url
+      doctor.jobCertificateImg = jobCerRes.url
+      doctor.jobCertificateSelfieImg = jobCerSelRes.url
       await this.doctorRepository.save(doctor);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
