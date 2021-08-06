@@ -22,9 +22,10 @@ export class DoctorService {
     user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));
-    if (blobs) {
-      blobs.forEach((blob: Blob, index: number) => formData.append(`file${index}`, new File([blob], `file${index}`)));
-    }
+    if (blobs && blobs[0]) formData.append('idCard', new File([blobs[0]], 'idCard'))
+    if (blobs && blobs[1]) formData.append('idCardSelfie', new File([blobs[1]], 'idCardSelfie'))
+    if (blobs && blobs[2]) formData.append('medCertificate', new File([blobs[2]], 'medCertificate'))
+    if (blobs && blobs[3]) formData.append('medCertificateSelfie', new File([blobs[3]], 'medCertificateSelfie'))
     const url = `${environment.apiPrefix}/doctors`;
     return this.http.post<any>(url, formData);
   }
