@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -35,7 +36,9 @@ export class VolunteersService {
     await this.checkIfNationalIdAlreadyExisted(createDto.nationalId);
     try {
       const entity = await this.mapDtoToEntity(createDto);
-      const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
+      this.checkFileRequirement(bufferedFile);
+      resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
       entity.jobCertificateImg = resultObject.jobCerUrl;
@@ -45,7 +48,15 @@ export class VolunteersService {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException('สร้างผู้ใช้ไม่สำเร็จ');
+      throw error;
+    }
+  }
+
+  private checkFileRequirement(bufferedFile: any) {
+    const requiredFields = ['idCard', 'idCardSelfie'];
+    const pass = Object.keys(bufferedFile).length !== 0 && requiredFields.every(field => Object.keys(bufferedFile).includes(field));
+    if (!pass) {
+      throw new BadRequestException(`${requiredFields.join(', ')} are required`);
     }
   }
 
