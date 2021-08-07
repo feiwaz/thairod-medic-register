@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
 import { MatGridListModule } from '@angular/material/grid-list';
+import {MatCardModule} from '@angular/material/card';
 @NgModule({
   declarations: [SafeHtmlPipe],
   imports: [
@@ -49,6 +50,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatTabsModule,
     MatToolbarModule,
     RouterModule,
+    MatCardModule
   ],
   exports: [
     SafeHtmlPipe,
@@ -75,6 +77,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatTabsModule,
     MatToolbarModule,
     MatGridListModule,
+    MatCardModule
   ],
 })
 export class SharedModule {}

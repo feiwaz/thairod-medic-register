@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { DoctorService } from 'src/app/service/doctor.service';
@@ -113,10 +114,29 @@ export class TableListComponent implements OnInit {
       }
     };
   }
-}
 
+  onClick(row?:any):void {
+      this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
+        result => {
+          if (result && result.success === true) {
+            let toastMessage = `ผู้ใช้ที่มีอีเมล ${result.entityId} ถูกสร้างเรียบร้อยแล้ว`;
+            if (!result.isCreatingNew) {
+              toastMessage = `ผู้ใช้ที่มี ID: ${result.entityId} ถูกแก้ไขเรียบร้อยแล้ว`;
+            }
+            this.toastrService.success(toastMessage);
+          }
+        }
+      );
+  }
 
-function input() {
-  throw new Error('Function not implemented.');
+  openUpdateDialog(dialogComponent: any, row: any): MatDialogRef<VerifyDetailDialogComponent> {
+    return this.dialog.open(dialogComponent, {
+      data: { row },
+      autoFocus: true,
+      disableClose: true,
+      height: '650px',
+      width: '550px'
+    });
+  }
 }
 

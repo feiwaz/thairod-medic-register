@@ -1,1 +1,108 @@
-<p>verify-detail-dialog works!</p>
+<div class="progress-bar-container">
+    <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+</div>
+<div class="form-container">
+    <div class="title">
+        ตรวจสอบข้อมูลผู้สมัคร
+    </div>
+    <div class="mat-elevation-z1">
+        <mat-card>
+            <div class="personal-information">
+                <mat-card-title>ข้อมูลส่วนบุคคล</mat-card-title>
+                <mat-grid-list cols="6" rowHeight="20px">
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">เลขบัตรประชาชน:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.nationalId}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">ชื่อ-นามสกุล:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.initial}} {{content.firstName}} {{content.lastName}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">วัน/เดือน/ปี เกิด:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.dateOfBirth}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">ที่อยู่:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.address}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">เบอร์โทรศัพท์:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.contactNumber}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="2" rowspan="1">
+                        <div class="sub-title font">LINE ID:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="4">
+                        <div class="content font">{{content.lineId}}</div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            <div class="medical-practice-information">
+                <mat-card-title>ข้อมูลการประกอบวิชาชีพทางเวชกรรม</mat-card-title>
+                <mat-grid-list cols="2" rowHeight="20px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <div class="sub-title font">สาขาที่ถนัด:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1">
+                        <div class="content font">{{content.nationalId}}</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <div class="sub-title font">เลขที่ใบประกอบวิชาชีพเวชกรรม:</div>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1">
+                        <div class="content font" *ngFor="let item of content.specializedFields">item</div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            <div class="attachment">
+                <mat-card-title>ไฟล์แนบ</mat-card-title>
+                <img mat-card-image>
+                <img mat-card-image>
+                <img mat-card-image>
+                <img mat-card-image>
+            </div>
+            <div class="note">
+                <mat-card-title>หมายเหตุ</mat-card-title>
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <input matInput placeholder="หมายเหตุ">
+                    </mat-form-field>
+                </mat-card-content>
+            </div>
+        </mat-card>
+    </div>
+</div>
+<mat-dialog-actions>
+    <div class="reject-button">
+        <button mat-flat-button color="warn" type="button" (click)="onClickReject(content)" mat-dialog-close>
+            <mat-icon>
+                block
+            </mat-icon>ไม่ผ่าน
+        </button>
+    </div>
+    <div class="verify-button">
+        <button mat-flat-button color="accent" type="button" (click)="onClickVerify(content)" mat-dialog-close>
+            <mat-icon>
+                check_circle_outline
+            </mat-icon>ผ่าน
+        </button>
+    </div>
+    <div class="cancel-button">
+        <button mat-button color="primary" type="button" mat-dialog-close>
+            <mat-icon>
+                arrow_back
+            </mat-icon>ย้อนกลับ
+        </button>
+    </div>
+</mat-dialog-actions>

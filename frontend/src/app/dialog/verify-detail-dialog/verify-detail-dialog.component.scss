@@ -1,0 +1,92 @@
+.progress-bar-container {
+  height: 4px;
+}
+
+mat-progress-bar {
+  position: relative;
+  z-index: 2;
+  top: -24px;
+  left: -24px;
+  width: calc(100% + 48px);
+}
+
+.user-container {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  overflow: auto;
+}
+
+mat-form-field,
+button {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+mat-form-field,
+.mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.form-container {
+  padding-top: 5px;
+  padding-bottom: 20px;
+  height: calc(100% - 80px);
+}
+
+.cancel-button {
+  flex: 1;
+  text-align: right;
+}
+
+
+
+
+.title {
+  display: block;
+  padding: 2px;
+}
+
+.font {
+  font-size: 16px;
+}
+
+button {
+  align-self: flex-end;
+  text-decoration: none;
+  display: block;
+  padding: 0px, 4px, 0px, 4px;
+  margin: 2px;
+}
+
+
+ mat-card {
+  overflow-y: auto;
+  max-height: 400px;
+
+  mat-card-title {
+    font-size: 16px;
+    background-color: #fde6e6;
+    margin: 2px;
+    padding: 5px 0px 5px 5px;
+  }
+
+  mat-card-content {
+    display: flex;
+
+    .sub-title {
+      order: 1;
+    }
+
+    .content {
+      order: 2;
+    }
+  }
+}
