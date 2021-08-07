@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { BufferedFile } from 'src/minio-client/file.model';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
@@ -23,9 +23,9 @@ export class VolunteersController {
   async create(
     @Body(new ParseFormDataRequestPipe(), new ValidationPipe())
     createVolunteerDto: CreateVolunteerDto,
-    @UploadedFiles() images: BufferedFile
+    @UploadedFiles() bufferedFile: BufferedFile
   ) {
-    return this.service.create(createVolunteerDto, images);
+    return this.service.create(createVolunteerDto, bufferedFile);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { MinioService } from 'nestjs-minio-client';
 import { BufferedFile } from './file.model';
@@ -8,39 +8,44 @@ dotenv.config();
 @Injectable()
 export class MinioClientService {
 
-  private readonly logger: Logger;
-  private readonly baseBucket = process.env.MINIO_BUCKET_NAME
-
-  public get client() {
-    return this.minio.client;
+  public get minioClient() {
+    return this.minioService.client;
   }
 
-  constructor(
-    private readonly minio: MinioService,
-  ) {
-    this.logger = new Logger('MinioStorageService');
+  constructor(private readonly minioService: MinioService) { }
+
+  public async uploadBufferedFile(nationalId: string, bufferedFile: BufferedFile): Promise<any> {
+    const { idCard, idCardSelfie, medCertificate, medCertificateSelfie } = bufferedFile as any;
+    const idCardUrl = await this.upload(idCard[0] || null, `${nationalId}_doc`, `${nationalId}_id_card`);
+    const idCardSelUrl = await this.upload(idCardSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_id_card_selfie`);
+    const jobCerUrl = await this.upload(medCertificate[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer`);
+    const jobCerSelUrl = await this.upload(medCertificateSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer_selfie`);
+    return { idCardUrl, idCardSelUrl, jobCerUrl, jobCerSelUrl };
   }
 
-  public async upload(file: BufferedFile, folder: string, newName: string, baseBucket: string = this.baseBucket) {
+  public async upload(file: BufferedFile, folder: string, newName: string): Promise<string> {
     if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
       throw new BadRequestException('Error uploading file');
     }
+
     // const temp_filename = Date.now().toString()
     // const hashedFileName = crypto.createHash('md5').update(temp_filename).digest("hex");
+    let url = null;
     const fileExtension = file.mimetype.substring(6, file.mimetype.length);
     const fileName = `${folder}/${newName}.${fileExtension}`;
-    const fileBuffer = file.buffer;
-    this.client.putObject(baseBucket, fileName, fileBuffer, function (err, res) {
-      if (err) throw new BadRequestException('Error uploading file');
-    })
-
-    return {
-      url: `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`
+    try {
+      this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer, (error) => {
+        if (error) throw new BadRequestException(`Failed to upload file: ${fileName}`);
+      });
+    } catch (error) {
+      console.warn(error.message);
     }
+    url = `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
+    return url;
   }
 
-  async delete(objetName: string, baseBucket: string = this.baseBucket) {
-    this.client.removeObject(baseBucket, objetName)
+  async delete(objetName: string) {
+    this.minioClient.removeObject(process.env.MINIO_BUCKET_NAME, objetName)
   }
 
 }

@@ -5,7 +5,6 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import e from 'express';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
@@ -30,39 +29,30 @@ export class VolunteersService {
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
   ) { }
 
-  async create(createVolunteerDto: CreateVolunteerDto, imageFiles: BufferedFile) {
+  async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
     try {
-      const volunteer = await this.mapDtoToEntity(createVolunteerDto);
-      const nId = createVolunteerDto.nationalId
-      const suffix = "-vol"
-      const idCardImg = imageFiles['idCard'][0]
-      const idCardRes = await this.minioClientService.upload(idCardImg, nId + suffix, nId + "_ID_card")
-      const idCardSelImg = imageFiles['idCardSelfie'][0]
-      const idCardSelRes = await this.minioClientService.upload(idCardSelImg, nId + suffix, nId + "_ID_card_selfie")
-      const jobCerImg = imageFiles['medCertificate'][0]
-      const jobCerRes = (jobCerImg != null) ? await this.minioClientService.upload(jobCerImg, nId + suffix, nId + "_Job_cer") : null
-      const jobCerSelImg = imageFiles['medCertificateSelfie'][0]
-      const jobCerSelRes = (jobCerSelImg != null) ? await this.minioClientService.upload(jobCerSelImg, nId + suffix, nId + "_Job_cer_selfie") : null
-      volunteer.idCardImg = idCardRes.url
-      volunteer.idCardSelfieImg = idCardSelRes.url
-      volunteer.jobCertificateImg = jobCerRes.url
-      volunteer.jobCertificateSelfieImg = jobCerSelRes.url
+      const volunteer = await this.mapDtoToEntity(createDto);
+      const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      volunteer.idCardImg = resultObject.idCardUrl;
+      volunteer.idCardSelfieImg = resultObject.idCardSelUrl;
+      volunteer.jobCertificateImg = resultObject.jobCerUrl;
+      volunteer.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
       await this.volunteerRepository.save(volunteer);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('สร้างผู้ใช้ไม่สำเร็จ');
     }
   }
 
-  private async mapDtoToEntity(createVolunteerDto: CreateVolunteerDto): Promise<Volunteer> {
-    const { departments, ...volunteerEntities } = createVolunteerDto;
+  private async mapDtoToEntity(createDto: CreateVolunteerDto): Promise<Volunteer> {
+    const { departments, ...volunteerEntities } = createDto;
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) },
     });
     const savedVolunteer = new Volunteer();
-    savedVolunteer.nationalId = createVolunteerDto.nationalId;
+    savedVolunteer.nationalId = createDto.nationalId;
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartments = savedDepartments.map(department => ({
       departmentId: department.id

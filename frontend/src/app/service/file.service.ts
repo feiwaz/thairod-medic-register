@@ -28,4 +28,17 @@ export class FileService {
     return this.http.get(JSON.parse(jsonString).blobUrl, { responseType: 'blob' as 'json' }).toPromise();
   }
 
+  createFile(fileBits: BlobPart[], fileName: string): File {
+    return new File(fileBits, fileName, this.getType(fileName));
+  }
+
+  getType(storageKey: string): { type: string } {
+    let type = '';
+    const jsonString = localStorage.getItem(storageKey);
+    if (jsonString) {
+      type = JSON.parse(jsonString).type;
+    }
+    return { type }
+  }
+
 }
