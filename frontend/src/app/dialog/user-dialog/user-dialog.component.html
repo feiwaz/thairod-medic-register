@@ -16,6 +16,41 @@
                     จำเป็นต้องใส่*
                 </mat-error>
             </mat-form-field>
+            <ng-container *ngIf="isCreatingNew">
+                <mat-form-field formGroupName="credential">
+                    <input matInput formControlName="password" #password maxlength="64"
+                        [type]="hidePassword ? 'password' : 'text'" placeholder="รหัสผ่านใหม่"
+                        (keydown.space)="$event.preventDefault();" (paste)="$event.preventDefault();">
+                    <button mat-icon-button matSuffix tabindex="-1" (click)="hidePassword = !hidePassword"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword" type="button">
+                        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-hint align="end">{{password.value.length}} / 64</mat-hint>
+                    <mat-error *ngIf="userForm.controls.credential.get('password')?.hasError('required')">
+                        จำเป็นต้องใส่*
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls.credential.get('password')?.hasError('minlength')">
+                        รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field formGroupName="credential">
+                    <input matInput formControlName="confirmPassword" #confirmPassword maxlength="64"
+                        [type]="hideConfirmPassword ? 'password' : 'text'" placeholder="ใส่รหัสผ่านใหม่อีกครั้ง"
+                        (keydown.space)="$event.preventDefault();">
+                    <button mat-icon-button matSuffix tabindex="-1" (click)="hideConfirmPassword = !hideConfirmPassword"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword" type="button">
+                        <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-hint align="end">{{confirmPassword.value.length}} / 64</mat-hint>
+                    <mat-error *ngIf="userForm.controls.credential.get('confirmPassword')?.hasError('required')">
+                        จำเป็นต้องใส่*
+                    </mat-error>
+                    <mat-error *ngIf="userForm.controls.credential.get('confirmPassword')?.hasError('passwordMismatch')
+                  && !userForm.controls.credential.get('confirmPassword')?.hasError('required')">
+                        รหัสผ่านไม่ตรงกัน
+                    </mat-error>
+                </mat-form-field>
+            </ng-container>
             <mat-form-field>
                 <input matInput #firstName maxlength="32" placeholder="ชื่อ" formControlName="firstName">
                 <mat-hint align="end">{{firstName.value.length}} / 32</mat-hint>
@@ -46,10 +81,11 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle class="mat-form-field" formControlName="isActive">เปิดใช้งาน</mat-slide-toggle>
+            <mat-slide-toggle *ngIf="isCreatingNew" class="mat-form-field" formControlName="isActive">เปิดใช้งาน
+            </mat-slide-toggle>
+            <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
+                type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
         </form>
-        <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
-            type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
     </div>
 </div>
 <mat-dialog-actions align="end">

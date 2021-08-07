@@ -4,7 +4,7 @@ import { VolunteerDepartment } from './volunteerDepartment.entity';
 export enum DepartmentLabel {
   DEP1 = 'แอดมินตอบ LINE',
   DEP2 = 'คัดกรอง',
-  DEP3 = 'ส่งต่อประสาน',
+  DEP3 = 'ส่งต่อประสานงาน',
   DEP4 = 'เฝ้าระวัง',
   DEP5 = 'พูดคุยกับผู้ป่วย',
   DEP6 = 'IT Support',
@@ -17,12 +17,14 @@ export enum DepartmentLabel {
 
 @Entity()
 export class Department {
-  @PrimaryGeneratedColumn('increment')
+
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
     type: 'enum',
     enum: DepartmentLabel,
+    unique: true
   })
   label: DepartmentLabel;
 

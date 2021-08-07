@@ -1,21 +1,27 @@
 <div class="button-flex-container">
-  <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
+  <div class="main-logo" [innerHTML]="mainLogo | safeHtml"></div>
   <div class="doctor-button-flex-item">
     <button mat-button type="button" (click)="onRegister('doctor')">
-      <div [innerHTML]="doctorImg | safeHtml"> </div>
-      <div><b>ลงทะเบียนแพทย์</b><br>ผู้ที่มีใบประกอบวิชาชีพเวชกรรม</div>
+      <div [innerHTML]="doctorImg | safeHtml"></div>
+      <div>
+        <h4>ลงทะเบียนแพทย์</h4>
+        <span>ผู้ที่มีใบประกอบวิชาชีพเวชกรรม</span>
+      </div>
     </button>
   </div>
   <div class="volunteer-button-flex-item">
     <button mat-button type="button" (click)="onRegister('volunteer')">
-      <div [innerHTML]="volImg | safeHtml"> </div>
-      <div><b>ลงทะเบียนอาสาสมัคร</b><br>อาสาสมัครทางการแพทย์</div>
+      <div [innerHTML]="volImg | safeHtml"></div>
+      <h4>ลงทะเบียนอาสาสมัคร</h4>
+      <span>อาสาสมัครทางการแพทย์</span>
     </button>
   </div>
   <div class="last-button-flex-item">
-    <button mat-button type="button" (click)="onCheckStatus()">
-      <span [innerHTML]="checkStatusLogo | safeHtml"> </span>
-      <span><b>ตรวจสอบสถานะการลงทะเบียน</b></span>
+    <button class="checkstatus" mat-button type="button" (click)="onCheckStatus()">
+      <div>
+        <span [innerHTML]="checkStatusLogo | safeHtml"> </span>
+        <h4 class="check-status-text">ตรวจสอบสถานะการลงทะเบียน</h4>
+      </div>
     </button>
   </div>
 </div>

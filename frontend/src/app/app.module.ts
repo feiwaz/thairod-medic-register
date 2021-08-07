@@ -1,3 +1,4 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -18,8 +19,10 @@ import { ReviewInfoComponent } from './component/review-info/review-info.compone
 import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { ToolbarComponent } from './component/toolbar/toolbar.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
+import { UploadPhotoComponent } from './component/upload-photo/upload-photo.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
+import { HttpResponseInterceptor } from './interceptor/http-response.interceptor';
 import { SharedModule } from './module/shared.module';
 
 export const DATE_FORMAT = {
@@ -47,6 +50,7 @@ export const DATE_FORMAT = {
     DoctorJobInfoFormComponent,
     ReviewInfoComponent,
     AdminLoginComponent,
+    UploadPhotoComponent,
     AvailableTimeFormComponent,
     VolunteerJobInfoFormComponent
   ],
@@ -65,7 +69,6 @@ export const DATE_FORMAT = {
     JwtModule.forRoot({
       config: {
         tokenGetter: (): string => localStorage.getItem('accessToken') || '',
-        disallowedRoutes: [new RegExp('/auth')]
         // allowedDomains: ['localhost:3000', 'localhost:4200']
       }
     })
@@ -77,9 +80,10 @@ export const DATE_FORMAT = {
   }, {
     provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT
   },
-    // {
-    //   provide: MAT_DATE_LOCALE, useValue: 'th-TH'
-    // }
+  // {
+  //   provide: MAT_DATE_LOCALE, useValue: 'th-TH'
+  // }
+  { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

@@ -14,13 +14,17 @@
 }
 
 button {
-  padding: 10px;
+  padding: 10px 15px;
   background-color: rgb(235, 235, 235);
   border-radius: 10px;
 }
 
 .doctor-button-flex-item {
   margin-right: 5px;
+}
+
+.doctor-button-flex-item > button {
+  padding: 10px 8px;
 }
 
 .volunteer-button-flex-item {
@@ -33,6 +37,15 @@ button {
   text-align: center;
 }
 
-.last-button-flex-item > button {
-  width: 372px;
+.checkstatus {
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.check-status-text {
+  margin-left: 6px;
+  margin-right: 10px;
 }

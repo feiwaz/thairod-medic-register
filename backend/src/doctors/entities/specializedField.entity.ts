@@ -13,7 +13,7 @@ export enum SpecializedFieldLabel {
 @Entity()
 export class SpecializedField {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column({

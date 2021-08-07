@@ -15,10 +15,7 @@ export class AccountMenuComponent {
     private toastrService: ToastrService,
     public authService: AuthenticationService,
     public dialog: MatDialog
-  ) {
-    //TODO: to be removed later after authService impl
-    this.authService.isLoggedIn = true;
-  }
+  ) { }
 
   openAccountCard(): void {
     this.dialog.open(UserAccountDialogComponent, {

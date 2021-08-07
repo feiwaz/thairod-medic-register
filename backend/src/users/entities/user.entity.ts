@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { InternalServerErrorException } from "@nestjs/common";
+import * as bcrypt from 'bcrypt';
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 export enum UserStatus {
   PENDING = 'รอการอนุมัติ',
@@ -7,24 +9,43 @@ export enum UserStatus {
 }
 
 export enum UserRole {
-  ADMIN = 'Admin',
-  USER = 'User',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 @Entity()
 export class User {
 
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
-  salt: string;
+  private tempPassword: string;
+
+  @AfterLoad()
+  private loadTempPassword(): void {
+    this.tempPassword = this.password;
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  async hashPassword(): Promise<void> {
+    if (this.password) {
+      if (this.tempPassword !== this.password) {
+        try {
+          const salt = await bcrypt.genSalt();
+          this.password = await bcrypt.hash(this.password, salt);
+        } catch (e) {
+          throw new InternalServerErrorException('Unable to hash password')
+        }
+      }
+    }
+  }
 
   @Column()
   firstName: string;
@@ -44,13 +65,13 @@ export class User {
   @Column()
   isActive: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdTime: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   updatedTime: Date;
 
-  @ManyToOne(type => User, user => user.id)
+  @OneToOne(() => User, user => user.id)
   createdBy: User;
 
 }

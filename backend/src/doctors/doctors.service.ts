@@ -4,6 +4,8 @@ import {
   NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BufferedFile } from 'src/minio-client/file.model';
+import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
@@ -17,23 +19,29 @@ export class DoctorsService {
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
     @InjectRepository(SpecializedField)
-    private specializedFieldRepository: Repository<SpecializedField>
+    private specializedFieldRepository: Repository<SpecializedField>,
+    private minioClientService: MinioClientService
   ) { }
 
-  async create(createDoctorDto: CreateDoctorDto) {
+  async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
     try {
-      const doctor = await this.mapDtoToEntity(createDoctorDto);
+      const doctor = await this.mapDtoToEntity(createDto);
+      const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      doctor.idCardImg = resultObject.idCardUrl;
+      doctor.idCardSelfieImg = resultObject.idCardSelUrl;
+      doctor.jobCertificateImg = resultObject.jobCerUrl;
+      doctor.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
       await this.doctorRepository.save(doctor);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('สร้างผู้ใช้ไม่สำเร็จ');
     }
   }
 
-  private async mapDtoToEntity(createDoctorDto: CreateDoctorDto): Promise<Doctor> {
-    const { specializedFields, ...doctorEntities } = createDoctorDto;
+  private async mapDtoToEntity(createDto: CreateDoctorDto): Promise<Doctor> {
+    const { specializedFields, ...doctorEntities } = createDto;
     const savedSpecializedFields = await this.specializedFieldRepository.find({
       where: { label: In(specializedFields) }
     });
@@ -49,9 +57,10 @@ export class DoctorsService {
     });
   }
 
-  async findOne(id: number): Promise<responseDoctorDto> {
-    const doctor = await this.doctorRepository.findOne(id, {
-      relations: ['specializedFields'],
+  async findOne(nationalId: number): Promise<responseDoctorDto> {
+    const doctor = await this.doctorRepository.findOne({
+      where: { nationalId },
+      relations: ['specializedFields']
     });
     if (!doctor) {
       return {} as responseDoctorDto;
@@ -71,9 +80,9 @@ export class DoctorsService {
   }
 
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    let response = await this.doctorRepository.update(id, { status: verifyStatusDto.status });
-    if (response['affected'] === 0) {
-      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+    const response = await this.doctorRepository.update(id, { status: verifyStatusDto.status });
+    if (response.affected === 0) {
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
   }
 }

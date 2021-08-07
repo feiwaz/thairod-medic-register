@@ -1,11 +1,11 @@
-import { is } from '@babel/types';
 import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
+  NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { BufferedFile } from 'src/minio-client/file.model';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
@@ -19,6 +19,7 @@ import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
 
 @Injectable()
 export class VolunteersService {
+  minioClientService: any;
   constructor(
     @InjectRepository(Volunteer)
     private volunteerRepository: Repository<Volunteer>,
@@ -28,27 +29,33 @@ export class VolunteersService {
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
   ) { }
 
-  async create(createVolunteerDto: CreateVolunteerDto) {
+  async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
     try {
-      const volunteer = await this.mapDtoToEntity(createVolunteerDto);
+      const volunteer = await this.mapDtoToEntity(createDto);
+      const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      volunteer.idCardImg = resultObject.idCardUrl;
+      volunteer.idCardSelfieImg = resultObject.idCardSelUrl;
+      volunteer.jobCertificateImg = resultObject.jobCerUrl;
+      volunteer.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
       await this.volunteerRepository.save(volunteer);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('สร้างผู้ใช้ไม่สำเร็จ');
     }
   }
 
-  private async mapDtoToEntity(createVolunteerDto: CreateVolunteerDto): Promise<Volunteer> {
-    const { departments, ...volunteerEntities } = createVolunteerDto;
+  private async mapDtoToEntity(createDto: CreateVolunteerDto): Promise<Volunteer> {
+    const { departments, ...volunteerEntities } = createDto;
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) },
     });
+    const savedVolunteer = new Volunteer();
+    savedVolunteer.nationalId = createDto.nationalId;
     const volunteer = Object.assign(new Volunteer(), volunteerEntities);
     volunteer.volunteerDepartments = savedDepartments.map(department => ({
-      departmentId: department.id,
-      volunteerId: createVolunteerDto.id
+      departmentId: department.id
     } as VolunteerDepartment));
     return volunteer;
   }
@@ -60,8 +67,9 @@ export class VolunteersService {
     });
   }
 
-  async findOne(id: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne(id, {
+  async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
+    const volunteer = await this.volunteerRepository.findOne({
+      where: { nationalId },
       relations: ['volunteerDepartments']
     });
     if (!volunteer) {
@@ -99,9 +107,9 @@ export class VolunteersService {
       where: { volunteerId: id },
       relations: ['department'],
     });
-    if (!volunteerDepartmentList) {
+    if (volunteerDepartmentList.length === 0) {
       return {} as TrainingStatusVolunteerDto;
-    } 
+    }
     return this.mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList);
   }
 
@@ -124,8 +132,39 @@ export class VolunteersService {
     return trainingStatusDto;
   }
 
+  async updateTrainingStatus(id: number, trainingStatusDto: TrainingStatusVolunteerDto) {
+    try {
+      const volunteerDepartmentUpdateList = await this.mapTrainingStatusDtoToEntity(id, trainingStatusDto);
+      await this.volunteerDepartmentRepository.save(volunteerDepartmentUpdateList);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
+
+  private async mapTrainingStatusDtoToEntity(id: number, trainingStatusDto: TrainingStatusVolunteerDto): Promise<VolunteerDepartment[]> {
+    const VolunteerDepartmentList = [];
+    let tempVolunteerDepartment = null;
+
+    for (const passedDepartment of trainingStatusDto.passedDepartment) {
+      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
+      tempVolunteerDepartment.volunteerId = id;
+      tempVolunteerDepartment.departmentId = passedDepartment.id;
+      tempVolunteerDepartment.trainingStatus = 1;
+      VolunteerDepartmentList.push(tempVolunteerDepartment)
+    }
+    for (const failedDepartment of trainingStatusDto.failedDepartment) {
+      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
+      tempVolunteerDepartment.volunteerId = id;
+      tempVolunteerDepartment.departmentId = failedDepartment.id;
+      tempVolunteerDepartment.trainingStatus = 0;
+      VolunteerDepartmentList.push(tempVolunteerDepartment)
+    }
+
+    return VolunteerDepartmentList;
+  }
+
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    let response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
+    const response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
     if (response['affected'] === 0) {
       throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }

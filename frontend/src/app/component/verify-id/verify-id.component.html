@@ -7,17 +7,19 @@
       <h3><b>เลขประจำตัวประชาชนที่ต้องการ{{ role ? 'ลงทะเบียน' : 'ตรวจสอบ'}}</b></h3>
       <mat-form-field floatLabel="always">
         <mat-label>เลขประจำตัวประชาชน</mat-label>
-        <input matInput type="number" formControlName="id" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #id
+        <input matInput type="number" formControlName="nationalId" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #nationalId
           class="user-id-input">
-        <button *ngIf="id" type="button" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()">
+        <button *ngIf="nationalId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
+          (click)="onClearInput()">
           <mat-icon>close</mat-icon>
         </button>
-        <mat-hint align="end">{{id.value.length}} / 13</mat-hint>
-        <mat-error *ngIf="verifyForm.get('id')?.hasError('min') || verifyForm.get('id')?.hasError('max')">
+        <mat-hint align="end">{{nationalId.value.length}} / 13</mat-hint>
+        <mat-error
+          *ngIf="verifyForm.get('nationalId')?.hasError('min') || verifyForm.get('nationalId')?.hasError('max')">
           กรุณาใส่เลขให้ครบ 13 หลัก
-          <mat-hint class="mat-hint-error">{{id.value.length}} / 13</mat-hint>
+          <mat-hint class="mat-hint-error">{{nationalId.value.length}} / 13</mat-hint>
         </mat-error>
-        <mat-error *ngIf="verifyForm.get('id')?.hasError('required')">
+        <mat-error *ngIf="verifyForm.get('nationalId')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
