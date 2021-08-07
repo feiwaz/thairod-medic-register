@@ -24,22 +24,24 @@ export class MinioClientService {
   }
 
   public async upload(file: BufferedFile, folder: string, newName: string): Promise<string> {
-    if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
-      throw new BadRequestException('Error uploading file');
-    }
-
+    let url = null;
     // const temp_filename = Date.now().toString()
     // const hashedFileName = crypto.createHash('md5').update(temp_filename).digest("hex");
-    let url = null;
     const fileExtension = file.mimetype.substring(6, file.mimetype.length);
     const fileName = `${folder}/${newName}.${fileExtension}`;
+
     try {
+      if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
+        throw new BadRequestException('Only image files are allowed');
+      }
+
       this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer, (error) => {
         if (error) throw new BadRequestException(`Failed to upload file: ${fileName}`);
       });
     } catch (error) {
       console.warn(error.message);
     }
+
     url = `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
     return url;
   }
