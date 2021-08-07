@@ -44,6 +44,8 @@ export class ReviewInfoComponent implements OnInit {
     medCertificateSelfie: null as any
   };
 
+  passImageRequirement = false;
+  imageBlobs: Blob[] = [];
   idCardBlob: SafeUrl = '';
   idCardSelfieBlob: SafeUrl = '';
   medCertificateBlob: SafeUrl = '';
@@ -61,7 +63,9 @@ export class ReviewInfoComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
-    this.initiateFields();
+    this.fileService.getFilesByBlobUrl()
+      .then(blobs => this.imageBlobs = blobs)
+      .finally(() => this.initiateFields());
   }
 
   private initiateFields() {
@@ -85,10 +89,18 @@ export class ReviewInfoComponent implements OnInit {
         this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
       }
     }
+
+    this.checkIfPassImageRequirement();
     this.idCardBlob = this.bypassSecurityTrustUrl('idCard');
     this.idCardSelfieBlob = this.bypassSecurityTrustUrl('idCardSelfie');
     this.medCertificateBlob = this.bypassSecurityTrustUrl('medCertificate');
     this.medCertificateSelfieBlob = this.bypassSecurityTrustUrl('medCertificateSelfie');
+  }
+
+  checkIfPassImageRequirement() {
+    this.passImageRequirement = this.role === 'doctor'
+      ? this.imageBlobs[0] != null && this.imageBlobs[1] != null && this.imageBlobs[2] != null && this.imageBlobs[3] != null
+      : this.imageBlobs[0] != null && this.imageBlobs[1] != null;
   }
 
   bypassSecurityTrustUrl(key: string): any {
@@ -103,21 +115,10 @@ export class ReviewInfoComponent implements OnInit {
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
-    /* 
-      TO DO
-      - Need to clarify what data type to be used to upload image  
-      - Before sending request to create user, convert blob:url to File or Base64 image
-      - Can be done either it in 1) this file 2) this.service or 3) at backend
-    */
-    let requestBlobs: Blob[] = [];
-    this.fileService.getFilesByBlobUrl().then(blobs => {
-      requestBlobs = blobs;
-    }).finally(() => {
-      this.service.create({ ...this.basicInfo, ...this.jobInfo }, requestBlobs).subscribe(
-        response => this.handleSuccessfulCreateUser(),
-        errorResponse => this.handleErrorResponse()
-      );
-    });
+    this.service.create({ ...this.basicInfo, ...this.jobInfo }, this.imageBlobs).subscribe(
+      response => this.handleSuccessfulCreateUser(),
+      errorResponse => this.handleErrorResponse()
+    );
   }
 
   handleSuccessfulCreateUser(): void {

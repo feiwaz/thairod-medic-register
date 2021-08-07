@@ -10,16 +10,16 @@ export class FileService {
 
   async getFilesByBlobUrl(): Promise<any> {
     const idCardString = localStorage.getItem('idCard') || '';
-    const idCard = await this.getBlobPromise(idCardString);
+    const idCard = idCardString ? await this.getBlobPromise(idCardString) : null;
 
     const idCardSelfieString = localStorage.getItem('idCardSelfie') || '';
-    const idCardSelfie = await this.getBlobPromise(idCardSelfieString);
+    const idCardSelfie = idCardSelfieString ? await this.getBlobPromise(idCardSelfieString) : null;
 
     const medCertificateString = localStorage.getItem('medCertificate') || '';
-    const medCertificate = await this.getBlobPromise(medCertificateString);
+    const medCertificate = medCertificateString ? await this.getBlobPromise(medCertificateString) : null;
 
     const medCertificateSelfieString = localStorage.getItem('medCertificateSelfie') || '';
-    const medCertificateSelfie = await this.getBlobPromise(medCertificateSelfieString);
+    const medCertificateSelfie = medCertificateSelfieString ? await this.getBlobPromise(medCertificateSelfieString) : null;
 
     return [idCard, idCardSelfie, medCertificate, medCertificateSelfie];
   }

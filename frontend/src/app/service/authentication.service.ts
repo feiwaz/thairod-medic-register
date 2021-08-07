@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 import { User } from '../model/user.model';
 
 @Injectable({
@@ -42,7 +43,7 @@ export class AuthenticationService {
   }
 
   register(user: any): Observable<any> {
-    return this.http.post<any>('api/auth/register', user);
+    return this.http.post<any>(`${environment.apiPrefix}/auth/register`, user);
   }
 
   login(email: string, password: string): Observable<any> {
@@ -52,7 +53,7 @@ export class AuthenticationService {
         'Content-Type': 'application/x-www-form-urlencoded'
       })
     };
-    return this.http.post<any>('api/auth/login', body, options).pipe(
+    return this.http.post<any>(`${environment.apiPrefix}/auth/login`, body, options).pipe(
       tap(response => {
         localStorage.setItem('accessToken', response.accessToken);
         localStorage.setItem('refreshToken', response.refreshToken);
@@ -63,7 +64,7 @@ export class AuthenticationService {
 
   refreshToken(): Observable<any> {
     const refreshToken = localStorage.getItem('refreshToken') || '';
-    return this.http.post<any>('api/auth/refresh-token', { refreshToken }).pipe(
+    return this.http.post<any>(`${environment.apiPrefix}/auth/refresh-token`, { refreshToken }).pipe(
       tap({
         next: response => {
           localStorage.setItem('accessToken', response.accessToken);

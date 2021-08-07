@@ -27,10 +27,10 @@ export class DoctorService {
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));
 
-    if (blobs && blobs[0]) formData.append('idCard', this.fileService.createFile([blobs[0]], 'idCard'))
-    if (blobs && blobs[1]) formData.append('idCardSelfie', this.fileService.createFile([blobs[1]], 'idCardSelfie'))
-    if (blobs && blobs[2]) formData.append('medCertificate', this.fileService.createFile([blobs[2]], 'medCertificate'))
-    if (blobs && blobs[3]) formData.append('medCertificateSelfie', this.fileService.createFile([blobs[3]], 'medCertificateSelfie'))
+    if (blobs && blobs[0]) formData.append('idCard', this.fileService.createFile([blobs[0]], 'idCard'));
+    if (blobs && blobs[1]) formData.append('idCardSelfie', this.fileService.createFile([blobs[1]], 'idCardSelfie'));
+    if (blobs && blobs[2]) formData.append('medCertificate', this.fileService.createFile([blobs[2]], 'medCertificate'));
+    if (blobs && blobs[3]) formData.append('medCertificateSelfie', this.fileService.createFile([blobs[3]], 'medCertificateSelfie'));
 
     const url = `${environment.apiPrefix}/doctors`;
     return this.http.post<any>(url, formData);

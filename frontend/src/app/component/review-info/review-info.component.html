@@ -58,26 +58,31 @@
           <span class="info-field image-label">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span>
           <span class="info-value">{{jobInfo.medCertificateId}}</span>
         </div>
-        <div *ngIf="idCardBlob !== ''">
-          <span class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
-              (error)="onImageError($event)" /></div>
-        </div>
-        <div *ngIf="idCardSelfieBlob !== ''">
-          <span class="info-field image-label">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
-          <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
-              (error)="onImageError($event)" /></div>
-        </div>
-        <div *ngIf="medCertificateBlob !== ''">
-          <span class="info-field image-label">ภาพใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificate" class="preview-image" [src]="medCertificateBlob"
-              (error)="onImageError($event)" /></div>
-        </div>
-        <div *ngIf="medCertificateSelfieBlob !== ''">
-          <span class="info-field image-label">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
-          <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image"
-              [src]="medCertificateSelfieBlob" (error)="onImageError($event)" /></div>
-        </div>
+        <ng-container *ngIf="!passImageRequirement else noInfo">
+          <p class="requirement-text">**กรุณาอัพโหลดรูปที่กำหนดไว้ให้ครบถ้วน**</p>
+        </ng-container>
+        <ng-template #noInfo>
+          <ng-container *ngIf="idCardBlob !== ''">
+            <span class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</span>
+            <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
+                (error)="onImageError($event)" /></div>
+          </ng-container>
+          <ng-container *ngIf="idCardSelfieBlob !== ''">
+            <span class="info-field image-label">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
+            <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
+                (error)="onImageError($event)" /></div>
+          </ng-container>
+          <ng-container *ngIf="medCertificateBlob !== ''">
+            <span class="info-field image-label">ภาพใบประกอบวิชาชีพ:</span>
+            <div class="preview-image-container"><img id="medCertificate" class="preview-image"
+                [src]="medCertificateBlob" (error)="onImageError($event)" /></div>
+          </ng-container>
+          <ng-container *ngIf="medCertificateSelfieBlob !== ''">
+            <span class="info-field image-label">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
+            <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image"
+                [src]="medCertificateSelfieBlob" (error)="onImageError($event)" /></div>
+          </ng-container>
+        </ng-template>
       </div>
     </div>
     <div class="editable-info last-item">
@@ -100,7 +105,8 @@
         </div>
       </div>
     </div>
-    <button mat-flat-button type="submit" color="primary" style="width:100%" [disabled]="isLoading">{{isLoading ===
+    <button mat-flat-button type="submit" color="primary" style="width:100%"
+      [disabled]="isLoading || !passImageRequirement">{{isLoading ===
       true ? 'กำลังส่งข้อมูล' : 'ยืนยันการส่งข้อมูล'}}</button>
     <ng-container *ngIf="errorResponse">
       <p>ไม่พบผู้ใช้นี้ในระบบหรือกรอกข้อมูลไม่ครบ<br>กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>

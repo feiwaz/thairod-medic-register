@@ -18,8 +18,8 @@ export class MinioClientService {
     const { idCard, idCardSelfie, medCertificate, medCertificateSelfie } = bufferedFile as any;
     const idCardUrl = await this.upload(idCard[0] || null, `${nationalId}_doc`, `${nationalId}_id_card`);
     const idCardSelUrl = await this.upload(idCardSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_id_card_selfie`);
-    const jobCerUrl = await this.upload(medCertificate[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer`);
-    const jobCerSelUrl = await this.upload(medCertificateSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer_selfie`);
+    const jobCerUrl = medCertificate ? await this.upload(medCertificate[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer`) : null;
+    const jobCerSelUrl = medCertificateSelfie ? await this.upload(medCertificateSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer_selfie`) : null;
     return { idCardUrl, idCardSelUrl, jobCerUrl, jobCerSelUrl };
   }
 

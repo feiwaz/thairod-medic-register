@@ -10,6 +10,14 @@ p {
   margin-bottom: 4px;
 }
 
+.med-certificate-id-label {
+  margin-top: 40px;
+}
+
+mat-form-field.mat-form-field.med-certificate-id-form {
+  margin-bottom: -10px;
+}
+
 form {
   flex-direction: column;
   display: flex;
@@ -39,6 +47,7 @@ button[type="submit"] {
 .checkbox-flex-container {
   display: flex;
   flex-wrap: wrap;
+  margin-top: -10px;
   margin-bottom: 5px;
 }
 

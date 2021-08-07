@@ -76,6 +76,12 @@ button {
   width: 120px;
 }
 
+.requirement-text {
+  font-size: 18px;
+  color: red;
+  text-align: center;
+}
+
 @media only screen and (min-width: 600px) {
   .form-container {
     top: 64px;

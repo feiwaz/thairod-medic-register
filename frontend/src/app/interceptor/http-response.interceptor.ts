@@ -25,7 +25,7 @@ export class HttpResponseInterceptor implements HttpInterceptor {
             return this.handleUnauthorizedError(request, next);
           }
         } else {
-          if (request.url.includes('api/auth/refresh-token')) {
+          if (request.url.includes('/api/auth/refresh-token')) {
             this.toastrService.warning('ระยะเวลาการเข้าใช้งานสิ้นสุด กรุณาเข้าสู่ระบบอีกครั้ง');
             this.authService.logout();
           }

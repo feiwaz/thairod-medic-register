@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DEPARTMENTS } from 'src/app/constant/departments';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
+import { FileService } from 'src/app/service/file.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 @Component({
@@ -46,8 +47,9 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private imageCachingService: ImageCachingService,
-    private router: Router
+    private fileService: FileService
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
@@ -56,14 +58,15 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fileService.clearImageLocalStorage();
     this.patchValue();
   }
 
   private patchValue() {
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { departments, idCard, idCardSelfie, medCertificateId, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString) as VolunteerJobInfo;
-      this.jobInfoForm.patchValue({ departments, idCard, idCardSelfie, medCertificateId, medCertificate, medCertificateSelfie });
+      const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
+      this.jobInfoForm.patchValue({ departments, medCertificateId });
 
       if (departments.length !== 0) {
         departments.forEach((viewValue: string) => {

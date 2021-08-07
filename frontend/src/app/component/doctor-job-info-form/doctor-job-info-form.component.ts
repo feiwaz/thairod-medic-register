@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
+import { FileService } from 'src/app/service/file.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
 
 @Component({
@@ -43,6 +44,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private imageCachingService: ImageCachingService,
+    private fileService: FileService
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
@@ -51,14 +53,15 @@ export class DoctorJobInfoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fileService.clearImageLocalStorage();
     this.patchValue();
   }
 
   private patchValue() {
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
-      const { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString) as DoctorJobInfo;
-      this.jobInfoForm.patchValue({ specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie });
+      const { specializedFields, medCertificateId } = JSON.parse(jobInfoString) as DoctorJobInfo;
+      this.jobInfoForm.patchValue({ specializedFields, medCertificateId });
 
       if (specializedFields.length !== 0) {
         specializedFields.forEach((viewValue: string) => {
