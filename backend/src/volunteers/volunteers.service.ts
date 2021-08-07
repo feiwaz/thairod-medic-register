@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BufferedFile } from 'src/minio-client/file.model';
+import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
@@ -19,7 +20,7 @@ import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
 
 @Injectable()
 export class VolunteersService {
-  minioClientService: any;
+
   constructor(
     @InjectRepository(Volunteer)
     private volunteerRepository: Repository<Volunteer>,
@@ -27,6 +28,7 @@ export class VolunteersService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
+    private minioClientService: MinioClientService
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {

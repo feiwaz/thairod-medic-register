@@ -7,7 +7,10 @@ import { Doctor } from './entities/doctor.entity';
 import { SpecializedField } from './entities/specializedField.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Doctor, SpecializedField]), MinioClientModule],
+  imports: [
+    TypeOrmModule.forFeature([Doctor, SpecializedField]),
+    MinioClientModule
+  ],
   controllers: [DoctorsController],
   providers: [DoctorsService],
 })
