@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, ForbiddenException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -89,9 +89,13 @@ export class UsersService {
       if (changePasswordDto.password !== changePasswordDto.confirmPassword) {
         throw new BadRequestException('New password and confirm password did not match');
       }
-      const user = await this.userRepository.findOne(id, { select: ['password'] });
+      const user = await this.userRepository.findOne(id, { select: ['password', 'email'] });
       if (!user) {
         throw new UnauthorizedException('Invalid credentials');
+      }
+      // TODO: guard admin
+      if (user.email === 'admin@admin.com') {
+        throw new ForbiddenException('You are not allowed to modify admin user');
       }
       const isMatched = await bcrypt.compare(changePasswordDto.currentPassword, user.password);
       if (!isMatched) {
