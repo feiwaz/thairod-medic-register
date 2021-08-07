@@ -27,16 +27,9 @@ export class AuthenticationService {
   ) { }
 
   getRefreshToken(): void {
-    // const refreshToken = localStorage.getItem('refreshToken') || '';
-    // if (refreshToken) {
-    //   this.refreshToken().subscribe();
-    // } else {
-    //   this.logout();
-    // }
-    // TODO: should refresh token
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      this.decodeAccessToken();
+    const refreshToken = localStorage.getItem('refreshToken') || '';
+    if (refreshToken) {
+      this.refreshToken().subscribe();
     } else {
       this.logout();
     }
