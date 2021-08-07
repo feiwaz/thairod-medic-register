@@ -23,10 +23,6 @@ form {
   margin-bottom: 10px;
 }
 
-mat-form-field.mat-form-field {
-  margin-bottom: 10px;
-}
-
 mat-form-field.mat-form-field,
 button {
   font-size: 16px;
@@ -39,6 +35,7 @@ button[type="submit"] {
 .checkbox-flex-container {
   display: flex;
   flex-wrap: wrap;
+  margin-top: -10px;
   margin-bottom: 5px;
 }
 

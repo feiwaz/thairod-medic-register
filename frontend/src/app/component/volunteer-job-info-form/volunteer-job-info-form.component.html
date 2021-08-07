@@ -33,10 +33,10 @@
       <mat-error *ngIf="jobInfoForm.get('idCardSelfie')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
-      <p>
+      <p class="med-certificate-id-label">
         <b>เลขที่ใบประกอบวิชาชีพเวชกรรม (ถ้ามี)</b>
       </p>
-      <mat-form-field>
+      <mat-form-field class="med-certificate-id-form">
         <input matInput #medCertificateId type="number" formControlName="medCertificateId"
           placeholder="กรอกเฉพาะตัวเลข 5 หลัก" class="user-id-input" />
         <button *ngIf="medCertificateId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
