@@ -1,9 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import * as dotenv from 'dotenv';
 import { MinioService } from 'nestjs-minio-client';
 import { BufferedFile } from './file.model';
-
-dotenv.config();
 
 @Injectable()
 export class MinioClientService {

@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
-import { MinioClientService } from './minio-client.service';
 import { MinioModule } from 'nestjs-minio-client';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { MinioClientService } from './minio-client.service';
 
 @Module({
   imports: [
@@ -22,4 +19,4 @@ dotenv.config();
   providers: [MinioClientService],
   exports: [MinioClientService],
 })
-export class MinioClientModule {}
+export class MinioClientModule { }

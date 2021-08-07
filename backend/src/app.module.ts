@@ -1,21 +1,21 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import * as dotenv from 'dotenv';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { MinioClientModule } from './minio-client/minio-client.module';
 import { UsersModule } from './users/users.module';
 import { VolunteersModule } from './volunteers/volunteers.module';
-import { MinioClientModule } from './minio-client/minio-client.module';
-
-dotenv.config();
-console.log(process.env);
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*'],

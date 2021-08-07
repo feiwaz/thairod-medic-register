@@ -30,7 +30,7 @@ export class DoctorsService {
       this.checkFileRequirement(bufferedFile);
       resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
       entity.idCardImg = resultObject.idCardUrl;
-      entity.idCardSelfieImg = resultObject?.idCardSelUrl;
+      entity.idCardSelfieImg = resultObject.idCardSelUrl;
       entity.jobCertificateImg = resultObject.jobCerUrl;
       entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
       await this.doctorRepository.save(entity);

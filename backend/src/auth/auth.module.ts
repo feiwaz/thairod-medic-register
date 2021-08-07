@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { jwtConstants } from './constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
@@ -14,7 +13,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     PassportModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
-      secret: jwtConstants.secret,
+      secret: process.env.SECRET_ACCESS_TOKEN,
       signOptions: { expiresIn: '60m' },
     })
   ],
