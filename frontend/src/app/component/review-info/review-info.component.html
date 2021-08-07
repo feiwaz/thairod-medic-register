@@ -6,7 +6,7 @@
       <div class="info-header">
         <span class="info-field">ข้อมูลส่วนบุคคล</span>
         <span>
-          <button type="button" mat-button (click)="onEditInfo('basic-info')">
+          <button type="button" mat-button [disabled]="isLoading" (click)="onEditInfo('basic-info')">
             <mat-icon>edit</mat-icon> แก้ไขข้อมูล
           </button>
         </span>
@@ -42,7 +42,7 @@
       <div class="info-header">
         <span class="info-field">ข้อมูลประกอบวีชาชีพทางเวชกรรม</span>
         <span>
-          <button type="button" mat-button (click)="onEditInfo('job-info')">
+          <button type="button" mat-button [disabled]="isLoading" (click)="onEditInfo('job-info')">
             <mat-icon>edit</mat-icon> แก้ไขข้อมูล
           </button>
         </span>
@@ -84,7 +84,7 @@
       <div class="info-header">
         <span class="info-field">วันและเวลาที่สะดวก</span>
         <span>
-          <button type="button" mat-button (click)="onEditInfo('available-time')">
+          <button type="button" mat-button [disabled]="isLoading" (click)="onEditInfo('available-time')">
             <mat-icon>edit</mat-icon> แก้ไขข้อมูล
           </button>
         </span>
@@ -100,8 +100,8 @@
         </div>
       </div>
     </div>
-    <button mat-flat-button type="submit" color="primary" style="width:100%"
-      [disabled]="isLoading">ยืนยันการส่งข้อมูล</button>
+    <button mat-flat-button type="submit" color="primary" style="width:100%" [disabled]="isLoading">{{isLoading ===
+      true ? 'กำลังส่งข้อมูล' : 'ยืนยันการส่งข้อมูล'}}</button>
     <ng-container *ngIf="errorResponse">
       <p>ไม่พบผู้ใช้นี้ในระบบหรือกรอกข้อมูลไม่ครบ<br>กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
     </ng-container>

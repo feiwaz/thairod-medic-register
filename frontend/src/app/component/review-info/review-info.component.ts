@@ -85,10 +85,19 @@ export class ReviewInfoComponent implements OnInit {
         this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
       }
     }
-    this.idCardBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('idCard'));
-    this.idCardSelfieBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('idCardSelfie'));
-    this.medCertificateBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('medCertificate'));
-    this.medCertificateSelfieBlob = this.sanitizer.bypassSecurityTrustUrl(this.getBlobUrl('medCertificateSelfie'));
+    this.idCardBlob = this.bypassSecurityTrustUrl('idCard');
+    this.idCardSelfieBlob = this.bypassSecurityTrustUrl('idCardSelfie');
+    this.medCertificateBlob = this.bypassSecurityTrustUrl('medCertificate');
+    this.medCertificateSelfieBlob = this.bypassSecurityTrustUrl('medCertificateSelfie');
+  }
+
+  bypassSecurityTrustUrl(key: string): any {
+    let result: any = '';
+    const blobUrl = this.getBlobUrl(key);
+    if (blobUrl) {
+      result = this.sanitizer.bypassSecurityTrustUrl(blobUrl);
+    }
+    return result;
   }
 
   onSubmit(): void {
@@ -113,9 +122,9 @@ export class ReviewInfoComponent implements OnInit {
 
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
-    sessionStorage.clear();
+    this.fileService.clearSessionAndImageLocalStorage();
     const maskedId = maskId(this.basicInfo.nationalId);
-    this.router.navigate([`/update-status`], {
+    this.router.navigate(['/update-status'], {
       state: {
         nationalId: maskedId,
         status: 'ส่งข้อมูลสำเร็จ'
@@ -134,8 +143,8 @@ export class ReviewInfoComponent implements OnInit {
     });
   }
 
-  getBlobUrl(id: string): string {
-    const cachedObject = localStorage.getItem(id);
+  getBlobUrl(key: string): string {
+    const cachedObject = localStorage.getItem(key);
     if (cachedObject) {
       const cachedImage = JSON.parse(cachedObject);
       return cachedImage.blobUrl;

@@ -1,9 +1,14 @@
-.flex-container {
+.main-container {
   height: 100%;
   width: 100%;
-  display: flex;
+  overflow: auto;
+}
+
+.flex-container {
   flex-direction: column;
+  display: flex;
   justify-content: flex-start;
+  margin: 25px 25px;
 }
 
 .main-logo {
@@ -20,11 +25,6 @@
   margin-left: 10px;
   font-size: 20px;
   font-weight: bold;
-}
-
-button {
-  margin: 0 25px 25px 25px;
-  font-size: 16px;
 }
 
 @media only screen and (min-width: 600px) {
