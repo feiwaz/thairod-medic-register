@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorService } from 'src/app/service/doctor.service';
+import { FileService } from 'src/app/service/file.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { maskId, partialMaskId } from 'src/app/util/util-functions';
 
@@ -46,10 +47,11 @@ export class VerifyIdComponent implements OnInit {
     private router: Router,
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
+    private fileService: FileService
   ) { }
 
   ngOnInit(): void {
-    sessionStorage.clear();
+    this.fileService.clearSessionAndImageLocalStorage();
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();
@@ -138,7 +140,7 @@ export class VerifyIdComponent implements OnInit {
       this.verifyForm.enable();
       this.isLoading = false;
       const maskedId = maskId(this.verifyForm.controls.nationalId.value);
-      this.router.navigate([`/update-status`], {
+      this.router.navigate(['/update-status'], {
         state: { nationalId: maskedId, status: response.status }
       });
     } else {

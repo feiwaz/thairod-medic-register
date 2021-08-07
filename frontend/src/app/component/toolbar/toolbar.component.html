@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <button mat-button type="button" (click)="onNavigateBack()">
+    <button mat-button type="button" [disabled]="isLoading" (click)="onNavigateBack()">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <span class="toolbar-title">{{toolbarTitle}}</span>

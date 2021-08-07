@@ -30,14 +30,15 @@ export class VolunteersService {
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
+    await this.checkIfNationalIdAlreadyExisted(createDto.nationalId);
     try {
-      const volunteer = await this.mapDtoToEntity(createDto);
+      const entity = await this.mapDtoToEntity(createDto);
       const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
-      volunteer.idCardImg = resultObject.idCardUrl;
-      volunteer.idCardSelfieImg = resultObject.idCardSelUrl;
-      volunteer.jobCertificateImg = resultObject.jobCerUrl;
-      volunteer.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
-      await this.volunteerRepository.save(volunteer);
+      entity.idCardImg = resultObject.idCardUrl;
+      entity.idCardSelfieImg = resultObject.idCardSelUrl;
+      entity.jobCertificateImg = resultObject.jobCerUrl;
+      entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
+      await this.volunteerRepository.save(entity);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
@@ -46,18 +47,23 @@ export class VolunteersService {
     }
   }
 
+  private async checkIfNationalIdAlreadyExisted(nationalId: string) {
+    const entity = await this.volunteerRepository.findOne({ where: { nationalId } });
+    if (entity) {
+      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+    }
+  }
+
   private async mapDtoToEntity(createDto: CreateVolunteerDto): Promise<Volunteer> {
-    const { departments, ...volunteerEntities } = createDto;
+    const { departments, ...restCreateDto } = createDto;
     const savedDepartments = await this.departmentRepository.find({
-      where: { label: In(departments) },
+      where: { label: In(departments) }
     });
-    const savedVolunteer = new Volunteer();
-    savedVolunteer.nationalId = createDto.nationalId;
-    const volunteer = Object.assign(new Volunteer(), volunteerEntities);
-    volunteer.volunteerDepartments = savedDepartments.map(department => ({
+    const entity = Object.assign(new Volunteer(), restCreateDto);
+    entity.volunteerDepartments = savedDepartments.map(department => ({
       departmentId: department.id
-    } as VolunteerDepartment));
-    return volunteer;
+    } as VolunteerDepartment)) || [];
+    return entity;
   }
 
   findAll(): Promise<Volunteer[]> {

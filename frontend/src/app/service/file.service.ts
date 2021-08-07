@@ -41,4 +41,16 @@ export class FileService {
     return { type }
   }
 
+  clearSessionAndImageLocalStorage(): void {
+    sessionStorage.clear();
+    this.clearImageLocalStorage();
+  }
+
+  clearImageLocalStorage(): void {
+    localStorage.removeItem('idCard');
+    localStorage.removeItem('idCardSelfie');
+    localStorage.removeItem('medCertificate');
+    localStorage.removeItem('medCertificateSelfie');
+  }
+
 }

@@ -24,14 +24,15 @@ export class DoctorsService {
   ) { }
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
+    await this.checkIfNationalIdAlreadyExisted(createDto.nationalId);
     try {
-      const doctor = await this.mapDtoToEntity(createDto);
+      const entity = await this.mapDtoToEntity(createDto);
       const resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
-      doctor.idCardImg = resultObject.idCardUrl;
-      doctor.idCardSelfieImg = resultObject.idCardSelUrl;
-      doctor.jobCertificateImg = resultObject.jobCerUrl;
-      doctor.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
-      await this.doctorRepository.save(doctor);
+      entity.idCardImg = resultObject.idCardUrl;
+      entity.idCardSelfieImg = resultObject.idCardSelUrl;
+      entity.jobCertificateImg = resultObject.jobCerUrl;
+      entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
+      await this.doctorRepository.save(entity);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
@@ -40,14 +41,21 @@ export class DoctorsService {
     }
   }
 
+  private async checkIfNationalIdAlreadyExisted(nationalId: string) {
+    const entity = await this.doctorRepository.findOne({ where: { nationalId } });
+    if (entity) {
+      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+    }
+  }
+
   private async mapDtoToEntity(createDto: CreateDoctorDto): Promise<Doctor> {
-    const { specializedFields, ...doctorEntities } = createDto;
+    const { specializedFields, ...restCreateDto } = createDto;
     const savedSpecializedFields = await this.specializedFieldRepository.find({
       where: { label: In(specializedFields) }
     });
-    const doctor = Object.assign(new Doctor(), doctorEntities);
-    doctor.specializedFields = savedSpecializedFields || [];
-    return doctor;
+    const entity = Object.assign(new Doctor(), restCreateDto);
+    entity.specializedFields = savedSpecializedFields || [];
+    return entity;
   }
 
   findAll(): Promise<Doctor[]> {
