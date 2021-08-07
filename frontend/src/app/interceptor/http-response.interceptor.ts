@@ -18,16 +18,12 @@ export class HttpResponseInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((errorResponse: HttpErrorResponse) => {
-        const apiRegex = new RegExp('(?=.*/api/).*');
-        // TODO: if not refreshing token
-        if (apiRegex.test(request.url)) {
+        if (request.url.includes('/api/auth/refresh-token')) {
+          this.toastrService.warning('ระยะเวลาการเข้าใช้งานสิ้นสุด กรุณาเข้าสู่ระบบอีกครั้ง');
+          this.authService.logout();
+        } else {
           if (errorResponse.error.statusCode === 401) {
             return this.handleUnauthorizedError(request, next);
-          }
-        } else {
-          if (request.url.includes('/api/auth/refresh-token')) {
-            this.toastrService.warning('ระยะเวลาการเข้าใช้งานสิ้นสุด กรุณาเข้าสู่ระบบอีกครั้ง');
-            this.authService.logout();
           }
         }
         return throwError(errorResponse);
