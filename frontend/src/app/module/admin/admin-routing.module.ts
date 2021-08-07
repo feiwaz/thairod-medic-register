@@ -6,6 +6,9 @@ import { ManageAccountComponent } from 'src/app/component/manage-account/manage-
 const routes: Routes = [{
   path: '', component: AdminMainComponent,
   children: [{
+    // TODO: add guard here if only admin allowed to access /manage-account
+    // canLoad: [AuthGuard],
+    // canActivate: [AuthGuard]
     path: 'manage-account', component: ManageAccountComponent
     // TODO: add manage-registered-user component here
     // TODO: add manage-training-status component here

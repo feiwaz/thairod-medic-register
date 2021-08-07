@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/model/user.model';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { UserService } from 'src/app/service/user.service';
 import { CustomValidators } from 'src/app/util/custom-validators';
 
@@ -37,6 +38,7 @@ export class UserDialogComponent implements OnInit {
     private fb: FormBuilder,
     private toastrService: ToastrService,
     private dialogRef: MatDialogRef<UserDialogComponent>,
+    private authService: AuthenticationService,
     @Inject(MAT_DIALOG_DATA) public data: { row?: User }
   ) { }
 
@@ -52,11 +54,7 @@ export class UserDialogComponent implements OnInit {
   private addFormForNewUser() {
     this.userForm.addControl('isActive', this.fb.control(true, Validators.required));
     const credentialForm = new FormGroup({
-      password: new FormControl('', [
-        Validators.required,
-        // CustomValidators.atLeastTwoValidator(),
-        Validators.minLength(8)
-      ]),
+      password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       confirmPassword: new FormControl('', Validators.required)
     }, CustomValidators.compareConfirmPassword);
     this.userForm.addControl('credential', credentialForm);
@@ -97,10 +95,8 @@ export class UserDialogComponent implements OnInit {
       password: credentialFormGroup.get('password')?.value,
       confirmPassword: credentialFormGroup.get('confirmPassword')?.value,
       isActive: this.userForm.controls.isActive.value,
-      createdById: '1'
+      createdById: this.authService.currentUser.id
     };
-    // TODO: pull this field from authService
-    // createdById: this.authService
     this.userService.createUser(requestBody).subscribe(
       response => this.handleSuccessfulUpdate(),
       errorResponse => this.handleErrorUpdate(errorResponse)

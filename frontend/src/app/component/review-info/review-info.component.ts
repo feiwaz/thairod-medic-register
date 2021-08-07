@@ -115,12 +115,6 @@ export class ReviewInfoComponent implements OnInit {
   onSubmit(): void {
     this.isLoading = true;
     this.errorResponse = false;
-    /* 
-      TO DO
-      - Need to clarify what data type to be used to upload image  
-      - Before sending request to create user, convert blob:url to File or Base64 image
-      - Can be done either it in 1) this file 2) this.service or 3) at backend
-    */
     this.service.create({ ...this.basicInfo, ...this.jobInfo }, this.imageBlobs).subscribe(
       response => this.handleSuccessfulCreateUser(),
       errorResponse => this.handleErrorResponse()

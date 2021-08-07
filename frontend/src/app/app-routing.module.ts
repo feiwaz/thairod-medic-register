@@ -51,10 +51,7 @@ const routes: Routes = [
   { path: 'update-status', component: UpdateStatusComponent },
   {
     path: 'admin/main', loadChildren: () =>
-      import('./module/admin/admin.module').then(mod => mod.AdminModule),
-    // TODO: add guard when auth service completed
-    // canLoad: [AuthGuard],
-    // canActivate: [AuthGuard]
+      import('./module/admin/admin.module').then(mod => mod.AdminModule)
   },
   {
     path: 'admin', component: AdminLoginComponent
