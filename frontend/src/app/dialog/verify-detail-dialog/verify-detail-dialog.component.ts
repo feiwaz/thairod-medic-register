@@ -1,11 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToastrService } from 'ngx-toastr';
-import { BasicInfo } from 'src/app/model/basic-info';
-import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { DoctorService } from 'src/app/service/doctor.service';
-import { UserService } from 'src/app/service/user.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
@@ -30,8 +25,6 @@ export class VerifyDetailDialogComponent implements OnInit {
   constructor(
     private volunteerService: VolunteerService,
     private doctorService: DoctorService,
-    private fb: FormBuilder,
-    private toastrService: ToastrService,
     private dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { row?: any, role: 'doctor' | 'volunteer' }
   ) { }
@@ -60,26 +53,21 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   updateStatus(content: any, role: 'doctor' | 'volunteer', status: string) {
+    console.log('status', status)
     const service = role === 'doctor' ?
       this.doctorService.updateStatus(content.id, status) :
       this.volunteerService.updateStatus(content.id, status);
-
+    let res = {
+      name: `${content.initial}${content.firstName} ${content.lastName}`,
+      role,
+      status
+    };
     service.subscribe(
       response => {
-        this.dialogRef.close({
-          success: true,
-          id: content.id,
-          role,
-          status
-        })
+        this.dialogRef.close({success: true,...res})
       },
       errorResponse => {
-        this.dialogRef.close({
-          success: false,
-          id: content.id,
-          role,
-          status
-        })
+        this.dialogRef.close({success: false,...res})
       }
     );
   }

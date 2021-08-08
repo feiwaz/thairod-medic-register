@@ -126,15 +126,15 @@ export class RegisteredUserListComponent implements OnInit {
   onClick(row?: any): void {
     this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
       result => {
-        if (result && result.success === true) {
-          if (result.role) {
+        if (result && result.success === true && result.role) {
             result.role === 'doctor' ? this.getDoctor() : this.getVolunteer()
-          }
-          let toastMessage = `ผู้ใช้ที่มี ID: ${result.id} ได้รับการ ${status}`;
-          if(result.success === false) {
-            toastMessage = `ผู้ใช้ที่มี ID: ${result.id} ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง`;
-          }
-          this.toastrService.success(toastMessage);
+            status = result.status === 'อนุมัติแล้ว' ? 'ได้รับการอนุมัติ' : 'ไม่ได้รับการอนุมัติ';
+            const toastMessage = `ผู้ใช้ที่มี ID: ${result.name} ${status}`;
+            this.toastrService.success(toastMessage);
+        }
+        else {
+          const toastMessage = `ผู้ใช้ที่มี ID: ${result.name} ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง`;
+          this.toastrService.warning(toastMessage);
         }
       }
     );
