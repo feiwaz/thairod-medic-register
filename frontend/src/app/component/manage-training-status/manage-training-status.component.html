@@ -1,0 +1,54 @@
+<div class="manage-account-container">
+  <div class="manage-account-top-action">
+    <app-column-filter [selectColumnOptions]="selectColumnOptions" [defaultSelectedColumn]="selectedFilterColumn"
+      [isLoading]="isLoading" (selectColumnChanged)="onSelectColumnChanged($event)"
+      (filterTextChanged)="onFilterTextChanged($event)" (filterTextCleared)="onFilterTextCleared($event)">
+    </app-column-filter>
+  </div>
+  <div class="mat-elevation-z5">
+    <div class="manage-account-table-container">
+      <mat-progress-bar *ngIf="isLoading" color="primary" mode="indeterminate"> </mat-progress-bar>
+      <table mat-table [dataSource]="dataSource" matSort matSortActive="firstName" matSortDirection="asc"
+        matSortDisableClear>
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> ชื่อ-นามสกุล </th>
+          <td mat-cell *matCellDef="let row"> {{row.firstName}} {{row.lastName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="trainingStatusPassed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> รายการฝึกอบรมที่ผ่าน </th>
+          <td mat-cell *matCellDef="let row">
+            <ul *ngIf="row.volunteerDepartments && row.volunteerDepartments.length > 0">
+              <ng-container *ngFor="let each of row.volunteerDepartments">
+                <li *ngIf="each.trainingStatus === 1">{{each.department.label}}</li>
+              </ng-container>
+            </ul>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="trainingStatusFailed">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> รายการฝึกอบรมที่ยังไม่ผ่าน
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <ul *ngIf="row.volunteerDepartments && row.volunteerDepartments.length > 0">
+              <ng-container *ngFor="let each of row.volunteerDepartments">
+                <li *ngIf="each.trainingStatus === 0">{{each.department.label}}</li>
+              </ng-container>
+            </ul>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="action" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef>การจัดการ</th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-button (click)=onClick(row)>
+              <mat-icon>edit_note</mat-icon>
+              แก้ไขสถานะการอบรม
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div>

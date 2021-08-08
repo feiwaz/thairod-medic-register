@@ -40,4 +40,8 @@ export class VolunteerService {
     return this.http.get<BasicInfo[]>(`${environment.apiPrefix}/volunteers`);
   }
 
+  getVolunteerTrainingStatus(nationalId: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiPrefix}/volunteers//${nationalId}/training-status`);
+  }
+
 }

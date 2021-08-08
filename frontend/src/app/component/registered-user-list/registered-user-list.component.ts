@@ -60,9 +60,9 @@ export class RegisteredUserListComponent implements OnInit {
   getDoctor(): void {
     this.isLoading = true;
     this.doctorService.getDoctors().subscribe(
-      doctor => {
+      entities => {
         this.isLoading = false;
-        this.dataSource = new MatTableDataSource(doctor as BasicInfo[]);
+        this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
         this.proceedSuccessResponse();
       },
       errorResponse => this.isLoading = false
@@ -72,9 +72,9 @@ export class RegisteredUserListComponent implements OnInit {
   getVolunteer(): void {
     this.isLoading = true;
     this.volunteerService.getVolunteers().subscribe(
-      doctor => {
+      entities => {
         this.isLoading = false;
-        this.dataSource = new MatTableDataSource(doctor as BasicInfo[]);
+        this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
         this.proceedSuccessResponse();
       },
       errorResponse => this.isLoading = false

@@ -27,7 +27,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   departments = DEPARTMENTS;
 
   jobInfoForm = this.fb.group({
-    department1: [{ value: true, disabled: true }],
+    department1: false,
     department2: false,
     department3: false,
     department4: false,

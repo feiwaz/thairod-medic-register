@@ -59,7 +59,7 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   get volunteerDepartments(): string[] {
-    return this.content.volunteerDepartments.map((dep: { departmentId: string }) => dep.departmentId);
+    return this.content.volunteerDepartments.map((dep: any) => dep.department.label);
   }
 
 }
