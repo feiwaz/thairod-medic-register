@@ -122,15 +122,18 @@ export class RegisteredUserListComponent implements OnInit {
     };
   }
 
-  onClick(row?: any): void {
+  onClick(row: any): void {
     this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
       result => {
-        if (result && result.success === true) {
-          let toastMessage = `ผู้ใช้ที่มีอีเมล ${result.entityId} ถูกสร้างเรียบร้อยแล้ว`;
-          if (!result.isCreatingNew) {
-            toastMessage = `ผู้ใช้ที่มี ID: ${result.entityId} ถูกแก้ไขเรียบร้อยแล้ว`;
+        if (result) {
+          if (result.success === true && result.role) {
+            result.role === 'doctor' ? this.getDoctor() : this.getVolunteer();
+            this.toastrService.success('ตรวจสอบข้อมูลสำเร็จ');
           }
-          this.toastrService.success(toastMessage);
+          else {
+            const toastMessage = 'ทำรายการไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+            this.toastrService.warning(toastMessage);
+          }
         }
       }
     );

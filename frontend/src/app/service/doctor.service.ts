@@ -40,4 +40,9 @@ export class DoctorService {
     return this.http.get<BasicInfo[]>(`${environment.apiPrefix}/doctors`);
   }
 
+  updateStatus(id: number, status: string): Observable<any> {
+    const url = `${environment.apiPrefix}/doctors/${id}/verify-registration-status`;
+    return this.http.patch<any>(url, { status });
+  }
+
 }
