@@ -47,30 +47,23 @@ export class ManageTrainingStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.workspaceService.save();
-    this.getUsers();
+    this.getVolunteers();
   }
 
-  private getUsers(isCreatingNew = false): void {
+  private getVolunteers(): void {
     this.isLoading = true;
     this.service.getVolunteers().subscribe(
       users => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(users as BasicInfo[]);
-        this.proceedSuccessResponse(isCreatingNew, 'firstName');
+        this.proceedSuccessResponse();
       },
       errorResponse => this.isLoading = false
     );
   }
 
-  proceedSuccessResponse(isCreatingNew = true, columnId: string): void {
+  proceedSuccessResponse(): void {
     this.sort.sortChange.subscribe(() => this.paginator.firstPage());
-
-    if (isCreatingNew) {
-      if (this.sort.direction !== 'desc' && columnId) {
-        this.sort.sort({ disableClear: true, id: columnId, start: 'desc' });
-      }
-    }
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.initSelectColumnOptions();
@@ -108,10 +101,16 @@ export class ManageTrainingStatusComponent implements OnInit {
     };
   }
 
-  onClick(row?: any): void {
-    this.openUpdateDialog(UpdateTrainingStatusDialogComponent, row).afterClosed().subscribe(
+  onEditClicked(row: any): void {
+    const dataRow = {
+      id: row.id,
+      fullName: `${row.firstName} ${row.lastName}`,
+      volunteerDepartments: row.volunteerDepartments
+    };
+    this.openUpdateDialog(UpdateTrainingStatusDialogComponent, dataRow).afterClosed().subscribe(
       result => {
         if (result && result.success === true) {
+          this.getVolunteers();
           this.toastrService.success('บันทึกสำเร็จ');
         }
       }

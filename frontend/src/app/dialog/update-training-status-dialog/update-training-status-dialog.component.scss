@@ -1,0 +1,85 @@
+.form-container {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  height: calc(100% - 70px);
+}
+
+.user-container {
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+  overflow: auto;
+}
+
+mat-form-field,
+button {
+  font-size: 16px;
+}
+
+mat-form-field,
+.mat-form-field {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.mat-form-field {
+  margin-bottom: 10px;
+}
+
+.section-container {
+  font-size: 15px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 20px;
+  margin: 12px 0 30px 12px;
+}
+
+.info-header > span {
+  margin: 5px;
+}
+
+.info-header > span:first-child {
+  margin-left: 15px;
+}
+
+.info-body {
+  margin: 0 16px 20px 16px;
+}
+
+.training-header-text {
+  font-size: 20px;
+}
+
+.info-body > div {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.info-field {
+  font-weight: bold;
+}
+
+.checkbox-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -15px;
+}
+
+.checkbox-flex-container > p {
+  flex: 1 1 40%;
+}
+
+.cancel-button {
+  flex: 1;
+  text-align: right;
+}

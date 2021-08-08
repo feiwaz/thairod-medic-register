@@ -1,6 +1,3 @@
-<div class="progress-bar-container">
-  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-</div>
 <div class="form-container">
   <div class="user-container">
     <h2 mat-dialog-title>แก้ไขข้อมูลสถานะการอบรม</h2>
@@ -8,10 +5,10 @@
       <div class="section-container">
         <div class="info-header">
           <mat-icon>account_box</mat-icon>
-          <span class="info-field">ชื่ออาสาสมัคร: </span>
+          <span class="info-field">ชื่ออาสาสมัคร: {{data.row.fullName}}</span>
         </div>
         <div class="info-body">
-          <p><b>รายการฝึกอบรม</b></p>
+          <p class="training-header-text"><b>รายการฝึกอบรม</b></p>
           <section class="checkbox-flex-container">
             <p *ngFor="let department of departments">
               <mat-checkbox [formControlName]="department.formControlName">
@@ -29,6 +26,6 @@
     <button mat-button color="primary" type="button" mat-dialog-close>ยกเลิก</button>
   </div>
   <div class="submit-button">
-    <button mat-button color="primary" type="button" mat-dialog-close>บันทึก</button>
+    <button mat-flat-button color="primary" type="button" mat-dialog-close (click)="onSubmit()">บันทึก</button>
   </div>
 </mat-dialog-actions>

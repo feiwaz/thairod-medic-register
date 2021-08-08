@@ -44,4 +44,9 @@ export class VolunteerService {
     return this.http.get<any>(`${environment.apiPrefix}/volunteers//${nationalId}/training-status`);
   }
 
+  updateTrainingStatus(id: string, volunteerDepartments: any[]): Observable<any> {
+    const url = `${environment.apiPrefix}/volunteers/${id}/training-status`;
+    return this.http.put<any>(url, { volunteerDepartments: volunteerDepartments });
+  }
+
 }

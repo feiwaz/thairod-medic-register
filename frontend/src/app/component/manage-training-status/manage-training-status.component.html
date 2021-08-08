@@ -38,7 +38,8 @@
         <ng-container matColumnDef="action" stickyEnd>
           <th mat-header-cell *matHeaderCellDef>อื่นๆ</th>
           <td mat-cell *matCellDef="let row">
-            <button mat-button (click)=onClick(row)>
+            <button *ngIf="row.volunteerDepartments && row.volunteerDepartments.length > 0" mat-button
+              (click)=onEditClicked(row)>
               <mat-icon>edit_note</mat-icon>
               <span class="removable-text">แก้ไข</span>
             </button>
