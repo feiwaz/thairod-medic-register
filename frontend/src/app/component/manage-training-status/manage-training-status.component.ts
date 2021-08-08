@@ -96,6 +96,20 @@ export class ManageTrainingStatusComponent implements OnInit {
           }
         }
       } else {
+        let traingStatus = -1;
+        if (this.selectedFilterColumn === 'trainingStatusPassed') {
+          traingStatus = 1;
+        } else if (this.selectedFilterColumn === 'trainingStatusFailed') {
+          traingStatus = 0;
+        }
+        if (traingStatus !== -1) {
+          if (row.volunteerDepartments) {
+            const departments = row.volunteerDepartments
+              .filter((volDep: any) => volDep.trainingStatus === traingStatus)
+              .map((volDep: any) => volDep.department.label.toLowerCase());
+            return departments.includes(filter);
+          }
+        }
         return false;
       }
     };
