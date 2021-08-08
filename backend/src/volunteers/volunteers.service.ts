@@ -80,10 +80,11 @@ export class VolunteersService {
   }
 
   findAll(): Promise<Volunteer[]> {
-    return this.volunteerRepository.find({
-      relations: ['volunteerDepartments'],
+    const volunteers = this.volunteerRepository.find({
+      relations: ['volunteerDepartments', 'volunteerDepartments.department'],
       order: { updatedTime: 'DESC' }
     });
+    return volunteers;
   }
 
   async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
@@ -188,4 +189,5 @@ export class VolunteersService {
       throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
     }
   }
+
 }

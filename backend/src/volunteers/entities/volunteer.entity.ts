@@ -70,12 +70,6 @@ export class Volunteer {
   })
   status: UserStatus;
 
-  // @ManyToMany(() => Department, (department) => department.volunteers, {
-  //   cascade: true,
-  // })
-  // @JoinTable()
-  // departments: Department[];
-
   @OneToMany(
     () => VolunteerDepartment,
     volunteerDepartment => volunteerDepartment.volunteer,

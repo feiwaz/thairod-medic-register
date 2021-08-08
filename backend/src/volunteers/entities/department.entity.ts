@@ -38,6 +38,4 @@ export class Department {
   @Column({ default: false })
   isTrainingRequired: boolean;
 
-  // @ManyToMany(() => Volunteer, (volunteer) => volunteer.department)
-  // volunteers: Volunteer[];
 }
