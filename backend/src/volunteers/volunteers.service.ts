@@ -15,6 +15,8 @@ import {
   FindOneVolunteerDto
 } from './dto/find-one-volunteer.dto';
 import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
+import { VolunteerDepartmentDto } from './dto/volunteer-department.dto';
+import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { Department } from './entities/department.entity';
 import { Volunteer } from './entities/volunteer.entity';
 import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
@@ -152,7 +154,7 @@ export class VolunteersService {
     return trainingStatusDto;
   }
 
-  async updateTrainingStatus(id: number, trainingStatusDto: TrainingStatusVolunteerDto) {
+  async patchTrainingStatus(id: number, trainingStatusDto: TrainingStatusVolunteerDto) {
     try {
       const volunteerDepartmentUpdateList = await this.mapTrainingStatusDtoToEntity(id, trainingStatusDto);
       await this.volunteerDepartmentRepository.save(volunteerDepartmentUpdateList);
@@ -186,7 +188,26 @@ export class VolunteersService {
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
     const response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
     if (response['affected'] === 0) {
-      throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+    }
+  }
+
+  async updateTrainingStatus(id: number, volunteerDepartmentsDto: VolunteerDepartmentsDto) {
+    try {
+      const volunteer = await this.volunteerRepository.findOne(id);
+      if (!volunteer) {
+        throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
+      }
+      const volunteerDepartments = volunteerDepartmentsDto.volunteerDepartments
+        .map((volDepDto: VolunteerDepartmentDto) => ({
+          volunteerId: volDepDto.volunteerId,
+          departmentId: volDepDto.departmentId,
+          trainingStatus: volDepDto.trainingStatus
+        } as VolunteerDepartment));
+      volunteer.volunteerDepartments = volunteerDepartments;
+      await this.volunteerRepository.save(volunteer);
+    } catch (error) {
+      throw error;
     }
   }
 

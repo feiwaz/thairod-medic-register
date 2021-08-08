@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BufferedFile } from 'src/minio-client/file.model';
@@ -6,6 +6,7 @@ import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
+import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { VolunteersService } from './volunteers.service';
 
 @Controller('volunteers')
@@ -53,14 +54,23 @@ export class VolunteersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/training-status')
-  updateTrainingStatus(@Param('id') id: number, @Body() trainingStatusVolunteerDto: TrainingStatusVolunteerDto) {
-    return this.service.updateTrainingStatus(id, trainingStatusVolunteerDto);
+  patchTrainingStatus(@Param('id') id: number, @Body() trainingStatusVolunteerDto: TrainingStatusVolunteerDto) {
+    return this.service.patchTrainingStatus(id, trainingStatusVolunteerDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/verify-registration-status')
   update(@Param('id') id: number, @Body(new ValidationPipe()) verifyStatusDto: RegistrationStatusDto) {
     return this.service.updateStatus(id, verifyStatusDto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id/training-status')
+  updateTrainingStatus(
+    @Param('id') id: number,
+    @Body(new ValidationPipe()) volunteerDepartmentsDto: VolunteerDepartmentsDto
+  ) {
+    return this.service.updateTrainingStatus(+id, volunteerDepartmentsDto);
   }
 
 }
