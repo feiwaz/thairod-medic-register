@@ -41,7 +41,7 @@ mat-form-field,
   justify-content: flex-start;
   align-items: center;
   font-size: 20px;
-  margin: 12px 0 30px 12px;
+  margin: 12px 0 20px 12px;
 }
 
 .info-header > span {
@@ -77,6 +77,7 @@ mat-form-field,
 
 .checkbox-flex-container > p {
   flex: 1 1 40%;
+  margin: 10px;
 }
 
 .cancel-button {

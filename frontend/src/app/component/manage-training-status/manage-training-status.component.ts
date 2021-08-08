@@ -121,8 +121,8 @@ export class ManageTrainingStatusComponent implements OnInit {
     return this.dialog.open(dialogComponent, {
       data: { row },
       autoFocus: false,
-      height: '650px',
-      width: '550px'
+      height: '550px',
+      width: '480px'
     });
   }
 
