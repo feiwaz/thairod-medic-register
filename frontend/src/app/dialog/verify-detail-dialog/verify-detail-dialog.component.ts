@@ -2,9 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { BasicInfo } from 'src/app/model/basic-info';
-import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
-import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { UserService } from 'src/app/service/user.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
@@ -15,6 +12,7 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 })
 export class VerifyDetailDialogComponent implements OnInit {
 
+  role = 'doctor';
   isLoading = false;
   isCreatingNew = false;
   errorMessage = 'Please try again later';
@@ -23,33 +21,40 @@ export class VerifyDetailDialogComponent implements OnInit {
     { value: 1, viewValue: 'แอดมิน' }
   ];
 
-
-  content!: BasicInfo & VolunteerJobInfo & DoctorJobInfo;
+  content: any;
 
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     private toastrService: ToastrService,
     private dialogRef: MatDialogRef<UserDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { row?: BasicInfo & VolunteerJobInfo & DoctorJobInfo }
+    @Inject(MAT_DIALOG_DATA) public data: { row?: any, role: 'doctor' | 'volunteer' }
   ) { }
-  
+
 
   ngOnInit(): void {
-    if (this.data && this.data.row) {
-      this.content = this.data.row;
+    if (this.data) {
+      if (this.data.row) this.content = this.data.row;
+      if (this.data.role) this.role = this.data.role;
     }
 
-    
     console.log('MAT_DIALOG_DATA', this.data)
   }
 
-  onClickReject(content:  BasicInfo & VolunteerJobInfo & DoctorJobInfo) {
+  onClickReject(content: any) {
 
   }
 
-  onClickVerify(content:  BasicInfo & VolunteerJobInfo & DoctorJobInfo) {
+  onClickVerify(content: any) {
 
+  }
+
+  get specializedFields(): string[] {
+    return this.content.specializedFields.map((field: { label: string }) => field.label);
+  }
+
+  get volunteerDepartments(): string[] {
+    return this.content.volunteerDepartments.map((dep: { departmentId: string }) => dep.departmentId);
   }
 
 }

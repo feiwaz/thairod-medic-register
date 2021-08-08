@@ -10,6 +10,12 @@ mat-progress-bar {
   width: calc(100% + 48px);
 }
 
+.form-container {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  height: calc(100% - 70px);
+}
+
 .user-container {
   flex-direction: column;
   display: flex;
@@ -17,76 +23,71 @@ mat-progress-bar {
   height: 100%;
 }
 
-form {
+.form {
   flex-direction: column;
   display: flex;
   overflow: auto;
 }
 
-mat-form-field,
-button {
-  font-size: 16px;
-  margin: 10px 0;
+.section-container {
+  font-size: 15px;
 }
 
-mat-form-field,
-.mat-form-field {
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(254, 241, 241);
+}
+
+.info-header > span {
+  margin: 5px;
+}
+
+.info-header > span:first-child {
+  margin-left: 15px;
+}
+
+.info-body {
+  margin: 0 16px 20px 16px;
+}
+
+.info-body > div {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.info-field {
+  font-weight: bold;
+}
+
+.info-value {
   margin-left: 10px;
+}
+
+mat-form-field.mat-form-field,
+button {
+  font-size: 16px;
+}
+
+mat-form-field.mat-form-field {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.fail-button-container {
   margin-right: 10px;
 }
 
-.form-container {
-  padding-top: 5px;
-  padding-bottom: 20px;
-  height: calc(100% - 80px);
+.fail-button {
+  background-color: #ff8c83;
+}
+
+.pass-button {
+  background-color: #7cff87;
 }
 
 .cancel-button {
   flex: 1;
   text-align: right;
-}
-
-
-
-
-.title {
-  display: block;
-  padding: 2px;
-}
-
-.font {
-  font-size: 16px;
-}
-
-button {
-  align-self: flex-end;
-  text-decoration: none;
-  display: block;
-  padding: 0px, 4px, 0px, 4px;
-  margin: 2px;
-}
-
-
- mat-card {
-  overflow-y: auto;
-  max-height: 400px;
-
-  mat-card-title {
-    font-size: 16px;
-    background-color: #fde6e6;
-    margin: 2px;
-    padding: 5px 0px 5px 5px;
-  }
-
-  mat-card-content {
-    display: flex;
-
-    .sub-title {
-      order: 1;
-    }
-
-    .content {
-      order: 2;
-    }
-  }
 }

@@ -10,6 +10,12 @@ mat-progress-bar {
   width: calc(100% + 48px);
 }
 
+.form-container {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  height: calc(100% - 70px);
+}
+
 .user-container {
   flex-direction: column;
   display: flex;
@@ -37,12 +43,6 @@ mat-form-field,
 
 .mat-form-field {
   margin-bottom: 10px;
-}
-
-.form-container {
-  padding-top: 5px;
-  padding-bottom: 20px;
-  height: calc(100% - 80px);
 }
 
 .cancel-button {

@@ -4,6 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { BasicInfo } from 'src/app/model/basic-info';
@@ -18,25 +19,25 @@ import { VolunteerService } from 'src/app/service/volunteer.service';
 })
 export class TableListComponent implements OnInit {
 
-  displayedColumns = ['dateTime', 'name', 'status', 'action'];
+  displayedColumns = ['dateTime', 'firstName', 'status', 'action'];
   selectedFilterColumn = 'dateTime';
 
   readonly pageSizeOptions = [6, 16, 30];
   readonly INFO_COLUMN_MAP: any = {
     dateTime: 'วันเวลาที่ลงทะเบียน',
-    name: 'ชื่อ-นามสกุล',
+    firstName: 'ชื่อ-นามสกุล',
     status: 'สถานะ'
   };
-  
+
   isLoading = false;
   selectColumnOptions: any = [];
   excludedSelectColumnOptions = ['action'];
   dataSource = new MatTableDataSource<BasicInfo>()
-  
+
   @ViewChild(MatPaginator) paginator: any;
   @ViewChild(MatSort) sort: any;;
 
-  @Input() type:'doctor'|'volunteer' = 'doctor'
+  @Input() role: 'doctor' | 'volunteer' = 'doctor'
 
   constructor(
     private toastrService: ToastrService,
@@ -49,7 +50,7 @@ export class TableListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getVolunteer();
-    if (this.type === 'doctor'){
+    if (this.role === 'doctor') {
       this.getDoctor();
     } else {
       this.getVolunteer();
@@ -84,6 +85,12 @@ export class TableListComponent implements OnInit {
     this.sort.sortChange.subscribe(() => this.paginator.firstPage());
 
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (item: any, property): string | number => {
+      switch (property) {
+        case 'dateTime': return new Date(item.createdTime).getTime();
+        default: return item[property];
+      }
+    };
     this.dataSource.sort = this.sort;
     this.initSelectColumnOptions();
     this.setUpFilterPredicate();
@@ -104,8 +111,9 @@ export class TableListComponent implements OnInit {
     this.dataSource.filterPredicate = (row: any, filter: string) => {
       const rowValue = row[this.selectedFilterColumn];
       if (rowValue) {
-        if (Array.isArray(rowValue)) {
-          return rowValue.map(value => value.toLowerCase()).includes(filter);
+        if (this.selectedFilterColumn === 'firstName') {
+          const fullName = `${rowValue} ${row.lastName}`;
+          return fullName.toString().toLowerCase().includes(filter);
         } else {
           return rowValue.toString().toLowerCase().includes(filter);
         }
@@ -115,28 +123,33 @@ export class TableListComponent implements OnInit {
     };
   }
 
-  onClick(row?:any):void {
-      this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
-        result => {
-          if (result && result.success === true) {
-            let toastMessage = `ผู้ใช้ที่มีอีเมล ${result.entityId} ถูกสร้างเรียบร้อยแล้ว`;
-            if (!result.isCreatingNew) {
-              toastMessage = `ผู้ใช้ที่มี ID: ${result.entityId} ถูกแก้ไขเรียบร้อยแล้ว`;
-            }
-            this.toastrService.success(toastMessage);
+  onClick(row?: any): void {
+    this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
+      result => {
+        if (result && result.success === true) {
+          let toastMessage = `ผู้ใช้ที่มีอีเมล ${result.entityId} ถูกสร้างเรียบร้อยแล้ว`;
+          if (!result.isCreatingNew) {
+            toastMessage = `ผู้ใช้ที่มี ID: ${result.entityId} ถูกแก้ไขเรียบร้อยแล้ว`;
           }
+          this.toastrService.success(toastMessage);
         }
-      );
+      }
+    );
   }
 
   openUpdateDialog(dialogComponent: any, row: any): MatDialogRef<VerifyDetailDialogComponent> {
     return this.dialog.open(dialogComponent, {
-      data: { row },
-      autoFocus: true,
-      disableClose: true,
+      data: { row, role: this.role },
+      autoFocus: false,
       height: '650px',
       width: '550px'
     });
   }
+
+  formattedDate(dateString: string): any {
+    moment.locale('th');
+    return moment(dateString).format('DD MMM YYYY');
+  }
+
 }
 

@@ -1,9 +1,53 @@
-  th.mat-header-cell,
-  td.mat-cell {
-      padding-right: 120px;
-  }
-  
-  .mat-table-sticky:last-child {
-    border-left: 1px solid #e0e0e0;
-  }
-  
+.column-filter-container {
+  margin: 20px 20px 0 20px;
+}
+
+.verify-list-table-container {
+  overflow: auto;
+}
+
+mat-progress-bar {
+  position: absolute;
+  left: 20px;
+  z-index: 102;
+  width: calc(100% - 40px);
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-header-cell,
+td.mat-cell {
+  padding-left: 10px;
+}
+
+td.mat-column-action {
+  width: 100px;
+}
+
+.status-flex-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.status-flex-container > mat-icon {
+  margin-right: 5px;
+}
+
+.mat-table-sticky:last-child {
+  border-left: 1px solid #e0e0e0;
+}
+
+button {
+  font-size: 16px;
+}
+
+.status-fail-icon {
+  color: #ff8c83;
+}
+
+.status-pass-icon {
+  color: #7cff87;
+}

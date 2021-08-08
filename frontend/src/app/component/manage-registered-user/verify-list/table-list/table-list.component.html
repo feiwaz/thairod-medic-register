@@ -1,6 +1,8 @@
-<app-column-filter [selectColumnOptions]="selectColumnOptions" [defaultSelectedColumn]="selectedFilterColumn"
-    [isLoading]="isLoading">
-</app-column-filter>
+<div class="column-filter-container">
+    <app-column-filter [selectColumnOptions]="selectColumnOptions" [defaultSelectedColumn]="selectedFilterColumn"
+        [isLoading]="isLoading">
+    </app-column-filter>
+</div>
 <div class="mat-elevation-z5">
     <div class="verify-list-table-container">
         <mat-progress-bar *ngIf="isLoading" color="primary" mode="indeterminate"> </mat-progress-bar>
@@ -8,37 +10,44 @@
             matSortDisableClear>
             <ng-container matColumnDef="dateTime" class="first-column">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> วันเวลาที่ลงทะเบียน </th>
-                <td mat-cell *matCellDef="let row"> {{row.createdTime}} </td>
+                <td mat-cell *matCellDef="let row"> {{formattedDate(row.createdTime)}} </td>
             </ng-container>
-            <ng-container matColumnDef="name">
+            <ng-container matColumnDef="firstName">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ชื่อ-นามสกุล </th>
                 <td mat-cell *matCellDef="let row"> {{row.initial}} {{row.firstName}} {{row.lastName}}</td>
             </ng-container>
             <ng-container matColumnDef="status">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> สถานะ </th>
                 <td mat-cell *matCellDef="let row">
-                    <ng-container *ngIf="row.status === 'รอการอนุมัติ';else second">
-                        <button mat-flat-button disabled>รอตรวจสอบ</button>
+                    <ng-container *ngIf="row.status === 'รอการอนุมัติ'; else second">
+                        <div class="status-flex-container">
+                            <mat-icon class="status-waiting-icon">sticky_note_2</mat-icon>
+                            <span>รอตรวจสอบ</span>
+                        </div>
                     </ng-container>
                     <ng-template #second>
                         <ng-container *ngIf="row.status === 'อนุมัติแล้ว';else third">
-                            <button mat-flat-button disabled color="warn">ผ่าน</button>
+                            <div class="status-flex-container">
+                                <mat-icon class="status-pass-icon">check_circle</mat-icon>
+                                <span>ผ่าน</span>
+                            </div>
                         </ng-container>
                     </ng-template>
                     <ng-template #third>
-                        <button mat-flat-button disabled>ไม่ผ่าน</button>
+                        <div class="status-flex-container">
+                            <mat-icon class="status-fail-icon">highlight_off</mat-icon>
+                            <span>ไม่ผ่าน</span>
+                        </div>
                     </ng-template>
                 </td>
             </ng-container>
             <ng-container matColumnDef="action" stickyEnd>
-                <th mat-header-cell *matHeaderCellDef></th>
+                <th mat-header-cell *matHeaderCellDef>การจัดการ</th>
                 <td mat-cell *matCellDef="let row">
-                    <ng-container *ngIf="row.status === 'รอการอนุมัติ';else second">
-                        <button mat-stroked-button (click)=onClick(row)><mat-icon>search</mat-icon>ตรวจสอบ</button>
-                    </ng-container>
-                    <ng-template #second>
-                        <button mat-stroked-button (click)=onClick(row)><mat-icon>description</mat-icon>ดูข้อมูล</button>
-                    </ng-template>
+                    <button mat-button (click)=onClick(row)>
+                        <mat-icon>{{row.status === 'รอการอนุมัติ' ? 'search' : 'description'}}</mat-icon>
+                        {{row.status === 'รอการอนุมัติ' ? 'ตรวจสอบ' : 'ดูข้อมูล'}}
+                    </button>
                 </td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>

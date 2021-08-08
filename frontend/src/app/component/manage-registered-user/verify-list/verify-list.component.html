@@ -1,11 +1,10 @@
 <div class="verify-list-container mat-elevation-z5">
   <mat-tab-group>
     <mat-tab label="รายชื่อแพทย์">
-      <app-table-list [type]="'doctor'"></app-table-list>
+      <app-table-list [role]="'doctor'"></app-table-list>
     </mat-tab>
-    <mat-tab label="รายชื่ออาสาสมัคร"> 
-      <app-table-list [type]="'volunteer'"></app-table-list> 
+    <mat-tab label="รายชื่ออาสาสมัคร">
+      <app-table-list [role]="'volunteer'"></app-table-list>
     </mat-tab>
   </mat-tab-group>
-
 </div>
