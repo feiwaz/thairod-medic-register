@@ -16,6 +16,8 @@ export class WorkspaceService {
     let toSave = { lastVisitedUrl: this.router.url };
     if (option && Object.keys(option).length !== 0) {
       toSave = { ...toSave, ...option };
+    } else {
+      toSave = { ...this.getWorkspace(), ...toSave };
     }
     localStorage.setItem('workspace', JSON.stringify(toSave));
   }

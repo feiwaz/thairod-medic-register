@@ -19,6 +19,7 @@ export class ManageRegisteredUserComponent implements OnInit {
     if (workspace && workspace.selectedIndex != null) {
       this.selectedIndex = workspace.selectedIndex;
     }
+    this.workspaceService.save({ selectedIndex: this.selectedIndex });
   }
 
   onSelectedTabChange(selectedIndex: number): void {
