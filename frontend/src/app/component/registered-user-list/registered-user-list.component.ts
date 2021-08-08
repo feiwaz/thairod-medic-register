@@ -146,7 +146,7 @@ export class RegisteredUserListComponent implements OnInit {
     });
   }
 
-  formattedDate(dateString: string): any {
+  formattedDate(dateString: string): string {
     moment.locale('th');
     return moment(dateString).format('DD MMM YYYY');
   }

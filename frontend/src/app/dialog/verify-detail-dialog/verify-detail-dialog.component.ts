@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from 'src/app/service/user.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
@@ -47,6 +48,10 @@ export class VerifyDetailDialogComponent implements OnInit {
 
   onClickVerify(content: any) {
 
+  }
+
+  get dateOfBirth(): string {
+    return moment(this.content.dateOfBirth).format('DD MMM YYYY');
   }
 
   get specializedFields(): string[] {
