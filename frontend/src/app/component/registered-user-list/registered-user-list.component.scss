@@ -21,8 +21,20 @@ td.mat-cell {
   padding-left: 10px;
 }
 
-td.mat-column-action {
-  width: 100px;
+.mat-column-dateTime {
+  min-width: 80px;
+}
+
+.mat-column-firstName {
+  min-width: 150px;
+}
+
+.mat-column-status {
+  min-width: 100px;
+}
+
+.mat-column-action {
+  width: 64px;
 }
 
 .status-flex-container {
@@ -33,6 +45,10 @@ td.mat-column-action {
 
 .status-flex-container > mat-icon {
   margin-right: 5px;
+}
+
+.removable-text {
+  display: none;
 }
 
 .mat-table-sticky:last-child {
@@ -49,4 +65,15 @@ button {
 
 .status-pass-icon {
   color: #7cff87;
+}
+
+@media only screen and (min-width: 600px) {
+  .mat-column-action {
+    width: 100px;
+  }
+
+  .removable-text {
+    margin-left: 5px;
+    display: inline-block;
+  }
 }

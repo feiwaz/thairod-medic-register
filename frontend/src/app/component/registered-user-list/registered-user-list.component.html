@@ -21,7 +21,7 @@
                 <td mat-cell *matCellDef="let row">
                     <ng-container *ngIf="row.status === 'รอการอนุมัติ'; else second">
                         <div class="status-flex-container">
-                            <mat-icon class="status-waiting-icon">sticky_note_2</mat-icon>
+                            <mat-icon class="status-waiting-icon">help_outline</mat-icon>
                             <span>รอตรวจสอบ</span>
                         </div>
                     </ng-container>
@@ -42,11 +42,11 @@
                 </td>
             </ng-container>
             <ng-container matColumnDef="action" stickyEnd>
-                <th mat-header-cell *matHeaderCellDef>การจัดการ</th>
+                <th mat-header-cell *matHeaderCellDef>อื่นๆ</th>
                 <td mat-cell *matCellDef="let row">
                     <button mat-button (click)=onClick(row)>
-                        <mat-icon>{{row.status === 'รอการอนุมัติ' ? 'search' : 'description'}}</mat-icon>
-                        {{row.status === 'รอการอนุมัติ' ? 'ตรวจสอบ' : 'ดูข้อมูล'}}
+                        <mat-icon>{{row.status === 'รอการอนุมัติ' ? 'search' : 'info'}}</mat-icon>
+                        <span class="removable-text">{{row.status === 'รอการอนุมัติ' ? 'ตรวจสอบ' : 'ดูข้อมูล'}}</span>
                     </button>
                 </td>
             </ng-container>

@@ -49,7 +49,6 @@ export class RegisteredUserListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getVolunteer();
     if (this.role === 'doctor') {
       this.getDoctor();
     } else {

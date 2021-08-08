@@ -41,8 +41,19 @@ td.mat-cell {
     padding-left: 10px;
 }
 
-td.mat-column-action {
-    width: 41px;
+.mat-column-firstName,
+.mat-column-email {
+    min-width: 120px;
+}
+
+.mat-column-id,
+.mat-column-role,
+.mat-column-contactNumber {
+    min-width: 85px;
+}
+
+.mat-column-action {
+    width: 40px;
 }
 
 .is-active-toggle {
