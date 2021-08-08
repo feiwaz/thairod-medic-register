@@ -10,6 +10,7 @@ import { UserDialogComponent } from 'src/app/dialog/user-dialog/user-dialog.comp
 import { User } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { UserService } from 'src/app/service/user.service';
+import { WorkspaceService } from 'src/app/service/workspace.service';
 
 @Component({
   selector: 'app-manage-account',
@@ -48,10 +49,12 @@ export class ManageAccountComponent implements OnInit {
     private toastrService: ToastrService,
     private authService: AuthenticationService,
     private router: Router,
+    private workspaceService: WorkspaceService,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.workspaceService.save();
     this.getUsers();
   }
 

@@ -13,11 +13,11 @@ import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 
 @Component({
-  selector: 'app-table-list',
-  templateUrl: './table-list.component.html',
-  styleUrls: ['./table-list.component.scss']
+  selector: 'app-registered-user-list',
+  templateUrl: './registered-user-list.component.html',
+  styleUrls: ['./registered-user-list.component.scss']
 })
-export class TableListComponent implements OnInit {
+export class RegisteredUserListComponent implements OnInit {
 
   displayedColumns = ['dateTime', 'firstName', 'status', 'action'];
   selectedFilterColumn = 'dateTime';

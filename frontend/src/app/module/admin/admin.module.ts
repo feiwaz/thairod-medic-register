@@ -5,8 +5,7 @@ import { ChangePasswordFormComponent } from 'src/app/component/change-password-f
 import { ColumnFilterComponent } from 'src/app/component/column-filter/column-filter.component';
 import { ManageAccountComponent } from 'src/app/component/manage-account/manage-account.component';
 import { ManageRegisteredUserComponent } from 'src/app/component/manage-registered-user/manage-registered-user.component';
-import { TableListComponent } from 'src/app/component/manage-registered-user/verify-list/table-list/table-list.component';
-import { VerifyListComponent } from 'src/app/component/manage-registered-user/verify-list/verify-list.component';
+import { RegisteredUserListComponent } from 'src/app/component/registered-user-list/registered-user-list.component';
 import { DeleteDialogComponent } from 'src/app/dialog/delete-dialog/delete-dialog.component';
 import { UserAccountDialogComponent } from 'src/app/dialog/user-account-dialog/user-account-dialog.component';
 import { UserDialogComponent } from 'src/app/dialog/user-dialog/user-dialog.component';
@@ -25,8 +24,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     ChangePasswordFormComponent,
     UserAccountDialogComponent,
     ManageRegisteredUserComponent,
-    VerifyListComponent,
-    TableListComponent,
+    RegisteredUserListComponent,
     VerifyDetailDialogComponent
   ],
   entryComponents: [

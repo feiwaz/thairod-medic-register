@@ -8,9 +8,8 @@
 
 mat-progress-bar {
   position: absolute;
-  left: 20px;
   z-index: 102;
-  width: calc(100% - 40px);
+  width: 100%;
 }
 
 table {
