@@ -16,14 +16,18 @@ export class ManageRegisteredUserComponent implements OnInit {
 
   ngOnInit(): void {
     const workspace = this.workspaceService.getWorkspace();
-    if (workspace && workspace.selectedIndex != null) {
-      this.selectedIndex = workspace.selectedIndex;
+    if (workspace && workspace.ManageRegisteredUser != null) {
+      this.selectedIndex = workspace.ManageRegisteredUser.selectedIndex;
     }
-    this.workspaceService.save({ selectedIndex: this.selectedIndex });
+    this.workspaceService.save({
+      ManageRegisteredUser: { selectedIndex: this.selectedIndex }
+    });
   }
 
   onSelectedTabChange(selectedIndex: number): void {
-    this.workspaceService.save({ selectedIndex });
+    this.workspaceService.save({
+      ManageRegisteredUser: { selectedIndex }
+    });
   }
 
 }
