@@ -127,9 +127,12 @@ export class TableListComponent implements OnInit {
     this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
       result => {
         if (result && result.success === true) {
-          let toastMessage = `ผู้ใช้ที่มีอีเมล ${result.entityId} ถูกสร้างเรียบร้อยแล้ว`;
-          if (!result.isCreatingNew) {
-            toastMessage = `ผู้ใช้ที่มี ID: ${result.entityId} ถูกแก้ไขเรียบร้อยแล้ว`;
+          if (result.role) {
+            result.role === 'doctor' ? this.getDoctor() : this.getVolunteer()
+          }
+          let toastMessage = `ผู้ใช้ที่มี ID: ${result.id} ได้รับการ ${status}`;
+          if(result.success === false) {
+            toastMessage = `ผู้ใช้ที่มี ID: ${result.id} ทำรายการไม่สำเร็จ กรุณาทำรายการใหม่อีกครั้ง`;
           }
           this.toastrService.success(toastMessage);
         }

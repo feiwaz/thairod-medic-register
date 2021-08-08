@@ -40,4 +40,8 @@ export class VolunteerService {
     return this.http.get<BasicInfo[]>(`${environment.apiPrefix}/volunteers`);
   }
 
+  updateStatus(id: number, status: string): Observable<any> {
+    console.log('updateStatus',id,'status',{status})
+    return this.http.patch<any>(`${environment.apiPrefix}/volunteers/${id}/verify-registration-status`, {status});
+  }
 }
