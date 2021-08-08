@@ -9,17 +9,24 @@ export class WorkspaceService {
   constructor(private router: Router) { }
 
   getLastVisitedUrl(): string {
-    let lastVisitedUrl = '';
-    const workspaceString = localStorage.getItem('workspace');
-    if (workspaceString) {
-      const workspace = JSON.parse(workspaceString);
-      lastVisitedUrl = workspace.lastVisitedUrl || '';
-    }
-    return lastVisitedUrl;
+    return this.getWorkspace().lastVisitedUrl || '';
   }
 
-  save() {
-    localStorage.setItem('workspace', JSON.stringify({ lastVisitedUrl: this.router.url }));
+  save(option?: any) {
+    let toSave = { lastVisitedUrl: this.router.url };
+    if (option && Object.keys(option).length !== 0) {
+      toSave = { ...toSave, ...option };
+    }
+    localStorage.setItem('workspace', JSON.stringify(toSave));
+  }
+
+  getWorkspace() {
+    let workspace = null;
+    const workspaceString = localStorage.getItem('workspace');
+    if (workspaceString) {
+      workspace = JSON.parse(workspaceString);
+    }
+    return workspace;
   }
 
 }

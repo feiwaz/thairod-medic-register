@@ -1,5 +1,5 @@
 <div class="verify-list-container mat-elevation-z5">
-  <mat-tab-group>
+  <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onSelectedTabChange($event.index)">
     <mat-tab label="รายชื่อแพทย์">
       <app-registered-user-list [role]="'doctor'"></app-registered-user-list>
     </mat-tab>

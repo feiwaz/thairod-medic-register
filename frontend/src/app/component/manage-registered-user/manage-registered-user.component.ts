@@ -8,12 +8,21 @@ import { WorkspaceService } from 'src/app/service/workspace.service';
 })
 export class ManageRegisteredUserComponent implements OnInit {
 
+  selectedIndex = 0;
+
   constructor(
     private workspaceService: WorkspaceService
   ) { }
 
   ngOnInit(): void {
-    this.workspaceService.save();
+    const workspace = this.workspaceService.getWorkspace();
+    if (workspace && workspace.selectedIndex != null) {
+      this.selectedIndex = workspace.selectedIndex;
+    }
+  }
+
+  onSelectedTabChange(selectedIndex: number): void {
+    this.workspaceService.save({ selectedIndex });
   }
 
 }
