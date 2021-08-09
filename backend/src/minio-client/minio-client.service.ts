@@ -34,13 +34,8 @@ export class MinioClientService {
     let url = null;
     const fileExtension = file.mimetype.substring(6, file.mimetype.length);
     const fileName = `${folder}/${newName}.${fileExtension}`;
-    try {
-      this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer, (error) => {
-        if (error) throw new BadRequestException(`Failed to upload file: ${fileName}`);
-      });
-    } catch (error) {
-      console.warn(error.message);
-    }
+    this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer,
+      error => console.warn(`Failed to upload file: ${fileName}, due to error: ${error}`));
     url = `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
     return url;
   }
