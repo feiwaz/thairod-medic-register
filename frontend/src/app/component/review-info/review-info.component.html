@@ -58,10 +58,10 @@
           <span class="info-field image-label">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span>
           <span class="info-value">{{jobInfo.medCertificateId}}</span>
         </div>
-        <ng-container *ngIf="!passImageRequirement else noInfo">
+        <ng-container *ngIf="!passImageRequirement else meetImageRequirement">
           <p class="requirement-text">**กรุณาอัพโหลดรูปที่กำหนดไว้ให้ครบถ้วน**</p>
         </ng-container>
-        <ng-template #noInfo>
+        <ng-template #meetImageRequirement>
           <ng-container *ngIf="imageBlobs[0] != null">
             <span class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</span>
             <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="getBlobUrl('idCard')"
@@ -96,10 +96,10 @@
       </div>
       <div class="info-body">
         <div><span class="info-field">วันและเวลาที่สะดวก:</span>
-          <ul *ngIf="basicInfo.availableTimes && basicInfo.availableTimes.length > 0 else noInfo">
+          <ul *ngIf="basicInfo.availableTimes && basicInfo.availableTimes.length > 0 else noAvailableTime">
             <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
           </ul>
-          <ng-template #noInfo>
+          <ng-template #noAvailableTime>
             <span class="info-value">-</span>
           </ng-template>
         </div>
