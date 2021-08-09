@@ -37,7 +37,7 @@
         <b>เลขที่ใบประกอบวิชาชีพเวชกรรม (ถ้ามี)</b>
       </p>
       <mat-form-field class="med-certificate-id-form">
-        <input matInput #medCertificateId type="number" formControlName="medCertificateId"
+        <input matInput #medCertificateId type="text" maxlength="5"  formControlName="medCertificateId" (keypress)="inputNumber($event)" (paste)="inputNumber($event)"
           placeholder="กรอกเฉพาะตัวเลข 5 หลัก" class="user-id-input" />
         <button *ngIf="medCertificateId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="clearValue('medCertificateId')">

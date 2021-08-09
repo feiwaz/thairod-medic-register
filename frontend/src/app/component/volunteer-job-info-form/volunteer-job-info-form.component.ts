@@ -5,7 +5,7 @@ import { DEPARTMENTS } from 'src/app/constant/departments';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
 import { FileService } from 'src/app/service/file.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
-
+import { numbersOnly } from 'src/app/util/util-functions';
 @Component({
   selector: 'app-volunteer-job-info-form',
   templateUrl: './volunteer-job-info-form.component.html',
@@ -133,4 +133,8 @@ export class VolunteerJobInfoFormComponent implements OnInit {
     }
   }
 
+  inputNumber(event : any) {
+    numbersOnly(event)
+  }
+  
 }

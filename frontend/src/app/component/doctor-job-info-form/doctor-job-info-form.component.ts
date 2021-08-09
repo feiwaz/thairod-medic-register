@@ -5,7 +5,7 @@ import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { FileService } from 'src/app/service/file.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
-
+import { numbersOnly } from 'src/app/util/util-functions';
 @Component({
   selector: 'app-doctor-job-info-form',
   templateUrl: './doctor-job-info-form.component.html',
@@ -112,4 +112,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
     }
   }
 
+  inputNumber(event : any) {
+    numbersOnly(event)
+  }
 }

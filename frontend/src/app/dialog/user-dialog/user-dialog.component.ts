@@ -6,7 +6,7 @@ import { User } from 'src/app/model/user.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { UserService } from 'src/app/service/user.service';
 import { CustomValidators } from 'src/app/util/custom-validators';
-
+import { numbersOnly} from 'src/app/util/util-functions';
 @Component({
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
@@ -139,4 +139,7 @@ export class UserDialogComponent implements OnInit {
     this.toastrService.warning(warningText);
   }
 
+  inputNumber(event : any) {
+    numbersOnly(event)
+  }
 }

@@ -3,8 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BasicInfo } from 'src/app/model/basic-info';
-import { partialMaskId } from 'src/app/util/util-functions';
-
+import { partialMaskId , numbersOnly} from 'src/app/util/util-functions';
 interface InitialOption {
   value: number;
   viewValue: string;
@@ -89,6 +88,10 @@ export class BasicInfoFormComponent implements OnInit {
 
   onBackToVerifyId(): void {
     this.router.navigate([`/${this.role}/verify-id`]);
+  }
+
+  inputNumber(event : any) {
+    numbersOnly(event)
   }
 
   onSubmit(): void {

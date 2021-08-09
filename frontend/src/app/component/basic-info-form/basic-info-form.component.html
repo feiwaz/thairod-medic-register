@@ -13,7 +13,7 @@
           <a [routerLink]="" (click)="onBackToVerifyId()" class="enabled"> ตรวจสอบใหม่ </a>
         </span>อีกครั้ง
       </p>
-      <p><b>คำนำหน้า</b></p>
+      <p><b>คำนำหน้า</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <mat-label>-- คำนำหน้า --</mat-label>
         <mat-select formControlName="initial">
@@ -22,7 +22,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <p><b>ชื่อ</b></p>
+      <p><b>ชื่อ</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput type="text" formControlName="firstName" placeholder="ชื่อ" #firstName>
         <button *ngIf="firstName" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
@@ -33,7 +33,7 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>นามสกุล</b></p>
+      <p><b>นามสกุล</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lastName" placeholder="นามสกุล" #lastName>
         <button *ngIf="lastName" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
@@ -44,7 +44,7 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>วัน/เดือน/ปี (ค.ศ.) เกิด</b></p>
+      <p><b>วัน/เดือน/ปี (ค.ศ.) เกิด</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="ตัวอย่าง 21/03/1985" formControlName="dateOfBirth"
           #dateOfBirth>
@@ -58,7 +58,7 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>ที่อยู่</b></p>
+      <p><b>ที่อยู่</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <textarea matInput formControlName="address" placeholder="ที่อยู่" #address rows="4"></textarea>
         <button *ngIf="address" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
@@ -69,9 +69,10 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>เบอร์โทรศัพท์</b></p>
+      <p><b>เบอร์โทรศัพท์</b><span class="text-danger"> *</span></p>
       <mat-form-field>
-        <input matInput type="tel" formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
+        <input matInput type="tel" maxlength="10" (keypress)="inputNumber($event)" (paste)="inputNumber($event)"
+        formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
         <button *ngIf="contactNumber" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="contactNumber.value=''">
           <mat-icon>close</mat-icon>
@@ -80,7 +81,7 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>LINE ID</b></p>
+      <p><b>LINE ID</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput type="text" formControlName="lineId" placeholder="LINE ID" #lineId>
         <button *ngIf="lineId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
