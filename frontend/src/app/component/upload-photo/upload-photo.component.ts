@@ -49,7 +49,7 @@ export class UploadPhotoComponent implements OnInit {
       this.files = event.target.files;
       this.fileName = event.target.files[0].name;
       this.thumb = this.sanitizer.bypassSecurityTrustUrl(
-        window.URL.createObjectURL(event.target.files[0])
+        URL.createObjectURL(event.target.files[0])
       );
     }
   }

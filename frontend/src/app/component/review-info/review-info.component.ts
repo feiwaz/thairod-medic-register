@@ -37,19 +37,11 @@ export class ReviewInfoComponent implements OnInit {
   jobInfo: any = {
     specializedFields: [],
     medCertificateId: 0,
-    departments: [],
-    idCard: null as any,
-    idCardSelfie: null as any,
-    medCertificate: null as any,
-    medCertificateSelfie: null as any
+    departments: []
   };
 
   passImageRequirement = false;
   imageBlobs: Blob[] = [];
-  idCardBlob: SafeUrl = '';
-  idCardSelfieBlob: SafeUrl = '';
-  medCertificateBlob: SafeUrl = '';
-  medCertificateSelfieBlob: SafeUrl = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -69,6 +61,12 @@ export class ReviewInfoComponent implements OnInit {
   }
 
   private initiateFields() {
+    this.patchBasicInfo();
+    this.patchJobInfo();
+    this.checkIfPassImageRequirement();
+  }
+
+  private patchBasicInfo() {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { nationalId, initial, firstName, lastName, dateOfBirth, address,
@@ -78,38 +76,40 @@ export class ReviewInfoComponent implements OnInit {
         address, contactNumber, lineId, availableTimes
       };
     }
+  }
 
+  private patchJobInfo() {
     let jobInfoString = sessionStorage.getItem(`${this.role}JobInfo`);
     if (jobInfoString) {
       if (this.role === 'doctor') {
-        const { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie } = JSON.parse(jobInfoString) as DoctorJobInfo;
-        this.jobInfo = { specializedFields, medCertificateId, idCard, idCardSelfie, medCertificate, medCertificateSelfie } as DoctorJobInfo;
+        const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
+        this.jobInfo = { specializedFields, medCertificateId } as DoctorJobInfo;
       } else {
-        const { departments, medCertificateId } = JSON.parse(jobInfoString) as VolunteerJobInfo;
+        const { departments, medCertificateId } = JSON.parse(jobInfoString);
         this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
       }
     }
-
-    this.checkIfPassImageRequirement();
-    this.idCardBlob = this.bypassSecurityTrustUrl('idCard');
-    this.idCardSelfieBlob = this.bypassSecurityTrustUrl('idCardSelfie');
-    this.medCertificateBlob = this.bypassSecurityTrustUrl('medCertificate');
-    this.medCertificateSelfieBlob = this.bypassSecurityTrustUrl('medCertificateSelfie');
   }
 
-  checkIfPassImageRequirement() {
+  private checkIfPassImageRequirement() {
     this.passImageRequirement = this.role === 'doctor'
       ? this.imageBlobs[0] != null && this.imageBlobs[1] != null && this.imageBlobs[2] != null && this.imageBlobs[3] != null
       : this.imageBlobs[0] != null && this.imageBlobs[1] != null;
   }
 
-  bypassSecurityTrustUrl(key: string): any {
-    let result: any = '';
-    const blobUrl = this.getBlobUrl(key);
-    if (blobUrl) {
-      result = this.sanitizer.bypassSecurityTrustUrl(blobUrl);
+  getBlobUrl(key: string): SafeUrl {
+    let blobUrl = '';
+    const cachedObject = localStorage.getItem(key);
+    if (cachedObject) {
+      let cachedImage
+      try {
+        cachedImage = JSON.parse(cachedObject);
+        blobUrl = cachedImage.blobUrl;
+      } catch (error) {
+        console.warn(`Cannot get blob url for: ${key}`);
+      }
     }
-    return result;
+    return blobUrl ? this.sanitizer.bypassSecurityTrustUrl(blobUrl) : blobUrl;
   }
 
   onSubmit(): void {
@@ -142,15 +142,6 @@ export class ReviewInfoComponent implements OnInit {
     this.router.navigate([`/${this.role}/${path}`], {
       state: { isEditing: true }
     });
-  }
-
-  getBlobUrl(key: string): string {
-    const cachedObject = localStorage.getItem(key);
-    if (cachedObject) {
-      const cachedImage = JSON.parse(cachedObject);
-      return cachedImage.blobUrl;
-    }
-    return '';
   }
 
   onImageError(event: any): void {

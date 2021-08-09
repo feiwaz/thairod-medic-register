@@ -62,25 +62,25 @@
           <p class="requirement-text">**กรุณาอัพโหลดรูปที่กำหนดไว้ให้ครบถ้วน**</p>
         </ng-container>
         <ng-template #noInfo>
-          <ng-container *ngIf="idCardBlob !== ''">
+          <ng-container *ngIf="imageBlobs[0] != null">
             <span class="info-field image-label">ภาพบัตรประจำตัวประชาชน:</span>
-            <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="idCardBlob"
+            <div class="preview-image-container"><img id="idCard" class="preview-image" [src]="getBlobUrl('idCard')"
                 (error)="onImageError($event)" /></div>
           </ng-container>
-          <ng-container *ngIf="idCardSelfieBlob !== ''">
+          <ng-container *ngIf="imageBlobs[1] != null">
             <span class="info-field image-label">ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน:</span>
-            <div class="preview-image-container"><img id="idCardSelfie" class="preview-image" [src]="idCardSelfieBlob"
-                (error)="onImageError($event)" /></div>
+            <div class="preview-image-container"><img id="idCardSelfie" class="preview-image"
+                [src]="getBlobUrl('idCardSelfie')" (error)="onImageError($event)" /></div>
           </ng-container>
-          <ng-container *ngIf="medCertificateBlob !== ''">
+          <ng-container *ngIf="imageBlobs[2] != null">
             <span class="info-field image-label">ภาพใบประกอบวิชาชีพ:</span>
             <div class="preview-image-container"><img id="medCertificate" class="preview-image"
-                [src]="medCertificateBlob" (error)="onImageError($event)" /></div>
+                [src]="getBlobUrl('medCertificate')" (error)="onImageError($event)" /></div>
           </ng-container>
-          <ng-container *ngIf="medCertificateSelfieBlob !== ''">
+          <ng-container *ngIf="imageBlobs[3] != null">
             <span class="info-field image-label">ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ:</span>
             <div class="preview-image-container"><img id="medCertificateSelfie" class="preview-image"
-                [src]="medCertificateSelfieBlob" (error)="onImageError($event)" /></div>
+                [src]="getBlobUrl('medCertificateSelfie')" (error)="onImageError($event)" /></div>
           </ng-container>
         </ng-template>
       </div>
