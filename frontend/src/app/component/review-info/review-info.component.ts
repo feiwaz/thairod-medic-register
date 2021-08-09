@@ -1,6 +1,8 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorJobInfo } from 'src/app/model/doctor-job-info';
 import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
@@ -16,6 +18,7 @@ import { maskId } from 'src/app/util/util-functions';
 })
 export class ReviewInfoComponent implements OnInit {
 
+  readonly defaultErrorText = 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
   role = '';
   isLoading = false;
   errorResponse = false;
@@ -49,7 +52,8 @@ export class ReviewInfoComponent implements OnInit {
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
     private sanitizer: DomSanitizer,
-    private fileService: FileService
+    private fileService: FileService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -117,13 +121,14 @@ export class ReviewInfoComponent implements OnInit {
     this.errorResponse = false;
     this.service.create({ ...this.basicInfo, ...this.jobInfo }, this.imageBlobs).subscribe(
       response => this.handleSuccessfulCreateUser(),
-      errorResponse => this.handleErrorResponse()
+      errorResponse => this.handleErrorResponse(errorResponse)
     );
   }
 
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
     this.fileService.clearSessionAndImageLocalStorage();
+    this.toastrService.success('ส่งข้อมูลสำเร็จ');
     const maskedId = maskId(this.basicInfo.nationalId);
     this.router.navigate(['/update-status'], {
       state: {
@@ -133,9 +138,14 @@ export class ReviewInfoComponent implements OnInit {
     });
   }
 
-  handleErrorResponse(): void {
+  handleErrorResponse(errorResponse: any): void {
     this.isLoading = false;
     this.errorResponse = true;
+    let errorText = this.defaultErrorText;
+    if (errorResponse.error.statusCode === HttpStatusCode.BadGateway) {
+      errorText = 'ไม่สามารถอัพโหลดรูปภาพได้ กรุณาลองใหม่อีกครั้ง'
+    }
+    this.toastrService.warning(errorText);
   }
 
   onEditInfo(path = 'basic-info'): void {

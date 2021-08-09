@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
 import { MinioService } from 'nestjs-minio-client';
 import { BufferedFile } from './file.model';
 
@@ -34,8 +34,12 @@ export class MinioClientService {
     let url = null;
     const fileExtension = file.mimetype.substring(6, file.mimetype.length);
     const fileName = `${folder}/${newName}.${fileExtension}`;
-    this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer,
-      error => console.warn(`Failed to upload file: ${fileName}, due to error: ${error}`));
+    try {
+      await this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer);
+    } catch (error) {
+      console.warn(`Failed to upload file: ${fileName}, due to error: ${error}`);
+      throw new BadGatewayException(`Failed to upload file: ${fileName}`);
+    }
     url = `${process.env.MINIO_ENDPOINT}:${process.env.MINIO_PORT}/${process.env.MINIO_BUCKET_NAME}/${fileName}`;
     return url;
   }
