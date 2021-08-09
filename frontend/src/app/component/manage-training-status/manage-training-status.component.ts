@@ -89,7 +89,7 @@ export class ManageTrainingStatusComponent implements OnInit {
           return this.ROLE_MAP[rowValue].includes(filter);
         } else {
           if (this.selectedFilterColumn === 'firstName') {
-            const fullName = `${rowValue} ${row.lastName}`;
+            const fullName = `${row.initial} ${rowValue} ${row.lastName}`;
             return fullName.toString().toLowerCase().includes(filter);
           } else {
             return rowValue.toString().toLowerCase().includes(filter);

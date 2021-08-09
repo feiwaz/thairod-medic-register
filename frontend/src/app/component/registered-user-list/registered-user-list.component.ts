@@ -3,12 +3,10 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { BasicInfo } from 'src/app/model/basic-info';
-import { AuthenticationService } from 'src/app/service/authentication.service';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 
@@ -19,12 +17,12 @@ import { VolunteerService } from 'src/app/service/volunteer.service';
 })
 export class RegisteredUserListComponent implements OnInit {
 
-  displayedColumns = ['dateTime', 'firstName', 'status', 'action'];
-  selectedFilterColumn = 'dateTime';
+  displayedColumns = ['createdTime', 'firstName', 'status', 'action'];
+  selectedFilterColumn = 'createdTime';
 
   readonly pageSizeOptions = [6, 16, 30];
   readonly INFO_COLUMN_MAP: any = {
-    dateTime: 'วันเวลาที่ลงทะเบียน',
+    createdTime: 'วันเวลาที่ลงทะเบียน',
     firstName: 'ชื่อ-นามสกุล',
     status: 'สถานะ'
   };
@@ -41,8 +39,6 @@ export class RegisteredUserListComponent implements OnInit {
 
   constructor(
     private toastrService: ToastrService,
-    private authService: AuthenticationService,
-    private router: Router,
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
     public dialog: MatDialog
@@ -86,7 +82,7 @@ export class RegisteredUserListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (item: any, property): string | number => {
       switch (property) {
-        case 'dateTime': return new Date(item.createdTime).getTime();
+        case 'createdTime': return new Date(item.createdTime).getTime();
         default: return item[property];
       }
     };
@@ -110,8 +106,10 @@ export class RegisteredUserListComponent implements OnInit {
     this.dataSource.filterPredicate = (row: any, filter: string) => {
       const rowValue = row[this.selectedFilterColumn];
       if (rowValue) {
-        if (this.selectedFilterColumn === 'firstName') {
-          const fullName = `${rowValue} ${row.lastName}`;
+        if (this.selectedFilterColumn === 'createdTime') {
+          return this.formattedDate(rowValue).includes(filter)
+        } else if (this.selectedFilterColumn === 'firstName') {
+          const fullName = `${row.initial} ${rowValue} ${row.lastName}`;
           return fullName.toString().toLowerCase().includes(filter);
         } else {
           return rowValue.toString().toLowerCase().includes(filter);
@@ -120,6 +118,21 @@ export class RegisteredUserListComponent implements OnInit {
         return false;
       }
     };
+  }
+
+  onSelectColumnChanged(column: string): void {
+    this.selectedFilterColumn = column;
+  }
+
+  onFilterTextChanged(filterText: string): void {
+    this.dataSource.filter = filterText.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  onFilterTextCleared(filterText: string): void {
+    this.dataSource.filter = filterText;
   }
 
   onClick(row: any): void {
