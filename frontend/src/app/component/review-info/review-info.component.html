@@ -109,7 +109,7 @@
       [disabled]="isLoading || !passImageRequirement">{{isLoading ===
       true ? 'กำลังส่งข้อมูล' : 'ยืนยันการส่งข้อมูล'}}</button>
     <ng-container *ngIf="errorResponse">
-      <p>ไม่พบผู้ใช้นี้ในระบบหรือกรอกข้อมูลไม่ครบ<br>กรุณาแก้ไขข้อมูลให้ถูกต้อง</p>
+      <p>โปรดตรวจสอบว่าข้อมูลครบถ้วนถูกต้อง<br>และหมายเลขประชาชนยังไม่เคยลงทะเบียนมาก่อน</p>
     </ng-container>
   </form>
 </div>

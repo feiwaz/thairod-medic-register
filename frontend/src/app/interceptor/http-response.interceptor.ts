@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, throwError } from 'rxjs';
@@ -22,7 +22,7 @@ export class HttpResponseInterceptor implements HttpInterceptor {
           this.toastrService.warning('ระยะเวลาการเข้าใช้งานสิ้นสุด กรุณาเข้าสู่ระบบอีกครั้ง');
           this.authService.logout();
         } else {
-          if (errorResponse.error.statusCode === 401) {
+          if (errorResponse.error.statusCode === HttpStatusCode.Unauthorized) {
             return this.handleUnauthorizedError(request, next);
           }
         }
