@@ -11,12 +11,16 @@ export class MinioClientService {
 
   constructor(private readonly minioService: MinioService) { }
 
-  public async uploadBufferedFile(nationalId: string, bufferedFile: BufferedFile): Promise<any> {
+  public async uploadBufferedFile(bufferedFile: BufferedFile, folderSuffix: string, nationalId: string): Promise<any> {
     const { idCard, idCardSelfie, medCertificate, medCertificateSelfie } = bufferedFile as any;
-    const idCardUrl = await this.upload(idCard[0] || null, `${nationalId}_doc`, `${nationalId}_id_card`);
-    const idCardSelUrl = await this.upload(idCardSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_id_card_selfie`);
-    const jobCerUrl = medCertificate ? await this.upload(medCertificate[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer`) : null;
-    const jobCerSelUrl = medCertificateSelfie ? await this.upload(medCertificateSelfie[0] || null, `${nationalId}_doc`, `${nationalId}_job_cer_selfie`) : null;
+    const idCardUrl = await this.upload(idCard[0] || null,
+      `${nationalId}_${folderSuffix}`, `${nationalId}_id_card`);
+    const idCardSelUrl = await this.upload(idCardSelfie[0] || null,
+      `${nationalId}_${folderSuffix}`, `${nationalId}_id_card_selfie`);
+    const jobCerUrl = medCertificate ? await this.upload(medCertificate[0] || null,
+      `${nationalId}_${folderSuffix}`, `${nationalId}_job_cer`) : null;
+    const jobCerSelUrl = medCertificateSelfie ? await this.upload(medCertificateSelfie[0] || null,
+      `${nationalId}_${folderSuffix}`, `${nationalId}_job_cer_selfie`) : null;
     return { idCardUrl, idCardSelUrl, jobCerUrl, jobCerSelUrl };
   }
 

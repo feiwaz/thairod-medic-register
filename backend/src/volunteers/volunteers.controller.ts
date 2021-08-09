@@ -5,7 +5,6 @@ import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
-import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { VolunteersService } from './volunteers.service';
 
@@ -44,18 +43,6 @@ export class VolunteersController {
   @Delete(':nationalId')
   remove(@Param('nationalId') nationalId: number) {
     return this.service.remove(nationalId);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get(':id/training-status')
-  findTrainingStatus(@Param('id') id: number) {
-    return this.service.findTrainingStatus(id);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id/training-status')
-  patchTrainingStatus(@Param('id') id: number, @Body() trainingStatusVolunteerDto: TrainingStatusVolunteerDto) {
-    return this.service.patchTrainingStatus(id, trainingStatusVolunteerDto);
   }
 
   @UseGuards(JwtAuthGuard)

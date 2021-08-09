@@ -28,7 +28,7 @@ export class DoctorsService {
       const entity = await this.mapDtoToEntity(createDto);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.checkFileRequirement(bufferedFile);
-      resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doc', createDto.nationalId);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
       entity.jobCertificateImg = resultObject.jobCerUrl;

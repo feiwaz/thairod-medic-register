@@ -1,9 +1,7 @@
 import {
   BadRequestException,
   ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException
+  Injectable, NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BufferedFile } from 'src/minio-client/file.model';
@@ -14,7 +12,6 @@ import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
   FindOneVolunteerDto
 } from './dto/find-one-volunteer.dto';
-import { TrainingStatusVolunteerDto } from './dto/training-status-volunteer.dto';
 import { VolunteerDepartmentDto } from './dto/volunteer-department.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { Department } from './entities/department.entity';
@@ -40,7 +37,7 @@ export class VolunteersService {
       const entity = await this.mapDtoToEntity(createDto);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.checkFileRequirement(bufferedFile);
-      resultObject = await this.minioClientService.uploadBufferedFile(createDto.nationalId, bufferedFile);
+      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'vol', createDto.nationalId);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
       entity.jobCertificateImg = resultObject.jobCerUrl;
@@ -122,67 +119,6 @@ export class VolunteersService {
 
   async remove(id: number): Promise<void> {
     await this.volunteerRepository.delete(id);
-  }
-
-  async findTrainingStatus(id: number): Promise<TrainingStatusVolunteerDto> {
-    const volunteerDepartmentList = await this.volunteerDepartmentRepository.find({
-      where: { volunteerId: id },
-      relations: ['department'],
-    });
-    if (volunteerDepartmentList.length === 0) {
-      return {} as TrainingStatusVolunteerDto;
-    }
-    return this.mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList);
-  }
-
-  private mapEntityToTrainingStatusVolunteerDto(volunteerDepartmentList: VolunteerDepartment[]): Promise<TrainingStatusVolunteerDto> {
-    const trainingStatusDto = Object.assign(new TrainingStatusVolunteerDto());
-    trainingStatusDto.id = null;
-    trainingStatusDto.passedDepartment = [];
-    trainingStatusDto.failedDepartment = [];
-
-    for (const volunteerDepmt of volunteerDepartmentList) {
-      const { department, ...volunteerDepartment } = volunteerDepmt;
-      if (trainingStatusDto.id == null) { trainingStatusDto.id = volunteerDepartment.volunteerId; }
-
-      if (volunteerDepartment.trainingStatus == 1) {
-        trainingStatusDto.passedDepartment.push(department);
-      } else if (volunteerDepartment.trainingStatus == 0) {
-        trainingStatusDto.failedDepartment.push(department);
-      }
-    }
-    return trainingStatusDto;
-  }
-
-  async patchTrainingStatus(id: number, trainingStatusDto: TrainingStatusVolunteerDto) {
-    try {
-      const volunteerDepartmentUpdateList = await this.mapTrainingStatusDtoToEntity(id, trainingStatusDto);
-      await this.volunteerDepartmentRepository.save(volunteerDepartmentUpdateList);
-    } catch (error) {
-      throw new InternalServerErrorException();
-    }
-  }
-
-  private async mapTrainingStatusDtoToEntity(id: number, trainingStatusDto: TrainingStatusVolunteerDto): Promise<VolunteerDepartment[]> {
-    const VolunteerDepartmentList = [];
-    let tempVolunteerDepartment = null;
-
-    for (const passedDepartment of trainingStatusDto.passedDepartment) {
-      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
-      tempVolunteerDepartment.volunteerId = id;
-      tempVolunteerDepartment.departmentId = passedDepartment.id;
-      tempVolunteerDepartment.trainingStatus = 1;
-      VolunteerDepartmentList.push(tempVolunteerDepartment)
-    }
-    for (const failedDepartment of trainingStatusDto.failedDepartment) {
-      tempVolunteerDepartment = Object.assign(new VolunteerDepartment());
-      tempVolunteerDepartment.volunteerId = id;
-      tempVolunteerDepartment.departmentId = failedDepartment.id;
-      tempVolunteerDepartment.trainingStatus = 0;
-      VolunteerDepartmentList.push(tempVolunteerDepartment)
-    }
-
-    return VolunteerDepartmentList;
   }
 
   async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
