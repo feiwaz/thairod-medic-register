@@ -12,6 +12,7 @@ import { WorkspaceService } from 'src/app/service/workspace.service';
 })
 export class AdminMainComponent implements OnInit, OnDestroy {
 
+  readonly defaultMainUrl = '/admin/main/manage-account';
   mobileQuery: MediaQueryList;
   mainLogo = ''
   fillerNav = [{
@@ -43,7 +44,7 @@ export class AdminMainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.getRefreshToken();
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo', { width: '80px', height: '68px' });
-    const lastVisitedUrl = this.workspaceService.getLastVisitedUrl();
+    const lastVisitedUrl = this.workspaceService.getLastVisitedUrl() || this.defaultMainUrl;
     this.router.navigate([lastVisitedUrl]);
   }
 

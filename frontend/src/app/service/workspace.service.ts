@@ -9,7 +9,7 @@ export class WorkspaceService {
   constructor(private router: Router) { }
 
   getLastVisitedUrl(): string {
-    return this.getWorkspace().lastVisitedUrl || '';
+    return this.getWorkspace().lastVisitedUrl;
   }
 
   save(option?: any) {
@@ -23,7 +23,7 @@ export class WorkspaceService {
   }
 
   getWorkspace() {
-    let workspace = null;
+    let workspace = { lastVisitedUrl: '' } as any;
     const workspaceString = localStorage.getItem('workspace');
     if (workspaceString) {
       workspace = JSON.parse(workspaceString);
