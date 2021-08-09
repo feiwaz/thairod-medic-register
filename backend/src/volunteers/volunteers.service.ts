@@ -87,10 +87,7 @@ export class VolunteersService {
   }
 
   async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne({
-      where: { nationalId },
-      relations: ['volunteerDepartments']
-    });
+    const volunteer = await this.volunteerRepository.findOne({ where: { nationalId } });
     if (!volunteer) {
       return {} as FindOneVolunteerDto;
     }
@@ -98,22 +95,16 @@ export class VolunteersService {
   }
 
   private async mapEntityToDto(volunteer: Volunteer): Promise<FindOneVolunteerDto> {
-    const { volunteerDepartments, ...volunteerEntities } = volunteer;
-    const responseDto = Object.assign(new FindOneVolunteerDto(), volunteerEntities);
-    const tempDepartment = await this.volunteerDepartmentRepository.find({
-      where: { volunteerId: volunteerEntities.id },
-      relations: ['department'],
+    const responseDto = Object.assign(new FindOneVolunteerDto(), volunteer);
+    const volunteerDepartments = await this.volunteerDepartmentRepository.find({
+      where: { volunteerId: volunteer.id },
+      relations: ['department']
     });
-
-    responseDto.departments = volunteerDepartments.map(volunteerDepartment => {
-      const matchedDepartment = tempDepartment.find(({ departmentId }) => departmentId === volunteerDepartment.departmentId).department;
-      return {
-        label: matchedDepartment.label,
-        isTrainingRequired: matchedDepartment.isTrainingRequired,
-        trainingStatus: volunteerDepartment.trainingStatus
-      }
-    });
-
+    responseDto.departments = volunteerDepartments.map(volunteerDepartment => ({
+      label: volunteerDepartment.department.label,
+      isTrainingRequired: volunteerDepartment.department.isTrainingRequired,
+      trainingStatus: volunteerDepartment.trainingStatus
+    }));
     return responseDto;
   }
 
@@ -134,13 +125,12 @@ export class VolunteersService {
       if (!volunteer) {
         throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
       }
-      const volunteerDepartments = volunteerDepartmentsDto.volunteerDepartments
+      volunteer.volunteerDepartments = volunteerDepartmentsDto.volunteerDepartments
         .map((volDepDto: VolunteerDepartmentDto) => ({
           volunteerId: volDepDto.volunteerId,
           departmentId: volDepDto.departmentId,
           trainingStatus: volDepDto.trainingStatus
         } as VolunteerDepartment));
-      volunteer.volunteerDepartments = volunteerDepartments;
       await this.volunteerRepository.save(volunteer);
     } catch (error) {
       throw error;
