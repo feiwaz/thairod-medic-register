@@ -13,6 +13,7 @@ export class UploadPhotoComponent implements OnInit {
   @Input() matIcon = '';
   @Input() header = '';
   @Input() subHeader = '';
+  @Input() required = false;
 
   @Output() image = new EventEmitter<ImageObject>();
 
@@ -60,6 +61,14 @@ export class UploadPhotoComponent implements OnInit {
   }
 
   onImageError(event: any): void {
+    this.files = null;
+    this.fileName = '';
+    this.thumb = '';
+  }
+
+  onDeleteClick(event: any): void {
+    const thumbnail = this.thumbnail.nativeElement;
+    this.image.emit({ files: null as any, blobUrl: thumbnail.src });
     this.files = null;
     this.fileName = '';
     this.thumb = '';

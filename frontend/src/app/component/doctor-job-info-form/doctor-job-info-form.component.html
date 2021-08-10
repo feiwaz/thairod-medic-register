@@ -29,25 +29,25 @@
         </mat-error>
       </mat-form-field>
       <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="อัพโหลดภาพใบประกอบวิชาชีพ" subHeader=""
-        (image)="onImageChanged($event, 'medCertificate')">
+        (image)="onImageChanged($event, 'medCertificate')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('medCertificate')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
       <app-upload-photo id="medCertificateSelfie" matIcon="photo_camera" header="ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ"
-        subHeader="" (image)="onImageChanged($event, 'medCertificateSelfie')">
+        subHeader="" (image)="onImageChanged($event, 'medCertificateSelfie')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('medCertificateSelfie')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
       <app-upload-photo id="idCard" matIcon="cloud_upload" header="อัพโหลดภาพบัตรประจำตัวประชาชน" subHeader=""
-        (image)="onImageChanged($event, 'idCard')">
+        (image)="onImageChanged($event, 'idCard')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
       <app-upload-photo id="idCardSelfie" matIcon="photo_camera" header="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน"
-        subHeader="" (image)="onImageChanged($event, 'idCardSelfie')">
+        subHeader="" (image)="onImageChanged($event, 'idCardSelfie')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCardSelfie')?.hasError('required')">
         จำเป็นต้องใส่*

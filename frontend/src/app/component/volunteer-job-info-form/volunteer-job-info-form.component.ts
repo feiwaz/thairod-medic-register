@@ -126,10 +126,13 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   }
 
   onImageChanged(imageObject: any, id: string): void {
-    if (imageObject.files.length > 0) {
+    if (imageObject && imageObject.files && imageObject.files.length > 0) {
       const file = imageObject.files[0];
       this.jobInfoForm.patchValue({ [id]: { fileName: [file.name], blobUrl: imageObject.blobUrl } });
       this.imageCachingService.cacheBlobUrl(id, file.name, imageObject.blobUrl, file.type);
+    } else {
+      this.jobInfoForm.patchValue({ [id]: null });
+      window.URL.revokeObjectURL(imageObject.blobUrl);
     }
   }
 

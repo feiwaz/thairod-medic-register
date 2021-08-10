@@ -8,6 +8,7 @@
   justify-content: center;
   cursor: pointer;
   padding: 20px 0;
+  text-align: center;
 }
 
 .upload-container input {
@@ -27,4 +28,10 @@
 .fileName {
   font-size: 0.7em;
   margin-bottom: 0;
+}
+
+.delete-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
 }
