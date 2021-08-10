@@ -22,13 +22,13 @@
         </p>
       </section>
       <app-upload-photo id="idCard" matIcon="cloud_upload" header="อัพโหลดภาพบัตรประจำตัวประชาชน" subHeader=""
-        (image)="onImageChanged($event, 'idCard')">
+        (image)="onImageChanged($event, 'idCard')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
       <app-upload-photo id="idCardSelfie" matIcon="photo_camera" header="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน"
-        subHeader="" (image)="onImageChanged($event, 'idCardSelfie')">
+        subHeader="" (image)="onImageChanged($event, 'idCardSelfie')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCardSelfie')?.hasError('required')">
         จำเป็นต้องใส่*

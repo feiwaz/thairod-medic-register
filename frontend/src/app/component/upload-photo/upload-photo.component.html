@@ -1,4 +1,9 @@
-<p><b>{{ header }}</b></p>
+<p style="display: flex; justify-content: space-between;">
+  <b>{{ header }}</b>
+  <button class="delete-button" mat-icon-button *ngIf="!required && fileName !== ''" (click)="onDeleteClick($event)">
+    <mat-icon>delete</mat-icon>
+  </button>
+</p>
 <div class="upload-container" (click)="onUploadClick()">
   <mat-icon *ngIf="fileName === ''">{{ matIcon }}</mat-icon>
   <p class="header" *ngIf="header !== '' && fileName === ''">{{ header }}</p>
