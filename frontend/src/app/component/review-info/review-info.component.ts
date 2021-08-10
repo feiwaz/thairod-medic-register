@@ -87,10 +87,10 @@ export class ReviewInfoComponent implements OnInit {
     if (jobInfoString) {
       if (this.role === 'doctor') {
         const { specializedFields, medCertificateId } = JSON.parse(jobInfoString);
-        this.jobInfo = { specializedFields, medCertificateId } as DoctorJobInfo;
+        this.jobInfo = { specializedFields, medCertificateId: +medCertificateId } as DoctorJobInfo;
       } else {
         const { departments, medCertificateId } = JSON.parse(jobInfoString);
-        this.jobInfo = { departments, medCertificateId } as VolunteerJobInfo;
+        this.jobInfo = { departments, medCertificateId: +medCertificateId } as VolunteerJobInfo;
       }
     }
   }

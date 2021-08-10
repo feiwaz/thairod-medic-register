@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from 'src/app/model/basic-info';
 
@@ -20,6 +20,7 @@ interface SelectOption {
 })
 export class AvailableTimeFormComponent implements OnInit {
 
+  isFormValid = false;
   role = '';
   days: dayOption[] = [
     { value: 'monday', viewValue: 'จันทร์' },
@@ -49,7 +50,15 @@ export class AvailableTimeFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
+    this.checkIfFormValidAndSubscribeChanges();
     this.patchValue();
+  }
+
+  private checkIfFormValidAndSubscribeChanges() {
+    this.availableTimeForm.valueChanges.subscribe(formControl => {
+      const isInvalid = Object.values(formControl).every(value => value === 0);
+      this.isFormValid = !isInvalid;
+    });
   }
 
   private patchValue() {
@@ -101,4 +110,9 @@ export class AvailableTimeFormComponent implements OnInit {
     });
     return availableTimes;
   }
+
+  nonZeroValueValidator(): ValidatorFn | ValidatorFn[] | AbstractControlOptions | null | undefined {
+    throw new Error('Function not implemented.');
+  }
+
 }

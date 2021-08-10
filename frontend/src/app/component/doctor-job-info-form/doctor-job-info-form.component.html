@@ -2,7 +2,7 @@
 <div class="form-container">
   <form [formGroup]="jobInfoForm" (ngSubmit)="onSubmit()">
     <div class="form-field-container">
-      <p><b>สาขาที่ถนัด</b></p>
+      <p class="first-header-text"><b>สาขาที่ถนัด</b></p>
       <section class="checkbox-flex-container">
         <p *ngFor="let field of specializedFields">
           <mat-checkbox [formControlName]="field.formControlName">

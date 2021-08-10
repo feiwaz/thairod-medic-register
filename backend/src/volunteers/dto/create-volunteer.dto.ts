@@ -45,8 +45,8 @@ export class CreateVolunteerDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(10000, { message: 'medCertificateId must be equal to 13 characters' })
-  @Max(99999, { message: 'medCertificateId must be equal to 13 characters' })
+  @Min(10000, { message: 'medCertificateId must be equal to 5 characters' })
+  @Max(99999, { message: 'medCertificateId must be equal to 5 characters' })
   medCertificateId: number;
 
   // @IsNotEmpty() TODO: Will bring back later

@@ -25,6 +25,7 @@ form {
 }
 
 .available-time-paragraph {
+  margin-top: -5px;
   margin-bottom: 15px;
 }
 
@@ -46,6 +47,14 @@ button {
 
 .mat-form-field-shift {
   width: 55%;
+}
+
+.text-danger {
+  color: red;
+}
+
+.mat-error-text {
+  text-align: center;
 }
 
 @media only screen and (min-width: 600px) {
