@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
@@ -19,7 +19,8 @@ export class ManageTrainingStatusComponent implements OnInit {
   displayedColumns = ['firstName', 'trainingStatusPassed', 'trainingStatusFailed', 'action'];
   selectedFilterColumn = 'firstName';
 
-  readonly pageSizeOptions = [6, 16, 30];
+  readonly pageSizeOptions = [5, 10, 30, 50, 100];
+  defaultPaginator = { pageSize: 10 };
   readonly USER_COLUMN_MAP: any = {
     firstName: 'ชื่อ-นามสกุล',
     trainingStatusPassed: 'รายการฝึกอบรมที่ผ่าน',
@@ -46,8 +47,19 @@ export class ManageTrainingStatusComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.workspaceService.save();
+    this.updateWorkspace();
     this.getApprovedVolunteers();
+  }
+
+  private updateWorkspace() {
+    const workspace = this.workspaceService.getWorkspace();
+    if (workspace && workspace.manageTrainingStatus != null) {
+      const { pageSize } = workspace.manageTrainingStatus.paginator;
+      this.defaultPaginator.pageSize = pageSize;
+    }
+    this.workspaceService.save({
+      manageTrainingStatus: { paginator: this.defaultPaginator }
+    });
   }
 
   private getApprovedVolunteers(): void {
@@ -151,6 +163,13 @@ export class ManageTrainingStatusComponent implements OnInit {
 
   onFilterTextCleared(filterText: string): void {
     this.dataSource.filter = filterText;
+  }
+
+  onPaginatorChanged(event: PageEvent) {
+    const paginator = { pageSize: event.pageSize };
+    this.workspaceService.save({
+      manageTrainingStatus: { paginator }
+    });
   }
 
 }

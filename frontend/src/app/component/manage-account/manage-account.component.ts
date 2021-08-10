@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -22,7 +22,8 @@ export class ManageAccountComponent implements OnInit {
   displayedColumns = ['id', 'firstName', 'role', 'contactNumber', 'email', 'isActive', 'action'];
   selectedFilterColumn = 'firstName';
 
-  readonly pageSizeOptions = [6, 16, 30];
+  readonly pageSizeOptions = [5, 10, 30, 50, 100];
+  defaultPaginator = { pageSize: 10 };
   readonly USER_COLUMN_MAP: any = {
     id: 'ID',
     firstName: 'ชื่อ-นามสกุล',
@@ -54,8 +55,19 @@ export class ManageAccountComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.workspaceService.save();
+    this.updateWorkspace();
     this.getUsers();
+  }
+
+  private updateWorkspace() {
+    const workspace = this.workspaceService.getWorkspace();
+    if (workspace && workspace.manageAccount != null) {
+      const { pageSize } = workspace.manageAccount.paginator;
+      this.defaultPaginator.pageSize = pageSize;
+    }
+    this.workspaceService.save({
+      manageAccount: { paginator: this.defaultPaginator }
+    });
   }
 
   private getUsers(isCreatingNew = false): void {
@@ -203,6 +215,13 @@ export class ManageAccountComponent implements OnInit {
         this.toastrService.warning('แก้ไขไม่สำเร็จ');
       }
     );
+  }
+
+  onPaginatorChanged(event: PageEvent) {
+    const paginator = { pageSize: event.pageSize };
+    this.workspaceService.save({
+      manageAccount: { paginator }
+    });
   }
 
 }

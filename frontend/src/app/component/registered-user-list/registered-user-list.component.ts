@@ -1,14 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { BasicInfo } from 'src/app/model/basic-info';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
+import { WorkspaceService } from 'src/app/service/workspace.service';
 
 @Component({
   selector: 'app-registered-user-list',
@@ -20,13 +22,15 @@ export class RegisteredUserListComponent implements OnInit {
   displayedColumns = ['createdTime', 'firstName', 'status', 'action'];
   selectedFilterColumn = 'createdTime';
 
-  readonly pageSizeOptions = [6, 16, 30];
+  readonly pageSizeOptions = [5, 10, 30, 50, 100];
+  defaultPaginator = { pageSize: 10 };
   readonly INFO_COLUMN_MAP: any = {
     createdTime: 'วันเวลาที่ลงทะเบียน',
     firstName: 'ชื่อ-นามสกุล',
     status: 'สถานะ'
   };
 
+  getEntities$: Observable<any[]> = this.volunteerService.getVolunteers();
   isLoading = false;
   selectColumnOptions: any = [];
   excludedSelectColumnOptions = ['action'];
@@ -41,42 +45,50 @@ export class RegisteredUserListComponent implements OnInit {
     private toastrService: ToastrService,
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
+    private workspaceService: WorkspaceService,
     public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-    if (this.role === 'doctor') {
-      this.getDoctor();
-    } else {
-      this.getVolunteer();
+    this.updateWorkspace();
+    this.getEntities$ = this.role === 'doctor'
+      ? this.doctorService.getDoctors()
+      : this.volunteerService.getVolunteers();
+    this.getEntities();
+  }
+
+  private updateWorkspace() {
+    const workspace = this.workspaceService.getWorkspace();
+    if (workspace && workspace.manageRegisteredUser != null) {
+      const key = this.role === 'doctor' ? 'doctorPaginator' : 'volunteerPaginator';
+      const { pageSize } = workspace.manageRegisteredUser[key] || this.defaultPaginator;
+      this.defaultPaginator.pageSize = pageSize;
     }
+    let manageRegisteredUser = {} as any;
+    if (this.role === 'doctor') {
+      manageRegisteredUser['doctorPaginator'] = this.defaultPaginator;
+    } else {
+      manageRegisteredUser['volunteerPaginator'] = this.defaultPaginator;
+    }
+    this.workspaceService.save({ manageRegisteredUser });
   }
 
-  getDoctor(row?: any): void {
+  getEntities(row?: any): void {
     this.isLoading = true;
-    this.doctorService.getDoctors().subscribe(
+    this.getEntities$.subscribe(
       entities => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
-        this.proceedSuccessResponse(row);
+        this.proceedSuccessResponse();
+        if (row && row.status === 'รอการอนุมัติ') {
+          this.onClick(row);
+        }
       },
       errorResponse => this.isLoading = false
     );
   }
 
-  getVolunteer(row?: any): void {
-    this.isLoading = true;
-    this.volunteerService.getVolunteers().subscribe(
-      entities => {
-        this.isLoading = false;
-        this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
-        this.proceedSuccessResponse(row);
-      },
-      errorResponse => this.isLoading = false
-    );
-  }
-
-  proceedSuccessResponse(row?: any): void {
+  proceedSuccessResponse(): void {
     this.sort.sortChange.subscribe(() => this.paginator.firstPage());
 
     this.dataSource.paginator = this.paginator;
@@ -89,9 +101,6 @@ export class RegisteredUserListComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.initSelectColumnOptions();
     this.setUpFilterPredicate();
-    if (row && row.status === 'รอการอนุมัติ') {
-      this.onClick(row);
-    }
   }
 
   initSelectColumnOptions(): void {
@@ -142,7 +151,7 @@ export class RegisteredUserListComponent implements OnInit {
         if (result && result.success === true && result.role) {
           // TODO: add note here too
           row.status = result.status;
-          result.role === 'doctor' ? this.getDoctor(row) : this.getVolunteer(row);
+          this.getEntities();
           this.toastrService.success('ตรวจสอบข้อมูลสำเร็จ');
         }
       }
@@ -161,6 +170,17 @@ export class RegisteredUserListComponent implements OnInit {
 
   formattedDate(dateString: string): string {
     return moment(dateString).locale('th').format('DD MMM YYYY');
+  }
+
+  onPaginatorChanged(event: PageEvent) {
+    const paginator = { pageSize: event.pageSize };
+    let manageRegisteredUser = {} as any;
+    if (this.role === 'doctor') {
+      manageRegisteredUser['doctorPaginator'] = paginator;
+    } else {
+      manageRegisteredUser['volunteerPaginator'] = paginator;
+    }
+    this.workspaceService.save({ manageRegisteredUser });
   }
 
 }

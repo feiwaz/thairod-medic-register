@@ -71,6 +71,7 @@ export class AuthenticationService {
   logout(): void {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('workspace');
     this.isLoggedIn = false;
     this.currentUser = {
       id: '', email: '', firstName: '', lastName: '', contactNumber: '',

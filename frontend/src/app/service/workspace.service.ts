@@ -15,7 +15,9 @@ export class WorkspaceService {
   save(option?: any) {
     let toSave = { lastVisitedUrl: this.router.url };
     if (option && Object.keys(option).length !== 0) {
-      toSave = { ...toSave, ...option };
+      let workspace = this.getWorkspace();
+      Object.keys(option).forEach(key => workspace[key] = { ...workspace[key], ...option[key] });
+      toSave = { ...workspace, ...toSave };
     } else {
       toSave = { ...this.getWorkspace(), ...toSave };
     }
