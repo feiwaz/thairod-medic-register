@@ -28,7 +28,7 @@ export class ManageAccountComponent implements OnInit {
     id: 'ID',
     firstName: 'ชื่อ-นามสกุล',
     role: 'บทบาทในเว็ป',
-    contactNumber: 'เบอร์โทรศัพท์',
+    contactNumber: 'หมายเลขโทรศัพท์',
     email: 'อีเมล',
     isActive: 'สถานะ'
   };

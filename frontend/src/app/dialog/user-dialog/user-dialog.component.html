@@ -67,7 +67,7 @@
             </mat-form-field>
             <mat-form-field>
                 <input matInput #contactNumber type="tel" maxlength="10" (keypress)="inputNumber($event)"
-                    (paste)="inputNumber($event)" placeholder="เบอร์โทรศัพท์" formControlName="contactNumber">
+                    (paste)="inputNumber($event)" placeholder="หมายเลขโทรศัพท์" formControlName="contactNumber">
                 <mat-hint align="end">{{contactNumber.value.length}} / 10</mat-hint>
                 <mat-error *ngIf="userForm.controls.contactNumber.hasError('required')">
                     จำเป็นต้องใส่*

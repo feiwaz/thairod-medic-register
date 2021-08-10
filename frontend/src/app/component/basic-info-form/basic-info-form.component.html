@@ -69,10 +69,10 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>เบอร์โทรศัพท์</b><span class="text-danger"> *</span></p>
+      <p><b>หมายเลขโทรศัพท์</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput type="tel" maxlength="10" (keypress)="inputNumber($event)" (paste)="inputNumber($event)"
-        formControlName="contactNumber" placeholder="เบอร์โทรศัพท์" #contactNumber>
+          formControlName="contactNumber" placeholder="หมายเลขโทรศัพท์" #contactNumber>
         <button *ngIf="contactNumber" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="contactNumber.value=''">
           <mat-icon>close</mat-icon>
