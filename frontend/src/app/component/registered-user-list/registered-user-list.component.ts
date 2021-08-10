@@ -154,8 +154,8 @@ export class RegisteredUserListComponent implements OnInit {
       data: { row, role: this.role },
       autoFocus: false,
       disableClose: true,
-      height: '650px',
-      width: '550px'
+      width: '100%',
+      panelClass: 'dialog-responsive'
     });
   }
 

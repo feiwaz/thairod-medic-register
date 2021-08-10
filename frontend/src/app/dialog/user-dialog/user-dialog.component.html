@@ -81,14 +81,16 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-slide-toggle *ngIf="isCreatingNew" class="mat-form-field" formControlName="isActive">เปิดใช้งาน
+            <mat-slide-toggle *ngIf="isCreatingNew" class="is-active-toggle" formControlName="isActive">เปิดใช้งาน
             </mat-slide-toggle>
-            <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
-                type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
         </form>
     </div>
 </div>
 <mat-dialog-actions align="end">
+    <div>
+        <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
+            type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
+    </div>
     <div class="cancel-button">
         <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>
     </div>

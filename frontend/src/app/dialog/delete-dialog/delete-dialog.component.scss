@@ -16,11 +16,15 @@ mat-progress-bar {
     padding-top: 5px;
     padding-bottom: 10px;
     height: calc(100% - 70px);
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-mat-form-field,
-button[type="submit"] {
+.delete-content-text {
+    font-size: 20px;
+}
+
+button {
+    font-size: 16px;
     margin: 10px 0;
 }
 

@@ -146,8 +146,8 @@ export class ManageAccountComponent implements OnInit {
       data: { row },
       autoFocus: true,
       disableClose: true,
-      height: '550px',
-      width: '450px'
+      width: '100%',
+      panelClass: 'dialog-responsive'
     });
   }
 
@@ -172,8 +172,8 @@ export class ManageAccountComponent implements OnInit {
       data,
       autoFocus: false,
       disableClose: true,
-      height: '550px',
-      width: '450px'
+      width: '100%',
+      panelClass: 'dialog-responsive'
     });
   }
 

@@ -4,7 +4,7 @@
 <div class="form-container">
   <div class="user-container">
     <h2 mat-dialog-title>แก้ไขข้อมูลสถานะการอบรม</h2>
-    <form [formGroup]="jobInfoForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="jobInfoForm">
       <div class="section-container">
         <div class="info-header">
           <mat-icon>account_box</mat-icon>
@@ -25,7 +25,7 @@
   </div>
 </div>
 <mat-dialog-actions align="end">
-  <div class="submit-button">
+  <div>
     <button mat-flat-button color="primary" type="button" [disabled]="isLoading" (click)="onSubmit()">บันทึก</button>
   </div>
   <div class="cancel-button">

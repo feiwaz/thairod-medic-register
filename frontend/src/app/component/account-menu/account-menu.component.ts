@@ -19,9 +19,8 @@ export class AccountMenuComponent {
 
   openAccountCard(): void {
     this.dialog.open(UserAccountDialogComponent, {
-      height: '550px',
-      width: '450px',
-      autoFocus: false
+      autoFocus: false,
+      panelClass: 'dialog-responsive'
     });
   }
 

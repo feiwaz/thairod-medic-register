@@ -134,8 +134,7 @@ export class ManageTrainingStatusComponent implements OnInit {
       data: { row },
       autoFocus: false,
       disableClose: true,
-      height: '550px',
-      width: '480px'
+      panelClass: 'dialog-responsive'
     });
   }
 

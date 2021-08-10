@@ -2,14 +2,16 @@
     <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 </div>
 <div class="content-container">
-    <h2 mat-dialog-title id="delete-dialog-title">{{data.title}}</h2>
+    <h2 id="delete-dialog-title">{{data.title}}</h2>
     <mat-dialog-content class="mat-typography">
-        <p [innerHTML]="data.content"></p>
+        <p class="delete-content-text" [innerHTML]="data.content"></p>
     </mat-dialog-content>
-    <button mat-flat-button type="submit" color="primary" (mouseup)="onDeleteClicked()" [disabled]="isLoading"
-        (keyup.enter)="onDeleteClicked()">ลบ</button>
 </div>
 <mat-dialog-actions align="end">
+    <div>
+        <button mat-flat-button type="submit" color="primary" (mouseup)="onDeleteClicked()" [disabled]="isLoading"
+            (keyup.enter)="onDeleteClicked()">ลบ</button>
+    </div>
     <div class="cancel-button">
         <button mat-button color="primary" type="button" mat-dialog-close>ยกเลิก</button>
     </div>
