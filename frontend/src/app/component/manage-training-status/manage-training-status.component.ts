@@ -105,7 +105,7 @@ export class ManageTrainingStatusComponent implements OnInit {
             const departments = row.volunteerDepartments
               .filter((volDep: any) => volDep.trainingStatus === traingStatus)
               .map((volDep: any) => volDep.department.label.toLowerCase());
-            return departments.includes(filter);
+            return departments.find((department: string) => department.includes(filter));
           }
         }
         return false;
