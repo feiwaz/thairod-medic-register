@@ -4,6 +4,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
+import { UserStatus } from 'src/users/entities/user.entity';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { VolunteersService } from './volunteers.service';
@@ -26,6 +27,12 @@ export class VolunteersController {
     @UploadedFiles() bufferedFile: BufferedFile
   ) {
     return this.service.create(createVolunteerDto, bufferedFile);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('approved')
+  findAllApproved() {
+    return this.service.findAll(UserStatus.APPROVED);
   }
 
   @UseGuards(JwtAuthGuard)

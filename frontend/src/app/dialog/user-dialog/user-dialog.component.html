@@ -66,8 +66,8 @@
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input matInput #contactNumber maxlength="10" (keypress)="inputNumber($event)" (paste)="inputNumber($event)" placeholder="เบอร์โทรศัพท์"
-                    formControlName="contactNumber">
+                <input matInput #contactNumber type="tel" maxlength="10" (keypress)="inputNumber($event)"
+                    (paste)="inputNumber($event)" placeholder="เบอร์โทรศัพท์" formControlName="contactNumber">
                 <mat-hint align="end">{{contactNumber.value.length}} / 10</mat-hint>
                 <mat-error *ngIf="userForm.controls.contactNumber.hasError('required')">
                     จำเป็นต้องใส่*
@@ -90,6 +90,6 @@
 </div>
 <mat-dialog-actions align="end">
     <div class="cancel-button">
-        <button mat-button color="primary" type="button" mat-dialog-close>ยกเลิก</button>
+        <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>
     </div>
 </mat-dialog-actions>

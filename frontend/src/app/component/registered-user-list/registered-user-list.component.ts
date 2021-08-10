@@ -52,31 +52,31 @@ export class RegisteredUserListComponent implements OnInit {
     }
   }
 
-  getDoctor(): void {
+  getDoctor(row?: any): void {
     this.isLoading = true;
     this.doctorService.getDoctors().subscribe(
       entities => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
-        this.proceedSuccessResponse();
+        this.proceedSuccessResponse(row);
       },
       errorResponse => this.isLoading = false
     );
   }
 
-  getVolunteer(): void {
+  getVolunteer(row?: any): void {
     this.isLoading = true;
     this.volunteerService.getVolunteers().subscribe(
       entities => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(entities as BasicInfo[]);
-        this.proceedSuccessResponse();
+        this.proceedSuccessResponse(row);
       },
       errorResponse => this.isLoading = false
     );
   }
 
-  proceedSuccessResponse(): void {
+  proceedSuccessResponse(row?: any): void {
     this.sort.sortChange.subscribe(() => this.paginator.firstPage());
 
     this.dataSource.paginator = this.paginator;
@@ -89,17 +89,18 @@ export class RegisteredUserListComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.initSelectColumnOptions();
     this.setUpFilterPredicate();
+    if (row && row.status === 'รอการอนุมัติ') {
+      this.onClick(row);
+    }
   }
 
   initSelectColumnOptions(): void {
     this.selectColumnOptions = Array.from(this.displayedColumns)
       .filter(column => !this.excludedSelectColumnOptions.includes(column))
-      .map(optionValue => {
-        return {
-          value: optionValue,
-          viewValue: this.INFO_COLUMN_MAP[optionValue]
-        };
-      });
+      .map(optionValue => ({
+        value: optionValue,
+        viewValue: this.INFO_COLUMN_MAP[optionValue]
+      }));
   }
 
   setUpFilterPredicate(): void {
@@ -138,15 +139,11 @@ export class RegisteredUserListComponent implements OnInit {
   onClick(row: any): void {
     this.openUpdateDialog(VerifyDetailDialogComponent, row).afterClosed().subscribe(
       result => {
-        if (result) {
-          if (result.success === true && result.role) {
-            result.role === 'doctor' ? this.getDoctor() : this.getVolunteer();
-            this.toastrService.success('ตรวจสอบข้อมูลสำเร็จ');
-          }
-          else {
-            const toastMessage = 'ทำรายการไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
-            this.toastrService.warning(toastMessage);
-          }
+        if (result && result.success === true && result.role) {
+          // TODO: add note here too
+          row.status = result.status;
+          result.role === 'doctor' ? this.getDoctor(row) : this.getVolunteer(row);
+          this.toastrService.success('ตรวจสอบข้อมูลสำเร็จ');
         }
       }
     );
@@ -156,14 +153,14 @@ export class RegisteredUserListComponent implements OnInit {
     return this.dialog.open(dialogComponent, {
       data: { row, role: this.role },
       autoFocus: false,
+      disableClose: true,
       height: '650px',
       width: '550px'
     });
   }
 
   formattedDate(dateString: string): string {
-    moment.locale('th');
-    return moment(dateString).format('DD MMM YYYY');
+    return moment(dateString).locale('th').format('DD MMM YYYY');
   }
 
 }

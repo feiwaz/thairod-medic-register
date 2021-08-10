@@ -67,6 +67,7 @@ export class UpdateTrainingStatusDialogComponent implements OnInit {
 
   private handleSuccessfulUpdate() {
     this.isLoading = false;
+    this.jobInfoForm.enable();
     this.dialogRef.close({ success: true });
   }
 

@@ -22,9 +22,9 @@ export function partialMaskId(nationalId: number | string): string {
   return finalValue;
 }
 
-export function numbersOnly(event : any) {
+export function numbersOnly(event: any) {
   const input = String.fromCharCode(event.keyCode);
   if (!/^[0-9]*$/.test(input)) {
-      event.preventDefault();
+    event.preventDefault();
   }
 }

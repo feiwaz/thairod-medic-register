@@ -7,8 +7,8 @@
       <h3><b>เลขประจำตัวประชาชนที่ต้องการ{{ role ? 'ลงทะเบียน' : 'ตรวจสอบ'}}</b></h3>
       <mat-form-field floatLabel="always">
         <mat-label>เลขประจำตัวประชาชน</mat-label>
-        <input matInput type="text" maxlength="13" (keypress)="inputNumber($event)" (paste)="inputNumber($event)" formControlName="nationalId" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #nationalId
-          class="user-id-input">
+        <input matInput type="tel" maxlength="13" (keypress)="inputNumber($event)" (paste)="inputNumber($event)"
+          formControlName="nationalId" placeholder="กรอกเฉพาะตัวเลข 13 หลัก" #nationalId class="user-id-input">
         <button *ngIf="nationalId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="onClearInput()">
           <mat-icon>close</mat-icon>

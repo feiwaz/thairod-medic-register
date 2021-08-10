@@ -41,6 +41,13 @@ export class FileService {
     return { type }
   }
 
+  appendFilesToFormData(blobs: Blob[] | undefined, formData: FormData) {
+    if (blobs && blobs[0]) formData.append('idCard', this.createFile([blobs[0]], 'idCard'));
+    if (blobs && blobs[1]) formData.append('idCardSelfie', this.createFile([blobs[1]], 'idCardSelfie'));
+    if (blobs && blobs[2]) formData.append('medCertificate', this.createFile([blobs[2]], 'medCertificate'));
+    if (blobs && blobs[3]) formData.append('medCertificateSelfie', this.createFile([blobs[3]], 'medCertificateSelfie'));
+  }
+
   clearSessionAndImageLocalStorage(): void {
     sessionStorage.clear();
     this.clearImageLocalStorage();

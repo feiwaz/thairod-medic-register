@@ -47,12 +47,12 @@ export class ManageTrainingStatusComponent implements OnInit {
 
   ngOnInit(): void {
     this.workspaceService.save();
-    this.getVolunteers();
+    this.getApprovedVolunteers();
   }
 
-  private getVolunteers(): void {
+  private getApprovedVolunteers(): void {
     this.isLoading = true;
-    this.service.getVolunteers().subscribe(
+    this.service.getApprovedVolunteers().subscribe(
       users => {
         this.isLoading = false;
         this.dataSource = new MatTableDataSource(users as BasicInfo[]);
@@ -73,12 +73,10 @@ export class ManageTrainingStatusComponent implements OnInit {
   initSelectColumnOptions(): void {
     this.selectColumnOptions = Array.from(this.displayedColumns)
       .filter(column => !this.excludedSelectColumnOptions.includes(column))
-      .map(optionValue => {
-        return {
-          value: optionValue,
-          viewValue: this.USER_COLUMN_MAP[optionValue]
-        };
-      });
+      .map(optionValue => ({
+        value: optionValue,
+        viewValue: this.USER_COLUMN_MAP[optionValue]
+      }));
   }
 
   setUpFilterPredicate(): void {
@@ -124,7 +122,7 @@ export class ManageTrainingStatusComponent implements OnInit {
     this.openUpdateDialog(UpdateTrainingStatusDialogComponent, dataRow).afterClosed().subscribe(
       result => {
         if (result && result.success === true) {
-          this.getVolunteers();
+          this.getApprovedVolunteers();
           this.toastrService.success('บันทึกสำเร็จ');
         }
       }
@@ -135,6 +133,7 @@ export class ManageTrainingStatusComponent implements OnInit {
     return this.dialog.open(dialogComponent, {
       data: { row },
       autoFocus: false,
+      disableClose: true,
       height: '550px',
       width: '480px'
     });

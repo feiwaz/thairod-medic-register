@@ -87,8 +87,8 @@
                 </div>
                 <div class="info-body">
                     <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else note">
-                        <mat-form-field class="mat-form-field" appearance="fill">
-                            <textarea matInput placeholder="หมายเหตุ" rows="4"></textarea>
+                        <mat-form-field [formGroup]="verifyForm" class="mat-form-field" appearance="fill">
+                            <textarea formControlName="note" matInput placeholder="หมายเหตุ" rows="4"></textarea>
                         </mat-form-field>
                     </ng-container>
                     <ng-template #note>
@@ -100,21 +100,29 @@
     </div>
 </div>
 <mat-dialog-actions align="end">
-    <ng-container *ngIf="content.status === 'รอการอนุมัติ'">
+    <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else recheck">
         <div class="fail-button-container">
-            <button mat-flat-button type="button" color="primary" class="fail-button"
-                (click)="onVerifyClicked(content, status.DENIED)">
+            <button mat-flat-button type="button" class="fail-button" (click)="onVerifyClicked(content, status.DENIED)"
+                [disabled]="isLoading">
                 <mat-icon>highlight_off</mat-icon> ไม่ผ่าน
             </button>
         </div>
         <div>
-            <button mat-flat-button type="button" color="primary" class="pass-button"
-                (click)="onVerifyClicked(content, status.APPROVED)">
+            <button mat-flat-button type="button" class="pass-button"
+                (click)="onVerifyClicked(content, status.APPROVED)" [disabled]="isLoading">
                 <mat-icon>check_circle_outline</mat-icon> ผ่าน
             </button>
         </div>
     </ng-container>
+    <ng-template #recheck>
+        <div>
+            <button mat-flat-button type="button" color="primary" (click)="onVerifyClicked(content, status.PENDING)"
+                [disabled]="isLoading">
+                <mat-icon>search</mat-icon> ตรวจสอบใหม่
+            </button>
+        </div>
+    </ng-template>
     <div class="cancel-button">
-        <button mat-button color="primary" type="button" mat-dialog-close>ยกเลิก</button>
+        <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>
     </div>
 </mat-dialog-actions>

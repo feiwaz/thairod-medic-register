@@ -7,7 +7,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
-import { In, Repository } from 'typeorm';
+import { UserStatus } from 'src/users/entities/user.entity';
+import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
   FindOneVolunteerDto
@@ -78,11 +79,15 @@ export class VolunteersService {
     return entity;
   }
 
-  findAll(): Promise<Volunteer[]> {
-    const volunteers = this.volunteerRepository.find({
+  findAll(status?: UserStatus): Promise<Volunteer[]> {
+    const options: FindManyOptions<Volunteer> = {
       relations: ['volunteerDepartments', 'volunteerDepartments.department'],
       order: { updatedTime: 'DESC' }
-    });
+    };
+    if (status) {
+      options.where = { status };
+    }
+    const volunteers = this.volunteerRepository.find(options);
     return volunteers;
   }
 

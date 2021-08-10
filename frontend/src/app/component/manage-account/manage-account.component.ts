@@ -88,12 +88,10 @@ export class ManageAccountComponent implements OnInit {
   initSelectColumnOptions(): void {
     this.selectColumnOptions = Array.from(this.displayedColumns)
       .filter(column => !this.excludedSelectColumnOptions.includes(column))
-      .map(optionValue => {
-        return {
-          value: optionValue,
-          viewValue: this.USER_COLUMN_MAP[optionValue]
-        };
-      });
+      .map(optionValue => ({
+        value: optionValue,
+        viewValue: this.USER_COLUMN_MAP[optionValue]
+      }));
   }
 
   setUpFilterPredicate(): void {

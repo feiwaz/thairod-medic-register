@@ -1,56 +1,42 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ChangePassword } from '../model/change-password.model';
 import { User } from '../model/user.model';
+import { BaseResourceService } from './base-resource.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends BaseResourceService {
 
-  constructor(private http: HttpClient) { }
-
-  findOne(id: number): Observable<any> {
-    const url = `${environment.apiPrefix}/users/${id}`;
-    return this.http.get<any>(url);
-  }
-
-  create(user: any): Observable<any> {
-    user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
-    const url = `${environment.apiPrefix}/users`;
-    return this.http.post<any>(url, user);
-  }
-
-  getUser(userId: string): Observable<User> {
-    return this.http.get<User>(`${environment.apiPrefix}/users/${userId}`);
+  constructor(http: HttpClient) {
+    super(`${environment.apiPrefix}/users`, http);
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${environment.apiPrefix}/users`);
+    return super.getResources();
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(`${environment.apiPrefix}/users`, user);
+    return this.http.post<User>(`${this.resourcePrefix}`, user);
   }
 
   updateUser(id: string, user: User): Observable<any> {
-    return this.http.put<any>(`${environment.apiPrefix}/users/${id}`, user);
+    return this.http.put<any>(`${this.resourcePrefix}/${id}`, user);
   }
 
   deleteUser(id: string): Observable<any> {
-    return this.http.delete<any>(`${environment.apiPrefix}/users/${id}`);
+    return this.http.delete<any>(`${this.resourcePrefix}/${id}`);
   }
 
   changePassword(id: string, credential: ChangePassword): Observable<any> {
-    return this.http.put<any>(`${environment.apiPrefix}/users/${id}/change-password`, credential);
+    return this.http.put<any>(`${this.resourcePrefix}/${id}/change-password`, credential);
   }
 
   patchUser(id: string, user: User): Observable<any> {
-    return this.http.patch<any>(`${environment.apiPrefix}/users/${id}`, user);
+    return this.http.patch<any>(`${this.resourcePrefix}/${id}`, user);
   }
 
 }

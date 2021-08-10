@@ -1,3 +1,15 @@
+.progress-bar-container {
+  height: 4px;
+}
+
+mat-progress-bar {
+  position: relative;
+  z-index: 2;
+  top: -24px;
+  left: -24px;
+  width: calc(100% + 48px);
+}
+
 .form-container {
   padding-top: 5px;
   padding-bottom: 10px;

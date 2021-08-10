@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
@@ -15,7 +17,6 @@ export class VerifyDetailDialogComponent implements OnInit {
   role: 'doctor' | 'volunteer' = 'doctor';
   isLoading = false;
   isCreatingNew = false;
-  errorMessage = 'Please try again later';
   status = {
     PENDING: 'รอการอนุมัติ',
     APPROVED: 'อนุมัติแล้ว',
@@ -23,10 +24,16 @@ export class VerifyDetailDialogComponent implements OnInit {
   };
   content: any;
 
+  verifyForm = this.fb.group({
+    note: ['']
+  });
+
   constructor(
+    private fb: FormBuilder,
     private volunteerService: VolunteerService,
     private doctorService: DoctorService,
     private dialogRef: MatDialogRef<UserDialogComponent>,
+    private toastrService: ToastrService,
     @Inject(MAT_DIALOG_DATA) public data: { row?: any, role: 'doctor' | 'volunteer' }
   ) { }
 
@@ -44,15 +51,29 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   updateStatus(content: any, status: string) {
+    this.isLoading = true;
     const service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     service.updateStatus(content.id, status).subscribe(
-      response => this.dialogRef.close({
-        success: true,
-        fullName: `${content.initial} ${content.firstName} ${content.lastName}`,
-        role: this.role
-      }),
-      errorResponse => this.dialogRef.close({ success: false })
+      response => this.handleSuccessfulUpdate(content, status),
+      errorResponse => this.handleErrorUpdate()
     );
+  }
+
+  private handleSuccessfulUpdate(content: any, status: string) {
+    this.isLoading = false;
+    this.verifyForm.enable();
+    this.dialogRef.close({
+      success: true,
+      fullName: `${content.initial} ${content.firstName} ${content.lastName}`,
+      role: this.role,
+      status
+    });
+  }
+
+  private handleErrorUpdate(): void {
+    this.isLoading = false;
+    this.verifyForm.enable();
+    this.toastrService.warning('ทำรายการไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
   }
 
   get dateOfBirth(): string {
