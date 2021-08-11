@@ -108,18 +108,29 @@ export class VolunteersService {
       relations: ['department']
     });
     responseDto.departments = volunteerDepartments.map(volDep => volDep.department.label);
+    await this.populateVerification(volunteer, responseDto);
+    return responseDto;
+  }
 
+  private async populateVerification(volunteer: Volunteer, responseDto: ResponseVolunteerDto) {
     const verification = await this.volVerificationRepository.findOne({
       where: { volunteer: { id: volunteer.id } },
       relations: ['verifiedBy'],
       order: { updatedTime: 'DESC' }
     });
-    responseDto.verification = { statusNote: null };
     if (verification) {
-      responseDto.verification.statusNote = verification.statusNote
+      const { status, statusNote, updatedTime, verifiedBy } = verification;
+      responseDto.verification = {
+        status: status,
+        statusNote: statusNote,
+        updatedTime: updatedTime,
+        verifiedBy: {
+          firstName: verifiedBy.firstName,
+          lastName: verifiedBy.lastName,
+          contactNumber: verifiedBy.contactNumber
+        }
+      };
     }
-
-    return responseDto;
   }
 
   async checkStatus(nationalId: number): Promise<any> {

@@ -78,6 +78,6 @@ import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
     MatTabsModule,
     MatToolbarModule,
     MatGridListModule
-  ],
+  ]
 })
 export class SharedModule { }

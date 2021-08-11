@@ -55,7 +55,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section-container">
+            <div *ngIf="content.idCardImg && content.idCardImg !== ''" class="section-container">
                 <div class="info-header">
                     <span class="info-field">ไฟล์แนบ</span>
                 </div>
@@ -66,32 +66,60 @@
                     <img mat-card-image>
                 </div>
             </div>
-            <div *ngIf="content.availableTimes && content.availableTimes.length > 0" class="section-container">
+            <div *ngIf="content.availableTimes !== ''" class="section-container">
                 <div class="info-header">
                     <span class="info-field">วันและเวลาที่สะดวก</span>
                 </div>
                 <div class="info-body">
                     <div>
                         <ul>
-                            <li class="available-time-li" *ngFor="let availableTime of content.availableTimes">
-                                {{availableTime}}</li>
+                            <li class="available-time-li"
+                                *ngFor="let availableTime of content.availableTimes.split(',')">
+                                {{availableTime}}
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div *ngIf="content.status === 'รอการอนุมัติ' || content.verification.statusNote" class="section-container">
+            <div *ngIf="content.status === 'รอการอนุมัติ' || content.verification?.statusNote"
+                class="section-container">
                 <div class="info-header">
                     <span class="info-field">หมายเหตุ</span>
                 </div>
-                <div class="info-body last-item">
+                <div class="note-body">
                     <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else readMode">
                         <mat-form-field [formGroup]="verifyForm" class="mat-form-field" appearance="fill">
-                            <textarea formControlName="note" matInput placeholder="หมายเหตุ" rows="4"></textarea>
+                            <textarea formControlName="note" matInput placeholder="หมายเหตุ" rows="3"></textarea>
                         </mat-form-field>
                     </ng-container>
                     <ng-template #readMode>
-                        <div class="status-note">{{content.verification.statusNote}}</div>
+                        <div class="note-text">{{content.verification?.statusNote}}</div>
                     </ng-template>
+                </div>
+            </div>
+            <div class="section-container">
+                <div class="info-header">
+                    <span class="info-field">ข้อมูลการตรวจสอบ</span>
+                </div>
+                <div class="info-body last-item">
+                    <div>
+                        <span class="info-field">สถานะ:</span>
+                        <span class="info-value">{{content.verification?.status || content.status}}</span>
+                    </div>
+                    <div>
+                        <span class="info-field">
+                            {{content.status === 'รอการอนุมัติ' ? 'ลงทะเบียนเมื่อ' :'ตรวจสอบเมื่อ:'}}
+                        </span>
+                        <span class="info-value">
+                            {{content.status === 'รอการอนุมัติ' ? createdTime : updatedTime}}
+                        </span>
+                    </div>
+                    <div *ngIf="content.verification">
+                        <span class="info-field">ตรวจสอบโดย:</span><span class="info-value">
+                            {{content.verification.verifiedBy?.firstName}}
+                            {{content.verification.verifiedBy?.lastName}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

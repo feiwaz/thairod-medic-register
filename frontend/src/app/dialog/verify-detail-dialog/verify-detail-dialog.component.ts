@@ -30,17 +30,17 @@ export class VerifyDetailDialogComponent implements OnInit {
     firstName: '',
     lastName: '',
     dateOfBirth: '',
+    createdTime: '',
     address: '',
     contactNumber: '',
     lineId: '',
     specializedFields: [],
     departments: [],
     medCertificateId: '',
+    idCardImg: '',
     availableTimes: '',
     status: '',
-    verification: {
-      statusNote: ''
-    }
+    verification: {} as any
   };
 
   verifyForm = this.fb.group({
@@ -127,7 +127,15 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   get dateOfBirth(): string {
-    return moment(this.content.dateOfBirth).format('DD MMM YYYY');
+    return moment(this.content.dateOfBirth).locale('th').format('DD MMM YYYY');
+  }
+
+  get createdTime(): string {
+    return moment(this.content.createdTime).locale('th').format('DD MMM YYYY HH:mm:ss');
+  }
+
+  get updatedTime(): string {
+    return moment(this.content.verification?.updatedTime).locale('th').format('DD MMM YYYY HH:mm:ss');
   }
 
 }

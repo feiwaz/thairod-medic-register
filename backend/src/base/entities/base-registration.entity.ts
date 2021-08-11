@@ -19,9 +19,7 @@ export abstract class BaseRegistration extends BaseResource {
   @Column()
   dateOfBirth: Date;
 
-  @Column({
-    length: 510
-  })
+  @Column({ length: 510 })
   address: string;
 
   @Column()
@@ -49,8 +47,8 @@ export abstract class BaseRegistration extends BaseResource {
   })
   status: VerificationStatus;
 
-  @Column('simple-array', { nullable: true })
-  availableTimes: string[];
+  @Column({ length: 510 })
+  availableTimes: string;
 
   @CreateDateColumn()
   createdTime: Date;

@@ -1,23 +1,8 @@
-import { VerificationStatus } from 'src/enum/verification-status.enum';
+import { FindOneResponseDto } from 'src/base/dto/find-one-response.dto';
 import { DoctorInitial } from '../entities/doctor.entity';
 import { SpecializedFieldLabel } from '../entities/specialized-field.entity';
 
-export class responseDoctorDto {
-  id: number;
-  nationalId: string;
+export class responseDoctorDto extends FindOneResponseDto {
   initial: DoctorInitial;
-  firstName: string;
-  lastName: string;
-  dateOfBirth: string;
-  address: string;
-  contactNumber: string;
-  lineId: string;
-  medCertificateId: number;
-  jobCertificateImg: string;
-  jobCertificateSelfieImg: string;
-  idCardImg: string;
-  idCardSelfieImg: string;
-  status: VerificationStatus;
   specializedFields: SpecializedFieldLabel[];
-  verification: any;
 }

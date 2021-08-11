@@ -66,7 +66,7 @@ export class AvailableTimeFormComponent implements OnInit {
     if (basicInfoString) {
       const { availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       if (availableTimes) {
-        availableTimes.forEach(availableTime => {
+        availableTimes.forEach((availableTime: string) => {
           const viewValues = availableTime.split(' - ');
           const day = this.days.find(day => day.viewValue === viewValues[0]);
           const shift = this.shifts.find(shift => shift.viewValue === viewValues[1]);

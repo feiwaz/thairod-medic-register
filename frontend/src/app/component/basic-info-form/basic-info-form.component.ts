@@ -24,11 +24,6 @@ const volunteerInitials: InitialOption[] = [
   { value: 5, viewValue: 'เด็กหญิง' }
 ];
 
-function getLocale() {
-  const locale = 'th';
-  return `${locale}-u-ca-gregory`;
-}
-
 @Component({
   selector: 'app-basic-info-form',
   templateUrl: './basic-info-form.component.html',

@@ -7,5 +7,5 @@ export interface BasicInfo {
   address: string;
   contactNumber: string;
   lineId: string;
-  availableTimes: string[]
+  availableTimes: string[];
 }

@@ -1,6 +1,5 @@
 import { BaseRegistration } from 'src/base/entities/base-registration.entity';
-import { VerificationStatus } from 'src/enum/verification-status.enum';
-import { Column, CreateDateColumn, Entity, OneToMany, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { VolunteerDepartment } from './volunteer-department.entity';
 import { VolunteerVerification } from './volunteer-verification.entity';
 

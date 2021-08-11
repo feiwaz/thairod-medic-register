@@ -78,13 +78,12 @@ export const DATE_FORMAT = {
     useClass: MomentDateAdapter,
     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
   }, {
+    provide: MAT_DATE_LOCALE, useValue: 'th-TH'
+  }, {
     provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT
-  },
-  // {
-  //   provide: MAT_DATE_LOCALE, useValue: 'th-TH'
-  // }
-  { provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true }
-  ],
+  }, {
+    provide: HTTP_INTERCEPTORS, useClass: HttpResponseInterceptor, multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

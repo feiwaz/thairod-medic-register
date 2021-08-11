@@ -81,18 +81,29 @@ export class DoctorsService {
     const { specializedFields, ...doctorEntities } = doctor;
     const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);
     responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
+    await this.populateVerification(doctor, responseDto);
+    return responseDto;
+  }
 
+  private async populateVerification(doctor: Doctor, responseDto: responseDoctorDto) {
     const verification = await this.docVerificationRepository.findOne({
       where: { doctor: { id: doctor.id } },
       relations: ['verifiedBy'],
       order: { updatedTime: 'DESC' }
     });
-    responseDto.verification = { statusNote: null };
     if (verification) {
-      responseDto.verification.statusNote = verification.statusNote
+      const { status, statusNote, updatedTime, verifiedBy } = verification;
+      responseDto.verification = {
+        status: status,
+        statusNote: statusNote,
+        updatedTime: updatedTime,
+        verifiedBy: {
+          firstName: verifiedBy.firstName,
+          lastName: verifiedBy.lastName,
+          contactNumber: verifiedBy.contactNumber
+        }
+      };
     }
-
-    return responseDto;
   }
 
   async checkStatus(nationalId: number): Promise<any> {

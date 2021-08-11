@@ -22,6 +22,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
 
   create(user: any, blobs?: Blob[]): Observable<any> {
     user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    user.availableTimes = user.availableTimes.join();
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));
     this.fileService.appendFilesToFormData(blobs, formData);
