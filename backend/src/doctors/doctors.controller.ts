@@ -38,6 +38,11 @@ export class DoctorsController {
     return this.service.findOne(nationalId);
   }
 
+  @Get(':nationalId/check-verification-status')
+  checkStatus(@Param('nationalId') nationalId: number) {
+    return this.service.checkStatus(nationalId);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Patch(':id/verify-registration-status')
   update(

@@ -33,4 +33,8 @@ export class DoctorService extends BaseRegistrationService {
     return super.updateStatus(id, body);
   }
 
+  checkStatus(nationalId: number): Observable<any> {
+    return super.checkStatus(nationalId);
+  }
+
 }

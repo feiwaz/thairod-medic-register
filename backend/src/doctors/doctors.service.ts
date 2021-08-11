@@ -81,6 +81,11 @@ export class DoctorsService {
     return this.mapEntityToDto(doctor);
   }
 
+  async checkStatus(nationalId: number): Promise<any> {
+    return this.registrationService.checkStatus(nationalId, this.doctorRepository,
+      this.docVerificationRepository, 'doctor');
+  }
+
   private mapEntityToDto(doctor: Doctor) {
     const { specializedFields, ...doctorEntities } = doctor;
     const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);

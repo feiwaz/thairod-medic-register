@@ -98,6 +98,11 @@ export class VolunteersService {
     return await this.mapEntityToDto(volunteer);
   }
 
+  async checkStatus(nationalId: number): Promise<any> {
+    return this.registrationService.checkStatus(nationalId, this.volunteerRepository,
+      this.volVerificationRepository, 'volunteer');
+  }
+
   private async mapEntityToDto(volunteer: Volunteer): Promise<FindOneVolunteerDto> {
     const responseDto = Object.assign(new FindOneVolunteerDto(), volunteer);
     const volunteerDepartments = await this.volunteerDepartmentRepository.find({

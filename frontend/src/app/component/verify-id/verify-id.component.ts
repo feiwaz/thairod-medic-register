@@ -129,7 +129,7 @@ export class VerifyIdComponent implements OnInit {
     if (!this.role) {
       service = this.verifyForm.controls.role.value === 0 ? this.doctorService : this.volunteerService;
     }
-    service.findOne(this.verifyForm.controls.nationalId.value).subscribe(
+    service.checkStatus(this.verifyForm.controls.nationalId.value).subscribe(
       response => this.handleSuccessfulCheckUserStatus(response),
       errorResponse => this.handleErrorResponse()
     );

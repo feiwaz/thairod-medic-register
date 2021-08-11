@@ -37,4 +37,9 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     return this.http.patch<any>(url, body);
   }
 
+  checkStatus(nationalId: number): Observable<any> {
+    const url = `${this.resourcePrefix}/${nationalId}/check-verification-status`;
+    return this.http.get<any>(url);
+  }
+
 }

@@ -42,4 +42,8 @@ export class VolunteerService extends BaseRegistrationService {
     return this.http.put<any>(url, { volunteerDepartments: volunteerDepartments });
   }
 
+  checkStatus(nationalId: number): Observable<any> {
+    return super.checkStatus(nationalId);
+  }
+
 }
