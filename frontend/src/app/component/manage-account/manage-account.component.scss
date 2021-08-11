@@ -64,6 +64,18 @@ td.mat-cell {
     border-left: 1px solid #e0e0e0;
 }
 
+.info-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 16px;
+    margin-left: 4px;
+}
+
+.info-header > span {
+    margin-left: 5px;
+}
+
 button {
     font-size: 16px;
 }

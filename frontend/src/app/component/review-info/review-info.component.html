@@ -97,7 +97,7 @@
       <div class="info-body">
         <div><span class="info-field">วันและเวลาที่สะดวก:</span>
           <ul *ngIf="basicInfo.availableTimes && basicInfo.availableTimes.length > 0 else noAvailableTime">
-            <li *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
+            <li class="available-time-li" *ngFor="let availableTime of basicInfo.availableTimes">{{availableTime}}</li>
           </ul>
           <ng-template #noAvailableTime>
             <span class="info-value">-</span>

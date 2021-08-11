@@ -224,4 +224,8 @@ export class ManageAccountComponent implements OnInit {
     });
   }
 
+  get currentUserId(): number {
+    return +this.authService.currentUser.id;
+  }
+
 }

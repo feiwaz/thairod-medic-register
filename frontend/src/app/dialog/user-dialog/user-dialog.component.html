@@ -4,7 +4,7 @@
 <div class="form-container">
     <div class="user-container">
         <h2 mat-dialog-title id="user-dialog-title"> {{isCreatingNew ? 'เพิ่ม':'แก้ไข'}}ผู้ใช้</h2>
-        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="userForm">
             <mat-form-field>
                 <input matInput #email maxlength="64" placeholder="อีเมล" formControlName="email">
                 <mat-hint align="end">{{email.value.length}} / 64</mat-hint>
@@ -89,7 +89,7 @@
 <mat-dialog-actions align="end">
     <div>
         <button mat-flat-button color="primary" [disabled]="!userForm.dirty || !userForm.valid || isLoading"
-            type="submit">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
+            type="button" (click)="onSubmit()">{{isCreatingNew ? 'เพิ่ม' : 'บันทึก'}}</button>
     </div>
     <div class="cancel-button">
         <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>

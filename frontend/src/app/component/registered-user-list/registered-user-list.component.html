@@ -46,7 +46,7 @@
                 <th mat-header-cell *matHeaderCellDef>อื่นๆ</th>
                 <td mat-cell *matCellDef="let row">
                     <button mat-button (click)=onClick(row)>
-                        <mat-icon>{{row.status === 'รอการอนุมัติ' ? 'search' : 'info'}}</mat-icon>
+                        <mat-icon>{{row.status === 'รอการอนุมัติ' ? 'manage_search' : 'info'}}</mat-icon>
                         <span class="removable-text">{{row.status === 'รอการอนุมัติ' ? 'ตรวจสอบ' : 'ดูข้อมูล'}}</span>
                     </button>
                 </td>
