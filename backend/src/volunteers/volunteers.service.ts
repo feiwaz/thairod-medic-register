@@ -12,8 +12,8 @@ import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
-  FindOneVolunteerDto
-} from './dto/find-one-volunteer.dto';
+  ResponseVolunteerDto
+} from './dto/response-volunteer.dto';
 import { VolunteerDepartmentDto } from './dto/volunteer-department.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { Department } from './entities/department.entity';
@@ -92,39 +92,39 @@ export class VolunteersService {
     return this.volunteerRepository.find(options);
   }
 
-  async findOne(id: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne(id, {
-      relations: ['volunteerDepartments', 'volunteerDepartments.department',
-        'volunteerVerifications', 'volunteerVerifications.verifiedBy'
-      ]
-    });
+  async findOne(id: number): Promise<ResponseVolunteerDto> {
+    const volunteer = await this.volunteerRepository.findOne(id);
     if (!volunteer) {
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
     return await this.mapEntityToDto(volunteer);
   }
 
-  async checkStatus(nationalId: number): Promise<any> {
-    return this.registrationService.checkStatus(nationalId, this.volunteerRepository,
-      this.volVerificationRepository, 'volunteer');
-  }
+  private async mapEntityToDto(volunteer: Volunteer): Promise<ResponseVolunteerDto> {
+    const responseDto = Object.assign(new ResponseVolunteerDto(), volunteer);
 
-  private async mapEntityToDto(volunteer: Volunteer): Promise<FindOneVolunteerDto> {
-    const responseDto = Object.assign(new FindOneVolunteerDto(), volunteer);
     const volunteerDepartments = await this.volunteerDepartmentRepository.find({
       where: { volunteerId: volunteer.id },
       relations: ['department']
     });
-    responseDto.departments = volunteerDepartments.map(volunteerDepartment => ({
-      label: volunteerDepartment.department.label,
-      isTrainingRequired: volunteerDepartment.department.isTrainingRequired,
-      trainingStatus: volunteerDepartment.trainingStatus
-    }));
+    responseDto.departments = volunteerDepartments.map(volDep => volDep.department.label);
+
+    const verification = await this.volVerificationRepository.findOne({
+      where: { volunteer: { id: volunteer.id } },
+      relations: ['verifiedBy'],
+      order: { updatedTime: 'DESC' }
+    });
+    responseDto.verification = { statusNote: null };
+    if (verification) {
+      responseDto.verification.statusNote = verification.statusNote
+    }
+
     return responseDto;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.volunteerRepository.delete(id);
+  async checkStatus(nationalId: number): Promise<any> {
+    return this.registrationService.checkStatus(nationalId, this.volunteerRepository,
+      this.volVerificationRepository, 'volunteer');
   }
 
   async updateStatus(id: number, verificationDto: VerificationDto) {
@@ -171,6 +171,10 @@ export class VolunteersService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.volunteerRepository.delete(id);
   }
 
 }

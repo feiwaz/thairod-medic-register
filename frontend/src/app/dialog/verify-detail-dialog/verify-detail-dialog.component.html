@@ -43,11 +43,11 @@
                 <div class="info-body">
                     <div *ngIf="role === 'doctor' 
                     ? content.specializedFields.length !== 0 
-                    : content.volunteerDepartments.length !== 0">
+                    : content.departments.length !== 0">
                         <span class="info-field">{{role === 'doctor' ? 'สาขาที่ถนัด:' : 'แผนกที่สนใจ:'}}</span>
                         <span class="info-value">{{role === 'doctor'
-                            ? content.specializedFields.join(", ") :
-                            volunteerDepartments.join(", ")}}</span>
+                            ? content.specializedFields.join(", ")
+                            : content.departments.join(", ")}}</span>
                     </div>
                     <div *ngIf="content.medCertificateId">
                         <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span>
@@ -90,7 +90,7 @@
                         </mat-form-field>
                     </ng-container>
                     <ng-template #readMode>
-                        <div class="info-value"></div>
+                        <div class="info-value">{{content.verification.statusNote}}</div>
                     </ng-template>
                 </div>
             </div>

@@ -19,4 +19,5 @@ export class responseDoctorDto {
   idCardSelfieImg: string;
   status: VerificationStatus;
   specializedFields: SpecializedFieldLabel[];
+  verification: any;
 }

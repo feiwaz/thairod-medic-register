@@ -69,30 +69,35 @@ export class DoctorsService {
 
   async findOne(id: number): Promise<responseDoctorDto> {
     const doctor = await this.doctorRepository.findOne(id, {
-      relations: ['specializedFields', 'doctorVerifications',
-        'doctorVerifications.verifiedBy'
-      ]
+      relations: ['specializedFields']
     });
     if (!doctor) {
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
-    return this.mapEntityToDto(doctor);
+    return await this.mapEntityToDto(doctor);
+  }
+
+  private async mapEntityToDto(doctor: Doctor) {
+    const { specializedFields, ...doctorEntities } = doctor;
+    const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);
+    responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
+
+    const verification = await this.docVerificationRepository.findOne({
+      where: { doctor: { id: doctor.id } },
+      relations: ['verifiedBy'],
+      order: { updatedTime: 'DESC' }
+    });
+    responseDto.verification = { statusNote: null };
+    if (verification) {
+      responseDto.verification.statusNote = verification.statusNote
+    }
+
+    return responseDto;
   }
 
   async checkStatus(nationalId: number): Promise<any> {
     return this.registrationService.checkStatus(nationalId, this.doctorRepository,
       this.docVerificationRepository, 'doctor');
-  }
-
-  private mapEntityToDto(doctor: Doctor) {
-    const { specializedFields, ...doctorEntities } = doctor;
-    const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);
-    responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
-    return responseDto;
-  }
-
-  async remove(id: number): Promise<void> {
-    await this.doctorRepository.delete(id);
   }
 
   async updateStatus(id: number, verificationDto: VerificationDto) {
@@ -122,6 +127,10 @@ export class DoctorsService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.doctorRepository.delete(id);
   }
 
 }

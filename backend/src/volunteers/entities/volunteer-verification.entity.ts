@@ -12,7 +12,6 @@ export class VolunteerVerification extends BaseVerification {
   )
   volunteer: Volunteer;
 
-
   @ManyToOne(() => User, verifiedBy => verifiedBy.volunteerVerifications)
   verifiedBy: User;
 

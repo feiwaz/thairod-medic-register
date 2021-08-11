@@ -34,10 +34,13 @@ export class VerifyDetailDialogComponent implements OnInit {
     contactNumber: '',
     lineId: '',
     specializedFields: [],
-    volunteerDepartments: [],
+    departments: [],
     medCertificateId: '',
     availableTimes: '',
-    status: ''
+    status: '',
+    verification: {
+      statusNote: ''
+    }
   };
 
   verifyForm = this.fb.group({
@@ -125,11 +128,6 @@ export class VerifyDetailDialogComponent implements OnInit {
 
   get dateOfBirth(): string {
     return moment(this.content.dateOfBirth).format('DD MMM YYYY');
-  }
-
-  get volunteerDepartments(): string[] {
-    console.log(this.content.volunteerDepartments);
-    return this.content.volunteerDepartments.map((dep: any) => dep.department.label);
   }
 
 }
