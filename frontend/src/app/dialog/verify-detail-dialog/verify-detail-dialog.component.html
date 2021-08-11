@@ -128,14 +128,14 @@
 <mat-dialog-actions align="end">
     <ng-container *ngIf="content.status === 'รอการอนุมัติ'">
         <div class="fail-button-container">
-            <button mat-flat-button type="button" class="fail-button" (click)="onVerifyClicked(content, status.DENIED)"
+            <button mat-button type="button" class="fail-button" (click)="onVerifyClicked(content, status.DENIED)"
                 [disabled]="isLoading">
                 <mat-icon>highlight_off</mat-icon> ไม่ผ่าน
             </button>
         </div>
         <div>
-            <button mat-flat-button type="button" class="pass-button"
-                (click)="onVerifyClicked(content, status.APPROVED)" [disabled]="isLoading">
+            <button mat-button type="button" class="pass-button" (click)="onVerifyClicked(content, status.APPROVED)"
+                [disabled]="isLoading">
                 <mat-icon>check_circle_outline</mat-icon> ผ่าน
             </button>
         </div>
