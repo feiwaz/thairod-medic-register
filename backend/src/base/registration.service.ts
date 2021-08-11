@@ -4,7 +4,7 @@ import { Doctor } from 'src/doctors/entities/doctor.entity';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { VolunteerVerification } from 'src/volunteers/entities/volunteer-verification.entity';
 import { Volunteer } from 'src/volunteers/entities/volunteer.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, In, Repository } from 'typeorm';
 
 @Injectable()
 export class RegistrationService {
@@ -13,7 +13,10 @@ export class RegistrationService {
   readonly volunteerRequiredFiles = ['idCard', 'idCardSelfie'];
 
   async getRegisterInfo(nationalId: number, repository: Repository<Doctor | Volunteer>): Promise<any> {
-    const entity = await repository.findOne({ select: ['nationalId'], where: { nationalId } });
+    const entity = await repository.findOne({
+      select: ['nationalId'],
+      where: { nationalId, status: In([VerificationStatus.PENDING, VerificationStatus.APPROVED]) }
+    });
     if (!entity) {
       return {};
     }
