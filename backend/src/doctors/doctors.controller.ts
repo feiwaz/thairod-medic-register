@@ -3,7 +3,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
-import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
+import { VerificationDto } from 'src/users/dto/verification.dto';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 
@@ -42,9 +42,9 @@ export class DoctorsController {
   @Patch(':id/verify-registration-status')
   update(
     @Param('id') id: number,
-    @Body(new ValidationPipe()) verifyStatusDto: RegistrationStatusDto
+    @Body(new ValidationPipe()) verifyStatusDto: VerificationDto
   ) {
-    return this.service.updateStatus(id, verifyStatusDto);
+    return this.service.updateStatus(+id, verifyStatusDto);
   }
 
   @UseGuards(JwtAuthGuard)

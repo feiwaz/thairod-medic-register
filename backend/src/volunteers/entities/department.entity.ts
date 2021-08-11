@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { VolunteerDepartment } from './volunteerDepartment.entity';
+import { VolunteerDepartment } from './volunteer-department.entity';
 
 export enum DepartmentLabel {
   DEP1 = 'แอดมินตอบ LINE',

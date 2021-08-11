@@ -1,6 +1,6 @@
-import { UserStatus } from 'src/users/entities/user.entity';
+import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { DoctorInitial } from '../entities/doctor.entity';
-import { SpecializedFieldLabel } from '../entities/specializedField.entity';
+import { SpecializedFieldLabel } from '../entities/specialized-field.entity';
 
 export class responseDoctorDto {
   id: number;
@@ -17,6 +17,6 @@ export class responseDoctorDto {
   jobCertificateSelfieImg: string;
   idCardImg: string;
   idCardSelfieImg: string;
-  status: UserStatus;
+  status: VerificationStatus;
   specializedFields: SpecializedFieldLabel[];
 }

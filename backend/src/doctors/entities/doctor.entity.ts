@@ -1,6 +1,7 @@
-import { UserStatus } from 'src/users/entities/user.entity';
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { SpecializedField } from './specializedField.entity';
+import { BaseRegistration } from 'src/base/entities/base-registration.entity';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
+import { DoctorVerification } from './doctor-verification.entity';
+import { SpecializedField } from './specialized-field.entity';
 
 export enum DoctorInitial {
   INIT1 = 'นายแพทย์',
@@ -10,16 +11,7 @@ export enum DoctorInitial {
 }
 
 @Entity()
-export class Doctor {
-
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({
-    type: 'bigint',
-    unique: true
-  })
-  nationalId: string;
+export class Doctor extends BaseRegistration {
 
   @Column({
     type: 'enum',
@@ -28,46 +20,13 @@ export class Doctor {
   initial: DoctorInitial;
 
   @Column()
-  firstName: string;
-
-  @Column()
-  lastName: string;
-
-  @Column()
-  dateOfBirth: Date;
-
-  @Column({
-    length: 510,
-  })
-  address: string;
-
-  @Column()
-  contactNumber: string;
-
-  @Column()
-  lineId: string;
-
-  @Column()
   medCertificateId: number;
 
-  @Column({ nullable: true })
-  jobCertificateImg: string;
-
-  @Column({ nullable: true })
-  jobCertificateSelfieImg: string;
-
-  @Column({ nullable: true })
-  idCardImg: string;
-
-  @Column({ nullable: true })
-  idCardSelfieImg: string;
-
-  @Column({
-    type: 'enum',
-    enum: UserStatus,
-    default: UserStatus.PENDING
-  })
-  status: UserStatus;
+  @OneToMany(
+    () => DoctorVerification,
+    doctorVerification => doctorVerification.doctor
+  )
+  doctorVerifications: DoctorVerification[];
 
   @ManyToMany(
     () => SpecializedField,
@@ -76,11 +35,5 @@ export class Doctor {
   )
   @JoinTable()
   specializedFields: SpecializedField[];
-
-  @CreateDateColumn()
-  createdTime: Date;
-
-  @UpdateDateColumn()
-  updatedTime: Date;
 
 }

@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
-import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
-import { UserStatus } from 'src/users/entities/user.entity';
+import { VerificationDto } from 'src/users/dto/verification.dto';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { VolunteersService } from './volunteers.service';
@@ -32,7 +32,7 @@ export class VolunteersController {
   @UseGuards(JwtAuthGuard)
   @Get('approved')
   findAllApproved() {
-    return this.service.findAll(UserStatus.APPROVED);
+    return this.service.findAll(VerificationStatus.APPROVED);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -54,8 +54,8 @@ export class VolunteersController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id/verify-registration-status')
-  update(@Param('id') id: number, @Body(new ValidationPipe()) verifyStatusDto: RegistrationStatusDto) {
-    return this.service.updateStatus(id, verifyStatusDto);
+  update(@Param('id') id: number, @Body(new ValidationPipe()) verificationDto: VerificationDto) {
+    return this.service.updateStatus(+id, verificationDto);
   }
 
   @UseGuards(JwtAuthGuard)

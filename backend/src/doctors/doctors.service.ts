@@ -1,16 +1,18 @@
 import {
-  BadRequestException,
   ConflictException, Injectable, NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RegistrationService } from 'src/base/registration.service';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
-import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
+import { VerificationDto } from 'src/users/dto/verification.dto';
+import { User } from 'src/users/entities/user.entity';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { responseDoctorDto } from './dto/response-doctor.dto';
+import { DoctorVerification } from './entities/doctor-verification.entity';
 import { Doctor } from './entities/doctor.entity';
-import { SpecializedField } from './entities/specializedField.entity';
+import { SpecializedField } from './entities/specialized-field.entity';
 
 @Injectable()
 export class DoctorsService {
@@ -19,15 +21,20 @@ export class DoctorsService {
     private doctorRepository: Repository<Doctor>,
     @InjectRepository(SpecializedField)
     private specializedFieldRepository: Repository<SpecializedField>,
-    private minioClientService: MinioClientService
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(DoctorVerification)
+    private docVerificationRepository: Repository<DoctorVerification>,
+    private minioClientService: MinioClientService,
+    private registrationService: RegistrationService
   ) { }
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
-    await this.checkIfNationalIdAlreadyExisted(createDto.nationalId);
+    await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
     try {
       const entity = await this.mapDtoToEntity(createDto);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
-      this.checkFileRequirement(bufferedFile);
+      this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'doctor');
       resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doc', createDto.nationalId);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
@@ -39,21 +46,6 @@ export class DoctorsService {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
       throw error;
-    }
-  }
-
-  private checkFileRequirement(bufferedFile: any) {
-    const requiredFields = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
-    const pass = Object.keys(bufferedFile).length !== 0 && requiredFields.every(field => Object.keys(bufferedFile).includes(field));
-    if (!pass) {
-      throw new BadRequestException(`${requiredFields.join(', ')} are required`);
-    }
-  }
-
-  private async checkIfNationalIdAlreadyExisted(nationalId: string) {
-    const entity = await this.doctorRepository.findOne({ where: { nationalId } });
-    if (entity) {
-      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
     }
   }
 
@@ -69,7 +61,9 @@ export class DoctorsService {
 
   findAll(): Promise<Doctor[]> {
     return this.doctorRepository.find({
-      relations: ['specializedFields'],
+      relations: ['specializedFields', 'doctorVerifications',
+        'doctorVerifications.verifiedBy'
+      ],
       order: { updatedTime: 'DESC' }
     });
   }
@@ -77,7 +71,9 @@ export class DoctorsService {
   async findOne(nationalId: number): Promise<responseDoctorDto> {
     const doctor = await this.doctorRepository.findOne({
       where: { nationalId },
-      relations: ['specializedFields']
+      relations: ['specializedFields', 'doctorVerifications',
+        'doctorVerifications.verifiedBy'
+      ]
     });
     if (!doctor) {
       return {} as responseDoctorDto;
@@ -96,10 +92,33 @@ export class DoctorsService {
     await this.doctorRepository.delete(id);
   }
 
-  async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    const response = await this.doctorRepository.update(id, { status: verifyStatusDto.status });
-    if (response.affected === 0) {
-      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+  async updateStatus(id: number, verificationDto: VerificationDto) {
+    try {
+      const doctor = await this.doctorRepository.findOne(id);
+      if (!doctor) {
+        throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+      }
+      const user = await this.userRepository.findOne(verificationDto.verifiedById);
+      if (!user) {
+        throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+      }
+      let docVerification = await this.docVerificationRepository.findOne({
+        where: { doctor: { id: doctor.id }, verifiedBy: { id: user.id } },
+        relations: ['doctor', 'verifiedBy']
+      });
+      console.log(docVerification)
+      if (!docVerification) {
+        docVerification = new DoctorVerification();
+        docVerification.doctor = doctor;
+        docVerification.verifiedBy = user;
+      }
+      docVerification.doctor.status = verificationDto.status;
+      docVerification.status = verificationDto.status;
+      docVerification.statusNote = verificationDto.statusNote;
+      this.docVerificationRepository.save(docVerification);
+    } catch (error) {
+      throw error;
     }
   }
+
 }

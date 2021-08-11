@@ -1,12 +1,9 @@
 import { InternalServerErrorException } from "@nestjs/common";
 import * as bcrypt from 'bcrypt';
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
-export enum UserStatus {
-  PENDING = 'รอการอนุมัติ',
-  APPROVED = 'อนุมัติแล้ว',
-  DENIED = 'ไม่อนุมัติ'
-}
+import { BaseResource } from "src/base/entities/base-resource.entity";
+import { DoctorVerification } from "src/doctors/entities/doctor-verification.entity";
+import { VolunteerVerification } from "src/volunteers/entities/volunteer-verification.entity";
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -14,10 +11,7 @@ export enum UserRole {
 }
 
 @Entity()
-export class User {
-
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User extends BaseResource {
 
   @Column({ unique: true })
   email: string;
@@ -64,6 +58,20 @@ export class User {
 
   @Column()
   isActive: boolean;
+
+  @OneToMany(
+    () => DoctorVerification,
+    doctorVerification => doctorVerification.verifiedBy,
+    { cascade: true }
+  )
+  doctorVerifications: DoctorVerification[];
+
+  @OneToMany(
+    () => VolunteerVerification,
+    volunteerVerification => volunteerVerification.verifiedBy,
+    { cascade: true }
+  )
+  volunteerVerifications: VolunteerVerification[];
 
   @CreateDateColumn({ select: false })
   createdTime: Date;

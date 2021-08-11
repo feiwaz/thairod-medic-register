@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { BasicInfo } from '../model/basic-info';
-import { VolunteerJobInfo } from '../model/volunteer-job-info';
+import { BasicInfo } from '../model/basic-info.model';
+import { VerificationBody } from '../model/verification-body.model';
+import { VolunteerJobInfo } from '../model/volunteer-job-info.model';
 import { BaseRegistrationService } from './base-registration.service';
 import { FileService } from './file.service';
 
@@ -28,8 +29,8 @@ export class VolunteerService extends BaseRegistrationService {
     return super.getResources();
   }
 
-  updateStatus(id: number, status: string): Observable<any> {
-    return super.updateStatus(id, status);
+  updateStatus(id: number, body: VerificationBody): Observable<any> {
+    return super.updateStatus(id, body);
   }
 
   getApprovedVolunteers(): Observable<any[]> {

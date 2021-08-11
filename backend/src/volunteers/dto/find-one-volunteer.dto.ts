@@ -1,6 +1,6 @@
 import { VolunteerInitial } from '../entities/volunteer.entity';
 import { DepartmentLabel } from '../entities/department.entity';
-import { UserStatus } from 'src/users/entities/user.entity';
+import { VerificationStatus } from 'src/enum/verification-status.enum';
 
 export class FindOneVolunteerDto {
   id: number;
@@ -17,7 +17,7 @@ export class FindOneVolunteerDto {
   jobCertificateSelfieImg: string;
   idCardImg: string;
   idCardSelfieImg: string;
-  status: UserStatus;
+  status: VerificationStatus;
   departments: VolunteerToDepartment[];
 }
 

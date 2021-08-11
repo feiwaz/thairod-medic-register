@@ -1,13 +1,14 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable, NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RegistrationService } from 'src/base/registration.service';
+import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
-import { RegistrationStatusDto } from 'src/users/dto/registration-status.dto';
-import { UserStatus } from 'src/users/entities/user.entity';
+import { VerificationDto } from 'src/users/dto/verification.dto';
+import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
@@ -16,8 +17,9 @@ import {
 import { VolunteerDepartmentDto } from './dto/volunteer-department.dto';
 import { VolunteerDepartmentsDto } from './dto/volunteer-departments.dto';
 import { Department } from './entities/department.entity';
+import { VolunteerDepartment } from './entities/volunteer-department.entity';
+import { VolunteerVerification } from './entities/volunteer-verification.entity';
 import { Volunteer } from './entities/volunteer.entity';
-import { VolunteerDepartment } from './entities/volunteerDepartment.entity';
 
 @Injectable()
 export class VolunteersService {
@@ -29,15 +31,20 @@ export class VolunteersService {
     private departmentRepository: Repository<Department>,
     @InjectRepository(VolunteerDepartment)
     private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
-    private minioClientService: MinioClientService
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @InjectRepository(VolunteerVerification)
+    private volVerificationRepository: Repository<VolunteerVerification>,
+    private minioClientService: MinioClientService,
+    private registrationService: RegistrationService
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
-    await this.checkIfNationalIdAlreadyExisted(createDto.nationalId);
+    await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
     try {
       const entity = await this.mapDtoToEntity(createDto);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
-      this.checkFileRequirement(bufferedFile);
+      this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'volunteer');
       resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'vol', createDto.nationalId);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
@@ -49,21 +56,6 @@ export class VolunteersService {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
       throw error;
-    }
-  }
-
-  private checkFileRequirement(bufferedFile: any) {
-    const requiredFields = ['idCard', 'idCardSelfie'];
-    const pass = Object.keys(bufferedFile).length !== 0 && requiredFields.every(field => Object.keys(bufferedFile).includes(field));
-    if (!pass) {
-      throw new BadRequestException(`${requiredFields.join(', ')} are required`);
-    }
-  }
-
-  private async checkIfNationalIdAlreadyExisted(nationalId: string) {
-    const entity = await this.volunteerRepository.findOne({ where: { nationalId } });
-    if (entity) {
-      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
     }
   }
 
@@ -79,20 +71,27 @@ export class VolunteersService {
     return entity;
   }
 
-  findAll(status?: UserStatus): Promise<Volunteer[]> {
+  findAll(status?: VerificationStatus): Promise<Volunteer[]> {
     const options: FindManyOptions<Volunteer> = {
-      relations: ['volunteerDepartments', 'volunteerDepartments.department'],
+      relations: ['volunteerDepartments', 'volunteerDepartments.department',
+        'volunteerVerifications', 'volunteerVerifications.verifiedBy'
+      ],
       order: { updatedTime: 'DESC' }
     };
+
     if (status) {
       options.where = { status };
     }
-    const volunteers = this.volunteerRepository.find(options);
-    return volunteers;
+    return this.volunteerRepository.find(options);
   }
 
   async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne({ where: { nationalId } });
+    const volunteer = await this.volunteerRepository.findOne({
+      where: { nationalId },
+      relations: ['volunteerDepartments', 'volunteerDepartments.department',
+        'volunteerVerifications', 'volunteerVerifications.verifiedBy'
+      ]
+    });
     if (!volunteer) {
       return {} as FindOneVolunteerDto;
     }
@@ -117,10 +116,31 @@ export class VolunteersService {
     await this.volunteerRepository.delete(id);
   }
 
-  async updateStatus(id: number, verifyStatusDto: RegistrationStatusDto) {
-    const response = await this.volunteerRepository.update(id, { status: verifyStatusDto.status });
-    if (response['affected'] === 0) {
-      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+  async updateStatus(id: number, verificationDto: VerificationDto) {
+    try {
+      const volunteer = await this.volunteerRepository.findOne(id);
+      if (!volunteer) {
+        throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+      }
+      const user = await this.userRepository.findOne(verificationDto.verifiedById);
+      if (!user) {
+        throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+      }
+      let volVerification = await this.volVerificationRepository.findOne({
+        where: { volunteer: { id: volunteer.id }, verifiedBy: { id: user.id } },
+        relations: ['volunteer', 'verifiedBy']
+      });
+      if (!volVerification) {
+        volVerification = new VolunteerVerification();
+        volVerification.volunteer = volunteer;
+        volVerification.verifiedBy = user;
+      }
+      volVerification.volunteer.status = verificationDto.status;
+      volVerification.status = verificationDto.status;
+      volVerification.statusNote = verificationDto.statusNote
+      this.volVerificationRepository.save(volVerification);
+    } catch (error) {
+      throw error;
     }
   }
 

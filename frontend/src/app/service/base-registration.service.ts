@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { VerificationBody } from 'src/app/model/verification-body.model';
 import { BaseResourceService } from './base-resource.service';
 import { FileService } from './file.service';
 
@@ -31,9 +32,9 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     return super.getResources();
   }
 
-  updateStatus(id: number, status: string): Observable<any> {
+  updateStatus(id: number, body: VerificationBody): Observable<any> {
     const url = `${this.resourcePrefix}/${id}/verify-registration-status`;
-    return this.http.patch<any>(url, { status });
+    return this.http.patch<any>(url, body);
   }
 
 }
