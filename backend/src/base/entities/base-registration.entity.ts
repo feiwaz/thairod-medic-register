@@ -49,6 +49,9 @@ export abstract class BaseRegistration extends BaseResource {
   })
   status: VerificationStatus;
 
+  @Column('simple-array', { nullable: true })
+  availableTimes: string[];
+
   @CreateDateColumn()
   createdTime: Date;
 

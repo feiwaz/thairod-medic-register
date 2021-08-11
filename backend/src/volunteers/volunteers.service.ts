@@ -71,11 +71,18 @@ export class VolunteersService {
     return entity;
   }
 
-  findAll(status?: VerificationStatus): Promise<Volunteer[]> {
+  async getRegisterInfo(nationalId: number): Promise<any> {
+    return this.registrationService.getRegisterInfo(nationalId, this.volunteerRepository);
+  }
+
+  findAll(): Promise<Volunteer[]> {
+    return this.registrationService.findAll(this.volunteerRepository);
+  }
+
+  findAllWithTrainingStatus(status?: VerificationStatus): Promise<Volunteer[]> {
     const options: FindManyOptions<Volunteer> = {
-      relations: ['volunteerDepartments', 'volunteerDepartments.department',
-        'volunteerVerifications', 'volunteerVerifications.verifiedBy'
-      ],
+      select: ['id', 'initial', 'firstName', 'lastName', 'status', 'volunteerDepartments'],
+      relations: ['volunteerDepartments', 'volunteerDepartments.department'],
       order: { updatedTime: 'DESC' }
     };
 
@@ -85,15 +92,14 @@ export class VolunteersService {
     return this.volunteerRepository.find(options);
   }
 
-  async findOne(nationalId: number): Promise<FindOneVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne({
-      where: { nationalId },
+  async findOne(id: number): Promise<FindOneVolunteerDto> {
+    const volunteer = await this.volunteerRepository.findOne(id, {
       relations: ['volunteerDepartments', 'volunteerDepartments.department',
         'volunteerVerifications', 'volunteerVerifications.verifiedBy'
       ]
     });
     if (!volunteer) {
-      return {} as FindOneVolunteerDto;
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
     return await this.mapEntityToDto(volunteer);
   }

@@ -59,24 +59,22 @@ export class DoctorsService {
     return entity;
   }
 
-  findAll(): Promise<Doctor[]> {
-    return this.doctorRepository.find({
-      relations: ['specializedFields', 'doctorVerifications',
-        'doctorVerifications.verifiedBy'
-      ],
-      order: { updatedTime: 'DESC' }
-    });
+  async getRegisterInfo(nationalId: number): Promise<any> {
+    return this.registrationService.getRegisterInfo(nationalId, this.doctorRepository);
   }
 
-  async findOne(nationalId: number): Promise<responseDoctorDto> {
-    const doctor = await this.doctorRepository.findOne({
-      where: { nationalId },
+  findAll(): Promise<Doctor[]> {
+    return this.registrationService.findAll(this.doctorRepository);
+  }
+
+  async findOne(id: number): Promise<responseDoctorDto> {
+    const doctor = await this.doctorRepository.findOne(id, {
       relations: ['specializedFields', 'doctorVerifications',
         'doctorVerifications.verifiedBy'
       ]
     });
     if (!doctor) {
-      return {} as responseDoctorDto;
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
     return this.mapEntityToDto(doctor);
   }

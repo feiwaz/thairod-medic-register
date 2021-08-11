@@ -29,10 +29,15 @@ export class VolunteersController {
     return this.service.create(createVolunteerDto, bufferedFile);
   }
 
+  @Get(':nationalId/register-info')
+  getRegisterInfo(@Param('nationalId') nationalId: number) {
+    return this.service.getRegisterInfo(nationalId);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('approved')
   findAllApproved() {
-    return this.service.findAll(VerificationStatus.APPROVED);
+    return this.service.findAllWithTrainingStatus(VerificationStatus.APPROVED);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,9 +46,10 @@ export class VolunteersController {
     return this.service.findAll();
   }
 
-  @Get(':nationalId')
-  findOne(@Param('nationalId') nationalId: number) {
-    return this.service.findOne(nationalId);
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.service.findOne(+id);
   }
 
   @Get(':nationalId/check-verification-status')

@@ -1,4 +1,4 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, Max, Min } from 'class-validator';
+import { IsArray, IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
 
 export abstract class BaseCreateRegistrationDto {
@@ -54,5 +54,10 @@ export abstract class BaseCreateRegistrationDto {
     message: `status must be like ${Object.values(VerificationStatus).join(', ')}`
   })
   status: VerificationStatus;
+
+  @IsNotEmpty()
+  @IsArray()
+  @IsString({ each: true })
+  availableTimes: string[];
 
 }

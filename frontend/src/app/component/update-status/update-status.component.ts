@@ -13,6 +13,7 @@ export class UpdateStatusComponent implements OnInit {
   verifyStatusLogo = '';
   nationalId = '';
   status = '';
+  statusNote = '';
 
   constructor(
     private imgCachingService: ImageCachingService,
@@ -21,7 +22,9 @@ export class UpdateStatusComponent implements OnInit {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
       this.nationalId = currentNavigation.extras.state?.nationalId || this.nationalId;
-      this.status = currentNavigation.extras.state?.status || this.status;
+      const response = currentNavigation.extras.state?.response;
+      this.status = response?.status || this.status;
+      this.statusNote = response?.statusNote || this.statusNote;
     }
   }
 

@@ -3,7 +3,8 @@
     <div class="main-logo" [innerHTML]="mainLogo | safeHtml"> </div>
     <div class="center-align" *ngIf="nationalId else noInfo">
       <p>สถานะของผู้ใช้ที่มีเลขประจำตัวประชาชน</p>
-      <p>{{nationalId}}:<span class="status-text">{{status}}</span></p>
+      <p class="first-p">{{nationalId}}: <span class="status-text">{{status}}</span></p>
+      <p *ngIf="statusNote" class="second-p">หมายเหตุ: <span class="status-text">{{statusNote}}</span></p>
     </div>
     <ng-template #noInfo>
       <div class="center-align">

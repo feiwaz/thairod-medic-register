@@ -12,8 +12,22 @@ export class RegistrationService {
   readonly doctorRequiredFiles = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
   readonly volunteerRequiredFiles = ['idCard', 'idCardSelfie'];
 
+  async getRegisterInfo(nationalId: number, repository: Repository<Doctor | Volunteer>): Promise<any> {
+    const entity = await repository.findOne({ select: ['nationalId'], where: { nationalId } });
+    if (!entity) {
+      return {};
+    }
+    return entity;
+  }
+
+  public findAll(repository: Repository<Doctor | Volunteer>): Promise<any[]> {
+    return repository.find({
+      select: ['id', 'createdTime', 'initial', 'firstName', 'lastName', 'status']
+    });
+  }
+
   public async checkIfNationalIdAlreadyExisted(repository: Repository<Doctor | Volunteer>, nationalId: string) {
-    const entity = repository.findOne({ where: { nationalId } });
+    const entity = await repository.findOne({ where: { nationalId } });
     if (entity) {
       throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
     }

@@ -5,7 +5,7 @@ import { BasicInfo } from 'src/app/model/basic-info.model';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { FileService } from 'src/app/service/file.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
-import { maskId, partialMaskId, numbersOnly } from 'src/app/util/util-functions';
+import { maskId, numbersOnly, partialMaskId } from 'src/app/util/util-functions';
 
 interface roleOption {
   value: number;
@@ -87,7 +87,7 @@ export class VerifyIdComponent implements OnInit {
   }
 
   verifyUserId(): void {
-    this.service.findOne(this.verifyForm.controls.nationalId.value).subscribe(
+    this.service.getRegisterInfo(this.verifyForm.controls.nationalId.value).subscribe(
       response => this.handleSuccessfulVerifyUserId(response),
       errorResponse => this.handleErrorResponse()
     );
@@ -141,7 +141,7 @@ export class VerifyIdComponent implements OnInit {
       this.isLoading = false;
       const maskedId = maskId(this.verifyForm.controls.nationalId.value);
       this.router.navigate(['/update-status'], {
-        state: { nationalId: maskedId, status: response.status }
+        state: { nationalId: maskedId, response }
       });
     } else {
       this.handleErrorResponse();

@@ -17,12 +17,16 @@ export class VolunteerService extends BaseRegistrationService {
     super(`${environment.apiPrefix}/volunteers`, http, fileService);
   }
 
-  findOne(nationalId: number): Observable<any> {
-    return super.findOne(nationalId);
+  getRegisterInfo(nationalId: number): Observable<any> {
+    return super.getRegisterInfo(nationalId);
   }
 
   create(user: BasicInfo & VolunteerJobInfo, blobs?: Blob[]): Observable<any> {
     return super.create(user, blobs);
+  }
+
+  findOne(id: number): Observable<any> {
+    return super.findOne(id);
   }
 
   getVolunteers(): Observable<any[]> {

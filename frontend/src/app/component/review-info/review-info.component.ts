@@ -18,6 +18,7 @@ import { maskId } from 'src/app/util/util-functions';
 })
 export class ReviewInfoComponent implements OnInit {
 
+  readonly defaultSuccessText = 'ส่งข้อมูลสำเร็จ';
   readonly defaultErrorText = 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
   role = '';
   isLoading = false;
@@ -128,12 +129,12 @@ export class ReviewInfoComponent implements OnInit {
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
     this.fileService.clearSessionAndImageLocalStorage();
-    this.toastrService.success('ส่งข้อมูลสำเร็จ');
+    this.toastrService.success(this.defaultSuccessText);
     const maskedId = maskId(this.basicInfo.nationalId);
     this.router.navigate(['/update-status'], {
       state: {
         nationalId: maskedId,
-        status: 'ส่งข้อมูลสำเร็จ'
+        response: { status: this.defaultSuccessText }
       }
     });
   }

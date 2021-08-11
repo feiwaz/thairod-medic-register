@@ -46,7 +46,7 @@
                     : content.volunteerDepartments.length !== 0">
                         <span class="info-field">{{role === 'doctor' ? 'สาขาที่ถนัด:' : 'แผนกที่สนใจ:'}}</span>
                         <span class="info-value">{{role === 'doctor'
-                            ? specializedFields.join(", ") :
+                            ? content.specializedFields.join(", ") :
                             volunteerDepartments.join(", ")}}</span>
                     </div>
                     <div *ngIf="content.medCertificateId">
@@ -71,13 +71,11 @@
                     <span class="info-field">วันและเวลาที่สะดวก</span>
                 </div>
                 <div class="info-body">
-                    <div><span class="info-field">วันและเวลาที่สะดวก:</span>
-                        <ul *ngIf="content.availableTimes && content.availableTimes.length > 0 else noInfo">
-                            <li *ngFor="let availableTime of content.availableTimes">{{availableTime}}</li>
+                    <div *ngIf="content.availableTimes && content.availableTimes.length > 0">
+                        <ul>
+                            <li class="available-time-li" *ngFor="let availableTime of content.availableTimes">
+                                {{availableTime}}</li>
                         </ul>
-                        <ng-template #noInfo>
-                            <span class="info-value">-</span>
-                        </ng-template>
                     </div>
                 </div>
             </div>
@@ -86,12 +84,12 @@
                     <span class="info-field">หมายเหตุ</span>
                 </div>
                 <div class="info-body">
-                    <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else note">
+                    <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else readMode">
                         <mat-form-field [formGroup]="verifyForm" class="mat-form-field" appearance="fill">
                             <textarea formControlName="note" matInput placeholder="หมายเหตุ" rows="4"></textarea>
                         </mat-form-field>
                     </ng-container>
-                    <ng-template #note>
+                    <ng-template #readMode>
                         <div class="info-value"></div>
                     </ng-template>
                 </div>
@@ -100,7 +98,7 @@
     </div>
 </div>
 <mat-dialog-actions align="end">
-    <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else recheck">
+    <ng-container *ngIf="content.status === 'รอการอนุมัติ'">
         <div class="fail-button-container">
             <button mat-flat-button type="button" class="fail-button" (click)="onVerifyClicked(content, status.DENIED)"
                 [disabled]="isLoading">
@@ -114,14 +112,6 @@
             </button>
         </div>
     </ng-container>
-    <ng-template #recheck>
-        <div>
-            <button mat-flat-button type="button" color="primary" (click)="onVerifyClicked(content, status.PENDING)"
-                [disabled]="isLoading">
-                <mat-icon>search</mat-icon> ตรวจสอบใหม่
-            </button>
-        </div>
-    </ng-template>
     <div class="cancel-button">
         <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>
     </div>

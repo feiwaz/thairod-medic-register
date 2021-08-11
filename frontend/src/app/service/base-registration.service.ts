@@ -15,8 +15,8 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     super(resourcePrefix, http);
   }
 
-  findOne(nationalId: number): Observable<any> {
-    const url = `${this.resourcePrefix}/${nationalId}`;
+  getRegisterInfo(nationalId: number): Observable<any> {
+    const url = `${this.resourcePrefix}/${nationalId}/register-info`;
     return this.http.get<any>(url);
   }
 
@@ -26,6 +26,11 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     formData.append('body', JSON.stringify(user));
     this.fileService.appendFilesToFormData(blobs, formData);
     return this.http.post<any>(`${this.resourcePrefix}`, formData);
+  }
+
+  findOne(id: number): Observable<any> {
+    const url = `${this.resourcePrefix}/${id}`;
+    return this.http.get<any>(url);
   }
 
   getResources(): Observable<any[]> {

@@ -17,14 +17,28 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 export class VerifyDetailDialogComponent implements OnInit {
 
   role: 'doctor' | 'volunteer' = 'doctor';
+  service: DoctorService | VolunteerService = this.doctorService;
   isLoading = false;
-  isCreatingNew = false;
   status = {
     PENDING: 'รอการอนุมัติ',
     APPROVED: 'อนุมัติแล้ว',
     DENIED: 'ไม่อนุมัติ'
   };
-  content: any;
+  content = {
+    nationalId: '',
+    initial: '',
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    address: '',
+    contactNumber: '',
+    lineId: '',
+    specializedFields: [],
+    volunteerDepartments: [],
+    medCertificateId: '',
+    availableTimes: '',
+    status: ''
+  };
 
   verifyForm = this.fb.group({
     note: ['']
@@ -42,9 +56,31 @@ export class VerifyDetailDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data) {
-      if (this.data.row) this.content = this.data.row;
-      if (this.data.role) this.role = this.data.role;
+      if (this.data.role) {
+        this.role = this.data.role;
+        this.service = this.data.role === 'doctor' ? this.doctorService : this.volunteerService;
+      }
+      if (this.data.row) {
+        this.getEntity();
+      }
     }
+  }
+
+  private getEntity() {
+    this.isLoading = true;
+    this.service.findOne(this.data.row.id).subscribe(
+      response => this.handleSuccessfulFindOne(response),
+      errorResponse => this.handleErrorResponse()
+    );
+  }
+
+  private handleSuccessfulFindOne(response: any): void {
+    this.isLoading = false;
+    this.content = response;
+  }
+
+  private handleErrorResponse(): void {
+    this.isLoading = false;
   }
 
   onVerifyClicked(content: any, status: string) {
@@ -91,11 +127,8 @@ export class VerifyDetailDialogComponent implements OnInit {
     return moment(this.content.dateOfBirth).format('DD MMM YYYY');
   }
 
-  get specializedFields(): string[] {
-    return this.content.specializedFields.map((field: { label: string }) => field.label);
-  }
-
   get volunteerDepartments(): string[] {
+    console.log(this.content.volunteerDepartments);
     return this.content.volunteerDepartments.map((dep: any) => dep.department.label);
   }
 
