@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BasicInfo } from 'src/app/model/basic-info';
+import { BasicInfo } from 'src/app/model/basic-info.model';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { FileService } from 'src/app/service/file.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
-import { maskId, partialMaskId , numbersOnly } from 'src/app/util/util-functions';
+import { maskId, partialMaskId, numbersOnly } from 'src/app/util/util-functions';
 
 interface roleOption {
   value: number;
@@ -153,8 +153,8 @@ export class VerifyIdComponent implements OnInit {
     this.isExistingUser = false;
   }
 
-  inputNumber(event : any) {
+  inputNumber(event: any) {
     numbersOnly(event)
   }
-  
+
 }

@@ -6,8 +6,8 @@
         <h2 mat-dialog-title id="user-dialog-title"> {{isCreatingNew ? 'เพิ่ม':'แก้ไข'}}ผู้ใช้</h2>
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
             <mat-form-field>
-                <input matInput #email maxlength="32" placeholder="อีเมล" formControlName="email">
-                <mat-hint align="end">{{email.value.length}} / 32</mat-hint>
+                <input matInput #email maxlength="64" placeholder="อีเมล" formControlName="email">
+                <mat-hint align="end">{{email.value.length}} / 64</mat-hint>
                 <mat-error
                     *ngIf="userForm.controls.email.hasError('email') && !userForm.controls.email.hasError('required')">
                     กรูณาใส่รูปแบบอีเมลให้ถูกต้อง

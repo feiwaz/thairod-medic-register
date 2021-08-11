@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { UpdateTrainingStatusDialogComponent } from 'src/app/dialog/update-training-status-dialog/update-training-status-dialog.component';
-import { BasicInfo } from 'src/app/model/basic-info';
+import { BasicInfo } from 'src/app/model/basic-info.model';
 import { VolunteerService } from 'src/app/service/volunteer.service';
 import { WorkspaceService } from 'src/app/service/workspace.service';
 

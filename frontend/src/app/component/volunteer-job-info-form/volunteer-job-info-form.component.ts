@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DEPARTMENTS } from 'src/app/constant/departments';
-import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info';
+import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info.model';
 import { FileService } from 'src/app/service/file.service';
 import { ImageCachingService } from 'src/app/service/image-caching.service';
 import { numbersOnly } from 'src/app/util/util-functions';
@@ -136,8 +136,8 @@ export class VolunteerJobInfoFormComponent implements OnInit {
     }
   }
 
-  inputNumber(event : any) {
+  inputNumber(event: any) {
     numbersOnly(event)
   }
-  
+
 }
