@@ -60,17 +60,23 @@
                     <span class="info-field">ไฟล์แนบ</span>
                 </div>
                 <div class="files-body">
+                    <div class="center-element">
+                        <span class="info-field">แตะที่รูปเพื่อดูขนาดที่ใหญ่ขึ้น</span>
+                    </div>
                     <img *ngIf="content.idCardImg" mat-card-image
-                        (click)="onImageClick(content.plainBlobUrl?.idCardImg || '')" [src]="content.idCardImg" alt="">
+                        (click)="onImageClick(content.plainBlobUrl?.idCardImg || '')" [src]="content.idCardImg"
+                        alt="ภาพบัตรประจำตัวประชาชน" title="คลิกเพื่อดูภาพใหญ่ขึ้น">
                     <img *ngIf="content.idCardSelfieImg" mat-card-image
                         (click)="onImageClick(content.plainBlobUrl?.idCardSelfieImg || '')"
-                        [src]="content.idCardSelfieImg" alt="">
+                        [src]="content.idCardSelfieImg" alt="ภาพถ่ายพร้อมถือบัตรประจำตัวประชาชน"
+                        title="คลิกเพื่อดูภาพใหญ่ขึ้น">
                     <img *ngIf="content.jobCertificateImg" mat-card-image
                         (click)="onImageClick(content.plainBlobUrl?.jobCertificateImg || '')"
-                        [src]="content.jobCertificateImg" alt="">
+                        [src]="content.jobCertificateImg" alt="ภาพใบประกอบวิชาชีพ" title="คลิกเพื่อดูภาพใหญ่ขึ้น">
                     <img *ngIf="content.jobCertificateSelfieImg" mat-card-image
                         (click)="onImageClick(content.plainBlobUrl?.jobCertificateSelfieImg || '')"
-                        [src]="content.jobCertificateSelfieImg" alt="">
+                        [src]="content.jobCertificateSelfieImg" alt="ภาพถ่ายพร้อมถือใบประกอบวิชาชีพ"
+                        title="คลิกเพื่อดูภาพใหญ่ขึ้น">
                 </div>
             </div>
             <div *ngIf="content.availableTimes !== ''" class="section-container">
