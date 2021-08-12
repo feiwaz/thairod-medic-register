@@ -127,15 +127,15 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   get dateOfBirth(): string {
-    return moment(this.content.dateOfBirth).locale('th').format('DD MMM YYYY');
+    return moment(this.content.dateOfBirth).locale('th').add(543, 'year').format('DD MMM YYYY');
   }
 
   get createdTime(): string {
-    return moment(this.content.createdTime).locale('th').format('DD MMM YYYY HH:mm:ss');
+    return moment(this.content.createdTime).locale('th').add(543, 'year').format('LLLL น.');
   }
 
   get updatedTime(): string {
-    return moment(this.content.verification?.updatedTime).locale('th').format('DD MMM YYYY HH:mm:ss');
+    return moment(this.content.verification?.updatedTime).locale('th').add(543, 'year').format('LLLL น.');
   }
 
 }

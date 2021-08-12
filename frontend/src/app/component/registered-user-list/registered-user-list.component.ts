@@ -169,7 +169,7 @@ export class RegisteredUserListComponent implements OnInit {
   }
 
   formattedDate(dateString: string): string {
-    return moment(dateString).locale('th').format('DD MMM YYYY');
+    return moment(dateString).locale('th').add(543, 'year').format('LLLL น.');
   }
 
   onPaginatorChanged(event: PageEvent) {

@@ -58,6 +58,15 @@ h1.app-name {
   flex: 1 0 auto;
 }
 
+.refresh-button {
+  margin-left: auto;
+  opacity: 0.25;
+}
+
+.anchor-item.active:hover .refresh-button {
+  opacity: 1;
+}
+
 @media only screen and (min-width: 600px) {
   .app-name {
     display: block;

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BasicInfo } from 'src/app/model/basic-info.model';
-import { partialMaskId, numbersOnly } from 'src/app/util/util-functions';
+import { numbersOnly, partialMaskId } from 'src/app/util/util-functions';
 interface InitialOption {
   value: number;
   viewValue: string;
@@ -36,7 +37,7 @@ export class BasicInfoFormComponent implements OnInit {
   isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
-
+  startDate = moment('21/03/1982', 'DD/MM/YYYY').locale('th').add(543, 'year');
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
@@ -51,12 +52,14 @@ export class BasicInfoFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _adapter: DateAdapter<any>
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
       this.isEditing = currentNavigation.extras.state?.isEditing || false;
     }
+    this._adapter.setLocale('th');
   }
 
   ngOnInit(): void {
@@ -75,7 +78,7 @@ export class BasicInfoFormComponent implements OnInit {
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
-        firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY'),
+        firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY').locale('th').add(543, 'year'),
         address, contactNumber, lineId
       });
     }

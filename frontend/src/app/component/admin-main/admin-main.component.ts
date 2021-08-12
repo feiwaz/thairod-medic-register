@@ -25,7 +25,6 @@ export class AdminMainComponent implements OnInit, OnDestroy {
     relativePath: './manage-training-status',
     label: 'สถานะการอบรม'
   }];
-
   private mobileQueryListener: () => void;
 
   constructor(
@@ -50,6 +49,10 @@ export class AdminMainComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener('change', this.mobileQueryListener);
+  }
+
+  onRefreshClicked(): void {
+    this.router.navigate(['/admin/main']);
   }
 
 }
