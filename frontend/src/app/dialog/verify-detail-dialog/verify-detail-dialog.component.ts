@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
@@ -8,6 +8,7 @@ import { VerificationBody } from 'src/app/model/verification-body.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { DoctorService } from 'src/app/service/doctor.service';
 import { VolunteerService } from 'src/app/service/volunteer.service';
+import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
@@ -58,6 +59,7 @@ export class VerifyDetailDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<UserDialogComponent>,
     private toastrService: ToastrService,
     private authService: AuthenticationService,
+    public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: { row?: any, role: 'doctor' | 'volunteer' }
   ) { }
 
@@ -159,9 +161,13 @@ export class VerifyDetailDialogComponent implements OnInit {
     return moment(this.content.verification?.updatedTime).locale('th').add(543, 'year').format('LLLL น.');
   }
 
-  onImageClick(event: any, element: any): void {
-    console.log(event);
-    console.log(element);
+  onImageClick(blobUrl: string): void {
+    this.dialog.open(ImageDialogComponent, {
+      data: { src: blobUrl },
+      autoFocus: false,
+      width: '100%',
+      panelClass: 'dialog-responsive'
+    });
   }
 
 }

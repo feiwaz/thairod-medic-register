@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { AccountMenuComponent } from 'src/app/component/account-menu/account-menu.component';
 import { AdminMainComponent } from 'src/app/component/admin-main/admin-main.component';
 import { ChangePasswordFormComponent } from 'src/app/component/change-password-form/change-password-form.component';
@@ -8,6 +9,7 @@ import { ManageRegisteredUserComponent } from 'src/app/component/manage-register
 import { ManageTrainingStatusComponent } from 'src/app/component/manage-training-status/manage-training-status.component';
 import { RegisteredUserListComponent } from 'src/app/component/registered-user-list/registered-user-list.component';
 import { DeleteDialogComponent } from 'src/app/dialog/delete-dialog/delete-dialog.component';
+import { ImageDialogComponent } from 'src/app/dialog/image-dialog/image-dialog.component';
 import { UpdateTrainingStatusDialogComponent } from 'src/app/dialog/update-training-status-dialog/update-training-status-dialog.component';
 import { UserAccountDialogComponent } from 'src/app/dialog/user-account-dialog/user-account-dialog.component';
 import { UserDialogComponent } from 'src/app/dialog/user-dialog/user-dialog.component';
@@ -29,10 +31,12 @@ import { AdminRoutingModule } from './admin-routing.module';
     RegisteredUserListComponent,
     VerifyDetailDialogComponent,
     ManageTrainingStatusComponent,
-    UpdateTrainingStatusDialogComponent
+    UpdateTrainingStatusDialogComponent,
+    ImageDialogComponent
   ],
   imports: [
     SharedModule,
+    MatCardModule,
     AdminRoutingModule
   ]
 })
