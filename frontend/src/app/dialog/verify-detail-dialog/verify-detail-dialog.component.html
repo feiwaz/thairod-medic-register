@@ -60,16 +60,16 @@
                     <span class="info-field">ไฟล์แนบ</span>
                 </div>
                 <div class="files-body">
-                    <img #img1 mat-card-image width="120px" *ngIf="content.idCardImg"
-                        (click)="onImageClick(content.plainBlobUrl.idCardImg)" [src]="content.idCardImg" alt="">
-                    <img #img2 mat-card-image width="120px" *ngIf="content.idCardSelfieImg"
-                        (click)="onImageClick(content.plainBlobUrl.idCardSelfieImg)" [src]="content.idCardSelfieImg"
-                        alt="">
-                    <img #img3 mat-card-image width="120px" *ngIf="content.jobCertificateImg"
-                        (click)="onImageClick(content.plainBlobUrl.jobCertificateImg)" [src]="content.jobCertificateImg"
-                        alt="">
-                    <img #img4 mat-card-image width="120px" *ngIf="content.jobCertificateSelfieImg"
-                        (click)="onImageClick(content.plainBlobUrl.jobCertificateSelfieImg)"
+                    <img *ngIf="content.idCardImg" mat-card-image
+                        (click)="onImageClick(content.plainBlobUrl?.idCardImg || '')" [src]="content.idCardImg" alt="">
+                    <img *ngIf="content.idCardSelfieImg" mat-card-image
+                        (click)="onImageClick(content.plainBlobUrl?.idCardSelfieImg || '')"
+                        [src]="content.idCardSelfieImg" alt="">
+                    <img *ngIf="content.jobCertificateImg" mat-card-image
+                        (click)="onImageClick(content.plainBlobUrl?.jobCertificateImg || '')"
+                        [src]="content.jobCertificateImg" alt="">
+                    <img *ngIf="content.jobCertificateSelfieImg" mat-card-image
+                        (click)="onImageClick(content.plainBlobUrl?.jobCertificateSelfieImg || '')"
                         [src]="content.jobCertificateSelfieImg" alt="">
                 </div>
             </div>

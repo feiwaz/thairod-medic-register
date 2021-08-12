@@ -64,8 +64,8 @@ mat-progress-bar {
 .files-body > img {
   margin: 1em;
   flex: 1 0 calc(40%);
-  min-width: 75px;
-  max-width: 216px;
+  /* min-width: 75px; */
+  max-width: 94%;
   font-weight: bold;
   transition: 0.3s;
   border: #77dd77;

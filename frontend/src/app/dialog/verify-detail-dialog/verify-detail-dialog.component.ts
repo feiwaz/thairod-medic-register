@@ -53,7 +53,7 @@ export class VerifyDetailDialogComponent implements OnInit {
       jobCertificateSelfieImg: ''
     }
   };
-  obs$: any
+
   verifyForm = this.fb.group({
     note: ['']
   });
