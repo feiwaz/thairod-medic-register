@@ -51,7 +51,7 @@ export class DoctorsService {
   }
 
   private async mapDtoToEntity(createDto: CreateDoctorDto, doctor: Doctor): Promise<Doctor> {
-    const { nationalId, specializedFields, ...restCreateDto } = createDto;
+    const { specializedFields, ...restCreateDto } = createDto;
     const savedSpecializedFields = await this.specializedFieldRepository.find({
       where: { label: In(specializedFields) }
     });

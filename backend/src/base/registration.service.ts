@@ -43,7 +43,7 @@ export class RegistrationService {
         return entity;
       }
     }
-    return { nationalId };
+    return {};
   }
 
   public async checkStatus(

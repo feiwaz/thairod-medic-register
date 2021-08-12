@@ -60,7 +60,7 @@ export class VolunteersService {
   }
 
   private async mapDtoToEntity(createDto: CreateVolunteerDto, volunteer: Volunteer): Promise<Volunteer> {
-    const { nationalId, departments, ...restCreateDto } = createDto;
+    const { departments, ...restCreateDto } = createDto;
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) }
     });
