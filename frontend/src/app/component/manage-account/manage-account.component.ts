@@ -5,13 +5,12 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { DeleteDialogComponent } from 'src/app/dialog/delete-dialog/delete-dialog.component';
-import { UserDialogComponent } from 'src/app/dialog/user-dialog/user-dialog.component';
-import { User } from 'src/app/model/user.model';
-import { AuthenticationService } from 'src/app/service/authentication.service';
-import { UserService } from 'src/app/service/user.service';
-import { WorkspaceService } from 'src/app/service/workspace.service';
-
+import { DeleteDialogComponent } from '../../dialog/delete-dialog/delete-dialog.component';
+import { UserDialogComponent } from '../../dialog/user-dialog/user-dialog.component';
+import { User } from '../../model/user.model';
+import { AuthenticationService } from '../../service/authentication.service';
+import { UserService } from '../../service/user.service';
+import { WorkspaceService } from '../../service/workspace.service';
 @Component({
   selector: 'app-manage-account',
   templateUrl: './manage-account.component.html',

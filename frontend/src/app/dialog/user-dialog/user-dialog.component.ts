@@ -2,11 +2,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/model/user.model';
-import { AuthenticationService } from 'src/app/service/authentication.service';
-import { UserService } from 'src/app/service/user.service';
-import { CustomValidators } from 'src/app/util/custom-validators';
-import { numbersOnly } from 'src/app/util/util-functions';
+import { User } from '../../model/user.model';
+import { AuthenticationService } from '../../service/authentication.service';
+import { UserService } from '../../service/user.service';
+import { CustomValidators } from '../../util/custom-validators';
+import { numbersOnly } from '../../util/util-functions';
 @Component({
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',

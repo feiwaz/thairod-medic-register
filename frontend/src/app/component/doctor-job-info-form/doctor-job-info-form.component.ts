@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SPECIALIZED_FIELDS } from 'src/app/constant/specialized-fields';
-import { DoctorJobInfo } from 'src/app/model/doctor-job-info.model';
-import { FileService } from 'src/app/service/file.service';
-import { ImageCachingService } from 'src/app/service/image-caching.service';
-import { numbersOnly } from 'src/app/util/util-functions';
+import { SPECIALIZED_FIELDS } from '../../constant/specialized-fields';
+import { DoctorJobInfo } from '../../model/doctor-job-info.model';
+import { FileService } from '../../service/file.service';
+import { ImageCachingService } from '../../service/image-caching.service';
+import { numbersOnly } from '../../util/util-functions';
+
 @Component({
   selector: 'app-doctor-job-info-form',
   templateUrl: './doctor-job-info-form.component.html',

@@ -8,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
-import { ChangePasswordFormComponent } from 'src/app/component/change-password-form/change-password-form.component';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { ChangePasswordFormComponent } from '../../component/change-password-form/change-password-form.component';
+import { AuthenticationService } from '../../service/authentication.service';
 import { UserAccountDialogComponent } from './user-account-dialog.component';
 
 describe('UserAccountDialogComponent', () => {

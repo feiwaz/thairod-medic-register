@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { VerificationBody } from 'src/app/model/verification-body.model';
+import { VerificationBody } from '../model/verification-body.model';
 import { BaseResourceService } from './base-resource.service';
 import { FileService } from './file.service';
 

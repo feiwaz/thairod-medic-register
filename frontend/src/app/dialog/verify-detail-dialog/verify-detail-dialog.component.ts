@@ -4,10 +4,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, of } from 'rxjs';
-import { VerificationBody } from 'src/app/model/verification-body.model';
-import { AuthenticationService } from 'src/app/service/authentication.service';
-import { DoctorService } from 'src/app/service/doctor.service';
-import { VolunteerService } from 'src/app/service/volunteer.service';
+import { VerificationBody } from '../../model/verification-body.model';
+import { AuthenticationService } from '../../service/authentication.service';
+import { DoctorService } from '../../service/doctor.service';
+import { VolunteerService } from '../../service/volunteer.service';
 import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 

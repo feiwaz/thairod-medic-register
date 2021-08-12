@@ -3,8 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { BasicInfo } from 'src/app/model/basic-info.model';
-import { numbersOnly, partialMaskId } from 'src/app/util/util-functions';
+import { BasicInfo } from '../../model/basic-info.model';
+import { numbersOnly, partialMaskId } from '../../util/util-functions';
+
 interface InitialOption {
   value: number;
   viewValue: string;

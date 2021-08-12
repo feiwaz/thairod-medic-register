@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BasicInfo } from 'src/app/model/basic-info.model';
-import { DoctorService } from 'src/app/service/doctor.service';
-import { FileService } from 'src/app/service/file.service';
-import { VolunteerService } from 'src/app/service/volunteer.service';
-import { maskId, numbersOnly, partialMaskId } from 'src/app/util/util-functions';
+import { BasicInfo } from '../../model/basic-info.model';
+import { DoctorService } from '../../service/doctor.service';
+import { FileService } from '../../service/file.service';
+import { VolunteerService } from '../../service/volunteer.service';
+import { maskId, numbersOnly, partialMaskId } from '../../util/util-functions';
 
 interface roleOption {
   value: number;

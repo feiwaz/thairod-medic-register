@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { VolunteerService } from 'src/app/service/volunteer.service';
+import { VolunteerService } from '../../service/volunteer.service';
 
 interface DepartmentCheckbox {
   formControlName: string;

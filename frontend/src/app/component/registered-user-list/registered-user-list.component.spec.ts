@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
-import { WorkspaceService } from 'src/app/service/workspace.service';
+import { WorkspaceService } from '../../service/workspace.service';
 import { ColumnFilterComponent } from '../column-filter/column-filter.component';
 import { RegisteredUserListComponent } from './registered-user-list.component';
 

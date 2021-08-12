@@ -6,11 +6,11 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { VerifyDetailDialogComponent } from 'src/app/dialog/verify-detail-dialog/verify-detail-dialog.component';
-import { BasicInfo } from 'src/app/model/basic-info.model';
-import { DoctorService } from 'src/app/service/doctor.service';
-import { VolunteerService } from 'src/app/service/volunteer.service';
-import { WorkspaceService } from 'src/app/service/workspace.service';
+import { VerifyDetailDialogComponent } from '../../dialog/verify-detail-dialog/verify-detail-dialog.component';
+import { BasicInfo } from '../../model/basic-info.model';
+import { DoctorService } from '../../service/doctor.service';
+import { VolunteerService } from '../../service/volunteer.service';
+import { WorkspaceService } from '../../service/workspace.service';
 
 @Component({
   selector: 'app-registered-user-list',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, ValidatorFn } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BasicInfo } from 'src/app/model/basic-info.model';
+import { BasicInfo } from '../../model/basic-info.model';
 
 interface dayOption {
   value: string;

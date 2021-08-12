@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { User } from 'src/app/model/user.model';
-import { UserService } from 'src/app/service/user.service';
+import { User } from '../../model/user.model';
+import { UserService } from '../../service/user.service';
 
 @Component({
   selector: 'app-delete-dialog',

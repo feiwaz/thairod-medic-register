@@ -8,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
-import { ToolbarComponent } from 'src/app/component/toolbar/toolbar.component';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { ToolbarComponent } from '../../component/toolbar/toolbar.component';
+import { AuthenticationService } from '../../service/authentication.service';
 import { VerifyDetailDialogComponent } from './verify-detail-dialog.component';
 
 

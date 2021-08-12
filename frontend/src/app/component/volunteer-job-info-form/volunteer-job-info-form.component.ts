@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DEPARTMENTS } from 'src/app/constant/departments';
-import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info.model';
-import { FileService } from 'src/app/service/file.service';
-import { ImageCachingService } from 'src/app/service/image-caching.service';
-import { numbersOnly } from 'src/app/util/util-functions';
+import { DEPARTMENTS } from '../../constant/departments';
+import { VolunteerJobInfo } from '../../model/volunteer-job-info.model';
+import { FileService } from '../../service/file.service';
+import { ImageCachingService } from '../../service/image-caching.service';
+import { numbersOnly } from '../../util/util-functions';
 @Component({
   selector: 'app-volunteer-job-info-form',
   templateUrl: './volunteer-job-info-form.component.html',

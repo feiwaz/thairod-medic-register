@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { UserAccountDialogComponent } from 'src/app/dialog/user-account-dialog/user-account-dialog.component';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { UserAccountDialogComponent } from '../../dialog/user-account-dialog/user-account-dialog.component';
+import { AuthenticationService } from '../../service/authentication.service';
 
 @Component({
   selector: 'app-account-menu',

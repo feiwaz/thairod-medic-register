@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { BasicInfo } from 'src/app/model/basic-info.model';
-import { DoctorJobInfo } from 'src/app/model/doctor-job-info.model';
-import { VolunteerJobInfo } from 'src/app/model/volunteer-job-info.model';
-import { DoctorService } from 'src/app/service/doctor.service';
-import { FileService } from 'src/app/service/file.service';
-import { VolunteerService } from 'src/app/service/volunteer.service';
-import { maskId } from 'src/app/util/util-functions';
+import { BasicInfo } from '../../model/basic-info.model';
+import { DoctorJobInfo } from '../../model/doctor-job-info.model';
+import { VolunteerJobInfo } from '../../model/volunteer-job-info.model';
+import { DoctorService } from '../../service/doctor.service';
+import { FileService } from '../../service/file.service';
+import { VolunteerService } from '../../service/volunteer.service';
+import { maskId } from '../../util/util-functions';
 
 @Component({
   selector: 'app-review-info',

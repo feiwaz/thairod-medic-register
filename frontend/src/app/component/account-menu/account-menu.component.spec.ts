@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { AuthenticationService } from '../../service/authentication.service';
 import { AccountMenuComponent } from './account-menu.component';
 
 describe('AccountMenuComponent', () => {

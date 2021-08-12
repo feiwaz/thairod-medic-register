@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { SafeUrl, DomSanitizer } from "@angular/platform-browser";
-import { ImageObject } from 'src/app/model/image-object.model';
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { ImageObject } from '../../model/image-object.model';
 
 @Component({
   selector: 'app-upload-photo',

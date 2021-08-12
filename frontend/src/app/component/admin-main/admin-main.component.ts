@@ -1,9 +1,9 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/service/authentication.service';
-import { ImageCachingService } from 'src/app/service/image-caching.service';
-import { WorkspaceService } from 'src/app/service/workspace.service';
+import { AuthenticationService } from '../../service/authentication.service';
+import { ImageCachingService } from '../../service/image-caching.service';
+import { WorkspaceService } from '../../service/workspace.service';
 
 @Component({
   selector: 'app-admin-main',

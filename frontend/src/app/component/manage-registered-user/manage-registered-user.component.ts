@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WorkspaceService } from 'src/app/service/workspace.service';
+import { WorkspaceService } from '../../service/workspace.service';
 
 @Component({
   selector: 'app-manage-registered-user',

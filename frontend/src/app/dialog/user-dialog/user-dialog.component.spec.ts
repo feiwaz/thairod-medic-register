@@ -8,7 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'src/app/service/authentication.service';
+import { AuthenticationService } from '../../service/authentication.service';
 import { UserDialogComponent } from './user-dialog.component';
 
 describe('UserDialogComponent', () => {

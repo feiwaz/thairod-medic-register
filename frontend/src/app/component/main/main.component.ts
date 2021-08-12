@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImageCachingService } from 'src/app/service/image-caching.service';
+import { ImageCachingService } from '../../service/image-caching.service';
 
 @Component({
   selector: 'app-main',

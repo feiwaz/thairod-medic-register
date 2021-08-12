@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { UserService } from 'src/app/service/user.service';
-import { CustomValidators } from 'src/app/util/custom-validators';
+import { UserService } from '../../service/user.service';
+import { CustomValidators } from '../../util/custom-validators';
 
 @Component({
   selector: 'app-change-password-form',

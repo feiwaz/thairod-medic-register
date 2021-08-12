@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthenticationService } from 'src/app/service/authentication.service';
-import { ImageCachingService } from 'src/app/service/image-caching.service';
+import { AuthenticationService } from '../../service/authentication.service';
+import { ImageCachingService } from '../../service/image-caching.service';
 
 @Component({
   selector: 'app-admin-login',
