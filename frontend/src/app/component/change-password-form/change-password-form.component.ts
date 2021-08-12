@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../service/user.service';
@@ -9,7 +9,7 @@ import { CustomValidators } from '../../util/custom-validators';
   templateUrl: './change-password-form.component.html',
   styleUrls: ['./change-password-form.component.scss']
 })
-export class ChangePasswordFormComponent implements OnInit {
+export class ChangePasswordFormComponent {
 
   hideCurrentPassword = true;
   hidePassword = true;
@@ -33,8 +33,6 @@ export class ChangePasswordFormComponent implements OnInit {
     private userService: UserService,
     private toastrService: ToastrService
   ) { }
-
-  ngOnInit(): void { }
 
   onSubmit(formDirective: FormGroupDirective): void {
     this.toggleIsLoading(true);

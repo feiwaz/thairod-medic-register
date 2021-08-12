@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { BasicInfo } from '../model/basic-info.model';
 import { VerificationBody } from '../model/verification-body.model';
 import { VolunteerJobInfo } from '../model/volunteer-job-info.model';
