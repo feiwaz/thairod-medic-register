@@ -31,8 +31,8 @@ export class DoctorsService {
   ) { }
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
-    const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
     try {
+      const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
       const entity = await this.mapDtoToEntity(createDto, checkedEntity as Doctor);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'doctor');
@@ -52,11 +52,10 @@ export class DoctorsService {
 
   private async mapDtoToEntity(createDto: CreateDoctorDto, doctor: Doctor): Promise<Doctor> {
     const { specializedFields, ...restCreateDto } = createDto;
-    const savedSpecializedFields = await this.specializedFieldRepository.find({
-      where: { label: In(specializedFields) }
-    });
     const entity = Object.assign(doctor, restCreateDto);
-    entity.specializedFields = savedSpecializedFields || [];
+    entity.specializedFields = await this.specializedFieldRepository.find({
+      where: { label: In(specializedFields) }
+    }) || [];
     return entity;
   }
 
@@ -126,23 +125,28 @@ export class DoctorsService {
       if (!user) {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
-      let docVerification = await this.docVerificationRepository.findOne({
-        where: { doctor: { id: doctor.id }, verifiedBy: { id: user.id } },
-        relations: ['doctor', 'verifiedBy']
-      });
-      console.log(docVerification)
-      if (!docVerification) {
-        docVerification = new DoctorVerification();
-        docVerification.doctor = doctor;
-        docVerification.verifiedBy = user;
-      }
-      docVerification.doctor.status = verificationDto.status;
-      docVerification.status = verificationDto.status;
-      docVerification.statusNote = verificationDto.statusNote;
+      const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
       this.docVerificationRepository.save(docVerification);
     } catch (error) {
       throw error;
     }
+  }
+
+  private async findVerificationStatus(doctor: Doctor, user: User, verificationDto: VerificationDto) {
+    let docVerification = await this.docVerificationRepository.findOne({
+      where: { doctor: { id: doctor.id }, verifiedBy: { id: user.id } },
+      relations: ['doctor', 'verifiedBy']
+    });
+    console.log(docVerification);
+    if (!docVerification) {
+      docVerification = new DoctorVerification();
+      docVerification.doctor = doctor;
+      docVerification.verifiedBy = user;
+    }
+    docVerification.doctor.status = verificationDto.status;
+    docVerification.status = verificationDto.status;
+    docVerification.statusNote = verificationDto.statusNote;
+    return docVerification;
   }
 
   async remove(id: number): Promise<void> {

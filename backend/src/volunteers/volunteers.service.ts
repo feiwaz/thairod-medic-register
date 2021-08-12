@@ -40,8 +40,8 @@ export class VolunteersService {
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
-    const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
     try {
+      const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
       const entity = await this.mapDtoToEntity(createDto, checkedEntity as Volunteer);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'volunteer');
@@ -152,22 +152,27 @@ export class VolunteersService {
       if (!user) {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
-      let volVerification = await this.volVerificationRepository.findOne({
-        where: { volunteer: { id: volunteer.id }, verifiedBy: { id: user.id } },
-        relations: ['volunteer', 'verifiedBy']
-      });
-      if (!volVerification) {
-        volVerification = new VolunteerVerification();
-        volVerification.volunteer = volunteer;
-        volVerification.verifiedBy = user;
-      }
-      volVerification.volunteer.status = verificationDto.status;
-      volVerification.status = verificationDto.status;
-      volVerification.statusNote = verificationDto.statusNote
+      const volVerification = await this.findVerificationStatus(volunteer, user, verificationDto);
       this.volVerificationRepository.save(volVerification);
     } catch (error) {
       throw error;
     }
+  }
+
+  private async findVerificationStatus(volunteer: Volunteer, user: User, verificationDto: VerificationDto) {
+    let volVerification = await this.volVerificationRepository.findOne({
+      where: { volunteer: { id: volunteer.id }, verifiedBy: { id: user.id } },
+      relations: ['volunteer', 'verifiedBy']
+    });
+    if (!volVerification) {
+      volVerification = new VolunteerVerification();
+      volVerification.volunteer = volunteer;
+      volVerification.verifiedBy = user;
+    }
+    volVerification.volunteer.status = verificationDto.status;
+    volVerification.status = verificationDto.status;
+    volVerification.statusNote = verificationDto.statusNote;
+    return volVerification;
   }
 
   async updateTrainingStatus(id: number, volunteerDepartmentsDto: VolunteerDepartmentsDto) {

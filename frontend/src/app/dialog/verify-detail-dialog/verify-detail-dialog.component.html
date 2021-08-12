@@ -108,7 +108,7 @@
                 <div class="info-body last-item">
                     <div>
                         <span class="info-field">สถานะ:</span>
-                        <span class="info-value">{{content.verification?.status || content.status}}</span>
+                        <span class="info-value">{{content.status}}</span>
                     </div>
                     <div>
                         <span class="info-field">
@@ -118,7 +118,7 @@
                             {{content.status === 'รอการอนุมัติ' ? createdTime : updatedTime}}
                         </span>
                     </div>
-                    <div *ngIf="content.verification">
+                    <div *ngIf="content.status !== 'รอการอนุมัติ' && content.verification">
                         <span class="info-field">ตรวจสอบโดย:</span><span class="info-value">
                             {{content.verification.verifiedBy?.firstName}}
                             {{content.verification.verifiedBy?.lastName}}
