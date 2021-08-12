@@ -53,7 +53,8 @@ mat-progress-bar {
 }
 
 .center-element {
-  margin: 0 auto;
+  flex: 1 1 100%;
+  text-align: center;
   text-decoration: underline;
 }
 
