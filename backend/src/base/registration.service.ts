@@ -36,8 +36,14 @@ export class RegistrationService {
   public async checkIfNationalIdAlreadyExisted(repository: Repository<Doctor | Volunteer>, nationalId: string) {
     const entity = await repository.findOne({ where: { nationalId } });
     if (entity) {
-      throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+      if ([VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(entity.status)) {
+        throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+      } else {
+        entity.status = VerificationStatus.PENDING;
+        return entity;
+      }
     }
+    return { nationalId };
   }
 
   public async checkStatus(

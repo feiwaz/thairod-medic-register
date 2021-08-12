@@ -31,9 +31,9 @@ export class DoctorsService {
   ) { }
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
-    await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
+    const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
     try {
-      const entity = await this.mapDtoToEntity(createDto);
+      const entity = await this.mapDtoToEntity(createDto, checkedEntity as Doctor);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'doctor');
       resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doc', createDto.nationalId);
@@ -50,12 +50,12 @@ export class DoctorsService {
     }
   }
 
-  private async mapDtoToEntity(createDto: CreateDoctorDto): Promise<Doctor> {
-    const { specializedFields, ...restCreateDto } = createDto;
+  private async mapDtoToEntity(createDto: CreateDoctorDto, doctor: Doctor): Promise<Doctor> {
+    const { nationalId, specializedFields, ...restCreateDto } = createDto;
     const savedSpecializedFields = await this.specializedFieldRepository.find({
       where: { label: In(specializedFields) }
     });
-    const entity = Object.assign(new Doctor(), restCreateDto);
+    const entity = Object.assign(doctor, restCreateDto);
     entity.specializedFields = savedSpecializedFields || [];
     return entity;
   }

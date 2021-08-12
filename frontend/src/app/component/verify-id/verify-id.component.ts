@@ -24,7 +24,7 @@ const roleOptions: roleOption[] = [
 })
 export class VerifyIdComponent implements OnInit {
 
-  role: 'doctor' | 'volunteer' = 'doctor';
+  role = '';
   maskedId = '';
   isLoading = false;
   errorResponse = false;

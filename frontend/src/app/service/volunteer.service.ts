@@ -34,6 +34,10 @@ export class VolunteerService extends BaseRegistrationService {
     return super.findOne(id);
   }
 
+  findOneFile(id: number, filePath: string): Observable<any> {
+    return super.findOneFile(id, filePath);
+  }
+
   getVolunteers(): Observable<any[]> {
     return super.getResources();
   }

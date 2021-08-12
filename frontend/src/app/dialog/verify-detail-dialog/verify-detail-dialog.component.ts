@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { VerificationBody } from 'src/app/model/verification-body.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { DoctorService } from 'src/app/service/doctor.service';
@@ -87,10 +87,10 @@ export class VerifyDetailDialogComponent implements OnInit {
     const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
     this.content = rest;
 
-    const idCardImage$ = this.service.findOneFile(this.data.row.id, response.idCardImg);
-    const idCardSelfieImg$ = this.service.findOneFile(this.data.row.id, response.idCardSelfieImg);
-    const jobCertificateImg$ = this.service.findOneFile(this.data.row.id, response.jobCertificateImg);
-    const jobCertificateSelfieImg$ = this.service.findOneFile(this.data.row.id, response.jobCertificateSelfieImg);
+    const idCardImage$ = idCardImg ? this.service.findOneFile(this.data.row.id, response.idCardImg) : of(null);
+    const idCardSelfieImg$ = idCardSelfieImg ? this.service.findOneFile(this.data.row.id, response.idCardSelfieImg) : of(null);
+    const jobCertificateImg$ = jobCertificateImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateImg) : of(null);
+    const jobCertificateSelfieImg$ = jobCertificateSelfieImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateSelfieImg) : of(null);
     const allFiles$ = forkJoin([idCardImage$, idCardSelfieImg$, jobCertificateImg$, jobCertificateSelfieImg$]);
 
     allFiles$.subscribe(

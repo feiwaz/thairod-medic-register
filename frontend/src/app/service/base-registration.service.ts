@@ -43,7 +43,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
       const filePaths = filePath.split('/');
       url = `${this.resourcePrefix}/${id}/folders/${filePaths[0]}/files/${filePaths[1]}`;
     } catch (error) {
-      console.log(`Unable to resolve the file path: ${filePath}`);
+      console.warn(`Unable to resolve the file path: ${filePath}`);
     }
     return this.http.get<any>(url, { responseType: 'blob' as 'json' }).pipe(map(
       response => {

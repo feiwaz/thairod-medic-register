@@ -9,7 +9,6 @@ import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
-import { Stream } from 'stream';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
@@ -41,9 +40,9 @@ export class VolunteersService {
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
-    await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
+    const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
     try {
-      const entity = await this.mapDtoToEntity(createDto);
+      const entity = await this.mapDtoToEntity(createDto, checkedEntity as Volunteer);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'volunteer');
       resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'vol', createDto.nationalId);
@@ -60,12 +59,12 @@ export class VolunteersService {
     }
   }
 
-  private async mapDtoToEntity(createDto: CreateVolunteerDto): Promise<Volunteer> {
-    const { departments, ...restCreateDto } = createDto;
+  private async mapDtoToEntity(createDto: CreateVolunteerDto, volunteer: Volunteer): Promise<Volunteer> {
+    const { nationalId, departments, ...restCreateDto } = createDto;
     const savedDepartments = await this.departmentRepository.find({
       where: { label: In(departments) }
     });
-    const entity = Object.assign(new Volunteer(), restCreateDto);
+    const entity = Object.assign(volunteer, restCreateDto);
     entity.volunteerDepartments = savedDepartments.map(department => ({
       departmentId: department.id
     } as VolunteerDepartment)) || [];
