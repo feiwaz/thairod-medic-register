@@ -61,13 +61,16 @@
                 </div>
                 <div class="files-body">
                     <img #img1 mat-card-image width="120px" *ngIf="content.idCardImg"
-                        (click)="onImageClick(content.idCardImg)" [src]="content.idCardImg">
+                        (click)="onImageClick(content.plainBlobUrl.idCardImg)" [src]="content.idCardImg" alt="">
                     <img #img2 mat-card-image width="120px" *ngIf="content.idCardSelfieImg"
-                        (click)="onImageClick(content.idCardSelfieImg)" [src]="content.idCardSelfieImg">
+                        (click)="onImageClick(content.plainBlobUrl.idCardSelfieImg)" [src]="content.idCardSelfieImg"
+                        alt="">
                     <img #img3 mat-card-image width="120px" *ngIf="content.jobCertificateImg"
-                        (click)="onImageClick(content.jobCertificateImg)" [src]="content.jobCertificateImg">
+                        (click)="onImageClick(content.plainBlobUrl.jobCertificateImg)" [src]="content.jobCertificateImg"
+                        alt="">
                     <img #img4 mat-card-image width="120px" *ngIf="content.jobCertificateSelfieImg"
-                        (click)="onImageClick(content.jobCertificateSelfieImg)" [src]="content.jobCertificateSelfieImg">
+                        (click)="onImageClick(content.plainBlobUrl.jobCertificateSelfieImg)"
+                        [src]="content.jobCertificateSelfieImg" alt="">
                 </div>
             </div>
             <div *ngIf="content.availableTimes !== ''" class="section-container">

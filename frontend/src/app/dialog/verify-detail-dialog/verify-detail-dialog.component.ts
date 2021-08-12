@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, of } from 'rxjs';
@@ -8,7 +9,6 @@ import { VerificationBody } from '../../model/verification-body.model';
 import { AuthenticationService } from '../../service/authentication.service';
 import { DoctorService } from '../../service/doctor.service';
 import { VolunteerService } from '../../service/volunteer.service';
-import { ImageDialogComponent } from '../image-dialog/image-dialog.component';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
@@ -45,7 +45,13 @@ export class VerifyDetailDialogComponent implements OnInit {
     jobCertificateSelfieImg: '' as any,
     availableTimes: '',
     status: '',
-    verification: {} as any
+    verification: {} as any,
+    plainBlobUrl: {
+      idCardImg: '',
+      idCardSelfieImg: '',
+      jobCertificateImg: '',
+      jobCertificateSelfieImg: ''
+    }
   };
   obs$: any
   verifyForm = this.fb.group({
@@ -59,6 +65,7 @@ export class VerifyDetailDialogComponent implements OnInit {
     private dialogRef: MatDialogRef<UserDialogComponent>,
     private toastrService: ToastrService,
     private authService: AuthenticationService,
+    private sanitizer: DomSanitizer,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: { row?: any, role: 'doctor' | 'volunteer' }
   ) { }
@@ -79,34 +86,37 @@ export class VerifyDetailDialogComponent implements OnInit {
     this.isLoading = true;
     this.service.findOne(this.data.row.id).subscribe(
       response => this.handleSuccessfulFindOne(response),
-      errorResponse => this.handleErrorResponse()
+      errorResponse => this.isLoading = false
     );
   }
 
   private handleSuccessfulFindOne(response: any): void {
     const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
     this.content = rest;
+    const findAllFiles$ = this.buildFindAllFiles$(idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, response);
+    findAllFiles$.subscribe(blobUrls => this.handleSuccessfulFindAllFiles(blobUrls), errorResponse => this.isLoading = false);
+  }
 
+  private buildFindAllFiles$(idCardImg: string, idCardSelfieImg: string, jobCertificateImg: string, jobCertificateSelfieImg: string, response: any) {
     const idCardImage$ = idCardImg ? this.service.findOneFile(this.data.row.id, response.idCardImg) : of(null);
     const idCardSelfieImg$ = idCardSelfieImg ? this.service.findOneFile(this.data.row.id, response.idCardSelfieImg) : of(null);
     const jobCertificateImg$ = jobCertificateImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateImg) : of(null);
     const jobCertificateSelfieImg$ = jobCertificateSelfieImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateSelfieImg) : of(null);
-    const allFiles$ = forkJoin([idCardImage$, idCardSelfieImg$, jobCertificateImg$, jobCertificateSelfieImg$]);
-
-    allFiles$.subscribe(
-      blobUrls => {
-        this.isLoading = false;
-        this.content.idCardImg = blobUrls[0];
-        this.content.idCardSelfieImg = blobUrls[1];
-        this.content.jobCertificateImg = blobUrls[2];
-        this.content.jobCertificateSelfieImg = blobUrls[3];
-      },
-      errorResponse => this.isLoading = false
-    );
+    return forkJoin([idCardImage$, idCardSelfieImg$, jobCertificateImg$, jobCertificateSelfieImg$]);
   }
 
-  private handleErrorResponse(): void {
+  private handleSuccessfulFindAllFiles(blobUrls: [string, string, string, string]) {
     this.isLoading = false;
+    const [idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg] = blobUrls;
+    this.content.plainBlobUrl = { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg };
+    this.content.idCardImg = this.bypassSecurityTrustUrl(idCardImg);
+    this.content.idCardSelfieImg = this.bypassSecurityTrustUrl(idCardSelfieImg);
+    this.content.jobCertificateImg = this.bypassSecurityTrustUrl(jobCertificateImg);
+    this.content.jobCertificateSelfieImg = this.bypassSecurityTrustUrl(jobCertificateSelfieImg);
+  }
+
+  private bypassSecurityTrustUrl(blobUrl: string): any {
+    return blobUrl ? this.sanitizer.bypassSecurityTrustUrl(blobUrl) : '';
   }
 
   onVerifyClicked(content: any, status: string) {
@@ -162,12 +172,7 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   onImageClick(blobUrl: string): void {
-    this.dialog.open(ImageDialogComponent, {
-      data: { src: blobUrl },
-      autoFocus: false,
-      width: '100%',
-      panelClass: 'dialog-responsive'
-    });
+    window.open(blobUrl, '_blank');
   }
 
 }

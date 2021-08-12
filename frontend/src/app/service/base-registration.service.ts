@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,8 +11,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   constructor(
     protected resourcePrefix: string,
     protected http: HttpClient,
-    protected fileService: FileService,
-    protected sanitizer: DomSanitizer
+    protected fileService: FileService
   ) {
     super(resourcePrefix, http);
   }
@@ -51,7 +49,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
         let blobUrl = '' as any;
         if (response && ['image/jpeg', 'image/png'].includes(response.type)) {
           try {
-            blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(response));
+            blobUrl = URL.createObjectURL(response);
           } catch (error) {
             console.warn('Unable to create object URL');
           }

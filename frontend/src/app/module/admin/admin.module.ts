@@ -9,7 +9,6 @@ import { ManageRegisteredUserComponent } from '../../component/manage-registered
 import { ManageTrainingStatusComponent } from '../../component/manage-training-status/manage-training-status.component';
 import { RegisteredUserListComponent } from '../../component/registered-user-list/registered-user-list.component';
 import { DeleteDialogComponent } from '../../dialog/delete-dialog/delete-dialog.component';
-import { ImageDialogComponent } from '../../dialog/image-dialog/image-dialog.component';
 import { UpdateTrainingStatusDialogComponent } from '../../dialog/update-training-status-dialog/update-training-status-dialog.component';
 import { UserAccountDialogComponent } from '../../dialog/user-account-dialog/user-account-dialog.component';
 import { UserDialogComponent } from '../../dialog/user-dialog/user-dialog.component';
@@ -31,8 +30,7 @@ import { AdminRoutingModule } from './admin-routing.module';
     RegisteredUserListComponent,
     VerifyDetailDialogComponent,
     ManageTrainingStatusComponent,
-    UpdateTrainingStatusDialogComponent,
-    ImageDialogComponent
+    UpdateTrainingStatusDialogComponent
   ],
   imports: [
     SharedModule,

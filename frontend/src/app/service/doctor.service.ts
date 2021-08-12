@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BasicInfo } from '../model/basic-info.model';
@@ -16,10 +15,9 @@ export class DoctorService extends BaseRegistrationService {
 
   constructor(
     http: HttpClient,
-    fileService: FileService,
-    sanitizer: DomSanitizer
+    fileService: FileService
   ) {
-    super(`${environment.apiPrefix}/doctors`, http, fileService, sanitizer);
+    super(`${environment.apiPrefix}/doctors`, http, fileService);
   }
 
   getRegisterInfo(nationalId: number): Observable<any> {
