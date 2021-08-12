@@ -1,13 +1,17 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { DoctorVerification } from 'src/doctors/entities/doctor-verification.entity';
 import { Doctor } from 'src/doctors/entities/doctor.entity';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
+import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VolunteerVerification } from 'src/volunteers/entities/volunteer-verification.entity';
 import { Volunteer } from 'src/volunteers/entities/volunteer.entity';
+import { Stream } from 'stream';
 import { FindOneOptions, In, Repository } from 'typeorm';
 
 @Injectable()
 export class RegistrationService {
+
+  constructor(private minioClientService: MinioClientService) { }
 
   readonly doctorRequiredFiles = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
   readonly volunteerRequiredFiles = ['idCard', 'idCardSelfie'];
@@ -71,6 +75,14 @@ export class RegistrationService {
     if (!pass) {
       throw new BadRequestException(`${requiredFiles.join(', ')} are required`);
     }
+  }
+
+  public async findOneFile(repository: Repository<Doctor | Volunteer>, id: number, objectName: string): Promise<Stream> {
+    const entity = await repository.findOne(id);
+    if (!entity) {
+      throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
+    }
+    return await this.minioClientService.get(objectName);
   }
 
 }

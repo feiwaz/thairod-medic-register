@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { VerificationBody } from 'src/app/model/verification-body.model';
 import { BaseResourceService } from './base-resource.service';
 import { FileService } from './file.service';
@@ -10,7 +12,8 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   constructor(
     protected resourcePrefix: string,
     protected http: HttpClient,
-    protected fileService: FileService
+    protected fileService: FileService,
+    protected sanitizer: DomSanitizer
   ) {
     super(resourcePrefix, http);
   }
@@ -32,6 +35,29 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   findOne(id: number): Observable<any> {
     const url = `${this.resourcePrefix}/${id}`;
     return this.http.get<any>(url);
+  }
+
+  findOneFile(id: number, filePath: string): Observable<any> {
+    let url = '';
+    try {
+      const filePaths = filePath.split('/');
+      url = `${this.resourcePrefix}/${id}/folders/${filePaths[0]}/files/${filePaths[1]}`;
+    } catch (error) {
+      console.log(`Unable to resolve the file path: ${filePath}`);
+    }
+    return this.http.get<any>(url, { responseType: 'blob' as 'json' }).pipe(map(
+      response => {
+        let blobUrl = '' as any;
+        if (response) {
+          try {
+            blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(response));
+          } catch (error) {
+            console.warn('Unable to create object URL');
+          }
+        }
+        return blobUrl;
+      }
+    ));
   }
 
   getResources(): Observable<any[]> {

@@ -59,11 +59,12 @@
                 <div class="info-header">
                     <span class="info-field">ไฟล์แนบ</span>
                 </div>
-                <div class="info-body">
-                    <img mat-card-image>
-                    <img mat-card-image>
-                    <img mat-card-image>
-                    <img mat-card-image>
+                <div class="files-body">
+                    <img #img1 mat-card-image width="120px" (click)="onImageClick($event, img1)"
+                        [src]="this.content.idCardImg">
+                    <img mat-card-image width="120px" [src]="this.content.idCardSelfieImg">
+                    <img mat-card-image width="120px" [src]="this.content.jobCertificateImg">
+                    <img mat-card-image width="120px" [src]="this.content.jobCertificateSelfieImg">
                 </div>
             </div>
             <div *ngIf="content.availableTimes !== ''" class="section-container">

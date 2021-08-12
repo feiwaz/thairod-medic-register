@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 import { VerificationBody } from 'src/app/model/verification-body.model';
 import { AuthenticationService } from 'src/app/service/authentication.service';
 import { DoctorService } from 'src/app/service/doctor.service';
@@ -37,12 +38,15 @@ export class VerifyDetailDialogComponent implements OnInit {
     specializedFields: [],
     departments: [],
     medCertificateId: '',
-    idCardImg: '',
+    idCardImg: '' as any,
+    idCardSelfieImg: '' as any,
+    jobCertificateImg: '' as any,
+    jobCertificateSelfieImg: '' as any,
     availableTimes: '',
     status: '',
     verification: {} as any
   };
-
+  obs$: any
   verifyForm = this.fb.group({
     note: ['']
   });
@@ -78,8 +82,25 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   private handleSuccessfulFindOne(response: any): void {
-    this.isLoading = false;
-    this.content = response;
+    const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
+    this.content = rest;
+
+    const idCardImage$ = this.service.findOneFile(this.data.row.id, response.idCardImg);
+    const idCardSelfieImg$ = this.service.findOneFile(this.data.row.id, response.idCardSelfieImg);
+    const jobCertificateImg$ = this.service.findOneFile(this.data.row.id, response.jobCertificateImg);
+    const jobCertificateSelfieImg$ = this.service.findOneFile(this.data.row.id, response.jobCertificateSelfieImg);
+    const allFiles$ = forkJoin([idCardImage$, idCardSelfieImg$, jobCertificateImg$, jobCertificateSelfieImg$]);
+
+    allFiles$.subscribe(
+      blobUrls => {
+        this.isLoading = false;
+        this.content.idCardImg = blobUrls[0];
+        this.content.idCardSelfieImg = blobUrls[1];
+        this.content.jobCertificateImg = blobUrls[2];
+        this.content.jobCertificateSelfieImg = blobUrls[3];
+      },
+      errorResponse => this.isLoading = false
+    );
   }
 
   private handleErrorResponse(): void {
@@ -136,6 +157,11 @@ export class VerifyDetailDialogComponent implements OnInit {
 
   get updatedTime(): string {
     return moment(this.content.verification?.updatedTime).locale('th').add(543, 'year').format('LLLL น.');
+  }
+
+  onImageClick(event: any, element: any): void {
+    console.log(event);
+    console.log(element);
   }
 
 }

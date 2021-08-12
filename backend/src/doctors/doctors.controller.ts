@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Res, UploadedFiles, UseGuards, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { BufferedFile } from 'src/minio-client/file.model';
 import { ParseFormDataRequestPipe } from 'src/pipes/parse-form-data-request.pipe';
@@ -42,6 +43,20 @@ export class DoctorsController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.service.findOne(+id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':id/folders/:folderName/files/:fileName')
+  async findOneFile(
+    @Param('id') id: number,
+    @Param('folderName') folderName: string,
+    @Param('fileName') fileName: string,
+    @Res() response: Response
+  ) {
+    const stream = await this.service.findOneFile(+id, `${folderName}/${fileName}`);
+    response.set({ 'Content-Type': 'image/*' });
+    stream.pipe(response);
+    return response;
   }
 
   @Get(':nationalId/check-verification-status')

@@ -7,6 +7,7 @@ import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
+import { Stream } from 'stream';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { responseDoctorDto } from './dto/response-doctor.dto';
@@ -16,6 +17,7 @@ import { SpecializedField } from './entities/specialized-field.entity';
 
 @Injectable()
 export class DoctorsService {
+
   constructor(
     @InjectRepository(Doctor)
     private doctorRepository: Repository<Doctor>,
@@ -83,6 +85,10 @@ export class DoctorsService {
     responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
     await this.populateVerification(doctor, responseDto);
     return responseDto;
+  }
+
+  async findOneFile(id: number, objectName: string): Promise<Stream> {
+    return await this.registrationService.findOneFile(this.doctorRepository, id, objectName);
   }
 
   private async populateVerification(doctor: Doctor, responseDto: responseDoctorDto) {

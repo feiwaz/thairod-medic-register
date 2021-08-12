@@ -111,7 +111,7 @@ export class DoctorJobInfoFormComponent implements OnInit {
       this.imageCachingService.cacheBlobUrl(id, file.name, imageObject.blobUrl, file.type);
     } else {
       this.jobInfoForm.patchValue({ [id]: null });
-      window.URL.revokeObjectURL(imageObject.blobUrl);
+      URL.revokeObjectURL(imageObject.blobUrl);
     }
   }
 

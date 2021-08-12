@@ -52,6 +52,30 @@ mat-progress-bar {
   margin: 0 16px 20px 16px;
 }
 
+.files-body {
+  margin: 14px 16px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.files-body > img {
+  margin: 1em;
+  flex: 1 0 calc(40%);
+  min-width: 75px;
+  max-width: 216px;
+  font-weight: bold;
+  transition: 0.3s;
+  border: #77dd77;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.6);
+  }
+}
+
 .note-body {
   margin: 2px 6px;
 }

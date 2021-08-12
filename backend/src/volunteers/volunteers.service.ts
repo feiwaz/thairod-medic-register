@@ -9,6 +9,7 @@ import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
+import { Stream } from 'stream';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
 import {
@@ -110,6 +111,10 @@ export class VolunteersService {
     responseDto.departments = volunteerDepartments.map(volDep => volDep.department.label);
     await this.populateVerification(volunteer, responseDto);
     return responseDto;
+  }
+
+  async findOneFile(id: number, objectName: string): Promise<Stream> {
+    return await this.registrationService.findOneFile(this.volunteerRepository, id, objectName);
   }
 
   private async populateVerification(volunteer: Volunteer, responseDto: ResponseVolunteerDto) {

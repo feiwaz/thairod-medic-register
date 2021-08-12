@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { BasicInfo } from '../model/basic-info.model';
@@ -13,8 +14,12 @@ import { FileService } from './file.service';
 })
 export class DoctorService extends BaseRegistrationService {
 
-  constructor(http: HttpClient, fileService: FileService) {
-    super(`${environment.apiPrefix}/doctors`, http, fileService);
+  constructor(
+    http: HttpClient,
+    fileService: FileService,
+    sanitizer: DomSanitizer
+  ) {
+    super(`${environment.apiPrefix}/doctors`, http, fileService, sanitizer);
   }
 
   getRegisterInfo(nationalId: number): Observable<any> {
@@ -27,6 +32,10 @@ export class DoctorService extends BaseRegistrationService {
 
   findOne(id: number): Observable<any> {
     return super.findOne(id);
+  }
+
+  findOneFile(id: number, filePath: string): Observable<any> {
+    return super.findOneFile(id, filePath);
   }
 
   getDoctors(): Observable<any[]> {
