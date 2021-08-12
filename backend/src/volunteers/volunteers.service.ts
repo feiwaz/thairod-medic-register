@@ -113,7 +113,7 @@ export class VolunteersService {
     return responseDto;
   }
 
-  async findOneFile(id: number, objectName: string): Promise<Stream> {
+  async findOneFile(id: number, objectName: string): Promise<any> {
     return await this.registrationService.findOneFile(this.volunteerRepository, id, objectName);
   }
 

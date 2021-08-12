@@ -48,7 +48,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     return this.http.get<any>(url, { responseType: 'blob' as 'json' }).pipe(map(
       response => {
         let blobUrl = '' as any;
-        if (response) {
+        if (response && ['image/jpeg', 'image/png'].includes(response.type)) {
           try {
             blobUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(response));
           } catch (error) {

@@ -1,5 +1,6 @@
 import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
 import { createHash } from 'crypto';
+import { ItemBucketMetadata } from 'minio';
 import { MinioService } from 'nestjs-minio-client';
 import { Stream } from 'stream';
 import { BufferedFile } from './file.model';
@@ -32,7 +33,8 @@ export class MinioClientService {
     const fileExtension = file.mimetype.substring(6, file.mimetype.length);
     let fileName = `${folder}/${hashedFileName}.${fileExtension}`;
     try {
-      await this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer);
+      const metaData: ItemBucketMetadata = { 'Content-Type': file.mimetype };
+      await this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, fileName, file.buffer, metaData);
     } catch (error) {
       fileName = null;
       console.warn(`Failed to upload file: ${fileName}, due to error: ${error}`);

@@ -7,7 +7,6 @@ import { BufferedFile } from 'src/minio-client/file.model';
 import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
-import { Stream } from 'stream';
 import { In, Repository } from 'typeorm';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { responseDoctorDto } from './dto/response-doctor.dto';
@@ -87,7 +86,7 @@ export class DoctorsService {
     return responseDto;
   }
 
-  async findOneFile(id: number, objectName: string): Promise<Stream> {
+  async findOneFile(id: number, objectName: string): Promise<any> {
     return await this.registrationService.findOneFile(this.doctorRepository, id, objectName);
   }
 

@@ -62,7 +62,7 @@ export class VolunteersController {
     @Res() response: Response
   ) {
     const stream = await this.service.findOneFile(+id, `${folderName}/${fileName}`);
-    response.set({ 'Content-Type': 'image/*' });
+    response.set({ 'Content-Type': stream.headers['content-type'] });
     stream.pipe(response);
     return response;
   }
