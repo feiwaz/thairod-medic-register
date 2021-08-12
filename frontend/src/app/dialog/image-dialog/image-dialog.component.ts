@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -6,15 +6,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './image-dialog.component.html',
   styleUrls: ['./image-dialog.component.scss']
 })
-export class ImageDialogComponent implements OnInit {
+export class ImageDialogComponent {
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: {
-      src?: string
-    }
-  ) { }
-
-  ngOnInit(): void {
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { src?: string }) { }
 
 }

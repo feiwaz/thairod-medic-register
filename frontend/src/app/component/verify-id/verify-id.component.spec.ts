@@ -37,6 +37,7 @@ describe('VerifyIdComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(VerifyIdComponent);
     component = fixture.componentInstance;
+    component.role = 'doctor';
     fixture.detectChanges();
   });
 
