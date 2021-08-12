@@ -41,6 +41,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     let url = '';
     try {
       const filePaths = filePath.split('/');
+      if (filePaths.length !== 2) throw new Error();
       url = `${this.resourcePrefix}/${id}/folders/${filePaths[0]}/files/${filePaths[1]}`;
     } catch (error) {
       console.warn(`Unable to resolve the file path: ${filePath}`);
