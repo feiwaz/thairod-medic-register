@@ -1,6 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteDialogComponent } from './delete-dialog.component';
 
@@ -16,7 +17,8 @@ describe('DeleteDialogComponent', () => {
       declarations: [DeleteDialogComponent],
       imports: [
         HttpClientTestingModule,
-        MatDialogModule
+        MatDialogModule,
+        MatProgressBarModule
       ],
       providers: [{
         provide: MAT_DIALOG_DATA,

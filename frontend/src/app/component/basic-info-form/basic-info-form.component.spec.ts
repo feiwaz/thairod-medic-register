@@ -1,10 +1,12 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatMomentDateModule, MomentDateModule } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,6 +32,10 @@ describe('BasicInfoFormComponent', () => {
         MatInputModule,
         MatSelectModule,
         MatToolbarModule,
+        MomentDateModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatProgressBarModule,
         BrowserAnimationsModule
       ]
     })

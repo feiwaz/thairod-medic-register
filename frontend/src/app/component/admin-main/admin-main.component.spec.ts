@@ -22,7 +22,7 @@ describe('AdminMainComponent', () => {
   let router: Router;
 
   const toastrService = jasmine.createSpyObj('ToastrService', ['success']);
-  const authService = jasmine.createSpyObj('AuthenticationService', ['logout']);
+  const authService = jasmine.createSpyObj('AuthenticationService', ['getRefreshToken']);
   const matDialog = jasmine.createSpyObj('MatDialog', ['closeAll']);
 
   beforeEach(async () => {

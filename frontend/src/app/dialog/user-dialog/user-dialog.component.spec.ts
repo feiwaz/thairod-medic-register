@@ -8,6 +8,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrService } from 'ngx-toastr';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { UserDialogComponent } from './user-dialog.component';
 
 describe('UserDialogComponent', () => {
@@ -16,6 +17,7 @@ describe('UserDialogComponent', () => {
 
   const toastrService = jasmine.createSpyObj('ToastrService', ['warning']);
   const matDialogRef = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const authService = jasmine.createSpyObj('AuthenticationService', ['currentUser']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -29,6 +31,7 @@ describe('UserDialogComponent', () => {
         MatInputModule,
         MatProgressBarModule,
         MatSelectModule,
+        MatInputModule,
         BrowserAnimationsModule
       ],
       providers: [{
@@ -40,6 +43,9 @@ describe('UserDialogComponent', () => {
       }, {
         provide: MAT_DIALOG_DATA,
         useValue: {}
+      }, {
+        provide: AuthenticationService,
+        useValue: authService
       }]
     })
       .compileComponents();
@@ -48,7 +54,6 @@ describe('UserDialogComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserDialogComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

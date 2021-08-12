@@ -5,10 +5,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { UploadPhotoComponent } from '../upload-photo/upload-photo.component';
 import { DoctorJobInfoFormComponent } from './doctor-job-info-form.component';
 
 describe('DoctorJobInfoFormComponent', () => {
@@ -17,7 +19,11 @@ describe('DoctorJobInfoFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DoctorJobInfoFormComponent, ToolbarComponent],
+      declarations: [
+        DoctorJobInfoFormComponent,
+        ToolbarComponent,
+        UploadPhotoComponent
+      ],
       imports: [
         RouterTestingModule,
         HttpClientTestingModule,
@@ -28,6 +34,7 @@ describe('DoctorJobInfoFormComponent', () => {
         MatIconModule,
         MatInputModule,
         MatToolbarModule,
+        MatProgressBarModule,
         BrowserAnimationsModule
       ]
     })
