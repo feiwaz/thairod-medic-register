@@ -7,6 +7,9 @@ import { VolunteerVerification } from 'src/volunteers/entities/volunteer-verific
 import { Volunteer } from 'src/volunteers/entities/volunteer.entity';
 import { Stream } from 'stream';
 import { FindOneOptions, In, Repository } from 'typeorm';
+import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
+import { BufferedFile } from '../minio-client/file.model';
+import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
 
 @Injectable()
 export class RegistrationService {
@@ -33,6 +36,35 @@ export class RegistrationService {
     });
   }
 
+  public async validateUniqueFieldConstraints(
+    repository: Repository<Doctor | Volunteer>,
+    createDto: CreateDoctorDto | CreateVolunteerDto
+  ) {
+    const { nationalId, firstName, lastName, contactNumber, lineId, medCertificateId } = createDto;
+    const entity = await repository.findOne({
+      where: [{ nationalId }, { firstName, lastName }, { contactNumber }, { lineId }, { medCertificateId }]
+    });
+    if (entity) {
+      const errors = [];
+      if (nationalId == entity.nationalId) {
+        errors.push({ field: 'nationalId', value: nationalId, text: 'เลขประจำตัวประชาชน' });
+      }
+      if (firstName === entity.firstName && lastName === entity.lastName) {
+        errors.push({ field: 'firstName,lastName', value: `${firstName} ${lastName}`, text: 'ชื่อ-นามสกุล' });
+      }
+      if (contactNumber == entity.contactNumber) {
+        errors.push({ field: 'contactNumber', value: contactNumber, text: 'หมายเลขโทรศัพท์' });
+      }
+      if (lineId === entity.lineId) {
+        errors.push({ field: 'lineId', value: lineId, text: 'LINE ID' });
+      }
+      if (medCertificateId == entity.medCertificateId) {
+        errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
+      }
+      throw new ConflictException(errors);
+    }
+  }
+
   public async checkIfNationalIdAlreadyExisted(repository: Repository<Doctor | Volunteer>, nationalId: string) {
     const entity = await repository.findOne({ where: { nationalId } });
     if (entity) {
@@ -44,6 +76,16 @@ export class RegistrationService {
       }
     }
     return {};
+  }
+
+  public async applyImageUrl(bufferedFile: BufferedFile, entity: Doctor | Volunteer, role: 'doctors' | 'volunteers') {
+    let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
+    this.checkFileRequirement(Object.keys(bufferedFile), role);
+    resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, role, entity.nationalId);
+    entity.idCardImg = resultObject.idCardUrl;
+    entity.idCardSelfieImg = resultObject.idCardSelUrl;
+    entity.jobCertificateImg = resultObject.jobCerUrl;
+    entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
   }
 
   public async checkStatus(
@@ -75,8 +117,8 @@ export class RegistrationService {
     return responseDto;
   }
 
-  public checkFileRequirement(bufferedFileKeys: string[], role: 'doctor' | 'volunteer') {
-    const requiredFiles = role === 'doctor' ? this.doctorRequiredFiles : this.volunteerRequiredFiles;
+  private checkFileRequirement(bufferedFileKeys: string[], role: 'doctors' | 'volunteers') {
+    const requiredFiles = role === 'doctors' ? this.doctorRequiredFiles : this.volunteerRequiredFiles;
     const pass = bufferedFileKeys.length !== 0 && requiredFiles.every(field => bufferedFileKeys.includes(field));
     if (!pass) {
       throw new BadRequestException(`${requiredFiles.join(', ')} are required`);

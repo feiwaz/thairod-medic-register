@@ -4,7 +4,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
 import { BufferedFile } from 'src/minio-client/file.model';
-import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
 import { In, Repository } from 'typeorm';
@@ -26,21 +25,15 @@ export class DoctorsService {
     private userRepository: Repository<User>,
     @InjectRepository(DoctorVerification)
     private docVerificationRepository: Repository<DoctorVerification>,
-    private minioClientService: MinioClientService,
     private registrationService: RegistrationService
   ) { }
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
     try {
+      await this.registrationService.validateUniqueFieldConstraints(this.doctorRepository, createDto);
       const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
       const entity = await this.mapDtoToEntity(createDto, checkedEntity as Doctor);
-      let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
-      this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'doctor');
-      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doctors', createDto.nationalId);
-      entity.idCardImg = resultObject.idCardUrl;
-      entity.idCardSelfieImg = resultObject.idCardSelUrl;
-      entity.jobCertificateImg = resultObject.jobCerUrl;
-      entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
+      await this.registrationService.applyImageUrl(bufferedFile, entity, 'doctors');
       await this.doctorRepository.save(entity);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {

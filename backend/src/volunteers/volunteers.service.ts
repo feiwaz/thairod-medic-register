@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { BufferedFile } from 'src/minio-client/file.model';
-import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions, In, Repository } from 'typeorm';
@@ -35,21 +34,15 @@ export class VolunteersService {
     private userRepository: Repository<User>,
     @InjectRepository(VolunteerVerification)
     private volVerificationRepository: Repository<VolunteerVerification>,
-    private minioClientService: MinioClientService,
     private registrationService: RegistrationService
   ) { }
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
     try {
+      await this.registrationService.validateUniqueFieldConstraints(this.volunteerRepository, createDto);
       const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
       const entity = await this.mapDtoToEntity(createDto, checkedEntity as Volunteer);
-      let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
-      this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'volunteer');
-      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'volunteers', createDto.nationalId);
-      entity.idCardImg = resultObject.idCardUrl;
-      entity.idCardSelfieImg = resultObject.idCardSelUrl;
-      entity.jobCertificateImg = resultObject.jobCerUrl;
-      entity.jobCertificateSelfieImg = resultObject.jobCerSelUrl;
+      await this.registrationService.applyImageUrl(bufferedFile, entity, 'volunteers');
       await this.volunteerRepository.save(entity);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
