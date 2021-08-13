@@ -29,6 +29,11 @@ export class RegisteredUserListComponent implements OnInit {
     firstName: 'ชื่อ-นามสกุล',
     status: 'สถานะ'
   };
+  readonly STATUS_MAP: any = {
+    'อนุมัติแล้ว': 'ผ่าน',
+    'ไม่อนุมัติ': 'ไม่ผ่าน',
+    'รอการอนุมัติ': 'รอตรวจสอบ'
+  };
 
   getEntities$: Observable<any[]> = this.volunteerService.getVolunteers();
   isLoading = false;
@@ -121,6 +126,8 @@ export class RegisteredUserListComponent implements OnInit {
         } else if (this.selectedFilterColumn === 'firstName') {
           const fullName = `${row.initial} ${rowValue} ${row.lastName}`;
           return fullName.toString().toLowerCase().includes(filter);
+        } else if (this.selectedFilterColumn === 'status') {
+          return this.STATUS_MAP[rowValue] === filter;
         } else {
           return rowValue.toString().toLowerCase().includes(filter);
         }

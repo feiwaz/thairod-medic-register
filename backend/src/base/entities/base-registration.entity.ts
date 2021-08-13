@@ -22,10 +22,10 @@ export abstract class BaseRegistration extends BaseResource {
   @Column({ length: 510 })
   address: string;
 
-  @Column()
+  @Column({ unique: true })
   contactNumber: string;
 
-  @Column()
+  @Column({ unique: true })
   lineId: string;
 
   @Column({ nullable: true })

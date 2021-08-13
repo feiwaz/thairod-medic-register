@@ -1,5 +1,5 @@
 import { BaseRegistration } from 'src/base/entities/base-registration.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany, Unique } from 'typeorm';
 import { VolunteerDepartment } from './volunteer-department.entity';
 import { VolunteerVerification } from './volunteer-verification.entity';
 
@@ -18,6 +18,7 @@ export enum VolunteerStatus {
 }
 
 @Entity()
+@Unique(['firstName', 'lastName'])
 export class Volunteer extends BaseRegistration {
 
   @Column({
@@ -26,7 +27,10 @@ export class Volunteer extends BaseRegistration {
   })
   initial: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    unique: true
+  })
   medCertificateId: number;
 
   @OneToMany(

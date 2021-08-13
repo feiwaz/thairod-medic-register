@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import { BaseResource } from "src/base/entities/base-resource.entity";
 import { DoctorVerification } from "src/doctors/entities/doctor-verification.entity";
 import { VolunteerVerification } from "src/volunteers/entities/volunteer-verification.entity";
-import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, OneToOne, UpdateDateColumn } from "typeorm";
+import { AfterLoad, BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, OneToMany, OneToOne, Unique, UpdateDateColumn } from "typeorm";
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -11,6 +11,7 @@ export enum UserRole {
 }
 
 @Entity()
+@Unique(['firstName', 'lastName'])
 export class User extends BaseResource {
 
   @Column({ unique: true })
@@ -47,7 +48,7 @@ export class User extends BaseResource {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   contactNumber: string;
 
   @Column({
