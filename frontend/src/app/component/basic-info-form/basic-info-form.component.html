@@ -96,6 +96,10 @@
           (click)="lineId.value=''">
           <mat-icon>close</mat-icon>
         </button>
+        <mat-error
+          *ngIf="basicInfoForm.get('lineId')?.hasError('pattern') && !basicInfoForm.get('lineId')?.hasError('required')">
+          รูปแบบ LINE ID ไม่ถูกต้อง*
+        </mat-error>
         <mat-error *ngIf="basicInfoForm.get('lineId')?.hasError('required')">
           จำเป็นต้องใส่*
         </mat-error>

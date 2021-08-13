@@ -47,7 +47,7 @@ export class BasicInfoFormComponent implements OnInit {
     dateOfBirth: ['', Validators.required],
     address: ['', Validators.required],
     contactNumber: ['', Validators.required],
-    lineId: ['', Validators.required]
+    lineId: ['', [Validators.required, Validators.pattern(/^[0-9a-zA-Z.-_]+$/)]],
   });
 
   constructor(
