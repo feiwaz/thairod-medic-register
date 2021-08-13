@@ -9,7 +9,7 @@ import { MinioClientService } from './minio-client.service';
       useFactory: async () => ({
         endPoint: process.env.MINIO_ENDPOINT,
         port: parseInt(process.env.MINIO_PORT),
-        useSSL: false, // If on localhost, keep it at false. If deployed on https, change to true
+        useSSL: process.env.MINIO_SSL == 'false' ? false : true,
         accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRET_KEY,
       }),
