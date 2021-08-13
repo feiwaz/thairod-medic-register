@@ -7,7 +7,7 @@
 <div class="mat-elevation-z5">
     <div class="verify-list-table-container">
         <mat-progress-bar *ngIf="isLoading" color="primary" mode="indeterminate"> </mat-progress-bar>
-        <table mat-table [dataSource]="dataSource" matSort matSortActive="createdTime" matSortDirection="asc"
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="createdTime" matSortDirection="desc"
             matSortDisableClear>
             <ng-container matColumnDef="createdTime" class="first-column">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> วันเวลาที่ลงทะเบียน </th>
