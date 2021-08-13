@@ -27,8 +27,8 @@ export class UserDialogComponent implements OnInit {
 
   userForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
+    lastName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     contactNumber: ['', Validators.required],
     role: ['user', Validators.required]
   });

@@ -42,8 +42,8 @@ export class BasicInfoFormComponent implements OnInit {
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
+    lastName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     dateOfBirth: ['', Validators.required],
     address: ['', Validators.required],
     contactNumber: ['', Validators.required],

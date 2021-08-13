@@ -52,15 +52,23 @@
                 </mat-form-field>
             </ng-container>
             <mat-form-field>
-                <input matInput #firstName maxlength="32" placeholder="ชื่อ" formControlName="firstName">
+                <input matInput #firstName maxlength="32" placeholder="ชื่อ (ภาษาไทย)" formControlName="firstName">
                 <mat-hint align="end">{{firstName.value.length}} / 32</mat-hint>
+                <mat-error
+                    *ngIf="userForm.controls.firstName.hasError('pattern') && !userForm.controls.firstName.hasError('required')">
+                    กรุณาใส่ตัวอักษรภาษาไทย*
+                </mat-error>
                 <mat-error *ngIf="userForm.controls.firstName.hasError('required')">
                     จำเป็นต้องใส่*
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
-                <input matInput #lastName maxlength="32" placeholder="นามสกุล" formControlName="lastName">
+                <input matInput #lastName maxlength="32" placeholder="นามสกุล (ภาษาไทย)" formControlName="lastName">
                 <mat-hint align="end">{{lastName.value.length}} / 32</mat-hint>
+                <mat-error
+                    *ngIf="userForm.controls.lastName.hasError('pattern') && !userForm.controls.lastName.hasError('required')">
+                    กรุณาใส่ตัวอักษรภาษาไทย*
+                </mat-error>
                 <mat-error *ngIf="userForm.controls.lastName.hasError('required')">
                     จำเป็นต้องใส่*
                 </mat-error>

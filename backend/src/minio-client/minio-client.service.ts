@@ -45,7 +45,6 @@ export class MinioClientService {
   public async get(objectName: string): Promise<Stream> {
     let stream: Stream;
     try {
-      // const objectName = filename.split('/files/').join('/');
       stream = await this.minioClient.getObject(process.env.MINIO_BUCKET_NAME, objectName);
     } catch (error) {
       console.warn(`Failed to get object: ${objectName}, due to error: ${error}`);

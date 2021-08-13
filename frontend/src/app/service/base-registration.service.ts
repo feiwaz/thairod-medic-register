@@ -41,7 +41,6 @@ export abstract class BaseRegistrationService extends BaseResourceService {
       let regex = new RegExp(/^(doctors|volunteers)\/[0-9]{13,13}\/files\/[0-9a-zA-Z]{32,32}$/);
       if (!regex.test(resourcePath)) throw new Error();
     } catch (error) {
-      console.warn(`Unable to resolve the request path: ${resourcePath}`);
       return of(null);
     }
 
