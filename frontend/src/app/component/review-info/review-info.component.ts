@@ -23,6 +23,7 @@ export class ReviewInfoComponent implements OnInit {
   role = '';
   isLoading = false;
   errorResponse = false;
+  errorMessages: any = [];
   service: DoctorService | VolunteerService = this.volunteerService;
   displaySpecializedFields: string[] = [];
 
@@ -143,6 +144,9 @@ export class ReviewInfoComponent implements OnInit {
     this.isLoading = false;
     this.errorResponse = true;
     let errorText = this.defaultErrorText;
+    if (Array.isArray(errorResponse.error.message)) {
+      this.errorMessages = errorResponse.error.message;
+    }
     if (errorResponse.error.statusCode === HttpStatusCode.BadGateway) {
       errorText = 'ไม่สามารถอัพโหลดรูปภาพได้ กรุณาลองใหม่อีกครั้ง'
     }

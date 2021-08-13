@@ -10,7 +10,7 @@
           </mat-checkbox>
         </p>
       </section>
-      <p><b>เลขที่ใบประกอบวิชาชีพเวชกรรม</b></p>
+      <p><b>เลขที่ใบประกอบวิชาชีพเวชกรรม <span class="text-danger">*</span></b></p>
       <mat-form-field>
         <input matInput type="tel" maxlength="5" formControlName="medCertificateId" placeholder="กรอกเฉพาะตัวเลข 5 หลัก"
           (keypress)="inputNumber($event)" (paste)="inputNumber($event)" #medCertificateId class="user-id-input">

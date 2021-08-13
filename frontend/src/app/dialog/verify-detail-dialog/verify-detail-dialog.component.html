@@ -84,14 +84,11 @@
                     <span class="info-field">วันและเวลาที่สะดวก</span>
                 </div>
                 <div class="info-body">
-                    <div>
-                        <ul>
-                            <li class="available-time-li"
-                                *ngFor="let availableTime of content.availableTimes.split(',')">
-                                {{availableTime}}
-                            </li>
-                        </ul>
-                    </div>
+                    <ul>
+                        <li class="available-time-li" *ngFor="let availableTime of content.availableTimes.split(',')">
+                            {{availableTime}}
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div *ngIf="content.status === 'รอการอนุมัติ' || content.verification?.statusNote"

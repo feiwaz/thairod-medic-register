@@ -158,7 +158,7 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   get dateOfBirth(): string {
-    return moment(this.content.dateOfBirth).locale('th').add(543, 'year').format('DD MMM YYYY');
+    return moment(this.content.dateOfBirth).locale('th').format('DD MMM YYYY');
   }
 
   get createdTime(): string {
