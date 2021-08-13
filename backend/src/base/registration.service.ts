@@ -83,8 +83,8 @@ export class RegistrationService {
     }
   }
 
-  public async findOneFile(repository: Repository<Doctor | Volunteer>, id: number, objectName: string): Promise<Stream> {
-    const entity = await repository.findOne(id);
+  public async findOneFile(repository: Repository<Doctor | Volunteer>, nationalId: number, objectName: string): Promise<Stream> {
+    const entity = await repository.findOne({ where: { nationalId } });
     if (!entity) {
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }

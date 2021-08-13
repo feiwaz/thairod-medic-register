@@ -56,6 +56,9 @@ mat-progress-bar {
   flex: 1 1 100%;
   text-align: center;
   text-decoration: underline;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  cursor: default;
 }
 
 .files-body {

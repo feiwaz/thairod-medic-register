@@ -32,8 +32,8 @@ export class DoctorService extends BaseRegistrationService {
     return super.findOne(id);
   }
 
-  findOneFile(id: number, filePath: string): Observable<any> {
-    return super.findOneFile(id, filePath);
+  findOneFile(resourcePath: string): Observable<any> {
+    return super.findOneFile(resourcePath);
   }
 
   getDoctors(): Observable<any[]> {

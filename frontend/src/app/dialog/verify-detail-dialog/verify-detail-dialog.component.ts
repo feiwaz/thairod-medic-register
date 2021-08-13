@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { VerificationBody } from '../../model/verification-body.model';
 import { AuthenticationService } from '../../service/authentication.service';
 import { DoctorService } from '../../service/doctor.service';
@@ -93,16 +93,14 @@ export class VerifyDetailDialogComponent implements OnInit {
   private handleSuccessfulFindOne(response: any): void {
     const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
     this.content = rest;
-    const findAllFiles$ = this.buildFindAllFiles$(idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, response);
-    findAllFiles$.subscribe(blobUrls => this.handleSuccessfulFindAllFiles(blobUrls), errorResponse => this.isLoading = false);
+    const findAllFiles$ = this.buildFindAllFiles$({ idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg });
+    findAllFiles$.subscribe((blobUrls: any) => this.handleSuccessfulFindAllFiles(blobUrls), errorResponse => this.isLoading = false);
   }
 
-  private buildFindAllFiles$(idCardImg: string, idCardSelfieImg: string, jobCertificateImg: string, jobCertificateSelfieImg: string, response: any) {
-    const idCardImage$ = idCardImg ? this.service.findOneFile(this.data.row.id, response.idCardImg) : of(null);
-    const idCardSelfieImg$ = idCardSelfieImg ? this.service.findOneFile(this.data.row.id, response.idCardSelfieImg) : of(null);
-    const jobCertificateImg$ = jobCertificateImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateImg) : of(null);
-    const jobCertificateSelfieImg$ = jobCertificateSelfieImg ? this.service.findOneFile(this.data.row.id, response.jobCertificateSelfieImg) : of(null);
-    return forkJoin([idCardImage$, idCardSelfieImg$, jobCertificateImg$, jobCertificateSelfieImg$]);
+  private buildFindAllFiles$(filePaths: { idCardImg: string, idCardSelfieImg: string, jobCertificateImg: string, jobCertificateSelfieImg: string }) {
+    const findAllFiles$: any[] = [];
+    Object.values(filePaths).forEach(filePath => findAllFiles$.push(this.service.findOneFile(filePath)));
+    return forkJoin(findAllFiles$);
   }
 
   private handleSuccessfulFindAllFiles(blobUrls: [string, string, string, string]) {

@@ -36,7 +36,7 @@ export class DoctorsService {
       const entity = await this.mapDtoToEntity(createDto, checkedEntity as Doctor);
       let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
       this.registrationService.checkFileRequirement(Object.keys(bufferedFile), 'doctor');
-      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doc', createDto.nationalId);
+      resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, 'doctors', createDto.nationalId);
       entity.idCardImg = resultObject.idCardUrl;
       entity.idCardSelfieImg = resultObject.idCardSelUrl;
       entity.jobCertificateImg = resultObject.jobCerUrl;
@@ -85,8 +85,9 @@ export class DoctorsService {
     return responseDto;
   }
 
-  async findOneFile(id: number, objectName: string): Promise<any> {
-    return await this.registrationService.findOneFile(this.doctorRepository, id, objectName);
+  async findOneFile(nationalId: number, filename: string): Promise<any> {
+    const objectName = `doctors/${nationalId}/${filename}`;
+    return await this.registrationService.findOneFile(this.doctorRepository, nationalId, objectName);
   }
 
   private async populateVerification(doctor: Doctor, responseDto: responseDoctorDto) {

@@ -46,14 +46,13 @@ export class DoctorsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id/folders/:folderName/files/:fileName')
+  @Get(':nationalId/files/:filename')
   async findOneFile(
-    @Param('id') id: number,
-    @Param('folderName') folderName: string,
-    @Param('fileName') fileName: string,
+    @Param('nationalId') nationalId: number,
+    @Param('filename') filename: string,
     @Res() response: Response
   ) {
-    const stream = await this.service.findOneFile(+id, `${folderName}/${fileName}`);
+    const stream = await this.service.findOneFile(nationalId, filename);
     response.set({ 'Content-Type': stream.headers['content-type'] });
     stream.pipe(response);
     return response;

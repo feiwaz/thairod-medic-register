@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 import { VerificationBody } from '../model/verification-body.model';
 import { BaseResourceService } from './base-resource.service';
 import { FileService } from './file.service';
@@ -35,17 +36,19 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     return this.http.get<any>(url);
   }
 
-  findOneFile(id: number, filePath: string): Observable<any> {
-    let url = '';
+  findOneFile(resourcePath: string): Observable<any> {
     try {
-      const filePaths = filePath.split('/');
-      if (filePaths.length !== 2) throw new Error();
-      url = `${this.resourcePrefix}/${id}/folders/${filePaths[0]}/files/${filePaths[1]}`;
+      let regex = new RegExp(/^(doctors|volunteers)\/[0-9]{13,13}\/files\/[0-9a-zA-Z]{32,32}$/);
+      if (!regex.test(resourcePath)) throw new Error();
     } catch (error) {
-      console.warn(`Unable to resolve the file path: ${filePath}`);
+      console.warn(`Unable to resolve the request path: ${resourcePath}`);
+      return of(null);
     }
-    return this.http.get<any>(url, { responseType: 'blob' as 'json' }).pipe(map(
-      response => {
+
+    const url = `${environment.apiPrefix}/${resourcePath}`;
+    const options = { responseType: 'blob' as 'json' };
+    return this.http.get<any>(url, options).pipe(
+      map(response => {
         let blobUrl = '' as any;
         if (response && ['image/jpeg', 'image/png'].includes(response.type)) {
           try {
@@ -55,8 +58,8 @@ export abstract class BaseRegistrationService extends BaseResourceService {
           }
         }
         return blobUrl;
-      }
-    ));
+      })
+    );
   }
 
   getResources(): Observable<any[]> {
