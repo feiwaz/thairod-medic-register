@@ -50,11 +50,11 @@ export class AvailableTimeFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkIfFormValidAndSubscribeChanges();
+    this.subscribeAvailableTimeChanges();
     this.patchValue();
   }
 
-  private checkIfFormValidAndSubscribeChanges() {
+  private subscribeAvailableTimeChanges() {
     this.availableTimeForm.valueChanges.subscribe(formControl => {
       const isInvalid = Object.values(formControl).every(value => value === 0);
       this.isFormValid = !isInvalid;

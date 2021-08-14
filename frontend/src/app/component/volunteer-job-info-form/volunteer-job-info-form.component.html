@@ -6,7 +6,7 @@
         <b>เเผนกที่สนใจ <span class="text-danger">*</span></b>
       </p>
       <p><b>สามารถทำงานออนไลน์ได้</b></p>
-      <section class="checkbox-flex-container">
+      <section formGroupName="departmentForm" class="checkbox-flex-container">
         <p *ngFor="let field of filterType()">
           <mat-checkbox [formControlName]="field.formControlName">
             {{ field.viewValue }}
@@ -14,7 +14,7 @@
         </p>
       </section>
       <p><b>ทำงานที่ไซต์เท่านั้น</b></p>
-      <section class="checkbox-flex-container">
+      <section formGroupName="departmentForm" class="checkbox-flex-container">
         <p *ngFor="let field of filterType(false)">
           <mat-checkbox [formControlName]="field.formControlName">
             {{ field.viewValue }}
@@ -67,7 +67,7 @@
         </mat-error>
       </ng-container>
     </div>
-    <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid">
+    <button mat-flat-button type="submit" color="primary" [disabled]="!jobInfoForm.valid || !isDepartmentFormValid">
       ถัดไป <mat-icon>arrow_forward</mat-icon>
     </button>
   </form>

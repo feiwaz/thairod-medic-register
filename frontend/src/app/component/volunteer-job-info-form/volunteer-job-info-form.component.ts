@@ -27,23 +27,26 @@ export class VolunteerJobInfoFormComponent implements OnInit {
   departments = DEPARTMENTS;
 
   jobInfoForm = this.fb.group({
-    department1: false,
-    department2: false,
-    department3: false,
-    department4: false,
-    department5: false,
-    department6: false,
-    department7: false,
-    department8: false,
-    department9: false,
-    department10: false,
-    department11: false,
+    departmentForm: this.fb.group({
+      department1: false,
+      department2: false,
+      department3: false,
+      department4: false,
+      department5: false,
+      department6: false,
+      department7: false,
+      department8: false,
+      department9: false,
+      department10: false,
+      department11: false
+    }),
     idCard: [null, Validators.required],
     idCardSelfie: [null, Validators.required],
     medCertificateId: ['', [Validators.min(10000), Validators.max(99999)]],
     medCertificate: [null],
     medCertificateSelfie: [null]
   });
+  isDepartmentFormValid = false;
 
   constructor(
     private fb: FormBuilder,
@@ -59,8 +62,16 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.fileService.clearImageLocalStorage();
+    this.subscribeDepartmentChanges();
     this.subscribeMedCertificateIdChanges();
     this.patchValue();
+  }
+
+  private subscribeDepartmentChanges() {
+    this.jobInfoForm.controls.departmentForm.valueChanges.subscribe(formControl => {
+      const isInvalid = Object.values(formControl).every(value => value === false);
+      this.isDepartmentFormValid = !isInvalid;
+    });
   }
 
   private subscribeMedCertificateIdChanges() {
@@ -91,7 +102,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
         departments.forEach((viewValue: string) => {
           this.departments
             .filter(department => department.viewValue === viewValue)
-            .map(department => this.jobInfoForm.controls[department.formControlName].setValue(true));
+            .map(department => this.jobInfoForm.get('departmentForm')?.get(department.formControlName)?.setValue(true));
         });
       }
     }
@@ -129,7 +140,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   buildDepartments() {
     return this.departments.reduce((result, department) => {
-      if (this.jobInfoForm.controls[department.formControlName].value === true) {
+      if (this.jobInfoForm.get('departmentForm')?.get(department.formControlName)?.value === true) {
         result.push(department.viewValue);
       }
       return result;
