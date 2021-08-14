@@ -39,8 +39,8 @@ export class BasicInfoFormComponent implements OnInit {
   availableTimes: string[] = []
   initials: InitialOption[] = [];
   startDate = moment('21/03/2525', 'DD/MM/YYYY');
-  minDate: moment.Moment;
-  maxDate: moment.Moment;
+  minDate = moment().add(543, 'year').subtract(60, 'year');
+  maxDate = moment().add(543, 'year');
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
@@ -64,8 +64,7 @@ export class BasicInfoFormComponent implements OnInit {
     }
     this.route.data.subscribe(data => this.role = data.role || this.role);
     this._adapter.setLocale('th');
-    this.minDate = moment().add(543, 'year').subtract(60, 'year');
-    this.maxDate = moment().add(543, 'year').subtract(this.role === 'doctor' ? 24 : 18, 'year');
+    this.maxDate = this.maxDate.subtract(this.role === 'doctor' ? 24 : 18, 'year');
   }
 
   ngOnInit(): void {
