@@ -86,9 +86,13 @@ button {
   text-align: center;
 }
 
+.duplicate-field-container > ul {
+  margin-bottom: 0;
+}
+
 .duplicate-field-container {
   font-size: 18px;
-  margin: 15px 10px 10px 10px;
+  margin: 15px 10px 0 10px;
 }
 
 @media only screen and (min-width: 600px) {

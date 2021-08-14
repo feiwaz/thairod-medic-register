@@ -82,7 +82,7 @@ export class BasicInfoFormComponent implements OnInit {
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
-        firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY').locale('th').add(543, 'year'),
+        firstName, lastName, dateOfBirth: moment(dateOfBirth, 'DD/MM/YYYY').locale('th'),
         address, contactNumber, lineId
       });
     }
