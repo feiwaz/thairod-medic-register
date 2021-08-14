@@ -173,4 +173,8 @@ export class VerifyDetailDialogComponent implements OnInit {
     window.open(blobUrl, '_blank');
   }
 
+  onGetEntity(): void {
+    this.getEntity();
+  }
+
 }

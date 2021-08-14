@@ -119,6 +119,18 @@ button {
   font-size: 16px;
 }
 
+.failed-retrieving-file-container {
+  line-height: 21px;
+}
+
+.anchor-container > a {
+  text-decoration: none;
+}
+
+.enabled {
+  color: #1877f2;
+}
+
 .note-form-field {
   width: 100%;
 }
