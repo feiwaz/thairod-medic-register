@@ -98,7 +98,11 @@
                 </div>
                 <div class="note-body">
                     <ng-container *ngIf="content.status === 'รอการอนุมัติ'; else readMode">
-                        <mat-form-field [formGroup]="verifyForm" class="mat-form-field" appearance="fill">
+                        <div class="failed-text">หากพิจารณาแล้วพบว่า
+                            <span class="failed-text-danger">ไม่ผ่าน</span>
+                            กรุณาใส่หมายเหตุ
+                        </div>
+                        <mat-form-field [formGroup]="verifyForm" class="note-form-field" appearance="fill">
                             <textarea formControlName="note" matInput placeholder="หมายเหตุ" rows="3"></textarea>
                         </mat-form-field>
                     </ng-container>
@@ -138,14 +142,17 @@
 <mat-dialog-actions align="end">
     <ng-container *ngIf="content.status === 'รอการอนุมัติ'">
         <div class="fail-button-container">
-            <button mat-button type="button" class="fail-button" (click)="onVerifyClicked(content, status.DENIED)"
-                [disabled]="isLoading">
+            <button mat-flat-button type="button" (click)="onVerifyClicked(content, status.DENIED)"
+                [disabled]="isLoading || !verifyForm.controls.note.value"
+                [title]="!verifyForm.controls.note.value ? 'หากพิจารณาแล้วพบว่า ไม่ผ่าน กรุณาใส่หมายเหตุ' : ''"
+                [class.fail-button]="verifyForm.controls.note.value"
+                [class.cursor-help]="!verifyForm.controls.note.value">
                 <mat-icon>highlight_off</mat-icon> ไม่ผ่าน
             </button>
         </div>
         <div>
-            <button mat-button type="button" class="pass-button" (click)="onVerifyClicked(content, status.APPROVED)"
-                [disabled]="isLoading">
+            <button mat-flat-button type="button" class="pass-button"
+                (click)="onVerifyClicked(content, status.APPROVED)" [disabled]="isLoading">
                 <mat-icon>check_circle_outline</mat-icon> ผ่าน
             </button>
         </div>

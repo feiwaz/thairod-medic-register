@@ -114,14 +114,22 @@ mat-progress-bar {
   margin-bottom: 6px;
 }
 
-mat-form-field.mat-form-field,
+.note-form-field,
 button {
   font-size: 16px;
 }
 
-mat-form-field.mat-form-field {
-  margin-top: 10px;
+.note-form-field {
   width: 100%;
+}
+
+.failed-text {
+  margin: 16px 10px;
+}
+
+.failed-text-danger {
+  color: red;
+  text-decoration: underline;
 }
 
 .fail-button-container {
@@ -130,6 +138,10 @@ mat-form-field.mat-form-field {
 
 .fail-button {
   background-color: #ff6961;
+}
+
+.cursor-help {
+  cursor: help;
 }
 
 .pass-button {
