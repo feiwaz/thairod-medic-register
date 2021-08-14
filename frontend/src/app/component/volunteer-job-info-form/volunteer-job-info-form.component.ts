@@ -59,7 +59,26 @@ export class VolunteerJobInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.fileService.clearImageLocalStorage();
+    this.subscribeMedCertificateIdChanges();
     this.patchValue();
+  }
+
+  private subscribeMedCertificateIdChanges() {
+    this.jobInfoForm.controls.medCertificateId.valueChanges.subscribe(value => {
+      if (value) {
+        this.jobInfoForm.controls.medCertificate.setValidators(Validators.required);
+        this.jobInfoForm.controls.medCertificateSelfie.setValidators(Validators.required);
+      } else {
+        this.jobInfoForm.controls.medCertificate.setValue(null);
+        this.jobInfoForm.controls.medCertificate.clearValidators();
+        localStorage.removeItem('medCertificate');
+        this.jobInfoForm.controls.medCertificateSelfie.setValue(null);
+        this.jobInfoForm.controls.medCertificateSelfie.clearValidators();
+        localStorage.removeItem('medCertificateSelfie');
+      }
+      this.jobInfoForm.controls.medCertificate.updateValueAndValidity();
+      this.jobInfoForm.controls.medCertificateSelfie.updateValueAndValidity();
+    });
   }
 
   private patchValue() {
@@ -132,7 +151,7 @@ export class VolunteerJobInfoFormComponent implements OnInit {
       this.imageCachingService.cacheBlobUrl(id, file.name, imageObject.blobUrl, file.type);
     } else {
       this.jobInfoForm.patchValue({ [id]: null });
-      window.URL.revokeObjectURL(imageObject.blobUrl);
+      URL.revokeObjectURL(imageObject.blobUrl);
     }
   }
 
