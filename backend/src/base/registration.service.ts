@@ -44,13 +44,13 @@ export class RegistrationService {
     const entity = await repository.findOne({
       where: [{ nationalId }, { firstName, lastName }, { contactNumber }, { lineId }, { medCertificateId }]
     });
-    if (entity) {
+    if (entity && this.hasNotDenied(entity.status)) {
       const errors = [];
-      if (nationalId == entity.nationalId && [VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(entity.status)) {
+      if (nationalId == entity.nationalId) {
         errors.push({ field: 'nationalId', value: nationalId, text: 'เลขประจำตัวประชาชน' });
       }
       if (firstName === entity.firstName && lastName === entity.lastName) {
-        errors.push({ field: 'firstName,lastName', value: `${firstName} ${lastName}`, text: 'ชื่อ-นามสกุล' });
+        errors.push({ field: 'firstName, lastName', value: `${firstName} ${lastName}`, text: 'ชื่อ-นามสกุล' });
       }
       if (contactNumber == entity.contactNumber) {
         errors.push({ field: 'contactNumber', value: contactNumber, text: 'หมายเลขโทรศัพท์' });
@@ -58,17 +58,21 @@ export class RegistrationService {
       if (lineId === entity.lineId) {
         errors.push({ field: 'lineId', value: lineId, text: 'LINE ID' });
       }
-      if (medCertificateId == entity.medCertificateId) {
+      if (medCertificateId && (medCertificateId == entity.medCertificateId)) {
         errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
       }
       if (errors.length > 0) throw new ConflictException(errors);
     }
   }
 
+  private hasNotDenied(status: VerificationStatus): boolean {
+    return [VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(status);
+  }
+
   public async checkIfNationalIdAlreadyExisted(repository: Repository<Doctor | Volunteer>, nationalId: string) {
     const entity = await repository.findOne({ where: { nationalId } });
     if (entity) {
-      if ([VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(entity.status)) {
+      if (this.hasNotDenied(entity.status)) {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       } else {
         entity.status = VerificationStatus.PENDING;
