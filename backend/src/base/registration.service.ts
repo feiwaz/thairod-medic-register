@@ -46,7 +46,7 @@ export class RegistrationService {
     });
     if (entity) {
       const errors = [];
-      if (nationalId == entity.nationalId) {
+      if (nationalId == entity.nationalId && [VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(entity.status)) {
         errors.push({ field: 'nationalId', value: nationalId, text: 'เลขประจำตัวประชาชน' });
       }
       if (firstName === entity.firstName && lastName === entity.lastName) {
