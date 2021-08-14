@@ -61,7 +61,7 @@ export class RegistrationService {
       if (medCertificateId == entity.medCertificateId) {
         errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
       }
-      throw new ConflictException(errors);
+      if (errors.length > 0) throw new ConflictException(errors);
     }
   }
 
