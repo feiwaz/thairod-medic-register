@@ -21,6 +21,7 @@ export class UpdateTrainingStatusDialogComponent implements OnInit {
 
   isLoading = false;
   departments: DepartmentCheckbox[] = [];
+  originalValue: string = '';
   jobInfoForm = this.fb.group({});
 
   constructor(
@@ -40,8 +41,16 @@ export class UpdateTrainingStatusDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.departments.forEach((department: DepartmentCheckbox) =>
-      this.jobInfoForm.addControl(department.formControlName, this.fb.control(department.value)));
+    const originalValues: boolean[] = [];
+    this.departments.forEach((department: DepartmentCheckbox) => {
+      this.jobInfoForm.addControl(department.formControlName, this.fb.control(department.value));
+      originalValues.push(department.value);
+    });
+    this.originalValue = JSON.stringify(originalValues);
+    this.jobInfoForm.valueChanges.subscribe(changegObject => {
+      const changedValue = JSON.stringify(Object.values(changegObject));
+      if (changedValue === this.originalValue) this.jobInfoForm.markAsPristine()
+    });
   }
 
   onSubmit(): void {
@@ -53,7 +62,7 @@ export class UpdateTrainingStatusDialogComponent implements OnInit {
   private updateTrainingStatus(): void {
     this.volunteerService.updateTrainingStatus(this.data.row.id, this.buildRequestBody()).subscribe(
       response => this.handleSuccessfulUpdate(),
-      errorResponse => this.handleErrorUpdate(errorResponse)
+      errorResponse => this.handleErrorUpdate()
     );
   }
 
@@ -71,7 +80,7 @@ export class UpdateTrainingStatusDialogComponent implements OnInit {
     this.dialogRef.close({ success: true });
   }
 
-  private handleErrorUpdate(errorResponse: any): void {
+  private handleErrorUpdate(): void {
     this.isLoading = false;
     this.jobInfoForm.enable();
     this.toastrService.warning('ทำรายการไม่สำเร็จ โปรดลองใหม่อีกครั้ง');

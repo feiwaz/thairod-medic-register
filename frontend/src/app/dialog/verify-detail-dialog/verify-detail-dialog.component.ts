@@ -26,7 +26,7 @@ export class VerifyDetailDialogComponent implements OnInit {
     APPROVED: 'อนุมัติแล้ว',
     DENIED: 'ไม่อนุมัติ'
   };
-  content = {
+  content: { [key: string]: any } = {
     nationalId: '',
     initial: '',
     firstName: '',
@@ -107,10 +107,9 @@ export class VerifyDetailDialogComponent implements OnInit {
     this.isLoading = false;
     const [idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg] = blobUrls;
     this.content.plainBlobUrl = { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg };
-    this.content.idCardImg = this.bypassSecurityTrustUrl(idCardImg);
-    this.content.idCardSelfieImg = this.bypassSecurityTrustUrl(idCardSelfieImg);
-    this.content.jobCertificateImg = this.bypassSecurityTrustUrl(jobCertificateImg);
-    this.content.jobCertificateSelfieImg = this.bypassSecurityTrustUrl(jobCertificateSelfieImg);
+    Object.entries(this.content.plainBlobUrl).forEach(
+      ([key, value]) => this.content[key] = this.bypassSecurityTrustUrl(value as string)
+    );
   }
 
   private bypassSecurityTrustUrl(blobUrl: string): any {

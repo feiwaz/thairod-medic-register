@@ -26,7 +26,8 @@
 </div>
 <mat-dialog-actions align="end">
   <div>
-    <button mat-flat-button color="primary" type="button" [disabled]="isLoading" (click)="onSubmit()">บันทึก</button>
+    <button mat-flat-button color="primary" type="button" [disabled]="isLoading || jobInfoForm.pristine"
+      (click)="onSubmit()">บันทึก</button>
   </div>
   <div class="cancel-button">
     <button mat-button color="primary" type="button" [disabled]="isLoading" mat-dialog-close>ยกเลิก</button>
