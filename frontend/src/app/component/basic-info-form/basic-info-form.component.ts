@@ -38,7 +38,9 @@ export class BasicInfoFormComponent implements OnInit {
   isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
-  startDate = moment('21/03/1982', 'DD/MM/YYYY').locale('th').add(543, 'year');
+  startDate = moment('21/03/2525', 'DD/MM/YYYY');
+  minDate: moment.Moment;
+  maxDate: moment.Moment;
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
@@ -60,11 +62,13 @@ export class BasicInfoFormComponent implements OnInit {
     if (currentNavigation) {
       this.isEditing = currentNavigation.extras.state?.isEditing || false;
     }
+    this.route.data.subscribe(data => this.role = data.role || this.role);
     this._adapter.setLocale('th');
+    this.minDate = moment().add(543, 'year').subtract(60, 'year');
+    this.maxDate = moment().add(543, 'year').subtract(this.role === 'doctor' ? 24 : 18, 'year');
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.initials = this.role === 'doctor' ? doctorInitials : volunteerInitials;
     this.patchValue();
   }

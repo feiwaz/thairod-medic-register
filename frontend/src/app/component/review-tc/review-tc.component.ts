@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './review-tc.component.html',
   styleUrls: ['./review-tc.component.scss']
 })
-export class ReviewTcComponent implements OnInit {
+export class ReviewTcComponent {
 
   role = '';
   nationalId = '';
@@ -25,9 +25,6 @@ export class ReviewTcComponent implements OnInit {
     if (currentNavigation) {
       this.nationalId = currentNavigation.extras.state?.nationalId || this.nationalId;
     }
-  }
-
-  ngOnInit(): void {
     this.route.data.subscribe(data => this.role = data.role || this.role);
   }
 

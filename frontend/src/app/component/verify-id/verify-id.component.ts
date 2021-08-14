@@ -48,11 +48,12 @@ export class VerifyIdComponent implements OnInit {
     private doctorService: DoctorService,
     private volunteerService: VolunteerService,
     private fileService: FileService
-  ) { }
+  ) {
+    this.route.data.subscribe(data => this.role = data.role || this.role);
+  }
 
   ngOnInit(): void {
     this.fileService.clearSessionAndImageLocalStorage();
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.subscribeIdInputValueChanges();
     this.controlValidator();

@@ -55,15 +55,15 @@
       <p><b>วัน/เดือน/ปี (พ.ศ.) เกิด</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="ตัวอย่าง 21/03/2525" formControlName="dateOfBirth"
-          #dateOfBirth>
+          [min]="minDate" [max]="maxDate" #dateOfBirth>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #picker startView="multi-year" [startAt]="startDate"></mat-datepicker>
         <button *ngIf="dateOfBirth" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
           (click)="dateOfBirth.value=''">
           <mat-icon>close</mat-icon>
         </button>
-        <mat-error *ngIf="basicInfoForm.get('dateOfBirth')?.hasError('required')">
-          จำเป็นต้องใส่*
+        <mat-error *ngIf="basicInfoForm.get('dateOfBirth')?.hasError('matDatepickerParse')">
+          รูปแบบวันที่ไม่ถูกต้อง*
         </mat-error>
       </mat-form-field>
       <p><b>ที่อยู่</b><span class="text-danger"> *</span></p>

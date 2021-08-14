@@ -56,10 +56,11 @@ export class ReviewInfoComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private fileService: FileService,
     private toastrService: ToastrService
-  ) { }
+  ) {
+    this.route.data.subscribe(data => this.role = data.role || this.role);
+  }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.service = this.role === 'doctor' ? this.doctorService : this.volunteerService;
     this.fileService.getFilesByBlobUrl()
       .then(blobs => this.imageBlobs = blobs)

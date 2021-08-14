@@ -45,11 +45,11 @@ export class AvailableTimeFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
+    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.days.forEach(day => this.availableTimeForm.addControl(day.value, this.fb.control(0)));
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => this.role = data.role || this.role);
     this.checkIfFormValidAndSubscribeChanges();
     this.patchValue();
   }
