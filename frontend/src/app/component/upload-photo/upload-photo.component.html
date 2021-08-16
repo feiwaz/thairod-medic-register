@@ -1,15 +1,16 @@
 <p style="display: flex; justify-content: space-between;">
   <b>{{ header }}</b>
-  <button class="delete-button" mat-icon-button *ngIf="!required && fileName !== ''" (click)="onDeleteClick($event)">
+  <button class="delete-button" mat-icon-button *ngIf="!required && fileName !== ''" (click)="onDeleteClick()">
     <mat-icon>delete</mat-icon>
   </button>
 </p>
-<div class="upload-container" (click)="onUploadClick()">
+<div class="upload-container" (click)="fileInput.click()">
   <mat-icon *ngIf="fileName === ''">{{ matIcon }}</mat-icon>
   <p class="header" *ngIf="header !== '' && fileName === ''">{{ header }}</p>
   <p class="sub-header" *ngIf="subHeader !== '' && fileName === ''">{{ subHeader }}</p>
   <img #thumbnail [id]="id" style="width: 120px;" [src]="thumb" *ngIf="fileName !== ''"
-    (load)="onThumbnailLoaded($event)" (error)="onImageError($event)" />
+    (load)="onThumbnailLoaded(thumbnail)" (error)="onImageError()" />
   <p class="fileName" *ngIf="fileName !== ''">{{ fileName }}</p>
-  <input #file type="file" accept="image/png, image/jpeg" capture="environment" (change)="onInputFileChanged($event)">
+  <input #fileInput type="file" accept="image/png, image/jpeg" capture="environment"
+    (change)="onInputFileChanged(fileInput)">
 </div>

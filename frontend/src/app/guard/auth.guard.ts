@@ -14,20 +14,20 @@ export class AuthGuard implements CanLoad, CanActivate {
 
   canLoad(): boolean {
     this.authServce.decodeAccessToken();
-    const isAdmin = this.authServce.isAdmin();
-    if (!isAdmin) {
-      this.router.navigate(['/']);
+    const isLoggedIn = this.authServce.isLoggedIn;
+    if (!isLoggedIn) {
+      this.router.navigate(['/admin']);
     }
-    return isAdmin;
+    return isLoggedIn;
   }
 
   canActivate(): boolean {
     this.authServce.decodeAccessToken();
-    const isAdmin = this.authServce.isAdmin();
-    if (!isAdmin) {
-      this.router.navigate(['/']);
+    const isLoggedIn = this.authServce.isLoggedIn;
+    if (!isLoggedIn) {
+      this.router.navigate(['/admin']);
     }
-    return isAdmin;
+    return isLoggedIn;
   }
 
 }

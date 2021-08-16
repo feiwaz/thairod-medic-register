@@ -17,9 +17,6 @@ export class UploadPhotoComponent implements OnInit {
 
   @Output() image = new EventEmitter<ImageObject>();
 
-  @ViewChild('file')
-  file!: ElementRef;
-
   @ViewChild('thumbnail')
   thumbnail!: ElementRef;
 
@@ -27,9 +24,7 @@ export class UploadPhotoComponent implements OnInit {
   fileName = '';
   thumb: string | SafeUrl = '';
 
-  constructor(
-    private sanitizer: DomSanitizer
-  ) { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     const blobUrlFromCache = localStorage.getItem(this.id);
@@ -40,33 +35,27 @@ export class UploadPhotoComponent implements OnInit {
     }
   }
 
-  onUploadClick(): void {
-    const input = this.file.nativeElement;
-    input.click();
-  }
-
-  onInputFileChanged(event: any): void {
-    if (event.target.files.length > 0) {
-      this.files = event.target.files;
-      this.fileName = event.target.files[0].name;
-      this.thumb = this.sanitizer.bypassSecurityTrustUrl(
-        URL.createObjectURL(event.target.files[0])
-      );
+  onInputFileChanged(fileInput: any): void {
+    const files = fileInput.files;
+    if (files.length > 0) {
+      this.files = files;
+      const aFile = files[0];
+      this.fileName = aFile.name;
+      this.thumb = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(aFile));
     }
   }
 
-  onThumbnailLoaded(event: any): void {
-    const thumbnail = this.thumbnail.nativeElement;
-    this.image.emit({ files: this.files, blobUrl: thumbnail.src });
+  onThumbnailLoaded(imgElement: HTMLImageElement): void {
+    this.image.emit({ files: this.files, blobUrl: imgElement.src });
   }
 
-  onImageError(event: any): void {
+  onImageError(): void {
     this.files = null;
     this.fileName = '';
     this.thumb = '';
   }
 
-  onDeleteClick(event: any): void {
+  onDeleteClick(): void {
     const thumbnail = this.thumbnail.nativeElement;
     this.image.emit({ files: null as any, blobUrl: thumbnail.src });
     this.files = null;
