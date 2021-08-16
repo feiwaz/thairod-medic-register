@@ -1,8 +1,8 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { VerificationBody } from '../../model/verification-body.model';
@@ -94,7 +94,15 @@ export class VerifyDetailDialogComponent implements OnInit {
     const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
     this.content = rest;
     const findAllFiles$ = this.buildFindAllFiles$({ idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg });
-    findAllFiles$.subscribe((blobUrls: any) => this.handleSuccessfulFindAllFiles(blobUrls), errorResponse => this.isLoading = false);
+    findAllFiles$.subscribe(
+      blobUrls => this.handleSuccessfulFindAllFiles(blobUrls as [string, string, string, string]),
+      errorResponse => {
+        this.isLoading = false;
+        if (errorResponse.status === HttpStatusCode.BadGateway) {
+          this.toastrService.warning('ไม่สามารถเชื่อมต่อไฟล์เซิร์ฟเวอร์ได้ในขณะนี้');
+        }
+      }
+    );
   }
 
   private buildFindAllFiles$(filePaths: { idCardImg: string, idCardSelfieImg: string, jobCertificateImg: string, jobCertificateSelfieImg: string }) {
@@ -154,18 +162,6 @@ export class VerifyDetailDialogComponent implements OnInit {
     this.isLoading = false;
     this.verifyForm.enable();
     this.toastrService.warning('ทำรายการไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
-  }
-
-  get dateOfBirth(): string {
-    return moment(this.content.dateOfBirth).locale('th').format('DD MMM YYYY');
-  }
-
-  get createdTime(): string {
-    return moment(this.content.createdTime).locale('th').add(543, 'year').format('LLLL น.');
-  }
-
-  get updatedTime(): string {
-    return moment(this.content.verification?.updatedTime).locale('th').add(543, 'year').format('LLLL น.');
   }
 
   onImageClick(blobUrl: string): void {

@@ -23,10 +23,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { DateOfBirthPipe } from '../pipe/date-of-birth.pipe';
 import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
 
 @NgModule({
-  declarations: [SafeHtmlPipe],
+  declarations: [
+    SafeHtmlPipe,
+    DateOfBirthPipe
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -55,6 +59,7 @@ import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
   ],
   exports: [
     SafeHtmlPipe,
+    DateOfBirthPipe,
     CommonModule,
     FormsModule,
     HttpClientModule,

@@ -13,6 +13,7 @@ import { UpdateTrainingStatusDialogComponent } from '../../dialog/update-trainin
 import { UserAccountDialogComponent } from '../../dialog/user-account-dialog/user-account-dialog.component';
 import { UserDialogComponent } from '../../dialog/user-dialog/user-dialog.component';
 import { VerifyDetailDialogComponent } from '../../dialog/verify-detail-dialog/verify-detail-dialog.component';
+import { FullDatetimePipe } from '../../pipe/full-datetime.pipe';
 import { SharedModule } from '../shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 
@@ -30,7 +31,8 @@ import { AdminRoutingModule } from './admin-routing.module';
     RegisteredUserListComponent,
     VerifyDetailDialogComponent,
     ManageTrainingStatusComponent,
-    UpdateTrainingStatusDialogComponent
+    UpdateTrainingStatusDialogComponent,
+    FullDatetimePipe
   ],
   imports: [
     SharedModule,

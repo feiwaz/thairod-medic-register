@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, ValidatorFn } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BasicInfo } from '../../model/basic-info.model';
 
@@ -111,8 +111,8 @@ export class AvailableTimeFormComponent implements OnInit {
     return availableTimes;
   }
 
-  nonZeroValueValidator(): ValidatorFn | ValidatorFn[] | AbstractControlOptions | null | undefined {
-    throw new Error('Function not implemented.');
+  trackByFn(index: number, item: any): number {
+    return index;
   }
 
 }
