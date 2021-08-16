@@ -38,7 +38,7 @@ export class AdminLoginComponent implements OnInit {
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
   }
 
-  onLogIn(isGuest = false): void {
+  onLogIn(): void {
     this.loginForm.disable();
     this.isLoading = true;
     this.isFormSubmitted = true;
@@ -55,7 +55,7 @@ export class AdminLoginComponent implements OnInit {
     );
   }
 
-  handleSuccessfulLogIn(isAdmin = true): void {
+  handleSuccessfulLogIn(): void {
     this.isLoading = false;
     this.toastrService.success('เข้าสู่ระบบสำเร็จ');
     this.router.navigate(['/admin/main/manage-account']);
