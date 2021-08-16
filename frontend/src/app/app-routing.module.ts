@@ -10,6 +10,7 @@ import { ReviewTcComponent } from './component/review-tc/review-tc.component';
 import { UpdateStatusComponent } from './component/update-status/update-status.component';
 import { VerifyIdComponent } from './component/verify-id/verify-id.component';
 import { VolunteerJobInfoFormComponent } from './component/volunteer-job-info-form/volunteer-job-info-form.component';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   { path: 'main', component: MainComponent },
@@ -51,7 +52,9 @@ const routes: Routes = [
   { path: 'update-status', component: UpdateStatusComponent },
   {
     path: 'admin/main', loadChildren: () =>
-      import('./module/admin/admin.module').then(mod => mod.AdminModule)
+      import('./module/admin/admin.module').then(mod => mod.AdminModule),
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard]
   },
   {
     path: 'admin', component: AdminLoginComponent

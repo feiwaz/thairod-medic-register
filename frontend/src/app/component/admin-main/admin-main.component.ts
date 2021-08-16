@@ -35,13 +35,13 @@ export class AdminMainComponent implements OnInit, OnDestroy {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher
   ) {
+    this.authService.getRefreshToken();
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this.mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener('change', this.mobileQueryListener);
   }
 
   ngOnInit(): void {
-    this.authService.getRefreshToken();
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo', { width: '80px', height: '68px' });
     const lastVisitedUrl = this.workspaceService.getLastVisitedUrl() || this.defaultMainUrl;
     this.router.navigate([lastVisitedUrl]);

@@ -9,12 +9,12 @@ export class AuthGuard implements CanLoad, CanActivate {
 
   constructor(
     private router: Router,
-    private authServce: AuthenticationService
+    private authService: AuthenticationService
   ) { }
 
   canLoad(): boolean {
-    this.authServce.decodeAccessToken();
-    const isLoggedIn = this.authServce.isLoggedIn;
+    this.authService.decodeAccessToken();
+    const isLoggedIn = this.authService.isLoggedIn;
     if (!isLoggedIn) {
       this.router.navigate(['/admin']);
     }
@@ -22,8 +22,8 @@ export class AuthGuard implements CanLoad, CanActivate {
   }
 
   canActivate(): boolean {
-    this.authServce.decodeAccessToken();
-    const isLoggedIn = this.authServce.isLoggedIn;
+    this.authService.decodeAccessToken();
+    const isLoggedIn = this.authService.isLoggedIn;
     if (!isLoggedIn) {
       this.router.navigate(['/admin']);
     }
