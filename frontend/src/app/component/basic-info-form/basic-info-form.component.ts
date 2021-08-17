@@ -109,7 +109,7 @@ export class BasicInfoFormComponent implements OnInit {
       initial: this.initials.find(option => option.value === this.basicInfoForm.controls.initial.value)?.viewValue || '',
       firstName: this.basicInfoForm.controls.firstName.value,
       lastName: this.basicInfoForm.controls.lastName.value,
-      dateOfBirth: this.basicInfoForm.controls.dateOfBirth.value.format('DD/MM/YYYY'),
+      dateOfBirth: this.basicInfoForm.controls.dateOfBirth.value,
       address: this.basicInfoForm.controls.address.value,
       contactNumber: this.basicInfoForm.controls.contactNumber.value,
       lineId: this.basicInfoForm.controls.lineId.value,

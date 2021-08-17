@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import * as moment from 'moment';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -23,7 +22,6 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   }
 
   create(user: any, blobs?: Blob[]): Observable<any> {
-    user.dateOfBirth = moment(user.dateOfBirth, 'DD/MM/YYYY').format('YYYY-MM-DD');
     user.availableTimes = user.availableTimes.join();
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));

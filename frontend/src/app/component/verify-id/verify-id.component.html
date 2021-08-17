@@ -45,7 +45,7 @@
     <ng-container *ngIf="isExistingUser">
       <p>ผู้ใช้นี้ได้ลงทะเบียนแล้ว<span class="anchor-container">
           <a [routerLink]="" (click)="onExistingUserCheckStatus()"
-            [ngClass]="isLoading ? 'disabled' : 'enabled'">คลิกเพื่อตรวจสอบสถานะ
+            [ngClass]="isLoading ? 'disabled' : 'enabled'">แตะเพื่อตรวจสอบสถานะ
           </a></span></p>
     </ng-container>
     <ng-container *ngIf="errorResponse">

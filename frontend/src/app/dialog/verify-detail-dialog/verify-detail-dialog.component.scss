@@ -131,6 +131,12 @@ button {
   color: #1877f2;
 }
 
+.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: grey;
+}
+
 .note-form-field {
   width: 100%;
 }
