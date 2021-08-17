@@ -20,13 +20,14 @@ mat-form-field.mat-form-field {
     }
 
     .input-form-field {
-        flex: 0 0 320px;
+        flex: 0 0 300px;
+        max-width: 50%;
         margin-top: 6px;
     }
 }
 
 @media only screen and (min-width: 1024px) {
     .input-form-field {
-        flex: 0 0 600px;
+        flex: 0 0 450px;
     }
 }

@@ -61,7 +61,7 @@ export class UpdateStatusComponent implements OnInit {
   handleSuccessfulVerifyUserId(response: any): void {
     this.isLoading = false;
     if (Object.keys(response).length) {
-      this.toastrService.warning('ตรวจสอบเลขประจำตัวประชาชนไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+      this.toastrService.warning('เลขประจำตัวประชาชนถูกใช้แล้ว กรุณาลงทะเบียนอีกครั้งที่หน้าหลัก');
     } else {
       const basicInfo = this.buildBasicInfo();
       const roleText = this.role === 0 ? 'doctor' : 'volunteer';

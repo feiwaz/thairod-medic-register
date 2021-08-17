@@ -137,7 +137,7 @@
                         </span>
                         <span class="info-value">
                             {{content.status === 'รอการอนุมัติ'
-                            ? (content.createdTime | thaiDatetime:'LLLL น.')
+                            ? (content.updatedTime | thaiDatetime:'LLLL น.')
                             : (content.verification?.updatedTime | thaiDatetime:'LLLL น.')}}
                         </span>
                     </div>
