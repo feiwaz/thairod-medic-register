@@ -38,6 +38,7 @@ table {
 
 th.mat-header-cell,
 td.mat-cell {
+  font-size: 16px;
   padding-left: 10px;
 }
 
@@ -68,6 +69,12 @@ button {
 
 .removable-text {
   display: none;
+}
+
+.no-data-cell {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 
 @media only screen and (min-width: 600px) {
