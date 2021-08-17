@@ -3,11 +3,11 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { VerifyDetailDialogComponent } from '../../dialog/verify-detail-dialog/verify-detail-dialog.component';
 import { BasicInfo } from '../../model/basic-info.model';
+import { ThaiDatetimePipe } from '../../pipe/thai-datetime.pipe';
 import { DoctorService } from '../../service/doctor.service';
 import { VolunteerService } from '../../service/volunteer.service';
 import { WorkspaceService } from '../../service/workspace.service';
@@ -176,7 +176,8 @@ export class RegisteredUserListComponent implements OnInit {
   }
 
   formattedDate(dateString: string): string {
-    return moment(dateString).locale('th').add(543, 'year').format('LLLL น.');
+    const pipe = new ThaiDatetimePipe();
+    return pipe.transform(dateString, 'LLLL น.');
   }
 
   onPaginatorChanged(event: PageEvent) {

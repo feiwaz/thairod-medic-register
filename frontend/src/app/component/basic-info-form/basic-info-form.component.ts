@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { DateAdapter } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { BasicInfo } from '../../model/basic-info.model';
@@ -38,9 +37,9 @@ export class BasicInfoFormComponent implements OnInit {
   isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
-  startDate = moment('21/03/2525', 'DD/MM/YYYY');
-  minDate = moment().add(543, 'year').subtract(60, 'year');
-  maxDate = moment().add(543, 'year');
+  startDate = moment('21/03/1982', 'DD/MM/YYYY');
+  minDate = moment().subtract(60, 'year');
+  maxDate = moment();
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
@@ -55,15 +54,13 @@ export class BasicInfoFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
-    private _adapter: DateAdapter<any>
+    private router: Router
   ) {
     const currentNavigation = this.router.getCurrentNavigation();
     if (currentNavigation) {
       this.isEditing = currentNavigation.extras.state?.isEditing || false;
     }
     this.route.data.subscribe(data => this.role = data.role || this.role);
-    this._adapter.setLocale('th');
     this.maxDate = this.maxDate.subtract(this.role === 'doctor' ? 24 : 18, 'year');
   }
 

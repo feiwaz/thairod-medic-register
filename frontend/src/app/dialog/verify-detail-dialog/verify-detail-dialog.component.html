@@ -20,7 +20,7 @@
                     </div>
                     <div>
                         <span class="info-field">วัน/เดือน/ปี เกิด:</span>
-                        <span class="info-value">{{content.dateOfBirth | dateOfBirth}}</span>
+                        <span class="info-value">{{content.dateOfBirth | thaiDatetime:'D MMM YYYY'}}</span>
                     </div>
                     <div>
                         <span class="info-field">ที่อยู่:</span>
@@ -136,8 +136,8 @@
                         </span>
                         <span class="info-value">
                             {{content.status === 'รอการอนุมัติ'
-                            ? (content.createdTime | fullDatetime)
-                            : (content.verification?.updatedTime | fullDatetime)}}
+                            ? (content.createdTime | thaiDatetime:'LLLL น.')
+                            : (content.verification?.updatedTime | thaiDatetime:'LLLL น.')}}
                         </span>
                     </div>
                     <div *ngIf="content.status !== 'รอการอนุมัติ' && content.verification">
