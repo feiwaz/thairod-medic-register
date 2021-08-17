@@ -11,14 +11,15 @@ export class ColumnFilterComponent {
   @Input() defaultSelectedColumn = '';
   @Input() isLoading = false;
 
-  @Output() selectColumnChanged = new EventEmitter<string>();
+  @Output() selectColumnChanged = new EventEmitter<{ column: string, searchText: string }>();
   @Output() filterTextChanged = new EventEmitter<string>();
   @Output() filterTextCleared = new EventEmitter<string>();
 
   @ViewChild('searchInput') searchInput: any;
 
-  onSelectColumnChanged(column: string): void {
-    this.selectColumnChanged.emit(column);
+  onSelectColumnChanged(column: string, searchText: string): void {
+    const columnChange = { column, searchText };
+    this.selectColumnChanged.emit(columnChange);
   }
 
   onFilterApplied(event: KeyboardEvent): void {
@@ -31,3 +32,4 @@ export class ColumnFilterComponent {
   }
 
 }
+;

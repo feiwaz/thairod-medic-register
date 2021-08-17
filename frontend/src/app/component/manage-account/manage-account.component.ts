@@ -188,8 +188,9 @@ export class ManageAccountComponent implements OnInit {
     });
   }
 
-  onSelectColumnChanged(column: string): void {
-    this.selectedFilterColumn = column;
+  onSelectColumnChanged(columnChange: { column: string, searchText: string }): void {
+    this.selectedFilterColumn = columnChange.column;
+    this.dataSource.filter = columnChange.searchText.trim().toLowerCase();
   }
 
   onFilterTextChanged(filterText: string): void {

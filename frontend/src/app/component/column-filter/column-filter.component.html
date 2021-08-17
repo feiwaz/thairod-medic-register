@@ -1,8 +1,8 @@
 <div class="column-filter-container">
     <mat-form-field class="select-form-field">
         <mat-label>ค้นหาจากคอลัมภ์</mat-label>
-        <mat-select #matSelect (selectionChange)="onSelectColumnChanged($event.value)" [value]="defaultSelectedColumn"
-            [disabled]="isLoading">
+        <mat-select #matSelect (selectionChange)="onSelectColumnChanged($event.value, searchInput.value)"
+            [value]="defaultSelectedColumn" [disabled]="isLoading">
             <mat-option #matOption *ngFor="let option of selectColumnOptions" [value]="option.value"
                 [title]="option.viewValue">
                 {{option.viewValue}}
