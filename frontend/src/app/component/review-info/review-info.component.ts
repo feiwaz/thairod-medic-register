@@ -133,11 +133,9 @@ export class ReviewInfoComponent implements OnInit {
     this.fileService.clearSessionAndImageLocalStorage();
     this.toastrService.success(this.defaultSuccessText);
     const maskedId = maskId(this.basicInfo.nationalId);
+    const data = { maskedId, status: this.defaultSuccessText };
     this.router.navigate(['/update-status'], {
-      state: {
-        nationalId: maskedId,
-        response: { status: this.defaultSuccessText }
-      }
+      state: { data }
     });
   }
 

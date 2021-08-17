@@ -141,8 +141,15 @@ export class VerifyIdComponent implements OnInit {
       this.verifyForm.enable();
       this.isLoading = false;
       const maskedId = maskId(this.verifyForm.controls.nationalId.value);
+      const data = {
+        ...response, ...{
+          maskedId,
+          nationalId: this.verifyForm.controls.nationalId.value,
+          role: this.verifyForm.controls.role.value
+        }
+      };
       this.router.navigate(['/update-status'], {
-        state: { nationalId: maskedId, response }
+        state: { data }
       });
     } else {
       this.handleErrorResponse();
