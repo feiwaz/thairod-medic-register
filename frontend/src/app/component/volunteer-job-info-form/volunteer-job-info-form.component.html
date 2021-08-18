@@ -21,7 +21,7 @@
           </mat-checkbox>
         </p>
       </section>
-      <app-upload-photo id="idCard" matIcon="cloud_upload" header="อัพโหลดภาพบัตรประจำตัวประชาชน" subHeader=""
+      <app-upload-photo id="idCard" matIcon="cloud_upload" header="ภาพถ่ายบัตรประจำตัวประชาชน" subHeader=""
         (image)="onImageChanged($event, 'idCard')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
@@ -52,7 +52,7 @@
         </mat-error>
       </mat-form-field>
       <ng-container *ngIf="jobInfoForm.get('medCertificateId')?.value">
-        <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="อัพโหลดภาพใบประกอบวิชาชีพ" subHeader=""
+        <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="ภาพถ่ายใบประกอบวิชาชีพ" subHeader=""
           (image)="onImageChanged($event, 'medCertificate')" [required]="jobInfoForm.get('medCertificateId')?.value">
         </app-upload-photo>
         <mat-error *ngIf="jobInfoForm.get('medCertificate')?.hasError('required')">

@@ -28,7 +28,7 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="อัพโหลดภาพใบประกอบวิชาชีพ" subHeader=""
+      <app-upload-photo id="medCertificate" matIcon="cloud_upload" header="ภาพถ่ายใบประกอบวิชาชีพ" subHeader=""
         (image)="onImageChanged($event, 'medCertificate')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('medCertificate')?.hasError('required')">
@@ -40,7 +40,7 @@
       <mat-error *ngIf="jobInfoForm.get('medCertificateSelfie')?.hasError('required')">
         จำเป็นต้องใส่*
       </mat-error>
-      <app-upload-photo id="idCard" matIcon="cloud_upload" header="อัพโหลดภาพบัตรประจำตัวประชาชน" subHeader=""
+      <app-upload-photo id="idCard" matIcon="cloud_upload" header="ภาพถ่ายบัตรประจำตัวประชาชน" subHeader=""
         (image)="onImageChanged($event, 'idCard')" [required]="true">
       </app-upload-photo>
       <mat-error *ngIf="jobInfoForm.get('idCard')?.hasError('required')">
