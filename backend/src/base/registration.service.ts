@@ -6,7 +6,7 @@ import { MinioClientService } from 'src/minio-client/minio-client.service';
 import { VolunteerVerification } from 'src/volunteers/entities/volunteer-verification.entity';
 import { Volunteer } from 'src/volunteers/entities/volunteer.entity';
 import { Stream } from 'stream';
-import { FindOneOptions, In, Repository } from 'typeorm';
+import { FindConditions, FindOneOptions, In, Repository } from 'typeorm';
 import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
 import { BufferedFile } from '../minio-client/file.model';
 import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
@@ -41,9 +41,13 @@ export class RegistrationService {
     createDto: CreateDoctorDto | CreateVolunteerDto
   ) {
     const { nationalId, firstName, lastName, contactNumber, lineId, medCertificateId } = createDto;
-    const entity = await repository.findOne({
-      where: [{ nationalId }, { firstName, lastName }, { contactNumber }, { lineId }, { medCertificateId }]
-    });
+
+    const where: FindConditions<Doctor | Volunteer>[] = [
+      { nationalId }, { firstName, lastName }, { contactNumber }, { lineId }
+    ];
+    if (medCertificateId) where.push({ medCertificateId })
+
+    const entity = await repository.findOne({ where });
     if (entity && this.hasNotDenied(entity.status)) {
       const errors = [];
       if (nationalId == entity.nationalId) {
