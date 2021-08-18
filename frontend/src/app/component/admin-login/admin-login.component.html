@@ -32,7 +32,7 @@
     <button mat-flat-button type="submit" color="primary"
       [disabled]="!loginForm.dirty || !loginForm.valid || isLoading">เข้าสู่ระบบ</button>
     <ng-container *ngIf="errorResponse">
-      <p>ไม่พบผู้ใช้นี้ในระบบ</p>
+      <p>อีเมลหรือรหัสผ่านไม่ถูกต้อง</p>
     </ng-container>
   </form>
 </div>
