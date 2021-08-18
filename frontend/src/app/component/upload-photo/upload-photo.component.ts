@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ImageObject } from '../../model/image-object.model';
+import { FileService } from '../../service/file.service';
 
 @Component({
   selector: 'app-upload-photo',
@@ -24,7 +25,10 @@ export class UploadPhotoComponent implements OnInit {
   fileName = '';
   thumb: string | SafeUrl = '';
 
-  constructor(private sanitizer: DomSanitizer) { }
+  constructor(
+    private sanitizer: DomSanitizer,
+    private fileService: FileService
+  ) { }
 
   ngOnInit(): void {
     const blobUrlFromCache = localStorage.getItem(this.id);
@@ -35,11 +39,13 @@ export class UploadPhotoComponent implements OnInit {
     }
   }
 
-  onInputFileChanged(fileInput: any): void {
-    const files = fileInput.files;
-    if (files.length > 0) {
-      this.files = files;
-      const aFile = files[0];
+  async onInputFileChanged(fileInput: any) {
+    const rawFiles = fileInput.files;
+    if (rawFiles.length > 0) {
+      const config = { file: rawFiles[0], maxSize: 500 };
+      const resizedImage = await this.fileService.resizeImage(config);
+      this.files = [new File([resizedImage], rawFiles[0].name, { type: resizedImage.type })];
+      const aFile = this.files[0];
       this.fileName = aFile.name;
       this.thumb = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(aFile));
     }

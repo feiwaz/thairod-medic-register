@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+interface IResizeImageOptions {
+  maxSize: number;
+  file: File;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -59,5 +64,61 @@ export class FileService {
     localStorage.removeItem('medCertificate');
     localStorage.removeItem('medCertificateSelfie');
   }
+
+  // Courtesy of https://stackoverflow.com/questions/23945494/use-html5-to-resize-an-image-before-upload
+  resizeImage(settings: IResizeImageOptions): Promise<Blob> {
+    const file = settings.file;
+    const reader = new FileReader();
+    const image = new Image();
+
+    return new Promise((ok, no) => {
+      if (!file.type.match(/image.*/)) {
+        no(new Error("Not an image"));
+        return;
+      }
+
+      reader.onload = (readerEvent: any) => {
+        image.onload = () => ok(this.resize(image, settings));
+        image.src = readerEvent.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  private resize(image: HTMLImageElement, settings: IResizeImageOptions): Blob {
+    let width = image.width;
+    let height = image.height;
+
+    if (width > height) {
+      if (width > settings.maxSize) {
+        height *= settings.maxSize / width;
+        width = settings.maxSize;
+      }
+    } else {
+      if (height > settings.maxSize) {
+        width *= settings.maxSize / height;
+        height = settings.maxSize;
+      }
+    }
+
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    context?.drawImage(image, 0, 0, width, height);
+    let dataUrl = canvas.toDataURL(settings.file.type);
+    return this.dataURItoBlob(dataUrl);
+  };
+
+  private dataURItoBlob(dataURI: string): Blob {
+    const bytes = dataURI.split(',')[0].indexOf('base64') >= 0
+      ? atob(dataURI.split(',')[1])
+      : unescape(dataURI.split(',')[1]);
+    const mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const max = bytes.length;
+    const ia = new Uint8Array(max);
+    for (var i = 0; i < max; i++) ia[i] = bytes.charCodeAt(i);
+    return new Blob([ia], { type: mime });
+  };
 
 }
