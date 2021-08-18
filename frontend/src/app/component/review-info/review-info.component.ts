@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@angular/common/http';
+import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,6 +11,11 @@ import { FileService } from '../../service/file.service';
 import { VolunteerService } from '../../service/volunteer.service';
 import { maskId } from '../../util/util-functions';
 
+interface Upload {
+  state: 'pending' | 'progress' | 'done';
+  progress: number;
+}
+
 @Component({
   selector: 'app-review-info',
   templateUrl: './review-info.component.html',
@@ -20,6 +25,7 @@ export class ReviewInfoComponent implements OnInit {
 
   readonly defaultSuccessText = 'ส่งข้อมูลสำเร็จ';
   readonly defaultErrorText = 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+  upload: Upload = { state: 'pending', progress: 0 };
   role = '';
   isLoading = false;
   errorResponse = false;
@@ -121,26 +127,35 @@ export class ReviewInfoComponent implements OnInit {
 
   onSubmit(): void {
     this.isLoading = true;
+    this.upload.progress = 0;
     this.errorResponse = false;
     this.service.create({ ...this.basicInfo, ...this.jobInfo }, this.imageBlobs).subscribe(
-      response => this.handleSuccessfulCreateUser(),
+      event => {
+        if (event.type === HttpEventType.UploadProgress) {
+          this.upload.state = 'progress';
+          this.upload.progress = Math.round(100 * event.loaded / (event.total ?? 0));
+        } else if (event.type === HttpEventType.Response) {
+          this.handleSuccessfulCreateUser();
+        }
+      },
       errorResponse => this.handleErrorResponse(errorResponse)
     );
   }
 
   handleSuccessfulCreateUser(): void {
     this.isLoading = false;
+    this.upload.state = 'done';
     this.fileService.clearSessionAndImageLocalStorage();
     this.toastrService.success(this.defaultSuccessText);
     const maskedId = maskId(this.basicInfo.nationalId);
     const data = { maskedId, status: this.defaultSuccessText };
-    this.router.navigate(['/update-status'], {
-      state: { data }
-    });
+    this.router.navigate(['/update-status'], { state: { data } });
   }
 
   handleErrorResponse(errorResponse: any): void {
     this.isLoading = false;
+    this.upload.state = 'done';
+    this.upload.progress = 0;
     this.errorResponse = true;
     let errorText = this.defaultErrorText;
     if (Array.isArray(errorResponse.error.message)) {

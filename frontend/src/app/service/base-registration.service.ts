@@ -26,7 +26,9 @@ export abstract class BaseRegistrationService extends BaseResourceService {
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));
     this.fileService.appendFilesToFormData(blobs, formData);
-    return this.http.post<any>(`${this.resourcePrefix}`, formData);
+    return this.http.post<any>(`${this.resourcePrefix}`, formData, {
+      observe: 'events', reportProgress: true
+    });
   }
 
   findOne(id: number): Observable<any> {

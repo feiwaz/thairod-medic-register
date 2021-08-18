@@ -1,5 +1,11 @@
 <app-toolbar [toolbarTitle]="'ตรวจสอบข้อมูล'" [isLoading]="isLoading">
 </app-toolbar>
+<div *ngIf="isLoading" class="spinner-overlay">
+  <h1>กำลังส่งข้อมูล...{{upload.progress}}%</h1>
+  <mat-progress-spinner color="accent" [mode]="upload.state === 'pending' ? 'indeterminate' : 'determinate'"
+    [value]="upload.progress">
+  </mat-progress-spinner>
+</div>
 <div class="form-container">
   <form (ngSubmit)="onSubmit()">
     <div class="editable-info">

@@ -1,3 +1,26 @@
+.spinner-overlay {
+  background-color: rgba(0, 0, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  backdrop-filter: blur(25px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-overlay > h1 {
+  font-size: 25px;
+}
+
+mat-progress-spinner {
+  margin-top: 15px;
+}
+
 .form-container {
   position: fixed;
   top: 56px;
