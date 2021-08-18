@@ -42,7 +42,7 @@ export class UploadPhotoComponent implements OnInit {
   async onInputFileChanged(fileInput: any) {
     const rawFiles = fileInput.files;
     if (rawFiles.length > 0) {
-      const config = { file: rawFiles[0], maxSize: 500 };
+      const config = { file: rawFiles[0], maxSize: 800 };
       const resizedImage = await this.fileService.resizeImage(config);
       this.files = [new File([resizedImage], rawFiles[0].name, { type: resizedImage.type })];
       const aFile = this.files[0];
