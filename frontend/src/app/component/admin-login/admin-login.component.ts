@@ -36,6 +36,12 @@ export class AdminLoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
+    this.navigateIfAlreadyLoggedIn();
+  }
+
+  private navigateIfAlreadyLoggedIn() {
+    this.authService.decodeAccessToken();
+    if (this.authService.isLoggedIn) this.router.navigate(['/admin/main/manage-account']);
   }
 
   onLogIn(): void {
