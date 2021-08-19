@@ -41,7 +41,7 @@ export class AdminLoginComponent implements OnInit {
 
   private navigateIfAlreadyLoggedIn() {
     this.authService.decodeAccessToken();
-    if (this.authService.isLoggedIn) this.router.navigate(['/admin/main/manage-account']);
+    if (this.authService.isLoggedIn) this.router.navigate(['/admin/main']);
   }
 
   onLogIn(): void {

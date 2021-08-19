@@ -97,14 +97,6 @@ export class AuthenticationService {
     }
   }
 
-  isAdmin(): boolean {
-    let isAdmin = false;
-    if (this.currentUser && this.currentUser.role && this.isLoggedIn === true) {
-      isAdmin = this.currentUser.role.toLowerCase() === 'admin';
-    }
-    return isAdmin;
-  }
-
   updateCurrentUser(user: User): void {
     const { id, email, firstName, lastName,
       contactNumber, isActive, role } = user;
