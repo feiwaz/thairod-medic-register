@@ -39,9 +39,8 @@ export class VolunteersService {
 
   async create(createDto: CreateVolunteerDto, bufferedFile: BufferedFile) {
     try {
-      await this.registrationService.validateUniqueFieldConstraints(this.volunteerRepository, createDto);
-      const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.volunteerRepository, createDto.nationalId);
-      const entity = await this.mapDtoToEntity(createDto, checkedEntity as Volunteer);
+      const validatedEntity = await this.registrationService.validateUniqueFieldConstraints(this.volunteerRepository, createDto);
+      const entity = await this.mapDtoToEntity(createDto, validatedEntity as Volunteer);
       await this.registrationService.applyImageUrl(bufferedFile, entity, 'volunteers');
       await this.volunteerRepository.save(entity);
     } catch (error) {
@@ -86,7 +85,9 @@ export class VolunteersService {
   }
 
   async findOne(id: number): Promise<ResponseVolunteerDto> {
-    const volunteer = await this.volunteerRepository.findOne(id);
+    const volunteer = await this.volunteerRepository.findOne(id, {
+      relations: ['volunteerDepartments', 'volunteerDepartments.department']
+    });
     if (!volunteer) {
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
@@ -94,41 +95,16 @@ export class VolunteersService {
   }
 
   private async mapEntityToDto(volunteer: Volunteer): Promise<ResponseVolunteerDto> {
-    const responseDto = Object.assign(new ResponseVolunteerDto(), volunteer);
-
-    const volunteerDepartments = await this.volunteerDepartmentRepository.find({
-      where: { volunteerId: volunteer.id },
-      relations: ['department']
-    });
+    const { volunteerDepartments, ...restEntities } = volunteer;
+    const responseDto = Object.assign(new ResponseVolunteerDto(), restEntities);
     responseDto.departments = volunteerDepartments.map(volDep => volDep.department.label);
-    await this.populateVerification(volunteer, responseDto);
+    responseDto.verification = await this.registrationService.populateVerification(volunteer, 'volunteers', this.volVerificationRepository);
     return responseDto;
   }
 
   async findOneFile(nationalId: number, filename: string): Promise<any> {
     const objectName = `volunteers/${nationalId}/${filename}`;
     return await this.registrationService.findOneFile(this.volunteerRepository, nationalId, objectName);
-  }
-
-  private async populateVerification(volunteer: Volunteer, responseDto: ResponseVolunteerDto) {
-    const verification = await this.volVerificationRepository.findOne({
-      where: { volunteer: { id: volunteer.id } },
-      relations: ['verifiedBy'],
-      order: { updatedTime: 'DESC' }
-    });
-    if (verification) {
-      const { status, statusNote, updatedTime, verifiedBy } = verification;
-      responseDto.verification = {
-        status: status,
-        statusNote: statusNote,
-        updatedTime: updatedTime,
-        verifiedBy: {
-          firstName: verifiedBy.firstName,
-          lastName: verifiedBy.lastName,
-          contactNumber: verifiedBy.contactNumber
-        }
-      };
-    }
   }
 
   async checkStatus(nationalId: number): Promise<any> {
@@ -177,11 +153,7 @@ export class VolunteersService {
         throw new NotFoundException("ไม่พบผู้ใช้นี้ในระบบ");
       }
       volunteer.volunteerDepartments = volunteerDepartmentsDto.volunteerDepartments
-        .map((volDepDto: VolunteerDepartmentDto) => ({
-          volunteerId: volDepDto.volunteerId,
-          departmentId: volDepDto.departmentId,
-          trainingStatus: volDepDto.trainingStatus
-        } as VolunteerDepartment));
+        .map((volDepDto: VolunteerDepartmentDto) => ({ ...volDepDto } as VolunteerDepartment));
       await this.volunteerRepository.save(volunteer);
     } catch (error) {
       throw error;

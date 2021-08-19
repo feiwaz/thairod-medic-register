@@ -10,6 +10,7 @@ import { FindConditions, FindOneOptions, In, Repository } from 'typeorm';
 import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
 import { BufferedFile } from '../minio-client/file.model';
 import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
+import { VerificationResponseDto } from './dto/verification-response.dto';
 
 @Injectable()
 export class RegistrationService {
@@ -18,11 +19,12 @@ export class RegistrationService {
 
   readonly doctorRequiredFiles = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
   readonly volunteerRequiredFiles = ['idCard', 'idCardSelfie'];
+  readonly notDeniedStatusList = [VerificationStatus.PENDING, VerificationStatus.APPROVED];
 
   async getRegisterInfo(nationalId: number, repository: Repository<Doctor | Volunteer>): Promise<any> {
     const entity = await repository.findOne({
       select: ['nationalId'],
-      where: { nationalId, status: In([VerificationStatus.PENDING, VerificationStatus.APPROVED]) }
+      where: { nationalId, status: In(this.notDeniedStatusList) }
     });
     if (!entity) {
       return {};
@@ -39,7 +41,7 @@ export class RegistrationService {
   public async validateUniqueFieldConstraints(
     repository: Repository<Doctor | Volunteer>,
     createDto: CreateDoctorDto | CreateVolunteerDto
-  ) {
+  ): Promise<Doctor | Volunteer> {
     const { nationalId, firstName, lastName, contactNumber, lineId, medCertificateId } = createDto;
 
     const where: FindConditions<Doctor | Volunteer>[] = [
@@ -48,47 +50,41 @@ export class RegistrationService {
     if (medCertificateId) where.push({ medCertificateId })
 
     const entity = await repository.findOne({ where });
-    if (entity && this.hasNotDenied(entity.status)) {
-      const errors = [];
-      if (nationalId == entity.nationalId) {
-        errors.push({ field: 'nationalId', value: nationalId, text: 'เลขประจำตัวประชาชน' });
-      }
-      if (firstName === entity.firstName && lastName === entity.lastName) {
-        errors.push({ field: 'firstName, lastName', value: `${firstName} ${lastName}`, text: 'ชื่อ-นามสกุล' });
-      }
-      if (contactNumber == entity.contactNumber) {
-        errors.push({ field: 'contactNumber', value: contactNumber, text: 'หมายเลขโทรศัพท์' });
-      }
-      if (lineId === entity.lineId) {
-        errors.push({ field: 'lineId', value: lineId, text: 'LINE ID' });
-      }
-      if (medCertificateId && (medCertificateId == entity.medCertificateId)) {
-        errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
-      }
-      if (errors.length > 0) throw new ConflictException(errors);
-    }
-  }
-
-  private hasNotDenied(status: VerificationStatus): boolean {
-    return [VerificationStatus.PENDING, VerificationStatus.APPROVED].includes(status);
-  }
-
-  public async checkIfNationalIdAlreadyExisted(repository: Repository<Doctor | Volunteer>, nationalId: string) {
-    const entity = await repository.findOne({ where: { nationalId } });
     if (entity) {
       if (this.hasNotDenied(entity.status)) {
-        throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+        const errors = [];
+        if (nationalId == entity.nationalId) {
+          errors.push({ field: 'nationalId', value: nationalId, text: 'เลขประจำตัวประชาชน' });
+        }
+        if (firstName === entity.firstName && lastName === entity.lastName) {
+          errors.push({ field: 'firstName, lastName', value: `${firstName} ${lastName}`, text: 'ชื่อ-นามสกุล' });
+        }
+        if (contactNumber == entity.contactNumber) {
+          errors.push({ field: 'contactNumber', value: contactNumber, text: 'หมายเลขโทรศัพท์' });
+        }
+        if (lineId === entity.lineId) {
+          errors.push({ field: 'lineId', value: lineId, text: 'LINE ID' });
+        }
+        if (medCertificateId && (medCertificateId == entity.medCertificateId)) {
+          errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
+        }
+        if (errors.length > 0) throw new ConflictException(errors);
       } else {
         entity.status = VerificationStatus.PENDING;
         return entity;
       }
     }
-    return {};
+    return {} as any;
+  }
+
+  private hasNotDenied(status: VerificationStatus): boolean {
+    return this.notDeniedStatusList.includes(status);
   }
 
   public async applyImageUrl(bufferedFile: BufferedFile, entity: Doctor | Volunteer, role: 'doctors' | 'volunteers') {
     let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
     this.checkFileRequirement(Object.keys(bufferedFile), role);
+    await this.minioClientService.deleteAllFilesIfExist(role, entity.nationalId);
     resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, role, entity.nationalId);
     entity.idCardImg = resultObject.idCardUrl;
     entity.idCardSelfieImg = resultObject.idCardSelUrl;
@@ -139,6 +135,34 @@ export class RegistrationService {
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
     return await this.minioClientService.get(objectName);
+  }
+
+  public async populateVerification(
+    entity: Doctor | Volunteer,
+    role: 'doctors' | 'volunteers',
+    verificationRepository: Repository<DoctorVerification | VolunteerVerification>): Promise<VerificationResponseDto> {
+    let resultVerification: VerificationResponseDto = null;
+    const where: FindConditions<Doctor | Volunteer> = role === 'doctors'
+      ? { doctor: { id: entity.id } } as FindConditions<Doctor>
+      : { volunteer: { id: entity.id } } as FindConditions<Volunteer>;
+    const verification = await verificationRepository.findOne({
+      where, relations: ['verifiedBy'],
+      order: { updatedTime: 'DESC' }
+    });
+    if (verification) {
+      const { status, statusNote, updatedTime, verifiedBy } = verification;
+      resultVerification = {
+        status: status,
+        statusNote: statusNote,
+        updatedTime: updatedTime,
+        verifiedBy: {
+          firstName: verifiedBy.firstName,
+          lastName: verifiedBy.lastName,
+          contactNumber: verifiedBy.contactNumber
+        }
+      };
+    }
+    return resultVerification;
   }
 
 }

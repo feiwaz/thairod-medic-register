@@ -30,9 +30,8 @@ export class DoctorsService {
 
   async create(createDto: CreateDoctorDto, bufferedFile: BufferedFile) {
     try {
-      await this.registrationService.validateUniqueFieldConstraints(this.doctorRepository, createDto);
-      const checkedEntity = await this.registrationService.checkIfNationalIdAlreadyExisted(this.doctorRepository, createDto.nationalId);
-      const entity = await this.mapDtoToEntity(createDto, checkedEntity as Doctor);
+      const validatedEntity = await this.registrationService.validateUniqueFieldConstraints(this.doctorRepository, createDto);
+      const entity = await this.mapDtoToEntity(createDto, validatedEntity as Doctor);
       await this.registrationService.applyImageUrl(bufferedFile, entity, 'doctors');
       await this.doctorRepository.save(entity);
     } catch (error) {
@@ -71,37 +70,16 @@ export class DoctorsService {
   }
 
   private async mapEntityToDto(doctor: Doctor) {
-    const { specializedFields, ...doctorEntities } = doctor;
-    const responseDto = Object.assign(new responseDoctorDto(), doctorEntities);
+    const { specializedFields, ...restEntities } = doctor;
+    const responseDto = Object.assign(new responseDoctorDto(), restEntities);
     responseDto.specializedFields = specializedFields.map(specializedField => specializedField.label);
-    await this.populateVerification(doctor, responseDto);
+    responseDto.verification = await this.registrationService.populateVerification(doctor, 'doctors', this.docVerificationRepository);
     return responseDto;
   }
 
   async findOneFile(nationalId: number, filename: string): Promise<any> {
     const objectName = `doctors/${nationalId}/${filename}`;
     return await this.registrationService.findOneFile(this.doctorRepository, nationalId, objectName);
-  }
-
-  private async populateVerification(doctor: Doctor, responseDto: responseDoctorDto) {
-    const verification = await this.docVerificationRepository.findOne({
-      where: { doctor: { id: doctor.id } },
-      relations: ['verifiedBy'],
-      order: { updatedTime: 'DESC' }
-    });
-    if (verification) {
-      const { status, statusNote, updatedTime, verifiedBy } = verification;
-      responseDto.verification = {
-        status: status,
-        statusNote: statusNote,
-        updatedTime: updatedTime,
-        verifiedBy: {
-          firstName: verifiedBy.firstName,
-          lastName: verifiedBy.lastName,
-          contactNumber: verifiedBy.contactNumber
-        }
-      };
-    }
   }
 
   async checkStatus(nationalId: number): Promise<any> {

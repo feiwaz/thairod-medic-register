@@ -1,6 +1,6 @@
 import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
 import { createHash } from 'crypto';
-import { ItemBucketMetadata } from 'minio';
+import { BucketItem, ItemBucketMetadata } from 'minio';
 import { MinioService } from 'nestjs-minio-client';
 import { Stream } from 'stream';
 import { BufferedFile } from './file.model';
@@ -55,6 +55,30 @@ export class MinioClientService {
 
   async delete(objetName: string) {
     this.minioClient.removeObject(process.env.MINIO_BUCKET_NAME, objetName)
+  }
+
+  public async deleteAllFilesIfExist(rolePrefix: string, nationalId: string): Promise<void> {
+    const prefix = `${rolePrefix}/${nationalId}/`;
+    const objectList = await this.getObjectList(prefix);
+    try {
+      if (objectList.length > 0) {
+        await this.minioClient.removeObjects(process.env.MINIO_BUCKET_NAME, objectList);
+      } else {
+        console.log(`No files found under: ${prefix}`);
+      }
+    } catch (error) {
+      console.log('Unable to remove objects');
+    }
+  }
+
+  private getObjectList(prefix: string): Promise<string[]> {
+    return new Promise(resolve => {
+      const objectList = [];
+      const stream = this.minioClient.listObjects(process.env.MINIO_BUCKET_NAME, prefix);
+      stream.on('data', (object: BucketItem) => objectList.push(object.name));
+      stream.on('error', error => console.warn(`Unable to list objects under: ${prefix}, due to error: ${error}`));
+      stream.on('end', () => resolve(objectList));
+    });
   }
 
 }
