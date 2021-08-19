@@ -131,7 +131,6 @@ export class DoctorsService {
       where: { doctor: { id: doctor.id }, verifiedBy: { id: user.id } },
       relations: ['doctor', 'verifiedBy']
     });
-    console.log(docVerification);
     if (!docVerification) {
       docVerification = new DoctorVerification();
       docVerification.doctor = doctor;
@@ -140,6 +139,7 @@ export class DoctorsService {
     docVerification.doctor.status = verificationDto.status;
     docVerification.status = verificationDto.status;
     docVerification.statusNote = verificationDto.statusNote;
+    docVerification.updatedTime = new Date();
     return docVerification;
   }
 

@@ -165,7 +165,10 @@ export class VerifyDetailDialogComponent implements OnInit {
   }
 
   onImageClick(blobUrl: string): void {
-    window.open(blobUrl, '_blank');
+    const aElement = document.createElement('a');
+    aElement.setAttribute('href', blobUrl);
+    aElement.setAttribute('target', '_blank');
+    aElement.click();
   }
 
   onGetEntity(): void {

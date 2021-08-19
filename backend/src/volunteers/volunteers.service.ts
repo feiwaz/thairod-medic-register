@@ -166,6 +166,7 @@ export class VolunteersService {
     volVerification.volunteer.status = verificationDto.status;
     volVerification.status = verificationDto.status;
     volVerification.statusNote = verificationDto.statusNote;
+    volVerification.updatedTime = new Date();
     return volVerification;
   }
 
