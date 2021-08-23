@@ -174,8 +174,8 @@ export class RegistrationService {
     entity: Doctor | Volunteer,
     verification: DoctorVerification | VolunteerVerification
   ): Promise<void> {
-    const body = this.buildTelemedRequestBody(entity, verification);
     try {
+      const body = this.buildTelemedRequestBody(entity, verification);
       await this.telemedService.submitData(body);
       console.log('Successfully submit data to telemed');
     } catch (error) {
