@@ -28,8 +28,6 @@ export class VolunteersService {
     private volunteerRepository: Repository<Volunteer>,
     @InjectRepository(Department)
     private departmentRepository: Repository<Department>,
-    @InjectRepository(VolunteerDepartment)
-    private volunteerDepartmentRepository: Repository<VolunteerDepartment>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(VolunteerVerification)
@@ -123,13 +121,14 @@ export class VolunteersService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const volVerification = await this.findVerificationStatus(volunteer, user, verificationDto);
-      this.volVerificationRepository.save(volVerification);
+      // await this.registrationService.sendDataToTelemed(volunteer, volVerification);
+      await this.volVerificationRepository.save(volVerification);
     } catch (error) {
       throw error;
     }
   }
 
-  private async findVerificationStatus(volunteer: Volunteer, user: User, verificationDto: VerificationDto) {
+  private async findVerificationStatus(volunteer: Volunteer, user: User, verificationDto: VerificationDto): Promise<VolunteerVerification> {
     let volVerification = await this.volVerificationRepository.findOne({
       where: { volunteer: { id: volunteer.id }, verifiedBy: { id: user.id } },
       relations: ['volunteer', 'verifiedBy']

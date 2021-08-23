@@ -98,13 +98,14 @@ export class DoctorsService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
-      this.docVerificationRepository.save(docVerification);
+      // await this.registrationService.sendDataToTelemed(doctor, docVerification);
+      await this.docVerificationRepository.save(docVerification);
     } catch (error) {
       throw error;
     }
   }
 
-  private async findVerificationStatus(doctor: Doctor, user: User, verificationDto: VerificationDto) {
+  private async findVerificationStatus(doctor: Doctor, user: User, verificationDto: VerificationDto): Promise<DoctorVerification> {
     let docVerification = await this.docVerificationRepository.findOne({
       where: { doctor: { id: doctor.id }, verifiedBy: { id: user.id } },
       relations: ['doctor', 'verifiedBy']

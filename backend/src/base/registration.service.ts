@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { DoctorVerification } from 'src/doctors/entities/doctor-verification.entity';
 import { Doctor } from 'src/doctors/entities/doctor.entity';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
@@ -9,13 +9,18 @@ import { Stream } from 'stream';
 import { FindConditions, FindOneOptions, In, Repository } from 'typeorm';
 import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
 import { BufferedFile } from '../minio-client/file.model';
+import { TelemedRequestDto } from '../telemed/dto/telemed-request.dto';
+import { TelemedService } from '../telemed/telemed.service';
 import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
 import { VerificationResponseDto } from './dto/verification-response.dto';
 
 @Injectable()
 export class RegistrationService {
 
-  constructor(private minioClientService: MinioClientService) { }
+  constructor(
+    private minioClientService: MinioClientService,
+    private telemedService: TelemedService
+  ) { }
 
   readonly doctorRequiredFiles = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
   readonly volunteerRequiredFiles = ['idCard', 'idCardSelfie'];
@@ -163,6 +168,40 @@ export class RegistrationService {
       };
     }
     return resultVerification;
+  }
+
+  public async sendDataToTelemed(
+    entity: Doctor | Volunteer,
+    verification: DoctorVerification | VolunteerVerification
+  ): Promise<void> {
+    const body = this.buildTelemedRequestBody(entity, verification);
+    try {
+      await this.telemedService.submitData(body);
+      console.log('Successfully submit data to telemed');
+    } catch (error) {
+      throw new ServiceUnavailableException(`Failed to submit data to telemed, due to error: ${error}`);
+    }
+  }
+
+  private buildTelemedRequestBody(
+    entity: Doctor | Volunteer,
+    verification: DoctorVerification | VolunteerVerification
+  ): TelemedRequestDto {
+    const { nationalId, initial, firstName, lastName, lineId,
+      contactNumber, dateOfBirth, medCertificateId } = entity;
+    const verifyBy = `${verification.verifiedBy.firstName} ${verification.verifiedBy.lastName}`;
+    const verifyDate = verification.updatedTime.toISOString();
+    return {
+      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, telephone: contactNumber,
+      email: 'hard.coded@no-reply.com', gendor: this.findGenderFromInitial(initial),
+      dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId + '',
+      departmentName: 'hard-coded-department', verifyBy, verifyDate, remark: 'hard-coded-remark'
+    };
+  }
+
+  private findGenderFromInitial(initial: string): string {
+    const males = ['นายแพทย์', 'เภสัชกรชาย', 'นาย', 'เด็กชาย'];
+    return males.includes(initial) ? 'male' : 'femail';
   }
 
 }

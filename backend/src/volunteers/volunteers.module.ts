@@ -1,8 +1,10 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
 import { MinioClientModule } from 'src/minio-client/minio-client.module';
 import { User } from 'src/users/entities/user.entity';
+import { TelemedService } from '../telemed/telemed.service';
 import { Department } from './entities/department.entity';
 import { VolunteerDepartment } from './entities/volunteer-department.entity';
 import { VolunteerVerification } from './entities/volunteer-verification.entity';
@@ -13,9 +15,10 @@ import { VolunteersService } from './volunteers.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Volunteer, Department, VolunteerDepartment, User, VolunteerVerification]),
-    MinioClientModule
+    MinioClientModule,
+    HttpModule
   ],
   controllers: [VolunteersController],
-  providers: [VolunteersService, RegistrationService],
+  providers: [VolunteersService, RegistrationService, TelemedService],
 })
 export class VolunteersModule { }
