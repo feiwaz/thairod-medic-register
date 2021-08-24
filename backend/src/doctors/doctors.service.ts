@@ -89,7 +89,9 @@ export class DoctorsService {
 
   async updateStatus(id: number, verificationDto: VerificationDto) {
     try {
-      const doctor = await this.doctorRepository.findOne(id);
+      const doctor = await this.doctorRepository.findOne(id, {
+        relations: ['specializedFields']
+      });
       if (!doctor) {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
@@ -98,7 +100,7 @@ export class DoctorsService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
-      // await this.registrationService.sendDataToTelemed(doctor, docVerification);
+      await this.registrationService.sendDataToTelemed(doctor, docVerification, 'doctors');
       await this.docVerificationRepository.save(docVerification);
     } catch (error) {
       throw error;

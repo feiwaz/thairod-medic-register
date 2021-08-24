@@ -8,11 +8,14 @@ import { Volunteer } from 'src/volunteers/entities/volunteer.entity';
 import { Stream } from 'stream';
 import { FindConditions, FindOneOptions, In, Repository } from 'typeorm';
 import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
+import { SpecializedField } from '../doctors/entities/specialized-field.entity';
 import { BufferedFile } from '../minio-client/file.model';
 import { TelemedRequestDto } from '../telemed/dto/telemed-request.dto';
 import { TelemedService } from '../telemed/telemed.service';
 import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
+import { VolunteerDepartment } from '../volunteers/entities/volunteer-department.entity';
 import { VerificationResponseDto } from './dto/verification-response.dto';
+
 
 @Injectable()
 export class RegistrationService {
@@ -172,12 +175,15 @@ export class RegistrationService {
 
   public async sendDataToTelemed(
     entity: Doctor | Volunteer,
-    verification: DoctorVerification | VolunteerVerification
+    verification: DoctorVerification | VolunteerVerification,
+    role: 'doctors' | 'volunteers'
   ): Promise<void> {
     try {
-      const body = this.buildTelemedRequestBody(entity, verification);
+      const body = this.buildTelemedRequestBody(entity, verification, role);
+      console.log(body);
+      throw new ServiceUnavailableException();
       await this.telemedService.submitData(body);
-      console.log('Successfully submit data to telemed');
+      console.log('Successfully submitted data to telemed');
     } catch (error) {
       throw new ServiceUnavailableException(`Failed to submit data to telemed, due to error: ${error}`);
     }
@@ -185,7 +191,8 @@ export class RegistrationService {
 
   private buildTelemedRequestBody(
     entity: Doctor | Volunteer,
-    verification: DoctorVerification | VolunteerVerification
+    verification: DoctorVerification | VolunteerVerification,
+    role: 'doctors' | 'volunteers'
   ): TelemedRequestDto {
     const { nationalId, initial, firstName, lastName, lineId,
       contactNumber, dateOfBirth, medCertificateId } = entity;
@@ -193,15 +200,27 @@ export class RegistrationService {
     const verifyDate = verification.updatedTime.toISOString();
     return {
       citizenId: nationalId, prefix: initial, firstName, lastName, lineId, telephone: contactNumber,
-      email: 'hard.coded@no-reply.com', gendor: this.findGenderFromInitial(initial),
-      dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId + '',
-      departmentName: 'hard-coded-department', verifyBy, verifyDate, remark: 'hard-coded-remark'
+      email: '', gendor: this.findGenderFromInitial(initial),
+      dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
+      departmentName: this.buildDepartmentName(entity, role), verifyBy, verifyDate, remark: verification?.statusNote || ''
     };
   }
 
   private findGenderFromInitial(initial: string): string {
     const males = ['นายแพทย์', 'เภสัชกรชาย', 'นาย', 'เด็กชาย'];
     return males.includes(initial) ? 'male' : 'femail';
+  }
+
+  private buildDepartmentName(entity: any, role: 'doctors' | 'volunteers'): string {
+    let departmentName = '';
+    if (role === 'doctors') {
+      const specializedFields = entity.specializedFields.map((specializedField: SpecializedField) => specializedField.label);
+      departmentName = specializedFields.join(', ');
+    } else {
+      const departments = entity.volunteerDepartments.map((volDep: VolunteerDepartment) => volDep.department.label);
+      departmentName = departments.join(', ');
+    }
+    return departmentName;
   }
 
 }

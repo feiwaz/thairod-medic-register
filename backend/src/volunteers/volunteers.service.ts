@@ -112,7 +112,9 @@ export class VolunteersService {
 
   async updateStatus(id: number, verificationDto: VerificationDto) {
     try {
-      const volunteer = await this.volunteerRepository.findOne(id);
+      const volunteer = await this.volunteerRepository.findOne(id, {
+        relations: ['volunteerDepartments', 'volunteerDepartments.department']
+      });
       if (!volunteer) {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
@@ -121,7 +123,7 @@ export class VolunteersService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const volVerification = await this.findVerificationStatus(volunteer, user, verificationDto);
-      // await this.registrationService.sendDataToTelemed(volunteer, volVerification);
+      await this.registrationService.sendDataToTelemed(volunteer, volVerification, 'volunteers');
       await this.volVerificationRepository.save(volVerification);
     } catch (error) {
       throw error;
