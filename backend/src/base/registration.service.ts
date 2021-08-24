@@ -180,8 +180,6 @@ export class RegistrationService {
   ): Promise<void> {
     try {
       const body = this.buildTelemedRequestBody(entity, verification, role);
-      console.log(body);
-      throw new ServiceUnavailableException();
       await this.telemedService.submitData(body);
       console.log('Successfully submitted data to telemed');
     } catch (error) {
