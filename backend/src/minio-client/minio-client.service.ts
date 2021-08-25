@@ -14,23 +14,23 @@ export class MinioClientService {
 
   constructor(private readonly minioService: MinioService) { }
 
-  public async uploadBufferedFile(bufferedFile: BufferedFile, rolePrefix: string, nationalId: string): Promise<any> {
+  public async uploadBufferedFile(bufferedFile: BufferedFile, objectPrefix: string): Promise<any> {
     const { idCard, idCardSelfie, medCertificate, medCertificateSelfie } = bufferedFile as any;
-    const idCardUrl = idCard ? await this.upload(idCard[0] || null, rolePrefix, nationalId) : null;
-    const idCardSelUrl = idCardSelfie ? await this.upload(idCardSelfie[0] || null, rolePrefix, nationalId) : null;
-    const jobCerUrl = medCertificate ? await this.upload(medCertificate[0] || null, rolePrefix, nationalId) : null;
-    const jobCerSelUrl = medCertificateSelfie ? await this.upload(medCertificateSelfie[0] || null, rolePrefix, nationalId) : null;
+    const idCardUrl = idCard ? await this.upload(idCard[0] || null, objectPrefix) : null;
+    const idCardSelUrl = idCardSelfie ? await this.upload(idCardSelfie[0] || null, objectPrefix) : null;
+    const jobCerUrl = medCertificate ? await this.upload(medCertificate[0] || null, objectPrefix) : null;
+    const jobCerSelUrl = medCertificateSelfie ? await this.upload(medCertificateSelfie[0] || null, objectPrefix) : null;
     return { idCardUrl, idCardSelUrl, jobCerUrl, jobCerSelUrl };
   }
 
-  public async upload(file: BufferedFile, rolePrefix: string, nationalId: string): Promise<string> {
+  public async upload(file: BufferedFile, objectPrefix: string): Promise<string> {
     if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
       throw new BadRequestException('อนุญาตให้อัพโหลดเฉพาะรูปภาพเท่านั้น');
     }
 
-    const dateString = Date.now().toString()
+    const dateString = Date.now().toString();
     const hashedFilename = createHash('md5').update(dateString).digest('hex');
-    const objectName = `${rolePrefix}/${nationalId}/${hashedFilename}`;
+    const objectName = `${objectPrefix}${hashedFilename}`;
     try {
       const metaData: ItemBucketMetadata = { 'Content-Type': file.mimetype };
       await this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, objectName, file.buffer, metaData);
@@ -39,7 +39,7 @@ export class MinioClientService {
       throw new BadGatewayException(`Failed to upload file: ${objectName}`);
     }
 
-    return `${rolePrefix}/${nationalId}/files/${hashedFilename}`;
+    return `${objectPrefix}files/${hashedFilename}`;
   }
 
   public async get(objectName: string): Promise<Stream> {
@@ -57,14 +57,13 @@ export class MinioClientService {
     this.minioClient.removeObject(process.env.MINIO_BUCKET_NAME, objetName)
   }
 
-  public async deleteAllFilesIfExist(rolePrefix: string, nationalId: string): Promise<void> {
-    const prefix = `${rolePrefix}/${nationalId}/`;
-    const objectList = await this.getObjectList(prefix);
+  public async deleteAllFilesIfExist(objectPrefix: string): Promise<void> {
+    const objectList = await this.getObjectList(objectPrefix);
     try {
       if (objectList.length > 0) {
         await this.minioClient.removeObjects(process.env.MINIO_BUCKET_NAME, objectList);
       } else {
-        console.log(`No files found under: ${prefix}`);
+        console.log(`No files found under: ${objectPrefix}`);
       }
     } catch (error) {
       console.log('Unable to remove objects');

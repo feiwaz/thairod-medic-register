@@ -14,16 +14,16 @@ export class FileService {
   constructor(private http: HttpClient) { }
 
   async getFilesByBlobUrl(): Promise<any> {
-    const idCardString = localStorage.getItem('idCard') || '';
+    const idCardString = localStorage.getItem('idCard');
     const idCard = idCardString ? await this.getBlobPromise(idCardString) : null;
 
-    const idCardSelfieString = localStorage.getItem('idCardSelfie') || '';
+    const idCardSelfieString = localStorage.getItem('idCardSelfie');
     const idCardSelfie = idCardSelfieString ? await this.getBlobPromise(idCardSelfieString) : null;
 
-    const medCertificateString = localStorage.getItem('medCertificate') || '';
+    const medCertificateString = localStorage.getItem('medCertificate');
     const medCertificate = medCertificateString ? await this.getBlobPromise(medCertificateString) : null;
 
-    const medCertificateSelfieString = localStorage.getItem('medCertificateSelfie') || '';
+    const medCertificateSelfieString = localStorage.getItem('medCertificateSelfie');
     const medCertificateSelfie = medCertificateSelfieString ? await this.getBlobPromise(medCertificateSelfieString) : null;
 
     return [idCard, idCardSelfie, medCertificate, medCertificateSelfie];

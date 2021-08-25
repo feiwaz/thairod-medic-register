@@ -27,7 +27,7 @@ export class AuthenticationService {
   ) { }
 
   getRefreshToken(): void {
-    const refreshToken = localStorage.getItem('refreshToken') || '';
+    const refreshToken = localStorage.getItem('refreshToken');
     if (refreshToken) {
       this.refreshToken().subscribe();
     } else {
@@ -56,7 +56,7 @@ export class AuthenticationService {
   }
 
   refreshToken(): Observable<any> {
-    const refreshToken = localStorage.getItem('refreshToken') || '';
+    const refreshToken = localStorage.getItem('refreshToken');
     return this.http.post<any>(`${environment.apiPrefix}/auth/refresh-token`, { refreshToken }).pipe(
       tap({
         next: response => {
@@ -83,7 +83,7 @@ export class AuthenticationService {
 
   decodeAccessToken(): void {
     try {
-      const accessToken = localStorage.getItem('accessToken') || '';
+      const accessToken = localStorage.getItem('accessToken') || undefined;
       const decodedUser = this.jwtHelper.decodeToken(accessToken).user;
       this.isLoggedIn = true;
       const { id, email, firstName, lastName, contactNumber,

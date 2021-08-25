@@ -92,8 +92,9 @@ export class RegistrationService {
   public async applyImageUrl(bufferedFile: BufferedFile, entity: Doctor | Volunteer, role: 'doctors' | 'volunteers') {
     let resultObject = { idCardUrl: null, idCardSelUrl: null, jobCerUrl: null, jobCerSelUrl: null };
     this.checkFileRequirement(Object.keys(bufferedFile), role);
-    await this.minioClientService.deleteAllFilesIfExist(role, entity.nationalId);
-    resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, role, entity.nationalId);
+    const objectPrefix = `${role}/${entity.nationalId}/`;
+    await this.minioClientService.deleteAllFilesIfExist(objectPrefix);
+    resultObject = await this.minioClientService.uploadBufferedFile(bufferedFile, objectPrefix);
     entity.idCardImg = resultObject.idCardUrl;
     entity.idCardSelfieImg = resultObject.idCardSelUrl;
     entity.jobCertificateImg = resultObject.jobCerUrl;
