@@ -22,6 +22,12 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <p><b>เพศ</b><span class="text-danger"> *</span></p>
+      <mat-radio-group formControlName="gender">
+        <mat-radio-button *ngFor="let gender of genders" [value]="gender.value">
+          {{gender.viewValue}}
+        </mat-radio-button>
+      </mat-radio-group>
       <p><b>ชื่อ</b><span class="text-danger"> *</span></p>
       <mat-form-field>
         <input matInput type="text" formControlName="firstName" placeholder="ชื่อ (ภาษาไทย)" #firstName>

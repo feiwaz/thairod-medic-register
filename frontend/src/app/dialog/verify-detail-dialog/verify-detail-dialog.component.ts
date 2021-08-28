@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
+import { GENDERS } from '../../constant/genders';
 import { VerificationBody } from '../../model/verification-body.model';
 import { AuthenticationService } from '../../service/authentication.service';
 import { DoctorService } from '../../service/doctor.service';
@@ -29,6 +30,7 @@ export class VerifyDetailDialogComponent implements OnInit {
   content: { [key: string]: any } = {
     nationalId: '',
     initial: '',
+    gender: '',
     firstName: '',
     lastName: '',
     dateOfBirth: '',
@@ -93,6 +95,7 @@ export class VerifyDetailDialogComponent implements OnInit {
   private handleSuccessfulFindOne(response: any): void {
     const { idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg, ...rest } = response;
     this.content = rest;
+    this.content.gender = GENDERS.find(gender => gender.value === this.content.gender)?.viewValue;
     const findAllFiles$ = this.buildFindAllFiles$({ idCardImg, idCardSelfieImg, jobCertificateImg, jobCertificateSelfieImg });
     findAllFiles$.subscribe(
       blobUrls => this.handleSuccessfulFindAllFiles(blobUrls as [string, string, string, string]),

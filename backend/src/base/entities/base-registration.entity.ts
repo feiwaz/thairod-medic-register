@@ -1,5 +1,6 @@
 import { VerificationStatus } from 'src/enum/verification-status.enum';
 import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Gender } from '../../enum/gender.enum';
 import { BaseResource } from './base-resource.entity';
 
 export abstract class BaseRegistration extends BaseResource {
@@ -9,6 +10,13 @@ export abstract class BaseRegistration extends BaseResource {
     unique: true
   })
   nationalId: string;
+
+  @Column({
+    type: 'enum',
+    enum: Gender,
+    default: Gender.MALE
+  })
+  gender: Gender
 
   @Column()
   firstName: string;

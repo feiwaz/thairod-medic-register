@@ -37,6 +37,18 @@ mat-form-field.mat-form-field.id-mat-form-field {
   margin-bottom: 0;
 }
 
+mat-radio-group {
+  margin-top: 14px;
+  margin-bottom: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+mat-radio-button {
+  font-size: 18px;
+}
+
 .id-remark {
   margin-bottom: 19px;
 }

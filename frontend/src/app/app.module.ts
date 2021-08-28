@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter, MomentDateModule } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatRadioModule } from '@angular/material/radio';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -60,6 +61,7 @@ export const DATE_FORMAT = {
     SharedModule,
     BrowserAnimationsModule,
     MatDatepickerModule,
+    MatRadioModule,
     MomentDateModule,
     ToastrModule.forRoot({
       timeOut: 4000,

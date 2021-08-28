@@ -16,7 +16,6 @@ import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
 import { VolunteerDepartment } from '../volunteers/entities/volunteer-department.entity';
 import { VerificationResponseDto } from './dto/verification-response.dto';
 
-
 @Injectable()
 export class RegistrationService {
 
@@ -202,21 +201,15 @@ export class RegistrationService {
     const entity = role === 'doctors'
       ? (verification as DoctorVerification).doctor
       : (verification as VolunteerVerification).volunteer;
-    const { nationalId, initial, firstName, lastName, lineId,
+    const { nationalId, initial, gender, firstName, lastName, lineId,
       contactNumber, dateOfBirth, medCertificateId } = entity;
     const verifyBy = `${verification.verifiedBy.firstName} ${verification.verifiedBy.lastName}`;
     const verifyDate = verification.updatedTime.toISOString();
     return {
-      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, telephone: contactNumber,
-      email: '', gendor: this.findGenderFromInitial(initial),
-      dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
+      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, telephone: contactNumber, email: '',
+      gendor: gender, dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
       departmentName: this.buildDepartmentName(entity, role), verifyBy, verifyDate, remark: verification?.statusNote || ''
     };
-  }
-
-  private findGenderFromInitial(initial: string): string {
-    const males = ['นายแพทย์', 'เภสัชกรชาย', 'นาย', 'เด็กชาย'];
-    return males.includes(initial) ? 'male' : 'female';
   }
 
   private buildDepartmentName(entity: any, role: 'doctors' | 'volunteers'): string {

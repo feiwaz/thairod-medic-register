@@ -2,28 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { GENDERS } from '../../constant/genders';
+import { DOCTOR_INITIALS, InitialOption, VOLUNTEER_INITIALS } from '../../constant/initials';
 import { BasicInfo } from '../../model/basic-info.model';
 import { numbersOnly, partialMaskId } from '../../util/util-functions';
-
-interface InitialOption {
-  value: number;
-  viewValue: string;
-}
-
-const doctorInitials: InitialOption[] = [
-  { value: 1, viewValue: 'นายแพทย์' },
-  { value: 2, viewValue: 'แพทย์หญิง' },
-  { value: 3, viewValue: 'เภสัชกรชาย' },
-  { value: 4, viewValue: 'เภสัชกรหญิง' }
-];
-
-const volunteerInitials: InitialOption[] = [
-  { value: 1, viewValue: 'นาย' },
-  { value: 2, viewValue: 'นางสาว' },
-  { value: 3, viewValue: 'นาง' },
-  { value: 4, viewValue: 'เด็กชาย' },
-  { value: 5, viewValue: 'เด็กหญิง' }
-];
 
 @Component({
   selector: 'app-basic-info-form',
@@ -37,12 +19,14 @@ export class BasicInfoFormComponent implements OnInit {
   isEditing = false;
   availableTimes: string[] = []
   initials: InitialOption[] = [];
+  genders = GENDERS;
   startDate = moment('21/03/1982', 'DD/MM/YYYY');
   minDate = moment().subtract(60, 'year');
   maxDate = moment();
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
+    gender: [GENDERS[0].value, Validators.required],
     firstName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     lastName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     dateOfBirth: ['', Validators.required],
@@ -65,7 +49,7 @@ export class BasicInfoFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initials = this.role === 'doctor' ? doctorInitials : volunteerInitials;
+    this.initials = this.role === 'doctor' ? DOCTOR_INITIALS : VOLUNTEER_INITIALS;
     this.patchValue();
   }
 
@@ -107,6 +91,7 @@ export class BasicInfoFormComponent implements OnInit {
     return {
       nationalId: +this.nationalId,
       initial: this.initials.find(option => option.value === this.basicInfoForm.controls.initial.value)?.viewValue || '',
+      gender: this.basicInfoForm.controls.gender.value,
       firstName: this.basicInfoForm.controls.firstName.value,
       lastName: this.basicInfoForm.controls.lastName.value,
       dateOfBirth: this.basicInfoForm.controls.dateOfBirth.value,
