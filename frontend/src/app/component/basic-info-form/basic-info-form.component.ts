@@ -50,7 +50,6 @@ export class BasicInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initials = this.role === 'doctor' ? DOCTOR_INITIALS : VOLUNTEER_INITIALS;
-    this.basicInfoForm.controls.gender.setValue(this.genders[0].value);
     this.patchValue();
   }
 
@@ -64,7 +63,7 @@ export class BasicInfoFormComponent implements OnInit {
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
-        gender: gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
+        gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
         address, contactNumber, lineId
       });
     }
