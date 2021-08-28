@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GENDERS } from '../../constant/genders';
 import { BasicInfo } from '../../model/basic-info.model';
 import { DoctorJobInfo } from '../../model/doctor-job-info.model';
 import { VolunteerJobInfo } from '../../model/volunteer-job-info.model';
@@ -85,8 +86,9 @@ export class ReviewInfoComponent implements OnInit {
     if (basicInfoString) {
       const { nationalId, initial, gender, firstName, lastName, dateOfBirth, address,
         contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
+      const genderViewValue = (GENDERS.find(item => item.value === gender) || GENDERS[0]).viewValue;
       this.basicInfo = {
-        nationalId, initial, gender, firstName, lastName,
+        nationalId, initial, gender: genderViewValue, firstName, lastName,
         dateOfBirth, address, contactNumber, lineId, availableTimes
       };
     }

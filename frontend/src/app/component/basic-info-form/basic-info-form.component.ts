@@ -56,14 +56,14 @@ export class BasicInfoFormComponent implements OnInit {
   private patchValue() {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
-      const { nationalId, initial, firstName, lastName, dateOfBirth, address,
+      const { nationalId, initial, gender, firstName, lastName, dateOfBirth, address,
         contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.nationalId = nationalId + '' || this.nationalId;
       this.availableTimes = availableTimes;
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
-        firstName, lastName, dateOfBirth: moment(dateOfBirth),
+        gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
         address, contactNumber, lineId
       });
     }
