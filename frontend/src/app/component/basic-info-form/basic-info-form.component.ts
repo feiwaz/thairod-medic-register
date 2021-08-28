@@ -26,7 +26,7 @@ export class BasicInfoFormComponent implements OnInit {
   basicInfoForm = this.fb.group({
     nationalId: ['', Validators.required],
     initial: ['', Validators.required],
-    gender: [GENDERS[0].value, Validators.required],
+    gender: ['', Validators.required],
     firstName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     lastName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     dateOfBirth: ['', Validators.required],
@@ -50,6 +50,7 @@ export class BasicInfoFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.initials = this.role === 'doctor' ? DOCTOR_INITIALS : VOLUNTEER_INITIALS;
+    this.basicInfoForm.controls.gender.setValue(this.genders[0].value);
     this.patchValue();
   }
 
@@ -63,7 +64,7 @@ export class BasicInfoFormComponent implements OnInit {
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
-        gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
+        gender: gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
         address, contactNumber, lineId
       });
     }
