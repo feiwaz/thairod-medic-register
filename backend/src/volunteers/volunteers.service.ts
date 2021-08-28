@@ -123,7 +123,8 @@ export class VolunteersService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const volVerification = await this.findVerificationStatus(volunteer, user, verificationDto);
-      await this.registrationService.sendDataToTelemed(volunteer, volVerification, 'volunteers');
+      await this.registrationService.sendDataToTelemed(volVerification, 'volunteers');
+      volVerification.volunteer.volunteerDepartments.forEach(volDep => delete volDep.department);
       await this.volVerificationRepository.save(volVerification);
     } catch (error) {
       throw error;

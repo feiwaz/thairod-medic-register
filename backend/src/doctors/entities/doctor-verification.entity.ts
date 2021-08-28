@@ -7,12 +7,16 @@ import { Doctor } from "./doctor.entity";
 export class DoctorVerification extends BaseVerification {
 
   @ManyToOne(
-    () => Doctor, doctor => doctor.doctorVerifications,
+    () => Doctor,
+    doctor => doctor.doctorVerifications,
     { cascade: true }
   )
   doctor: Doctor;
 
-  @ManyToOne(() => User, verifiedBy => verifiedBy.doctorVerifications)
+  @ManyToOne(
+    () => User,
+    verifiedBy => verifiedBy.doctorVerifications
+  )
   verifiedBy: User;
 
 }

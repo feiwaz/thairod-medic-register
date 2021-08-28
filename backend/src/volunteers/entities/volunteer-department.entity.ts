@@ -20,7 +20,7 @@ export class VolunteerDepartment {
 
   @ManyToOne(
     () => Department,
-    department => department.volunteerDepartments
+    department => department.volunteerDepartments,
   )
   department: Department;
 

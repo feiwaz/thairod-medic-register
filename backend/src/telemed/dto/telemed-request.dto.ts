@@ -2,6 +2,12 @@ import { IsNotEmpty } from 'class-validator';
 
 export class TelemedRequestDto {
 
+  userName?: string;
+
+  password?: string;
+
+  userGroup?: string;
+
   @IsNotEmpty()
   citizenId: string;
 

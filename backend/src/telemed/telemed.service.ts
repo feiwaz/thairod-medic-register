@@ -1,6 +1,6 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { lastValueFrom, map } from "rxjs";
 
 @Injectable()
@@ -18,11 +18,12 @@ export class TelemedService {
       .pipe(map(response => response?.data?.items?.Token)));
   }
 
-  public async submitData(body: any): Promise<any> {
+  public async submitData(body: any, role: 'doctors' | 'volunteers'): Promise<AxiosResponse<any>> {
     const config: AxiosRequestConfig = {
       headers: { Authorization: `Bearer ${await this.getToken()}`, 'Content-Type': 'application/json' }
     };
-    return await lastValueFrom(this.httpService.post(process.env.TELEMED_ENDPOINT_SUBMIT, body, config));
+    const url = role === 'doctors' ? process.env.TELEMED_ENDPOINT_SUBMIT_DOCTOR : process.env.TELEMED_ENDPOINT_SUBMIT_VOLUNTEER;
+    return await lastValueFrom(this.httpService.post(url, body, config));
   }
 
 }

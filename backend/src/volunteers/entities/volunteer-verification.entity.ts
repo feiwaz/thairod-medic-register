@@ -7,12 +7,16 @@ import { Volunteer } from "./volunteer.entity";
 export class VolunteerVerification extends BaseVerification {
 
   @ManyToOne(
-    () => Volunteer, volunteer => volunteer.volunteerVerifications,
+    () => Volunteer,
+    volunteer => volunteer.volunteerVerifications,
     { cascade: true }
   )
   volunteer: Volunteer;
 
-  @ManyToOne(() => User, verifiedBy => verifiedBy.volunteerVerifications)
+  @ManyToOne(
+    () => User,
+    verifiedBy => verifiedBy.volunteerVerifications
+  )
   verifiedBy: User;
 
 }

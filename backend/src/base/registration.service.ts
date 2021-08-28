@@ -175,24 +175,33 @@ export class RegistrationService {
   }
 
   public async sendDataToTelemed(
-    entity: Doctor | Volunteer,
     verification: DoctorVerification | VolunteerVerification,
     role: 'doctors' | 'volunteers'
   ): Promise<void> {
     try {
-      const body = this.buildTelemedRequestBody(entity, verification, role);
-      await this.telemedService.submitData(body);
-      console.log('Successfully submitted data to telemed');
+      let body = this.buildTelemedRequestBody(verification, role);
+      if (role === 'doctors') {
+        body = { userName: '', password: '', userGroup: '', ...body };
+      }
+      const response = await this.telemedService.submitData(body, role);
+      console.log(`Successfully submitted data to telemed with status: ${response.data.status}`);
     } catch (error) {
-      throw new ServiceUnavailableException(`Failed to submit data to telemed, due to error: ${error}`);
+      const errorMessage = error?.response?.data?.message;
+      if (errorMessage.includes('หมายเลขบัตรประชาชน')) {
+        Promise.resolve();
+      } else {
+        throw new ServiceUnavailableException(`Failed to submit data to telemed, due to error: ${errorMessage ? errorMessage : error}`);
+      }
     }
   }
 
   private buildTelemedRequestBody(
-    entity: Doctor | Volunteer,
     verification: DoctorVerification | VolunteerVerification,
     role: 'doctors' | 'volunteers'
   ): TelemedRequestDto {
+    const entity = role === 'doctors'
+      ? (verification as DoctorVerification).doctor
+      : (verification as VolunteerVerification).volunteer;
     const { nationalId, initial, firstName, lastName, lineId,
       contactNumber, dateOfBirth, medCertificateId } = entity;
     const verifyBy = `${verification.verifiedBy.firstName} ${verification.verifiedBy.lastName}`;
@@ -207,7 +216,7 @@ export class RegistrationService {
 
   private findGenderFromInitial(initial: string): string {
     const males = ['นายแพทย์', 'เภสัชกรชาย', 'นาย', 'เด็กชาย'];
-    return males.includes(initial) ? 'male' : 'femail';
+    return males.includes(initial) ? 'male' : 'female';
   }
 
   private buildDepartmentName(entity: any, role: 'doctors' | 'volunteers'): string {

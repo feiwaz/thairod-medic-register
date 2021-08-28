@@ -100,7 +100,7 @@ export class DoctorsService {
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
-      await this.registrationService.sendDataToTelemed(doctor, docVerification, 'doctors');
+      await this.registrationService.sendDataToTelemed(docVerification, 'doctors');
       await this.docVerificationRepository.save(docVerification);
     } catch (error) {
       throw error;
