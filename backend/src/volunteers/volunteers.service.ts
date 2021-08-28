@@ -10,6 +10,7 @@ import { VerificationDto } from 'src/users/dto/verification.dto';
 import { User } from 'src/users/entities/user.entity';
 import { FindManyOptions, In, Repository } from 'typeorm';
 import { CreateVolunteerDto } from './dto/create-volunteer.dto';
+import { ResponseDepartmentDto } from './dto/response-department.dto';
 import {
   ResponseVolunteerDto
 } from './dto/response-volunteer.dto';
@@ -95,7 +96,11 @@ export class VolunteersService {
   private async mapEntityToDto(volunteer: Volunteer): Promise<ResponseVolunteerDto> {
     const { volunteerDepartments, ...restEntities } = volunteer;
     const responseDto = Object.assign(new ResponseVolunteerDto(), restEntities);
-    responseDto.departments = volunteerDepartments.map(volDep => volDep.department.label);
+    responseDto.departments = volunteerDepartments.map(volDep => ({
+      label: volDep.department.label,
+      trainingStatus: volDep.trainingStatus,
+      isTrainingRequired: volDep.department.isTrainingRequired
+    } as ResponseDepartmentDto));
     responseDto.verification = await this.registrationService.populateVerification(volunteer, 'volunteers', this.volVerificationRepository);
     return responseDto;
   }

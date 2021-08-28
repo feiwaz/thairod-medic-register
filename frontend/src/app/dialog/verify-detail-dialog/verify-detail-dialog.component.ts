@@ -178,4 +178,14 @@ export class VerifyDetailDialogComponent implements OnInit {
     this.getEntity();
   }
 
+  getDepartmentLabels(departments: any[]): string {
+    return departments.map(department => department.label).join(', ');
+  }
+
+  getRequiredTrainingDepartments(departments: any[]): string {
+    return departments
+      .filter(department => department.isTrainingRequired === true)
+      .map(department => department.label).join(', ');
+  }
+
 }

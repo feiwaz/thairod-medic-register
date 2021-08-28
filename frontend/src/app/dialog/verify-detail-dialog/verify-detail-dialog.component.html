@@ -51,7 +51,11 @@
                         <span class="info-field">{{role === 'doctor' ? 'สาขาที่ถนัด:' : 'แผนกที่สนใจ:'}}</span>
                         <span class="info-value">{{role === 'doctor'
                             ? content.specializedFields.join(", ")
-                            : content.departments.join(", ")}}</span>
+                            : getDepartmentLabels(content.departments)}}</span>
+                    </div>
+                    <div *ngIf="role === 'volunteer'">
+                        <span class="info-field">แผนกที่จำเป็นต้องเข้ารับการอบรม:</span>
+                        <span class="info-value">{{getRequiredTrainingDepartments(content.departments)}}</span>
                     </div>
                     <div *ngIf="content.medCertificateId">
                         <span class="info-field">เลขที่ใบประกอบวิชาชีพเวชกรรม:</span>
