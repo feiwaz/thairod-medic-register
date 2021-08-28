@@ -86,9 +86,8 @@ export class ReviewInfoComponent implements OnInit {
     if (basicInfoString) {
       const { nationalId, initial, gender, firstName, lastName, dateOfBirth, address,
         contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
-      const genderViewValue = (GENDERS.find(item => item.value === gender) || GENDERS[0]).viewValue;
       this.basicInfo = {
-        nationalId, initial, gender: genderViewValue, firstName, lastName,
+        nationalId, initial, gender, firstName, lastName,
         dateOfBirth, address, contactNumber, lineId, availableTimes
       };
     }
@@ -178,6 +177,10 @@ export class ReviewInfoComponent implements OnInit {
 
   onImageError(event: any): void {
     event.target.style.display = 'none';
+  }
+
+  getGenderViewValue(value = 'Male'): string {
+    return (GENDERS.find(item => item.value === value) || GENDERS[0]).viewValue;
   }
 
 }
