@@ -29,9 +29,12 @@ form {
   overflow: auto;
 }
 
-mat-form-field,
-button {
+mat-form-field {
   font-size: 16px;
+}
+
+button {
+  font-size: 18px;
 }
 
 mat-form-field,

@@ -23,9 +23,16 @@ form {
   margin-bottom: 10px;
 }
 
-mat-form-field.mat-form-field,
-button {
+mat-form-field.mat-form-field {
   font-size: 16px;
+}
+
+button {
+  font-size: 18px;
+}
+
+.vetical-align-middle {
+  vertical-align: middle;
 }
 
 button[type="submit"] {
