@@ -1,0 +1,22 @@
+.content-container {
+  flex-direction: column;
+  display: flex;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  height: calc(100% - 70px);
+  justify-content: flex-start;
+}
+
+.confirm-content-text {
+  font-size: 20px;
+}
+
+button {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.cancel-button {
+  flex: 1;
+  text-align: right;
+}
