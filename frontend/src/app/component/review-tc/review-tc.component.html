@@ -3,34 +3,42 @@
 <div class="form-container">
   <form [formGroup]="tcForm" (ngSubmit)="onSubmit()">
     <h3><b>หนังสือยินยอม-รับผิดชอบทางการรักษา</b></h3>
-    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-      standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-      a
-      type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-      remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-      Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-      of Lorem Ipsum.</p>
-    <p>Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing
-      sem
-      neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante
-      tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget
-      eros
-      faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat,
-      leo
-      eget bibendum sodales, augue velit cursus nunc.</p>
-    <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra
-      quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.
-      Etiam
-      ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.</p>
-    <p>Nam sit amet est nec leo fermentum dictum sit amet nec velit. Aenean ultrices mollis arcu. In sit amet suscipit
-      dolor. Etiam ultricies nunc in dignissim faucibus. Morbi et lorem semper, vulputate est vel, facilisis orci.
-      Vivamus varius enim in risus egestas bibendum. Vivamus eu pharetra ex, ut lacinia nisl. Vivamus ut finibus quam.
-      Sed varius nunc id magna fringilla viverra. Ut nec nisl dictum, ullamcorper enim at, fringilla mi. Maecenas
-      aliquam suscipit nulla, sed pellentesque nisl ornare quis. Sed mauris enim, rutrum ac dui nec, faucibus volutpat
-      leo. Nam maximus libero sed mattis iaculis. Integer et risus ante.</p>
-    <mat-checkbox formControlName="consentCheckbox">ฉันรับทราบข้อความข้างต้นและยินยอม</mat-checkbox>
-    <button mat-flat-button type="submit" color="primary"
-      [disabled]="!tcForm.controls.consentCheckbox.value">{{tcForm.controls.consentCheckbox.value === true ?
-      'ยินยอม' : 'โปรดอ่านและคลิกยินยอม'}}</button>
+    <ol class="ordered-list">
+      <li>
+        <p>ข้าพเจ้าตกลงยินยอมให้ทีมไทยรอด จัดเก็บ
+          ใช้และประมวลผลข้อมูลส่วนบุคคลที่ข้าพเจ้าได้ให้ไว้เพื่อการประมวลผลและการตรวจสอบข้อมูล
+          และ/หรือเพื่อการบริหารจัดการและการให้บริการแก่ประชาชนตามโครงการไทยรอด</p>
+      </li>
+      <li>
+        <p>ข้าพเจ้าตกลงยินยอมให้โรงพยาบาล องค์กรทางการแพทย์ หรือองค์กรที่เกี่ยวข้องกับการรักษา
+          รวมถึงหน่วยงานของรัฐที่มีอำนาจหน้าที่ในการติดตาม ป้องกัน
+          และบรรเทาสถานการณ์การแพร่ระบาดของโรคติดเชื้อไวรัสโคโรนา
+          2019 (COVID-19) ร้องขอข้อมูลส่วนบุคคลของข้าพเจ้าจากทีมไทยรอดเพื่อประโยชน์ในการรักษา การติดตาม ป้องกัน
+          หรือบรรเทาสถานการณ์การแพร่ระบาดของ COVID-19</p>
+      </li>
+      <li>
+        <p>ความยินยอมของข้าพเจ้าในอันที่เกี่ยวข้องกับการจัดเก็บ ใช้ ประมวลผล หรือเปิดเผยข้อมูลส่วนบุคคล
+          ของข้าพเจ้าฉบับนี้ ให้มีผลไปตลอดช่วงระยะเวลาดำเนินโครงการ
+          และข้าพเจ้ารับทราบว่าหากข้าพเจ้าถอนความยินยอมดังกล่าว
+          ข้าพเจ้าจะไม่สามารถร่วมเป็นอาสาสมัครหรือพันธมิตรที่ร่วมดำเนินโครงการได้ต่อไป</p>
+      </li>
+      <li>
+        <p>ข้าพเจ้ารับทราบว่าข้อมูลทั้งหมดที่ข้าพเจ้าได้รับ จัดเก็บ หรือรวบรวม เพื่อการดำเนินโครงการไทยรอด
+          เป็นข้อมูลของโครงการไทยรอด
+          และหากข้าพเจ้าเปิดเผยหรือประมวลผลข้อมูลดังกล่าวโดยปราศจากความยินยอมอย่างชัดแจ้งของเจ้าของข้อมูลและทางทีมไทยรอด
+          เจ้าของข้อมูลและ/หรือทางทีมไทยรอดคงไว้ซึ่งสิทธิที่จะดำเนินการตามกฎหมาย</p>
+      </li>
+      <li>
+        <p>ข้าพเจ้าขอรับรองว่าข้อมูลที่ข้าพเจ้าได้ให้ไว้กับโครงการไทยรอดถูกต้องตามความเป็นจริงทุกประการ</p>
+      </li>
+    </ol>
+    <mat-checkbox formControlName="consentCheckbox">
+      ข้าพเจ้ารับทราบและยินยอม
+    </mat-checkbox>
+    <button mat-flat-button type="submit" color="primary" [disabled]="!tcForm.controls.consentCheckbox.value">
+      <span class="vetical-align-middle">{{tcForm.controls.consentCheckbox.value === true
+        ? 'ถัดไป ' : 'โปรดอ่านและยินยอม '}}</span>
+      <mat-icon class="vetical-align-middle">arrow_forward</mat-icon>
+    </button>
   </form>
 </div>
