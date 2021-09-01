@@ -36,6 +36,9 @@ export abstract class BaseRegistration extends BaseResource {
   @Column({ unique: true })
   lineId: string;
 
+  @Column({ unique: true })
+  lineUserId: string;
+
   @Column({ nullable: true })
   jobCertificateImg: string;
 

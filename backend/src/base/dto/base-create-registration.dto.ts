@@ -28,6 +28,9 @@ export abstract class BaseCreateRegistrationDto {
   @IsNotEmpty()
   lineId: string;
 
+  @IsNotEmpty()
+  lineUserId: string;
+
   @IsNumber()
   @Min(10000, {
     message: 'medCertificateId must be equal to 5 characters'

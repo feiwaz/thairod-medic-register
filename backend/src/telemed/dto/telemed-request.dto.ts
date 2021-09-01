@@ -24,6 +24,9 @@ export class TelemedRequestDto {
   lineId: string;
 
   @IsNotEmpty()
+  lineUserId: string;
+
+  @IsNotEmpty()
   telephone: string;
 
   @IsNotEmpty()

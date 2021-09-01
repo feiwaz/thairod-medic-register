@@ -202,11 +202,11 @@ export class RegistrationService {
       ? (verification as DoctorVerification).doctor
       : (verification as VolunteerVerification).volunteer;
     const { nationalId, initial, gender, firstName, lastName, lineId,
-      contactNumber, dateOfBirth, medCertificateId } = entity;
+      lineUserId, contactNumber, dateOfBirth, medCertificateId } = entity;
     const verifyBy = `${verification.verifiedBy.firstName} ${verification.verifiedBy.lastName}`;
     const verifyDate = verification.updatedTime.toISOString();
     return {
-      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, telephone: contactNumber, email: '',
+      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, lineUserId, telephone: contactNumber, email: '',
       gendor: gender, dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
       departmentName: this.buildDepartmentName(entity, role), verifyBy, verifyDate, remark: verification?.statusNote || ''
     };

@@ -10,6 +10,7 @@ export abstract class FindOneResponseDto {
   address: string;
   contactNumber: string;
   lineId: string;
+  lineUserId: string;
   medCertificateId: number;
   jobCertificateImg: string;
   jobCertificateSelfieImg: string;

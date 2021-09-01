@@ -8,5 +8,6 @@ export interface BasicInfo {
   address: string;
   contactNumber: string;
   lineId: string;
+  lineUserId?: string;
   availableTimes: string[];
 }
