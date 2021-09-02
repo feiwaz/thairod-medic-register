@@ -133,17 +133,17 @@ export class ReviewInfoComponent implements OnInit {
     this.upload.progress = 0;
     this.errorResponse = false;
     await this.getLineProfile();
+    this.createEntity();
   }
 
   private async getLineProfile() {
-    liff.getProfile().then(profile => {
-      const lineUserId = profile.userId;
-      // const email = liff.getDecodedIDToken()?.email;
-      this.basicInfo.lineUserId = lineUserId;
-      this.createEntity();
-    }).catch(
-      err => console.error(err)
-    );
+    liff.ready.then(() => {
+      liff.getProfile().then(profile => {
+        const lineUserId = profile.userId;
+        // const email = liff.getDecodedIDToken()?.email;
+        this.basicInfo.lineUserId = lineUserId;
+      });
+    });
   }
 
   private createEntity() {
