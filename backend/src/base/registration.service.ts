@@ -188,8 +188,12 @@ export class RegistrationService {
       if (role === 'doctors') {
         body = { userName: '', password: '', userGroup: '', ...body };
       }
-      const response = await this.telemedService.submitData(body, role);
-      this.logger.log(`Successfully submitted data to telemed with status: ${response.data.status}`);
+      if (verification.status === VerificationStatus.APPROVED) {
+        await this.telemedService.submitData(body, role);
+        this.logger.log(`Successfully submitted data to telemed with body: ${JSON.stringify(body)}`);
+      } else {
+        this.logger.log(`Skipped submitting data to telemed due to verification status: ${verification.status}`);
+      }
     } catch (error) {
       const errorMessage = error?.response?.data?.message;
       if (errorMessage.includes('หมายเลขบัตรประชาชน')) {
@@ -231,22 +235,40 @@ export class RegistrationService {
     return departmentName;
   }
 
-  public async sendPushMessage(entity: any): Promise<void> {
+  public async sendPushMessage(
+    verification: DoctorVerification | VolunteerVerification,
+    role: 'doctors' | 'volunteers'
+  ): Promise<void> {
     try {
-      const { nationalId, initial, firstName, lastName, lineUserId } = entity;
-      const fullName = `${initial} ${firstName} ${lastName}`;
-      const body: LinePushMessageDto = {
-        to: lineUserId, messages: [{
-          type: 'text',
-          text: `ข้อความยืนยันการลงทะเบียนของ ${fullName} ที่มีเลขประจำตัวประชาชน ${maskId(nationalId)} ได้รับการอนุมัติเรียบร้อยแล้ว`
-        }]
-      };
+      const body = this.buildRequestBody(verification, role);
       this.lineMessageService.sendPushMessage(body);
       this.logger.log(`Successfully sent push message via LINE message API with body: ${JSON.stringify(body)}`);
     } catch (error) {
       this.logger.error(`Failed to execute #sendPushMessage with error: ${error}`);
       throw error;
     }
+  }
+
+  private buildRequestBody(
+    verification: DoctorVerification | VolunteerVerification,
+    role: 'doctors' | 'volunteers'
+  ): LinePushMessageDto {
+    const entity = role === 'doctors'
+      ? (verification as DoctorVerification).doctor
+      : (verification as VolunteerVerification).volunteer;
+    const { nationalId, initial, firstName, lastName, lineUserId, status } = entity;
+    const fullName = `${initial} ${firstName} ${lastName}`;
+    const commonText = `ข้อความยืนยันการลงทะเบียนของ ${fullName} ที่มีเลขประจำตัวประชาชน ${maskId(nationalId)} `;
+    let verifyText = 'ได้รับการอนุมัติเรียบร้อยแล้ว';
+    if (status !== VerificationStatus.APPROVED) {
+      verifyText = `ไม่ได้รับการอนุมัติ เนื่องจาก ${verification.statusNote} หากประสงค์จะเข้าร่วมจิตอาสา ท่านสามารถลงทะเบียนใหม่ได้อีกครั้ง`;
+    }
+    return {
+      to: lineUserId, messages: [{
+        type: 'text',
+        text: `${commonText}${verifyText}`
+      }]
+    };
   }
 
 }

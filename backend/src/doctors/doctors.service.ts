@@ -109,8 +109,7 @@ export class DoctorsService {
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
       await this.registrationService.sendDataToTelemed(docVerification, 'doctors');
       await this.docVerificationRepository.save(docVerification);
-      const { nationalId, initial, firstName, lastName, lineUserId } = doctor;
-      await this.registrationService.sendPushMessage({ nationalId, initial, firstName, lastName, lineUserId });
+      await this.registrationService.sendPushMessage(docVerification, 'doctors');
       this.logger.log(`Verification status of doctor ID: ${id} has been updated to ${docVerification.doctor.status}`);
     } catch (error) {
       this.logger.error(`Failed to execute #updateStatus with error: ${error}`);

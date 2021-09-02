@@ -138,8 +138,7 @@ export class VolunteersService {
       await this.registrationService.sendDataToTelemed(volVerification, 'volunteers');
       volVerification.volunteer.volunteerDepartments.forEach(volDep => delete volDep.department);
       await this.volVerificationRepository.save(volVerification);
-      const { nationalId, initial, firstName, lastName, lineUserId } = volunteer;
-      await this.registrationService.sendPushMessage({ nationalId, initial, firstName, lastName, lineUserId });
+      await this.registrationService.sendPushMessage(volVerification, 'volunteers');
       this.logger.log(`Verification status of volunteer ID: ${id} has been updated to ${volVerification.volunteer.status}`);
     } catch (error) {
       this.logger.error(`Failed to execute #updateStatus with error: ${error}`);
