@@ -84,6 +84,7 @@ export class RegistrationService {
         if (errors.length > 0) throw new ConflictException(errors);
       } else {
         entity.status = VerificationStatus.PENDING;
+        entity.createdTime = new Date();
         return entity;
       }
     }
