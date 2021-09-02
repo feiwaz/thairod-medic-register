@@ -167,9 +167,7 @@ export class RegistrationService {
     if (verification) {
       const { status, statusNote, updatedTime, verifiedBy } = verification;
       resultVerification = {
-        status: status,
-        statusNote: statusNote,
-        updatedTime: updatedTime,
+        status, statusNote, updatedTime,
         verifiedBy: {
           firstName: verifiedBy.firstName,
           lastName: verifiedBy.lastName,
