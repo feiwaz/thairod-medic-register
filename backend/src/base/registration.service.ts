@@ -242,7 +242,7 @@ export class RegistrationService {
         }]
       };
       this.lineMessageService.sendPushMessage(body);
-      this.logger.log(`Successfully sent push message via LINE message API with body: ${body}`);
+      this.logger.log(`Successfully sent push message via LINE message API with body: ${JSON.stringify(body)}`);
     } catch (error) {
       this.logger.error(`Failed to execute #sendPushMessage with error: ${error}`);
       throw error;

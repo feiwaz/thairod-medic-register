@@ -43,24 +43,25 @@ export class UpdateStatusComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
     this.verifyStatusLogo = this.imgCachingService.getImgElement('verify-status', { width: '320px', height: '320px' });
     console.log(`UpdateStatusComponent isLoggedIn: ${liff.isLoggedIn()}`);
+    console.log(`UpdateStatusComponent isInClient: ${liff.isInClient()}`);
     console.log(liff);
     if (this.status === 'ส่งข้อมูลสำเร็จ') {
-      this.sendLiffMessage();
+      await this.sendLiffMessage();
     }
   }
 
-  private sendLiffMessage() {
-    setTimeout(async () => {
+  private async sendLiffMessage() {
+    if (liff.isInClient()) {
       await liff.sendMessages([{
         type: 'text',
         text: 'ท่านได้ลงทะเบียนเรียบร้อยแล้ว รายชื่อของท่านอยู่ระหว่างการตรวจสอบ และระบบจะตอบกลับเมื่อรายชื่อของท่านได้รับการตรวจสอบเรียบร้อยแล้ว'
       }]);
       liff.closeWindow();
-    }, 500);
+    }
   }
 
   onBackToMain(): void {
