@@ -6,7 +6,7 @@ import { maskId } from '../util/util-functions';
 })
 export class MaskIdPipe implements PipeTransform {
 
-  transform(nationalId: string): string {
+  transform(nationalId: string | number): string {
     return maskId(nationalId) || '';
   }
 

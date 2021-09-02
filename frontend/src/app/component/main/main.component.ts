@@ -21,14 +21,14 @@ export class MainComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.initializeLiffApp();
+    await this.initLiff();
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
     this.doctorImg = this.imgCachingService.getImgElement('register-doctor');
     this.volImg = this.imgCachingService.getImgElement('register-volunteer');
     this.checkStatusLogo = this.imgCachingService.getImgElement('check-status');
   }
 
-  private async initializeLiffApp(): Promise<void> {
+  private async initLiff(): Promise<void> {
     await liff.init({ liffId: '1656379037-5YZdvN79' });
     liff.ready.then(() => {
       if (!liff.isLoggedIn()) {
