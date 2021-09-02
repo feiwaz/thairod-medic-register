@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
 import { MinioClientModule } from 'src/minio-client/minio-client.module';
 import { User } from 'src/users/entities/user.entity';
+import { LineMessageService } from '../line-message/line-message.service';
 import { TelemedService } from '../telemed/telemed.service';
 import { Department } from './entities/department.entity';
 import { VolunteerDepartment } from './entities/volunteer-department.entity';
@@ -19,6 +20,6 @@ import { VolunteersService } from './volunteers.service';
     HttpModule
   ],
   controllers: [VolunteersController],
-  providers: [VolunteersService, RegistrationService, TelemedService],
+  providers: [VolunteersService, RegistrationService, TelemedService, LineMessageService],
 })
 export class VolunteersModule { }

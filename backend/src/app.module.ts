@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { DoctorsModule } from './doctors/doctors.module';
+import { LineMessageModule } from './line-message/line-message.module';
 import { MinioClientModule } from './minio-client/minio-client.module';
 import { UsersModule } from './users/users.module';
 import { VolunteersModule } from './volunteers/volunteers.module';
@@ -35,7 +36,8 @@ import { VolunteersModule } from './volunteers/volunteers.module';
     VolunteersModule,
     DoctorsModule,
     MinioClientModule,
-    AuthModule
+    AuthModule,
+    LineMessageModule
   ],
   controllers: [AppController],
   providers: [AppService],

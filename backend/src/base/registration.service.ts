@@ -9,9 +9,12 @@ import { Stream } from 'stream';
 import { FindConditions, FindOneOptions, In, Repository } from 'typeorm';
 import { CreateDoctorDto } from '../doctors/dto/create-doctor.dto';
 import { SpecializedField } from '../doctors/entities/specialized-field.entity';
+import { LinePushMessageDto } from '../line-message/dto/line-push-message.dto';
+import { LineMessageService } from '../line-message/line-message.service';
 import { BufferedFile } from '../minio-client/file.model';
 import { TelemedRequestDto } from '../telemed/dto/telemed-request.dto';
 import { TelemedService } from '../telemed/telemed.service';
+import { maskId } from '../util/util-functions';
 import { CreateVolunteerDto } from '../volunteers/dto/create-volunteer.dto';
 import { VolunteerDepartment } from '../volunteers/entities/volunteer-department.entity';
 import { VerificationResponseDto } from './dto/verification-response.dto';
@@ -23,7 +26,8 @@ export class RegistrationService {
 
   constructor(
     private minioClientService: MinioClientService,
-    private telemedService: TelemedService
+    private telemedService: TelemedService,
+    private lineMessageService: LineMessageService
   ) { }
 
   readonly doctorRequiredFiles = ['idCard', 'idCardSelfie', 'medCertificate', 'medCertificateSelfie'];
@@ -225,6 +229,24 @@ export class RegistrationService {
       departmentName = departments.join(', ');
     }
     return departmentName;
+  }
+
+  public async sendPushMessage(entity: any): Promise<void> {
+    try {
+      const { nationalId, initial, firstName, lastName, lineUserId } = entity;
+      const fullName = `${initial} ${firstName} ${lastName}`;
+      const body: LinePushMessageDto = {
+        to: lineUserId, messages: [{
+          type: 'text',
+          text: `ข้อความยืนยันการลงทะเบียนของ ${fullName} ที่มีเลขประจำตัวประชาชน ${maskId(nationalId)} ได้รับการอนุมัติเรียบร้อยแล้ว`
+        }]
+      };
+      this.lineMessageService.sendPushMessage(body);
+      this.logger.log(`Successfully sent push message via LINE message API with body: ${body}`);
+    } catch (error) {
+      this.logger.error(`Failed to execute #sendPushMessage with error: ${error}`);
+      throw error;
+    }
   }
 
 }
