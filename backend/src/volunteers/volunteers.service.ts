@@ -46,10 +46,11 @@ export class VolunteersService {
       const volunteer = await this.volunteerRepository.save(entity);
       this.logger.log(`Volunteer ID: ${volunteer.id} has been updated`);
     } catch (error) {
-      this.logger.error(`Failed to execute #create with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
+        this.logger.warn(`Duplicate entry error: ${error}`);
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
+      this.logger.error(`Failed to execute #create with error: ${error}`);
       throw error;
     }
   }
@@ -125,10 +126,12 @@ export class VolunteersService {
         relations: ['volunteerDepartments', 'volunteerDepartments.department']
       });
       if (!volunteer) {
+        this.logger.warn(`Verify volunteer ID: ${id} was not found`);
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const user = await this.userRepository.findOne(verificationDto.verifiedById);
       if (!user) {
+        this.logger.warn(`Verify user ID: ${verificationDto.verifiedById} was not found`);
         throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
       }
       const volVerification = await this.findVerificationStatus(volunteer, user, verificationDto);

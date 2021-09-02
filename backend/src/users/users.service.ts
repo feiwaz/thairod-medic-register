@@ -22,10 +22,11 @@ export class UsersService {
       const user = await this.mapCreateDtoToEntity(createUserDto);
       await this.userRepository.save(user);
     } catch (error) {
-      this.logger.error(`Failed to execute #create with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
+        this.logger.warn(`Duplicate entry error: ${error}`);
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
+      this.logger.error(`Failed to execute #create with error: ${error}`);
       throw error;
     }
   }
@@ -60,10 +61,11 @@ export class UsersService {
       const savedUser = Object.assign(user, updateUserDto);
       await this.userRepository.save(savedUser);
     } catch (error) {
-      this.logger.error(`Failed to execute #update with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
+        this.logger.warn(`Duplicate entry error: ${error}`);
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
+      this.logger.error(`Failed to execute #update with error: ${error}`);
       throw error;
     }
   }
@@ -84,6 +86,7 @@ export class UsersService {
     try {
       const user = await this.userRepository.findOne(id);
       if (user && user.email === 'admin@admin.com') {
+        this.logger.warn('Modification on admin user is not allowed');
         throw new ForbiddenException('You are not allowed to modify admin user');
       }
       return user;
