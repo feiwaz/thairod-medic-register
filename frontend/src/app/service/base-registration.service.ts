@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import liff from '@line/liff';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -23,7 +22,6 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   }
 
   create(user: any, blobs?: Blob[]): Observable<any> {
-    user.lineUserId = liff.getContext()?.userId;
     user.availableTimes = user.availableTimes.join();
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));

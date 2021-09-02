@@ -2,6 +2,7 @@ import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
+import liff from '@line/liff';
 import { ToastrService } from 'ngx-toastr';
 import { GENDERS } from '../../constant/genders';
 import { BasicInfo } from '../../model/basic-info.model';
@@ -127,10 +128,24 @@ export class ReviewInfoComponent implements OnInit {
     return blobUrl ? this.sanitizer.bypassSecurityTrustUrl(blobUrl) : blobUrl;
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.isLoading = true;
     this.upload.progress = 0;
     this.errorResponse = false;
+    await this.getLineProfile();
+  }
+
+  private async getLineProfile() {
+    liff.getProfile().then(profile => {
+      const lineUserId = profile.userId;
+      this.basicInfo.lineUserId = lineUserId;
+      this.createEntity();
+    }).catch(
+      err => console.error(err)
+    );
+  }
+
+  private createEntity() {
     this.service.create({ ...this.basicInfo, ...this.jobInfo }, this.imageBlobs).subscribe(
       event => {
         if (event.type === HttpEventType.UploadProgress) {
