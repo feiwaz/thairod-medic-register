@@ -51,7 +51,8 @@ export class RegistrationService {
     repository: Repository<Doctor | Volunteer>,
     createDto: CreateDoctorDto | CreateVolunteerDto
   ): Promise<Doctor | Volunteer> {
-    const { nationalId, firstName, lastName, contactNumber, lineId, medCertificateId } = createDto;
+    const { nationalId, firstName, lastName, contactNumber,
+      lineId, lineUserId, medCertificateId } = createDto;
 
     const where: FindConditions<Doctor | Volunteer>[] = [
       { nationalId }, { firstName, lastName }, { contactNumber }, { lineId }
@@ -73,6 +74,9 @@ export class RegistrationService {
         }
         if (lineId === entity.lineId) {
           errors.push({ field: 'lineId', value: lineId, text: 'LINE ID' });
+        }
+        if (lineUserId === entity.lineUserId) {
+          errors.push({ field: 'lineUserId', value: lineUserId, text: 'LINE USER ID' });
         }
         if (medCertificateId && (medCertificateId == entity.medCertificateId)) {
           errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
