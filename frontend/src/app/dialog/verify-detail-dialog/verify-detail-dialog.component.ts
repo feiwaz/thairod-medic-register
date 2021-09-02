@@ -10,6 +10,7 @@ import { VerificationBody } from '../../model/verification-body.model';
 import { AuthenticationService } from '../../service/authentication.service';
 import { DoctorService } from '../../service/doctor.service';
 import { VolunteerService } from '../../service/volunteer.service';
+import { maskId } from '../../util/util-functions';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 
 @Component({
@@ -186,6 +187,10 @@ export class VerifyDetailDialogComponent implements OnInit {
     return departments
       .filter(department => department.isTrainingRequired === true)
       .map(department => department.label).join(', ');
+  }
+
+  maskId(nationalId: string): string {
+    return maskId(nationalId);
   }
 
 }
