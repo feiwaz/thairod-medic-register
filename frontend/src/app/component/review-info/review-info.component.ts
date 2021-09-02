@@ -133,7 +133,6 @@ export class ReviewInfoComponent implements OnInit {
     this.upload.progress = 0;
     this.errorResponse = false;
     await this.getLineProfile();
-    this.createEntity();
   }
 
   private async getLineProfile() {
@@ -142,6 +141,7 @@ export class ReviewInfoComponent implements OnInit {
         const lineUserId = profile.userId;
         // const email = liff.getDecodedIDToken()?.email;
         this.basicInfo.lineUserId = lineUserId;
+        this.createEntity();
       });
     });
   }
