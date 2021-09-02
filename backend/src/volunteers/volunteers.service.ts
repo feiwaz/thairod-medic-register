@@ -156,6 +156,7 @@ export class VolunteersService {
       volVerification.volunteer = volunteer;
       volVerification.verifiedBy = user;
     }
+    volVerification.volunteer.volunteerDepartments = volunteer.volunteerDepartments;
     volVerification.volunteer.status = verificationDto.status;
     volVerification.status = verificationDto.status;
     volVerification.statusNote = verificationDto.statusNote;

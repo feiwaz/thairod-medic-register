@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, ConflictException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { DoctorVerification } from 'src/doctors/entities/doctor-verification.entity';
 import { Doctor } from 'src/doctors/entities/doctor.entity';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
@@ -190,13 +190,13 @@ export class RegistrationService {
       }
       if (verification.status === VerificationStatus.APPROVED) {
         await this.telemedService.submitData(body, role);
-        this.logger.log(`Successfully submitted data to telemed with body: ${JSON.stringify(body)}`);
+        this.logger.log(`Successfully submitted data to telemed with citizenId: ${body.citizenId}, lineId: ${body.lineId}`);
       } else {
         this.logger.log(`Skipped submitting data to telemed due to verification status: ${verification.status}`);
       }
     } catch (error) {
       const errorMessage = error?.response?.data?.message;
-      if (errorMessage.includes('หมายเลขบัตรประชาชน')) {
+      if (errorMessage?.includes('หมายเลขบัตรประชาชน')) {
         Promise.resolve();
       } else {
         this.logger.error(`Failed to submit data to telemed, due to error: ${errorMessage ? errorMessage : error}`);
@@ -226,11 +226,11 @@ export class RegistrationService {
   private buildDepartmentName(entity: any, role: 'doctors' | 'volunteers'): string {
     let departmentName = '';
     if (role === 'doctors') {
-      const specializedFields = entity.specializedFields.map((specializedField: SpecializedField) => specializedField.label);
-      departmentName = specializedFields.join(', ');
+      const specializedFields = entity.specializedFields?.map((specializedField: SpecializedField) => specializedField.label);
+      departmentName = specializedFields?.join(', ');
     } else {
-      const departments = entity.volunteerDepartments.map((volDep: VolunteerDepartment) => volDep.department.label);
-      departmentName = departments.join(', ');
+      const departments = entity.volunteerDepartments?.map((volDep: VolunteerDepartment) => volDep.department.label);
+      departmentName = departments?.join(', ');
     }
     return departmentName;
   }
@@ -239,13 +239,13 @@ export class RegistrationService {
     verification: DoctorVerification | VolunteerVerification,
     role: 'doctors' | 'volunteers'
   ): Promise<void> {
+    const body = this.buildRequestBody(verification, role);
     try {
-      const body = this.buildRequestBody(verification, role);
-      this.lineMessageService.sendPushMessage(body);
-      this.logger.log(`Successfully sent push message via LINE message API with body: ${JSON.stringify(body)}`);
+      await this.lineMessageService.sendPushMessage(body);
+      this.logger.log(`Successfully sent push LINE message to ${body.to} with message ${body.messages[0].text}`);
     } catch (error) {
-      this.logger.error(`Failed to execute #sendPushMessage with error: ${error}`);
-      throw error;
+      this.logger.error(`Failed to push LINE message to ${body.to}`);
+      throw new BadGatewayException(error);
     }
   }
 
