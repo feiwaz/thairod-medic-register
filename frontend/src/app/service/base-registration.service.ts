@@ -22,6 +22,7 @@ export abstract class BaseRegistrationService extends BaseResourceService {
   }
 
   create(user: any, blobs?: Blob[]): Observable<any> {
+    user.lineUserId = localStorage.getItem('lineUserId') || '';
     user.availableTimes = user.availableTimes.join();
     const formData: any = new FormData();
     formData.append('body', JSON.stringify(user));

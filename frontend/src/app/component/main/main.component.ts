@@ -28,12 +28,15 @@ export class MainComponent implements OnInit {
     this.checkStatusLogo = this.imgCachingService.getImgElement('check-status');
   }
 
-  private initializeLiffApp() {
+  private initializeLiffApp(): void {
     liff.init({ liffId: '1656379037-5YZdvN79' });
     liff.ready.then(() => {
       if (!liff.isLoggedIn()) {
         liff.login();
       }
+      liff.getProfile().then(profile => {
+        localStorage.setItem('lineUserId', profile.userId);
+      });
     });
   }
 
