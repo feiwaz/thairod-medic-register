@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import liff from '@line/liff';
 import { ToastrService } from 'ngx-toastr';
 import { BasicInfo } from '../../model/basic-info.model';
 import { DoctorService } from '../../service/doctor.service';
@@ -45,6 +46,21 @@ export class UpdateStatusComponent implements OnInit {
   ngOnInit(): void {
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
     this.verifyStatusLogo = this.imgCachingService.getImgElement('verify-status', { width: '320px', height: '320px' });
+    console.log(`UpdateStatusComponent isLoggedIn: ${liff.isLoggedIn()}`);
+    console.log(liff);
+    if (this.status === 'ส่งข้อมูลสำเร็จ') {
+      this.sendLiffMessage();
+    }
+  }
+
+  private sendLiffMessage() {
+    setTimeout(async () => {
+      await liff.sendMessages([{
+        type: 'text',
+        text: 'ท่านได้ลงทะเบียนเรียบร้อยแล้ว รายชื่อของท่านอยู่ระหว่างการตรวจสอบ และระบบจะตอบกลับเมื่อรายชื่อของท่านได้รับการตรวจสอบเรียบร้อยแล้ว'
+      }]);
+      liff.closeWindow();
+    }, 500);
   }
 
   onBackToMain(): void {
