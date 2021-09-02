@@ -138,6 +138,7 @@ export class ReviewInfoComponent implements OnInit {
   private async getLineProfile() {
     liff.getProfile().then(profile => {
       const lineUserId = profile.userId;
+      // const email = liff.getDecodedIDToken()?.email;
       this.basicInfo.lineUserId = lineUserId;
       this.createEntity();
     }).catch(

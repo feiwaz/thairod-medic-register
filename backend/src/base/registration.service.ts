@@ -55,7 +55,7 @@ export class RegistrationService {
       lineId, lineUserId, medCertificateId } = createDto;
 
     const where: FindConditions<Doctor | Volunteer>[] = [
-      { nationalId }, { firstName, lastName }, { contactNumber }, { lineId }
+      { nationalId }, { firstName, lastName }, { contactNumber }, { lineId }, { lineUserId }
     ];
     if (medCertificateId) where.push({ medCertificateId })
 
