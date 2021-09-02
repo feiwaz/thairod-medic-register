@@ -33,10 +33,6 @@ export class MainComponent implements OnInit {
     liff.ready.then(() => {
       if (!liff.isLoggedIn()) {
         liff.login();
-      } else {
-        liff.getProfile().then(profile => {
-          sessionStorage.setItem('lineUserId', profile.userId);
-        });
       }
     });
   }

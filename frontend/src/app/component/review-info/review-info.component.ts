@@ -161,7 +161,13 @@ export class ReviewInfoComponent implements OnInit {
     this.errorResponse = true;
     let errorText = this.defaultErrorText;
     if (Array.isArray(errorResponse.error.message)) {
-      this.errorMessages = errorResponse.error.message;
+      if (errorResponse.error.statusCode === HttpStatusCode.Conflict) {
+        this.errorMessages = errorResponse.error.message;
+      } else {
+        if (errorResponse.error.message[0].includes('lineUserId')) {
+          errorText = 'ท่านยังไม่ได้เข้าสู้ระบบด้วยไลน์ กรุณาลองใหม่อีกครั้ง';
+        }
+      }
     }
     if (errorResponse.error.statusCode === HttpStatusCode.BadGateway) {
       errorText = 'ไม่สามารถอัพโหลดรูปภาพได้ กรุณาลองใหม่อีกครั้ง'
