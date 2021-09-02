@@ -189,8 +189,4 @@ export class VerifyDetailDialogComponent implements OnInit {
       .map(department => department.label).join(', ');
   }
 
-  maskId(nationalId: string): string {
-    return maskId(nationalId);
-  }
-
 }

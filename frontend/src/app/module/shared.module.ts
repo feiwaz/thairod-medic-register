@@ -23,13 +23,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
+import { MaskIdPipe } from '../pipe/mask-id.pipe';
 import { SafeHtmlPipe } from '../pipe/safe-html.pipe';
 import { ThaiDatetimePipe } from '../pipe/thai-datetime.pipe';
 
 @NgModule({
   declarations: [
     SafeHtmlPipe,
-    ThaiDatetimePipe
+    ThaiDatetimePipe,
+    MaskIdPipe
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ import { ThaiDatetimePipe } from '../pipe/thai-datetime.pipe';
   exports: [
     SafeHtmlPipe,
     ThaiDatetimePipe,
+    MaskIdPipe,
     CommonModule,
     FormsModule,
     HttpClientModule,

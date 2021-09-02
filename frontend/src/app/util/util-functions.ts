@@ -1,8 +1,8 @@
-export function maskId(nationalId: number | string): string {
+export const maskId = (nationalId: number | string): string => {
   return (nationalId + '').replace(/(\d{1})(\d{4})(\d{5})(\d{2})(\d{1})/, "$1-$2-$3-$4-$5")
 }
 
-export function partialMaskId(nationalId: number | string): string {
+export const partialMaskId = (nationalId: number | string): string => {
   let finalValue = '';
   if (nationalId) {
     const inputValue = (nationalId + '').trim().split('-').join('');
@@ -22,7 +22,7 @@ export function partialMaskId(nationalId: number | string): string {
   return finalValue;
 }
 
-export function numbersOnly(event: any) {
+export const numbersOnly = (event: any): void => {
   const input = String.fromCharCode(event.keyCode);
   if (!/^[0-9]*$/.test(input)) {
     event.preventDefault();
