@@ -26,9 +26,6 @@ export abstract class BaseCreateRegistrationDto {
   contactNumber: string;
 
   @IsNotEmpty()
-  lineId: string;
-
-  @IsNotEmpty()
   lineUserId: string;
 
   @IsNumber()

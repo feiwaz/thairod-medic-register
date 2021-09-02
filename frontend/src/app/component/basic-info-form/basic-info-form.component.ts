@@ -31,8 +31,7 @@ export class BasicInfoFormComponent implements OnInit {
     lastName: ['', [Validators.required, Validators.pattern(/^[\u0E01-\u0E4E']+$/)]],
     dateOfBirth: ['', Validators.required],
     address: ['', Validators.required],
-    contactNumber: ['', Validators.required],
-    lineId: ['', [Validators.required, Validators.pattern(/^[0-9a-zA-Z.-_]+$/)]],
+    contactNumber: ['', Validators.required]
   });
 
   constructor(
@@ -57,14 +56,14 @@ export class BasicInfoFormComponent implements OnInit {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { nationalId, initial, gender, firstName, lastName, dateOfBirth, address,
-        contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
+        contactNumber, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.nationalId = nationalId + '' || this.nationalId;
       this.availableTimes = availableTimes;
       this.basicInfoForm.patchValue({
         nationalId: partialMaskId(nationalId),
         initial: this.initials.find(option => option.viewValue === initial)?.value,
         gender, firstName, lastName, dateOfBirth: moment(dateOfBirth),
-        address, contactNumber, lineId
+        address, contactNumber
       });
     }
   }
@@ -97,7 +96,6 @@ export class BasicInfoFormComponent implements OnInit {
       dateOfBirth: this.basicInfoForm.controls.dateOfBirth.value,
       address: this.basicInfoForm.controls.address.value,
       contactNumber: this.basicInfoForm.controls.contactNumber.value,
-      lineId: this.basicInfoForm.controls.lineId.value,
       availableTimes: this.availableTimes
     }
   }

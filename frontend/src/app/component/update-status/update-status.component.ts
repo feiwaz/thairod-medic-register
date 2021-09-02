@@ -73,7 +73,7 @@ export class UpdateStatusComponent implements OnInit {
   buildBasicInfo(): BasicInfo {
     return {
       nationalId: this.nationalId, initial: '', gender: '', firstName: '', lastName: '',
-      dateOfBirth: '', address: '', contactNumber: '', lineId: '', availableTimes: []
+      dateOfBirth: '', address: '', contactNumber: '', availableTimes: []
     }
   }
 

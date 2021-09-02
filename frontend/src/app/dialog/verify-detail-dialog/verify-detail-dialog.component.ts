@@ -38,7 +38,6 @@ export class VerifyDetailDialogComponent implements OnInit {
     createdTime: '',
     address: '',
     contactNumber: '',
-    lineId: '',
     specializedFields: [],
     departments: [],
     medCertificateId: '',

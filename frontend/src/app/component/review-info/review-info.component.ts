@@ -43,7 +43,6 @@ export class ReviewInfoComponent implements OnInit {
     dateOfBirth: '',
     address: '',
     contactNumber: '',
-    lineId: '',
     availableTimes: []
   };
 
@@ -85,10 +84,10 @@ export class ReviewInfoComponent implements OnInit {
     let basicInfoString = sessionStorage.getItem(`${this.role}BasicInfo`);
     if (basicInfoString) {
       const { nationalId, initial, gender, firstName, lastName, dateOfBirth, address,
-        contactNumber, lineId, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
+        contactNumber, availableTimes } = JSON.parse(basicInfoString) as BasicInfo;
       this.basicInfo = {
         nationalId, initial, gender, firstName, lastName,
-        dateOfBirth, address, contactNumber, lineId, availableTimes
+        dateOfBirth, address, contactNumber, availableTimes
       };
     }
   }

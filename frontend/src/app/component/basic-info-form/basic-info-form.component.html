@@ -99,21 +99,6 @@
           จำเป็นต้องใส่*
         </mat-error>
       </mat-form-field>
-      <p><b>LINE ID</b><span class="text-danger"> *</span></p>
-      <mat-form-field>
-        <input matInput type="text" formControlName="lineId" placeholder="LINE ID" #lineId>
-        <button *ngIf="lineId" type="button" tabindex="-1" matSuffix mat-icon-button aria-label="Clear"
-          (click)="lineId.value=''">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-error
-          *ngIf="basicInfoForm.get('lineId')?.hasError('pattern') && !basicInfoForm.get('lineId')?.hasError('required')">
-          รูปแบบ LINE ID ไม่ถูกต้อง*
-        </mat-error>
-        <mat-error *ngIf="basicInfoForm.get('lineId')?.hasError('required')">
-          จำเป็นต้องใส่*
-        </mat-error>
-      </mat-form-field>
     </div>
     <button mat-flat-button type="submit" color="primary" [disabled]="!basicInfoForm.valid">
       <span class="vetical-align-middle">ถัดไป </span>

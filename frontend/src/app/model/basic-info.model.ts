@@ -7,7 +7,6 @@ export interface BasicInfo {
   dateOfBirth: string;
   address: string;
   contactNumber: string;
-  lineId: string;
   lineUserId?: string;
   availableTimes: string[];
 }
