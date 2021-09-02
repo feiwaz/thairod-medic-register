@@ -128,14 +128,14 @@ export class ReviewInfoComponent implements OnInit {
     return blobUrl ? this.sanitizer.bypassSecurityTrustUrl(blobUrl) : blobUrl;
   }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     this.isLoading = true;
     this.upload.progress = 0;
     this.errorResponse = false;
-    await this.getLineProfile();
+    this.getLineProfile();
   }
 
-  private async getLineProfile() {
+  private getLineProfile() {
     liff.ready.then(() => {
       liff.getProfile().then(profile => {
         const lineUserId = profile.userId;
