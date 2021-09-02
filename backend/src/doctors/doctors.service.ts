@@ -1,5 +1,5 @@
 import {
-  ConflictException, Injectable, NotFoundException
+  ConflictException, Injectable, Logger, NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
@@ -15,6 +15,8 @@ import { SpecializedField } from './entities/specialized-field.entity';
 
 @Injectable()
 export class DoctorsService {
+
+  private readonly logger = new Logger(DoctorsService.name);
 
   constructor(
     @InjectRepository(Doctor)
@@ -33,8 +35,10 @@ export class DoctorsService {
       const validatedEntity = await this.registrationService.validateUniqueFieldConstraints(this.doctorRepository, createDto);
       const entity = await this.mapDtoToEntity(createDto, validatedEntity as Doctor);
       await this.registrationService.applyImageUrl(bufferedFile, entity, 'doctors');
-      await this.doctorRepository.save(entity);
+      const doctor = await this.doctorRepository.save(entity);
+      this.logger.log(`Doctor ID: ${doctor.id} has been updated`);
     } catch (error) {
+      this.logger.error(`Failed to execute #create with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
@@ -102,7 +106,9 @@ export class DoctorsService {
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
       await this.registrationService.sendDataToTelemed(docVerification, 'doctors');
       await this.docVerificationRepository.save(docVerification);
+      this.logger.log(`Verification status of doctor ID: ${id} has been updated to ${docVerification.doctor.status}`);
     } catch (error) {
+      this.logger.error(`Failed to execute #updateStatus with error: ${error}`);
       throw error;
     }
   }

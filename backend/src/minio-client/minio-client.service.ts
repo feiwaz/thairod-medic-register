@@ -1,4 +1,4 @@
-import { BadGatewayException, BadRequestException, Injectable } from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { createHash } from 'crypto';
 import { BucketItem, ItemBucketMetadata } from 'minio';
 import { MinioService } from 'nestjs-minio-client';
@@ -7,6 +7,8 @@ import { BufferedFile } from './file.model';
 
 @Injectable()
 export class MinioClientService {
+
+  private readonly logger = new Logger(MinioClientService.name);
 
   public get minioClient() {
     return this.minioService.client;
@@ -25,6 +27,7 @@ export class MinioClientService {
 
   public async upload(file: BufferedFile, objectPrefix: string): Promise<string> {
     if (!['image/jpeg', 'image/png'].includes(file.mimetype)) {
+      this.logger.warn('Only image/jpeg or image/png is allowed');
       throw new BadRequestException('อนุญาตให้อัพโหลดเฉพาะรูปภาพเท่านั้น');
     }
 
@@ -34,8 +37,9 @@ export class MinioClientService {
     try {
       const metaData: ItemBucketMetadata = { 'Content-Type': file.mimetype };
       await this.minioClient.putObject(process.env.MINIO_BUCKET_NAME, objectName, file.buffer, metaData);
+      this.logger.log(`Successfully uploaded file: ${objectName}`);
     } catch (error) {
-      console.warn(`Failed to upload file: ${objectName}, due to error: ${error}`);
+      this.logger.warn(`Failed to upload file: ${objectName}, due to error: ${error}`);
       throw new BadGatewayException(`Failed to upload file: ${objectName}`);
     }
 
@@ -47,14 +51,10 @@ export class MinioClientService {
     try {
       stream = await this.minioClient.getObject(process.env.MINIO_BUCKET_NAME, objectName);
     } catch (error) {
-      console.warn(`Failed to get object: ${objectName}, due to error: ${error}`);
+      this.logger.warn(`Failed to get object: ${objectName}, due to error: ${error}`);
       throw new BadGatewayException(`Failed to get object: ${objectName}`);
     }
     return stream;
-  }
-
-  async delete(objetName: string) {
-    this.minioClient.removeObject(process.env.MINIO_BUCKET_NAME, objetName)
   }
 
   public async deleteAllFilesIfExist(objectPrefix: string): Promise<void> {
@@ -63,10 +63,10 @@ export class MinioClientService {
       if (objectList.length > 0) {
         await this.minioClient.removeObjects(process.env.MINIO_BUCKET_NAME, objectList);
       } else {
-        console.log(`No files found under: ${objectPrefix}`);
+        this.logger.warn(`No files found under: ${objectPrefix}`);
       }
     } catch (error) {
-      console.log('Unable to remove objects');
+      this.logger.warn('Unable to remove objects');
     }
   }
 
@@ -75,7 +75,7 @@ export class MinioClientService {
       const objectList = [];
       const stream = this.minioClient.listObjects(process.env.MINIO_BUCKET_NAME, prefix);
       stream.on('data', (object: BucketItem) => objectList.push(object.name));
-      stream.on('error', error => console.warn(`Unable to list objects under: ${prefix}, due to error: ${error}`));
+      stream.on('error', error => this.logger.warn(`Unable to list objects under: ${prefix}, due to error: ${error}`));
       stream.on('end', () => resolve(objectList));
     });
   }

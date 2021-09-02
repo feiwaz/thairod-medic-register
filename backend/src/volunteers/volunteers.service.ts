@@ -1,6 +1,6 @@
 import {
   ConflictException,
-  Injectable, NotFoundException
+  Injectable, Logger, NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegistrationService } from 'src/base/registration.service';
@@ -24,6 +24,8 @@ import { Volunteer } from './entities/volunteer.entity';
 @Injectable()
 export class VolunteersService {
 
+  private readonly logger = new Logger(VolunteersService.name);
+
   constructor(
     @InjectRepository(Volunteer)
     private volunteerRepository: Repository<Volunteer>,
@@ -41,8 +43,10 @@ export class VolunteersService {
       const validatedEntity = await this.registrationService.validateUniqueFieldConstraints(this.volunteerRepository, createDto);
       const entity = await this.mapDtoToEntity(createDto, validatedEntity as Volunteer);
       await this.registrationService.applyImageUrl(bufferedFile, entity, 'volunteers');
-      await this.volunteerRepository.save(entity);
+      const volunteer = await this.volunteerRepository.save(entity);
+      this.logger.log(`Volunteer ID: ${volunteer.id} has been updated`);
     } catch (error) {
+      this.logger.error(`Failed to execute #create with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
@@ -131,7 +135,9 @@ export class VolunteersService {
       await this.registrationService.sendDataToTelemed(volVerification, 'volunteers');
       volVerification.volunteer.volunteerDepartments.forEach(volDep => delete volDep.department);
       await this.volVerificationRepository.save(volVerification);
+      this.logger.log(`Verification status of volunteer ID: ${id} has been updated to ${volVerification.volunteer.status}`);
     } catch (error) {
+      this.logger.error(`Failed to execute #updateStatus with error: ${error}`);
       throw error;
     }
   }
@@ -162,7 +168,9 @@ export class VolunteersService {
       volunteer.volunteerDepartments = volunteerDepartmentsDto.volunteerDepartments
         .map((volDepDto: VolunteerDepartmentDto) => ({ ...volDepDto } as VolunteerDepartment));
       await this.volunteerRepository.save(volunteer);
+      this.logger.log(`Training status of volunteer ID: ${id} has been updated`);
     } catch (error) {
+      this.logger.error(`Failed to execute #updateTrainingStatus with error: ${error}`);
       throw error;
     }
   }

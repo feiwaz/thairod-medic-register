@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { DoctorVerification } from 'src/doctors/entities/doctor-verification.entity';
 import { Doctor } from 'src/doctors/entities/doctor.entity';
 import { VerificationStatus } from 'src/enum/verification-status.enum';
@@ -18,6 +18,8 @@ import { VerificationResponseDto } from './dto/verification-response.dto';
 
 @Injectable()
 export class RegistrationService {
+
+  private readonly logger = new Logger(RegistrationService.name);
 
   constructor(
     private minioClientService: MinioClientService,
@@ -183,12 +185,13 @@ export class RegistrationService {
         body = { userName: '', password: '', userGroup: '', ...body };
       }
       const response = await this.telemedService.submitData(body, role);
-      console.log(`Successfully submitted data to telemed with status: ${response.data.status}`);
+      this.logger.log(`Successfully submitted data to telemed with status: ${response.data.status}`);
     } catch (error) {
       const errorMessage = error?.response?.data?.message;
       if (errorMessage.includes('หมายเลขบัตรประชาชน')) {
         Promise.resolve();
       } else {
+        this.logger.error(`Failed to submit data to telemed, due to error: ${errorMessage ? errorMessage : error}`);
         throw new ServiceUnavailableException(`Failed to submit data to telemed, due to error: ${errorMessage ? errorMessage : error}`);
       }
     }
@@ -206,8 +209,8 @@ export class RegistrationService {
     const verifyBy = `${verification.verifiedBy.firstName} ${verification.verifiedBy.lastName}`;
     const verifyDate = verification.updatedTime.toISOString();
     return {
-      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, lineUserId, telephone: contactNumber, email: '',
-      gendor: gender, dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
+      citizenId: nationalId, prefix: initial, firstName, lastName, lineId, lineUserId: lineUserId || '', telephone: contactNumber,
+      email: '', gendor: gender, dateOfBirth: dateOfBirth.toISOString(), medicalCertificate: medCertificateId ? medCertificateId + '' : '',
       departmentName: this.buildDepartmentName(entity, role), verifyBy, verifyDate, remark: verification?.statusNote || ''
     };
   }

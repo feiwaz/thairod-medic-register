@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -10,6 +10,8 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
 
+  private readonly logger = new Logger(UsersService.name);
+
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>
@@ -20,6 +22,7 @@ export class UsersService {
       const user = await this.mapCreateDtoToEntity(createUserDto);
       await this.userRepository.save(user);
     } catch (error) {
+      this.logger.error(`Failed to execute #create with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
@@ -57,6 +60,7 @@ export class UsersService {
       const savedUser = Object.assign(user, updateUserDto);
       await this.userRepository.save(savedUser);
     } catch (error) {
+      this.logger.error(`Failed to execute #update with error: ${error}`);
       if (error.code === 'ER_DUP_ENTRY') {
         throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
       }
@@ -71,6 +75,7 @@ export class UsersService {
         await this.userRepository.delete(id);
       }
     } catch (error) {
+      this.logger.error(`Failed to execute #remove with error: ${error}`);
       throw error;
     }
   }
@@ -83,6 +88,7 @@ export class UsersService {
       }
       return user;
     } catch (error) {
+      this.logger.error(`Failed to execute #adminGuard with error: ${error}`);
       throw error;
     }
   }
@@ -108,6 +114,7 @@ export class UsersService {
       user.password = changePasswordDto.password;
       await this.userRepository.save(user);
     } catch (error) {
+      this.logger.error(`Failed to execute #changePassword with error: ${error}`);
       throw error;
     }
   }
