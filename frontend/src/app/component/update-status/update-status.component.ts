@@ -52,13 +52,15 @@ export class UpdateStatusComponent implements OnInit {
     if (this.status === 'ส่งข้อมูลสำเร็จ') {
       await this.sendLiffMessage();
     }
+
+    await this.sendLiffMessage();
   }
 
   private async sendLiffMessage() {
     if (liff.isInClient()) {
       await liff.sendMessages([{
         type: 'text',
-        text: 'ท่านได้ลงทะเบียนเรียบร้อยแล้ว รายชื่อของท่านอยู่ระหว่างการตรวจสอบ และระบบจะตอบกลับเมื่อรายชื่อของท่านได้รับการตรวจสอบเรียบร้อยแล้ว'
+        text: 'ลงทะเบียนสำเร็จ เรากำลังตรวจสอบคุณสมบัติของท่าน และจะตอบกลับเมื่อกระบวนการตรวจสอบเสร็จสิ้น'
       }]);
       liff.closeWindow();
     }

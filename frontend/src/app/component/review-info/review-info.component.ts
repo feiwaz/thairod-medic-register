@@ -2,6 +2,7 @@ import { HttpEventType, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from '@angular/router';
+import liff from '@line/liff';
 import { ToastrService } from 'ngx-toastr';
 import { GENDERS } from '../../constant/genders';
 import { BasicInfo } from '../../model/basic-info.model';
@@ -155,6 +156,7 @@ export class ReviewInfoComponent implements OnInit {
     this.toastrService.success(this.defaultSuccessText);
     const maskedId = maskId(this.basicInfo.nationalId);
     const data = { maskedId, status: this.defaultSuccessText };
+    liff.closeWindow();
     this.router.navigate(['/update-status'], { state: { data } });
   }
 
