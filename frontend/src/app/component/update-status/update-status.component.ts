@@ -50,7 +50,7 @@ export class UpdateStatusComponent implements OnInit {
   }
 
   private closeLiffWindow() {
-    if (liff.isInClient()) {
+    if (this.status === 'ส่งข้อมูลสำเร็จ' && liff.isInClient()) {
       liff.closeWindow();
     }
   }
