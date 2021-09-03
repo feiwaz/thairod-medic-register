@@ -82,10 +82,14 @@ export class RegistrationService {
         if (medCertificateId && (medCertificateId == entity.medCertificateId)) {
           errors.push({ field: 'medCertificateId', value: medCertificateId, text: 'เลขที่ใบประกอบวิชาชีพเวชกรรม' });
         }
-        if (errors.length > 0) throw new ConflictException(errors);
+        if (errors.length > 0) {
+          this.logger.warn(`Duplicate field error: ${JSON.stringify(errors)}`);
+          throw new ConflictException(errors);
+        }
       } else {
         entity.status = VerificationStatus.PENDING;
         entity.createdTime = new Date();
+        this.logger.log(`Found entry ID ${nationalId} with DENIED status, updated to PENDING`);
         return entity;
       }
     }
@@ -139,15 +143,18 @@ export class RegistrationService {
 
   private checkFileRequirement(bufferedFileKeys: string[], role: 'doctors' | 'volunteers') {
     const requiredFiles = role === 'doctors' ? this.doctorRequiredFiles : this.volunteerRequiredFiles;
-    const pass = bufferedFileKeys.length !== 0 && requiredFiles.every(field => bufferedFileKeys.includes(field));
+    const pass = bufferedFileKeys.length !== 0 && requiredFiles.every(field => bufferedFileKeys?.includes(field));
     if (!pass) {
-      throw new BadRequestException(`${requiredFiles.join(', ')} are required`);
+      const errorMessage = `${requiredFiles.join(', ')} are required`;
+      this.logger.warn(`Failed to execute #checkFileRequirement: ${errorMessage}`);
+      throw new BadRequestException(errorMessage);
     }
   }
 
   public async findOneFile(repository: Repository<Doctor | Volunteer>, nationalId: number, objectName: string): Promise<Stream> {
     const entity = await repository.findOne({ where: { nationalId } });
     if (!entity) {
+      this.logger.warn(`Failed to execute #findOneFile: No entry with ID ${nationalId} found`);
       throw new NotFoundException('ไม่พบผู้ใช้นี้ในระบบ');
     }
     return await this.minioClientService.get(objectName);

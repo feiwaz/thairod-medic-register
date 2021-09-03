@@ -48,7 +48,7 @@ export class VolunteersService {
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
         this.logger.warn(`Duplicate entry error: ${error}`);
-        throw new ConflictException('ผู้ใช้นี้ได้ลงทะเบียนแล้ว');
+        throw new ConflictException('ผู้ใช้นี้มีข้อมูลส่วนตัว ที่ถูกใช้ลงทะเบียนแล้ว');
       }
       this.logger.error(`Failed to execute #create with error: ${error}`);
       throw error;
