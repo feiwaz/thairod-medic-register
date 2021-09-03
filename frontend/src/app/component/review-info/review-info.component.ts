@@ -156,7 +156,6 @@ export class ReviewInfoComponent implements OnInit {
     this.toastrService.success(this.defaultSuccessText);
     const maskedId = maskId(this.basicInfo.nationalId);
     const data = { maskedId, status: this.defaultSuccessText };
-    liff.closeWindow();
     this.router.navigate(['/update-status'], { state: { data } });
   }
 

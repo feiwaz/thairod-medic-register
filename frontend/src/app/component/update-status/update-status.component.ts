@@ -49,11 +49,11 @@ export class UpdateStatusComponent implements OnInit {
     console.log(`UpdateStatusComponent isLoggedIn: ${liff.isLoggedIn()}`);
     console.log(`UpdateStatusComponent isInClient: ${liff.isInClient()}`);
     console.log(liff);
+    liff.closeWindow();
     if (this.status === 'ส่งข้อมูลสำเร็จ') {
       await this.sendLiffMessage();
     }
-
-    await this.sendLiffMessage();
+    liff.closeWindow();
   }
 
   private async sendLiffMessage() {
@@ -62,7 +62,6 @@ export class UpdateStatusComponent implements OnInit {
         type: 'text',
         text: 'ลงทะเบียนสำเร็จ เรากำลังตรวจสอบคุณสมบัติของท่าน และจะตอบกลับเมื่อกระบวนการตรวจสอบเสร็จสิ้น'
       }]);
-      liff.closeWindow();
     }
   }
 
