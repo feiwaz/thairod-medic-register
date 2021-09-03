@@ -36,6 +36,8 @@ export class DoctorsService {
       const entity = await this.mapDtoToEntity(createDto, validatedEntity as Doctor);
       await this.registrationService.applyImageUrl(bufferedFile, entity, 'doctors');
       const doctor = await this.doctorRepository.save(entity);
+      const pushMessageBody = this.registrationService.buildPushMessageConfirm(doctor);
+      await this.registrationService.sendPushMessage(pushMessageBody);
       this.logger.log(`Doctor ID: ${doctor.id} has been updated`);
     } catch (error) {
       if (error.code === 'ER_DUP_ENTRY') {
@@ -109,7 +111,8 @@ export class DoctorsService {
       const docVerification = await this.findVerificationStatus(doctor, user, verificationDto);
       await this.registrationService.sendDataToTelemed(docVerification, 'doctors');
       await this.docVerificationRepository.save(docVerification);
-      await this.registrationService.sendPushMessage(docVerification, 'doctors');
+      const pushMessageBody = this.registrationService.buildPushMessageApprove(docVerification, 'doctors');
+      await this.registrationService.sendPushMessage(pushMessageBody);
       this.logger.log(`Verification status of doctor ID: ${id} has been updated to ${docVerification.doctor.status}`);
     } catch (error) {
       this.logger.error(`Failed to execute #updateStatus with error: ${error}`);

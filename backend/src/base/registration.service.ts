@@ -61,7 +61,7 @@ export class RegistrationService {
     const where: FindConditions<Doctor | Volunteer>[] = [
       { nationalId }, { firstName, lastName }, { contactNumber }, { lineUserId }
     ];
-    if (medCertificateId) where.push({ medCertificateId })
+    if (medCertificateId) where.push({ medCertificateId });
 
     const entity = await repository.findOne({ where });
     if (entity) {
@@ -242,11 +242,7 @@ export class RegistrationService {
     return departmentName;
   }
 
-  public async sendPushMessage(
-    verification: DoctorVerification | VolunteerVerification,
-    role: 'doctors' | 'volunteers'
-  ): Promise<void> {
-    const body = this.buildRequestBody(verification, role);
+  public async sendPushMessage(body: LinePushMessageDto): Promise<void> {
     try {
       await this.lineMessageService.sendPushMessage(body);
       this.logger.log(`Successfully sent push LINE message to ${body.to} with message ${body.messages[0].text}`);
@@ -256,7 +252,7 @@ export class RegistrationService {
     }
   }
 
-  private buildRequestBody(
+  public buildPushMessageApprove(
     verification: DoctorVerification | VolunteerVerification,
     role: 'doctors' | 'volunteers'
   ): LinePushMessageDto {
@@ -274,6 +270,15 @@ export class RegistrationService {
       to: lineUserId, messages: [{
         type: 'text',
         text: `${commonText}${verifyText}`
+      }]
+    };
+  }
+
+  public buildPushMessageConfirm(entity: Doctor | Volunteer): LinePushMessageDto {
+    return {
+      to: entity.lineUserId, messages: [{
+        type: 'text',
+        text: 'ลงทะเบียนสำเร็จ เรากำลังตรวจสอบคุณสมบัติของท่าน และจะตอบกลับเมื่อกระบวนการตรวจสอบเสร็จสิ้น'
       }]
     };
   }

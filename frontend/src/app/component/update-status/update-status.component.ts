@@ -43,25 +43,15 @@ export class UpdateStatusComponent implements OnInit {
     }
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     this.mainLogo = this.imgCachingService.getImgElement('thairod-logo');
     this.verifyStatusLogo = this.imgCachingService.getImgElement('verify-status', { width: '320px', height: '320px' });
-    console.log(`UpdateStatusComponent isLoggedIn: ${liff.isLoggedIn()}`);
-    console.log(`UpdateStatusComponent isInClient: ${liff.isInClient()}`);
-    console.log(liff);
-    liff.closeWindow();
-    if (this.status === 'ส่งข้อมูลสำเร็จ') {
-      await this.sendLiffMessage();
-    }
-    liff.closeWindow();
+    this.closeLiffWindow();
   }
 
-  private async sendLiffMessage() {
+  private closeLiffWindow() {
     if (liff.isInClient()) {
-      await liff.sendMessages([{
-        type: 'text',
-        text: 'ลงทะเบียนสำเร็จ เรากำลังตรวจสอบคุณสมบัติของท่าน และจะตอบกลับเมื่อกระบวนการตรวจสอบเสร็จสิ้น'
-      }]);
+      liff.closeWindow();
     }
   }
 
@@ -92,7 +82,7 @@ export class UpdateStatusComponent implements OnInit {
     return {
       nationalId: this.nationalId, initial: '', gender: '', firstName: '', lastName: '',
       dateOfBirth: '', address: '', contactNumber: '', availableTimes: []
-    }
+    };
   }
 
   handleErrorResponse(): void {
